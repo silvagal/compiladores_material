@@ -1,5 +1,7 @@
-\hypertarget{o-que-uxe9-um-compilador}{%
-\section{O que é um Compilador?}\label{o-que-uxe9-um-compilador}}
+\subtitle{\bf Aula 1 - Fases de um Compilador}
+\begin{frame}[t,plain]
+\titlepage
+\end{frame}
 
 \begin{frame}{Defini\c{c}\~{a}o}
 \protect\hypertarget{definiuxe7uxe3o}{}
@@ -61,28 +63,32 @@
 
 \begin{frame}{Compiladores vs.~Interpretadores}
 \protect\hypertarget{compiladores-vs.-interpretadores}{}
-\begin{longtable}[]{@{}lll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}lll@{}}
+\toprule
 & Compilador & Interpretador \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 Execu\c{c}\~{a}o & Traduz antes de executar & Executa diretamente \\
 Desempenho & \textasciitilde10× mais rápido & Mais lento \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}{Compiladores vs.~Interpretadores}
 \protect\hypertarget{compiladores-vs.-interpretadores-1}{}
-\begin{longtable}[]{@{}lll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}lll@{}}
+\toprule
 & Compilador & Interpretador \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 Energia & Menos consumo & Mais consumo \\
 Tempo de compila\~{c}\~{a}o & Pode ser alto & Nenhum \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}{Compiladores vs.~Interpretadores}
@@ -149,8 +155,7 @@ Tempo de compila\~{c}\~{a}o & Pode ser alto & Nenhum \\
 \end{itemize}
 \end{frame}
 
-\hypertarget{fases-de-um-compilador}{%
-\section{Fases de um Compilador}\label{fases-de-um-compilador}}
+
 
 \begin{frame}{Vis\~{a}o Geral do Pipeline}
 \protect\hypertarget{visuxe3o-geral-do-pipeline}{}
@@ -225,7 +230,7 @@ if (val >= 0) pos = val
 
 \begin{frame}[fragile]{Análise Léxica}
 \protect\hypertarget{anuxe1lise-luxe9xica}{}
-\includegraphics[width=0.7\textwidth,height=\textheight]{chapter01/imgs/lexical.png}
+\includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter01/imgs/lexical.png}
 
 \begin{itemize}
 
@@ -247,7 +252,7 @@ if (val >= 0) pos = val
 
 \begin{frame}{Análise Sintática}
 \protect\hypertarget{anuxe1lise-sintuxe1tica}{}
-\includegraphics[width=0.4\textwidth,height=\textheight]{chapter01/imgs/syntax-tree.png}
+\includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter01/imgs/syntax-tree.png}
 
 \begin{itemize}
 
@@ -260,7 +265,7 @@ if (val >= 0) pos = val
 
 \begin{frame}{Análise Sintática}
 \protect\hypertarget{anuxe1lise-sintuxe1tica-1}{}
-\includegraphics[width=0.4\textwidth,height=\textheight]{chapter01/imgs/syntax-tree.png}
+\includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter01/imgs/syntax-tree.png}
 
 \begin{itemize}
 
@@ -273,7 +278,7 @@ if (val >= 0) pos = val
 
 \begin{frame}{Análise Sem\^{a}ntica}
 \protect\hypertarget{anuxe1lise-semuxe2ntica}{}
-\includegraphics[width=0.4\textwidth,height=\textheight]{chapter01/imgs/annotated-tree.png}
+\includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter01/imgs/annotated-tree.png}
 
 \begin{itemize}
 
@@ -287,7 +292,7 @@ if (val >= 0) pos = val
 
 \begin{frame}{Análise Sem\^{a}ntica}
 \protect\hypertarget{anuxe1lise-semuxe2ntica-1}{}
-\includegraphics[width=0.4\textwidth,height=\textheight]{chapter01/imgs/annotated-tree.png}
+\includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter01/imgs/annotated-tree.png}
 
 \begin{itemize}
 
@@ -301,7 +306,7 @@ if (val >= 0) pos = val
 
 \begin{frame}{Gera\c{c}\~{a}o de Código Intermediário}
 \protect\hypertarget{gerauxe7uxe3o-de-cuxf3digo-intermediuxe1rio}{}
-\includegraphics[width=0.4\textwidth,height=\textheight]{chapter01/imgs/cfg.png}
+\includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter01/imgs/cfg.png}
 
 \begin{itemize}
 
@@ -497,29 +502,33 @@ Código-fonte
 
 \begin{frame}{Responsabilidades de Cada Ferramenta}
 \protect\hypertarget{responsabilidades-de-cada-ferramenta}{}
-\begin{longtable}[]{@{}llll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}llll@{}}
+\toprule
 Ferramenta & Entrada & Saída & Fun\c{c}\~{a}o \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 Compilador & Código-fonte & Assembly & Tradu\c{c}\~{a}o de linguagem \\
 Assembler & Assembly & Código objeto & Tradu\c{c}\~{a}o de instru\c{c}\~{o}es \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Responsabilidades de Cada Ferramenta}
 \protect\hypertarget{responsabilidades-de-cada-ferramenta-1}{}
-\begin{longtable}[]{@{}llll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}llll@{}}
+\toprule
 Ferramenta & Entrada & Saída & Fun\c{c}\~{a}o \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 Linker & Múltiplos \texttt{.o} & Executável & Resolve
 refer\^{e}ncias \\
 Loader & Executável & Processo & Carrega na memória \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \hypertarget{conclusuxe3o}{%

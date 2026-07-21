@@ -1,5 +1,7 @@
-\hypertarget{objetivos}{%
-\section{Objetivos}\label{objetivos}}
+\subtitle{\bf Aula 23 - Introdu\c{c}\~{a}o}
+\begin{frame}[t,plain]
+\titlepage
+\end{frame}
 
 \begin{frame}{Objetivos}
 \protect\hypertarget{objetivos-1}{}
@@ -70,8 +72,7 @@ corretos'':
 \end{enumerate}
 \end{frame}
 
-\hypertarget{teste-de-compiladores}{%
-\section{Teste de Compiladores}\label{teste-de-compiladores}}
+
 
 \begin{frame}{Gera\c{c}\~{a}o Aleatória de Programas (Fuzzing)}
 \protect\hypertarget{gerauxe7uxe3o-aleatuxf3ria-de-programas-fuzzing}{}
@@ -284,17 +285,19 @@ GIMPLE}.
 O \textbf{VSDG} {[}Johnson et al., 2004{]} representa o programa como um
 grafo de depend\^{e}ncias:
 
-\begin{longtable}[]{@{}ll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}ll@{}}
+\toprule
 Tipo de aresta & Significado \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \textbf{Valor} & Resultado de uma opera\c{c}\~{a}o é entrada de outra \\
 \textbf{Estado} & Uma opera\c{c}\~{a}o com efeito deve preceder outra \\
 \textbf{Controle} & Uma opera\c{c}\~{a}o só executa se condi\c{c}\~{a}o for
 satisfeita \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 
 \textbf{Vantagem}: CSE é \textbf{gratuita} --- express\~{o}es id\^{e}nticas s\~{a}o
 representadas pelo \textbf{mesmo nó}.

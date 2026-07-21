@@ -1,5 +1,7 @@
-\hypertarget{objetivos}{%
-\section{Objetivos}\label{objetivos}}
+\subtitle{\bf Aula 10 - Motiva\c{c}
+\begin{frame}[t,plain]
+\titlepage
+\end{frame}
 
 \begin{frame}{Objetivos}
 \protect\hypertarget{objetivos-1}{}
@@ -129,8 +131,7 @@ E \to T .
 \end{itemize}
 \end{frame}
 
-\hypertarget{o-algoritmo-lr1}{%
-\section{O Algoritmo LR(1)}\label{o-algoritmo-lr1}}
+
 
 \begin{frame}{Itens LR(1)}
 \protect\hypertarget{itens-lr1}{}
@@ -310,20 +311,22 @@ T \to F . & \$, +, *
 
 \begin{frame}{Tabela LR(1)}
 \protect\hypertarget{tabela-lr1-4}{}
-\begin{longtable}[]{@{}llllllllll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}llllllllll@{}}
+\toprule
 Estado & \(n\) & \(+\) & \(*\) & \((\) & \()\) & \(\$\) & \(E\) & \(T\)
 & \(F\) \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 0 & s5 & & & s4 & & & 1 & 2 & 3 \\
 1 & & s6 & & & & acc & & & \\
 2 & & r E→T & s7 & & & r E→T & & & \\
 3 & & r T→F & r T→F & & & r T→F & & & \\
 4 & s5 & & & s4 & & & 8 & 9 & 3 \\
 5 & & r F→n & r F→n & & r F→n & r F→n & & & \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}{Tabela LR(1)}
@@ -451,18 +454,20 @@ item} --- n\~{a}o em todas.
 
 \begin{frame}{Identifica\c{c}\~{a}o dos Pares com o Mesmo Núcleo}
 \protect\hypertarget{identificauxe7uxe3o-dos-pares-com-o-mesmo-nuxfacleo}{}
-\begin{longtable}[]{@{}lll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}lll@{}}
+\toprule
 Núcleo & Estados LR(1) & Lookaheads unidos \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \(T \to F .\) & 3 e 10 & \(\{\$, +, *, )\}\) \\
 \(E \to E + . T\), \ldots{} & 6 e 14 & \(\{\$, +, )\}\) \\
 \(T \to T * . F\), \ldots{} & 7 e 15 & \(\{\$, +, *, )\}\) \\
 \(E \to E + T .\), \(T \to T . * F\) & 11 e 16 & \(\{\$, +, )\}\) \\
 \(T \to T * F .\) & 12 e 17 & \(\{\$, +, *, )\}\) \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 
 Denominamos: \textbf{A} = 3+10, \textbf{B} = 6+14, \textbf{C} = 7+15,
 \textbf{D} = 11+16, \textbf{E} = 12+17.
@@ -470,7 +475,8 @@ Denominamos: \textbf{A} = 3+10, \textbf{B} = 6+14, \textbf{C} = 7+15,
 
 \begin{frame}{Tabela LALR(1) para Express\~{o}es}
 \protect\hypertarget{tabela-lalr1-para-expressuxf5es}{}
-\begin{longtable}[]{@{}
+\begin{table}
+\begin{tabular}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1224}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0612}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1429}}
@@ -481,7 +487,7 @@ Denominamos: \textbf{A} = 3+10, \textbf{B} = 6+14, \textbf{C} = 7+15,
   >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0612}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0612}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0612}}@{}}
-\toprule\noalign{}
+\toprule
 \begin{minipage}[b]{\linewidth}\raggedright
 Estado
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
@@ -503,8 +509,8 @@ Estado
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 \(F\)
 \end{minipage} \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 0 & s5 & & & s4 & & & 1 & 2 & A \\
 1 & & sB & & & & acc & & & \\
 2 & & r E→T & sC & & & r E→T & & & \\
@@ -516,8 +522,9 @@ C & s5 & & & s4 & & & & & E \\
 8 & & sB & & & s13 & & & & \\
 D & & r E→E+T & sC & & r E→E+T & r E→E+T & & & \\
 E & & r T→T*F & r T→T*F & & r T→T*F & r T→T*F & & & \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \hypertarget{conclusuxe3o}{%

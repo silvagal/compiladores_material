@@ -1,5 +1,7 @@
-\hypertarget{objetivos}{%
-\section{Objetivos}\label{objetivos}}
+\subtitle{\bf Aula 11 - Introdu\c{c}\~{a}o}
+\begin{frame}[t,plain]
+\titlepage
+\end{frame}
 
 \begin{frame}{Objetivos}
 \protect\hypertarget{objetivos-1}{}
@@ -99,111 +101,124 @@ happy -o ExpParser.hs ExpParser.y
 \end{itemize}
 \end{frame}
 
-\hypertarget{diretivas-do-happy}{%
-\section{Diretivas do Happy}\label{diretivas-do-happy}}
+
 
 \begin{frame}[fragile]{Principais Diretivas}
 \protect\hypertarget{principais-diretivas}{}
-\begin{longtable}[]{@{}ll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}ll@{}}
+\toprule
 Diretiva & Significado \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \texttt{\%name p N} & Gera fun\c{c}\~{a}o
 \texttt{p} iniciando pelo n\~{a}o-terminal
 \texttt{N} \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Principais Diretivas}
 \protect\hypertarget{principais-diretivas-1}{}
-\begin{longtable}[]{@{}ll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}ll@{}}
+\toprule
 Diretiva & Significado \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \texttt{\%tokentype \{ T \}} & Define o tipo Haskell
 dos tokens consumidos \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Principais Diretivas}
 \protect\hypertarget{principais-diretivas-2}{}
-\begin{longtable}[]{@{}
+\begin{table}
+\begin{tabular}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.4714}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5286}}@{}}
-\toprule\noalign{}
+\toprule
 \begin{minipage}[b]{\linewidth}\raggedright
 Diretiva
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Significado
 \end{minipage} \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \texttt{\%monad \{ M \}\{ (>>=) \}\{ return \}} &
 Executa o parser dentro da m\^{o}nada \texttt{M} \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Principais Diretivas}
 \protect\hypertarget{principais-diretivas-3}{}
-\begin{longtable}[]{@{}ll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}ll@{}}
+\toprule
 Diretiva & Significado \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \texttt{\%lexer \{ f \}\{ eof \}} & Lexer incremental:
 \texttt{f} obtém o próximo token \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Principais Diretivas}
 \protect\hypertarget{principais-diretivas-4}{}
-\begin{longtable}[]{@{}ll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}ll@{}}
+\toprule
 Diretiva & Significado \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \texttt{\%error \{ h \}} & Chama
 \texttt{h} ao encontrar erro de sintaxe \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Principais Diretivas}
 \protect\hypertarget{principais-diretivas-5}{}
-\begin{longtable}[]{@{}
+\begin{table}
+\begin{tabular}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.1667}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.8333}}@{}}
-\toprule\noalign{}
+\toprule
 \begin{minipage}[b]{\linewidth}\raggedright
 Diretiva
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Significado
 \end{minipage} \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \texttt{\%expect n} & Declara exatamente
 \texttt{n} conflitos shift-reduce esperados \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Principais Diretivas}
 \protect\hypertarget{principais-diretivas-6}{}
-\begin{longtable}[]{@{}ll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}ll@{}}
+\toprule
 Diretiva & Significado \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \texttt{\%left}, \texttt{\%right},
 \texttt{\%nonassoc} & Preced\^{e}ncia e associatividade \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Diretivas}

@@ -1,3 +1,8 @@
+\subtitle{\bf Aula 3 - Motiva\c{c}
+\begin{frame}[t,plain]
+\titlepage
+\end{frame}
+
 \hypertarget{motivauxe7uxe3o}{%
 \section{Motiva\c{c}\~{a}o}\label{motivauxe7uxe3o}}
 
@@ -109,7 +114,7 @@ data DFA a = DFA
 \begin{frame}[fragile]{Exemplo: AFD para Palavras Terminadas em
 \texttt{1}}
 \protect\hypertarget{exemplo-afd-para-palavras-terminadas-em-1}{}
-\includegraphics[width=0.6\textwidth,height=\textheight]{chapter03/imgs/afd.png}
+\includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter03/imgs/afd.png}
 
 \begin{itemize}
 
@@ -212,7 +217,7 @@ data NFA a = NFA
 \begin{frame}{Exemplo: AFD para Palavras Terminadas em
 \texttt{00}}
 \protect\hypertarget{exemplo-afd-para-palavras-terminadas-em-00}{}
-\includegraphics[width=0.6\textwidth,height=\textheight]{chapter03/imgs/endswith00.png}
+\includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter03/imgs/endswith00.png}
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo}
@@ -370,28 +375,28 @@ data Regex
 
 \begin{frame}{Caso Base: vazio}
 \protect\hypertarget{caso-base-vazio}{}
-\includegraphics[width=0.3\textwidth,height=\textheight]{chapter03/imgs/image1.png}
+\includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter03/imgs/image1.png}
 
 \(e = \emptyset\): AFN sem estados, aceita a linguagem vazia
 \end{frame}
 
 \begin{frame}{Caso Base: lambda}
 \protect\hypertarget{caso-base-lambda}{}
-\includegraphics[width=0.3\textwidth,height=\textheight]{chapter03/imgs/image2.png}
+\includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter03/imgs/image2.png}
 
 \(e = \lambda\): um único estado que é simultaneamente inicial e final
 \end{frame}
 
 \begin{frame}{Caso Base: Símbolo}
 \protect\hypertarget{caso-base-suxedmbolo}{}
-\includegraphics[width=0.45\textwidth,height=\textheight]{chapter03/imgs/image3.png}
+\includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter03/imgs/image3.png}
 
 \(e = a\): dois estados, transi\c{c}\~{a}o sobre o símbolo \(a\)
 \end{frame}
 
 \begin{frame}{Caso Indutivo: Uni\~{a}o}
 \protect\hypertarget{caso-indutivo-uniuxe3o}{}
-\includegraphics[width=0.6\textwidth,height=\textheight]{chapter03/imgs/image4.png}
+\includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter03/imgs/image4.png}
 
 \(e = s + t\): os AFNs \(N(s)\) e \(N(t)\) s\~{a}o colocados em
 \textbf{paralelo}
@@ -399,7 +404,7 @@ data Regex
 
 \begin{frame}{Caso Indutivo: Concatena\c{c}\~{a}o}
 \protect\hypertarget{caso-indutivo-concatenauxe7uxe3o}{}
-\includegraphics[width=0.65\textwidth,height=\textheight]{chapter03/imgs/image5.png}
+\includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter03/imgs/image5.png}
 
 \(e = s\,t\): os AFNs \(N(s)\) e \(N(t)\) s\~{a}o colocados em
 \textbf{sequ\^{e}ncia}
@@ -407,7 +412,7 @@ data Regex
 
 \begin{frame}{Caso Indutivo: Fecho de Kleene}
 \protect\hypertarget{caso-indutivo-fecho-de-kleene}{}
-\includegraphics[width=0.55\textwidth,height=\textheight]{chapter03/imgs/image6.png}
+\includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter03/imgs/image6.png}
 
 \(e = s^*\): os estados finais de \(N(s)\) retornam aos estados iniciais
 \end{frame}
@@ -445,8 +450,7 @@ lexer = subset . foldr unionNFA emptyNFA . map thompson
 \end{enumerate}
 \end{frame}
 
-\hypertarget{crituxe9rio-do-maior-prefixo}{%
-\section{Critério do Maior Prefixo}\label{crituxe9rio-do-maior-prefixo}}
+
 
 \begin{frame}[fragile]{O Problema}
 \protect\hypertarget{o-problema}{}

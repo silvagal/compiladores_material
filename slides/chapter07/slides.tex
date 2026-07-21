@@ -1,5 +1,7 @@
-\hypertarget{objetivos}{%
-\section{Objetivos}\label{objetivos}}
+\subtitle{\bf Aula 7 - Motiva\c{c}
+\begin{frame}[t,plain]
+\titlepage
+\end{frame}
 
 \begin{frame}{Objetivos}
 \protect\hypertarget{objetivos-1}{}
@@ -48,40 +50,46 @@
 
 \begin{frame}{GLC vs.~PEG: Diferen\c{c}a Fundamental}
 \protect\hypertarget{glc-vs.-peg-diferenuxe7a-fundamental}{}
-\begin{longtable}[]{@{}lll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}lll@{}}
+\toprule
 Aspecto & GLC & PEG \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 Escolha & N\~{a}o-determinística & \textbf{Ordenada} \\
 Ambiguidade & Possível & Impossível \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}{GLC vs.~PEG: Diferen\c{c}a Fundamental}
 \protect\hypertarget{glc-vs.-peg-diferenuxe7a-fundamental-1}{}
-\begin{longtable}[]{@{}lll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}lll@{}}
+\toprule
 Aspecto & GLC & PEG \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 Recurs\~{a}o \`{a} esquerda & Suporta naturalmente & N\~{a}o suporta (loop) \\
 Predicados lookahead & N\~{a}o tem & Sim (\(!e\), \(\&e\)) \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}{GLC vs.~PEG: Diferen\c{c}a Fundamental}
 \protect\hypertarget{glc-vs.-peg-diferenuxe7a-fundamental-2}{}
-\begin{longtable}[]{@{}lll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}lll@{}}
+\toprule
 Aspecto & GLC & PEG \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 Poder expressivo & Linguagens livres de contexto & N\~{a}o determ. \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Escolha N\~{a}o-Determinística vs.~Ordenada}
@@ -102,58 +110,64 @@ Poder expressivo & Linguagens livres de contexto & N\~{a}o determ. \\
 \end{itemize}
 \end{frame}
 
-\hypertarget{operadores-de-peg}{%
-\section{Operadores de PEG}\label{operadores-de-peg}}
+
 
 \begin{frame}{Operadores de PEG}
 \protect\hypertarget{operadores-de-peg-1}{}
-\begin{longtable}[]{@{}lll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}lll@{}}
+\toprule
 Express\~{a}o & Nome & Sem\^{a}ntica \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \(\varepsilon\) & vazio & Sempre tem sucesso sem consumir \\
 \(a\) & terminal & Consome e casa com símbolo \(a\) \\
 \(A\) & n\~{a}o-terminal & Invoca a regra de nome \(A\) \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}{Operadores de PEG}
 \protect\hypertarget{operadores-de-peg-2}{}
-\begin{longtable}[]{@{}lll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}lll@{}}
+\toprule
 Express\~{a}o & Nome & Sem\^{a}ntica \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \(e_1\; e_2\) & sequ\^{e}ncia & \(e_1\) depois \(e_2\) sobre o restante \\
 \(e_1 / e_2\) & escolha ordenada & Tenta \(e_1\); se falhar, tenta
 \(e_2\) \\
 \(e^*\) & repeti\c{c}\~{a}o gulosa & Zero ou mais ocorr\^{e}ncias de \(e\) \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}{Operadores de PEG}
 \protect\hypertarget{operadores-de-peg-3}{}
-\begin{longtable}[]{@{}lll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}lll@{}}
+\toprule
 Express\~{a}o & Nome & Sem\^{a}ntica \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \(e^+\) & repeti\c{c}\~{a}o positiva & Uma ou mais ocorr\^{e}ncias de \(e\) \\
 \(e\;?\) & opcional & Zero ou uma ocorr\^{e}ncia de \(e\) \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}{Operadores de PEG}
 \protect\hypertarget{operadores-de-peg-4}{}
-\begin{longtable}[]{@{}
+\begin{table}
+\begin{tabular}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1364}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2727}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.5909}}@{}}
-\toprule\noalign{}
+\toprule
 \begin{minipage}[b]{\linewidth}\raggedright
 Express\~{a}o
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
@@ -161,13 +175,14 @@ Nome
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Sem\^{a}ntica
 \end{minipage} \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \(!e\) & predicado negativo & Sucesso se \(e\) falha; n\~{a}o consome \\
 \(\&e\) & predicado positivo & Sucesso se \(e\) tem sucesso; n\~{a}o
 consome \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Escolha Ordenada}

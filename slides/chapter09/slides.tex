@@ -1,5 +1,7 @@
-\hypertarget{objetivos}{%
-\section{Objetivos}\label{objetivos}}
+\subtitle{\bf Aula 9 - Motiva\c{c}
+\begin{frame}[t,plain]
+\titlepage
+\end{frame}
 
 \begin{frame}{Objetivos}
 \protect\hypertarget{objetivos-1}{}
@@ -86,8 +88,7 @@ O analisador constrói essa deriva\c{c}\~{a}o de baixo para cima, da direita par
 a esquerda.
 \end{frame}
 
-\hypertarget{algoritmo-de-earley}{%
-\section{Algoritmo de Earley}\label{algoritmo-de-earley}}
+
 
 \begin{frame}{A Ideia Central}
 \protect\hypertarget{a-ideia-central}{}
@@ -185,18 +186,20 @@ Um item Earley \([A \to \beta . \gamma, k]\) representa:
 \protect\hypertarget{exemplo-anuxe1lise-de-1-2}{}
 Gramática: \(S \to S+E \mid E\) e \(E \to (S) \mid n\)
 
-\begin{longtable}[]{@{}llll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}llll@{}}
+\toprule
 Conjunto & Item & Pos & Motivo \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \(I_0\) & \(S' \to . S\) & 0 & inicial \\
 & \(S \to . S+E\) & 0 & prever \(S\) \\
 & \(S \to . E\) & 0 & prever \(S\) \\
 & \(E \to . n\) & 0 & prever \(E\) \\
 & \(E \to . (S)\) & 0 & prever \(E\) \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo: Análise de
@@ -204,73 +207,81 @@ Conjunto & Item & Pos & Motivo \\
 \protect\hypertarget{exemplo-anuxe1lise-de-1-2-1}{}
 Gramática: \(S \to S+E \mid E\) e \(E \to (S) \mid n\)
 
-\begin{longtable}[]{@{}llll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}llll@{}}
+\toprule
 Conjunto & Item & Pos & Motivo \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \(I_1\) & \(E \to ( . S )\) & 0 & consumir
 \texttt{(} \\
 & \(S \to . S+E\) & 1 & prever \(S\) \\
 & \(S \to . E\) & 1 & prever \(S\) \\
 & \(E \to . n\) & 1 & prever \(E\) \\
 & \(E \to . (S)\) & 1 & prever \(E\) \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo: Análise de
 \texttt{(1) + 2} (continua\c{c}\~{a}o)}
 \protect\hypertarget{exemplo-anuxe1lise-de-1-2-continuauxe7uxe3o}{}
-\begin{longtable}[]{@{}llll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}llll@{}}
+\toprule
 Conjunto & Item & Pos & Motivo \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \(I_2\) & \(E \to n .\) & 1 & consumir \texttt{1} \\
 & \(S \to E .\) & 1 & completar \(E\) \\
 & \(E \to (S . )\) & 0 & completar \(S\) \\
 & \(S \to S . +E\) & 1 & completar \(S\) \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo: Análise de
 \texttt{(1) + 2} (continua\c{c}\~{a}o)}
 \protect\hypertarget{exemplo-anuxe1lise-de-1-2-continuauxe7uxe3o-1}{}
-\begin{longtable}[]{@{}llll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}llll@{}}
+\toprule
 Conjunto & Item & Pos & Motivo \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \(I_3\) & \(E \to (S) .\) & 0 & consumir \texttt{)} \\
 & \(S \to E .\) & 0 & completar \(E\) \\
 & \(S' \to S .\) & 0 & completar \(S\) \\
 & \(S \to S . +E\) & 0 & completar \(S\) \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo: Análise de
 \texttt{(1) + 2} (continua\c{c}\~{a}o)}
 \protect\hypertarget{exemplo-anuxe1lise-de-1-2-continuauxe7uxe3o-2}{}
-\begin{longtable}[]{@{}llll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}llll@{}}
+\toprule
 Conjunto & Item & Pos & Motivo \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \(I_4\) & \(S \to S+ . E\) & 0 & consumir \texttt{+} \\
 & \(E \to . n\) & 4 & prever \(E\) \\
 \(I_5\) & \(E \to n .\) & 4 & consumir \texttt{2} \\
 & \(S \to S+E .\) & 0 & completar \(E\) \\
 & \(S' \to S .\) & 0 & completar \(S\): \textbf{sucesso!} \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}{Visualiza\c{c}\~{a}o do Algoritmo de Earley}
 \protect\hypertarget{visualizauxe7uxe3o-do-algoritmo-de-earley}{}
-\includegraphics[width=0.7\textwidth,height=\textheight]{chapter09/imgs/earley-threads.png}
+\includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter09/imgs/earley-threads.png}
 \end{frame}
 
 \begin{frame}{Complexidade}
@@ -336,68 +347,76 @@ Em qualquer ponto:
 \begin{frame}[fragile]{Trace Shift-Reduce para
 \texttt{(1)+2}}
 \protect\hypertarget{trace-shift-reduce-para-12}{}
-\begin{longtable}[]{@{}lll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}lll@{}}
+\toprule
 Pilha & Entrada & A\c{c}\~{a}o \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 & \texttt{(1)+2} & shift \\
 \texttt{(} & \texttt{1)+2} & shift \\
 \texttt{(1} & \texttt{)+2} & reduce
 \(E \to n\) \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Trace Shift-Reduce para
 \texttt{(1)+2}}
 \protect\hypertarget{trace-shift-reduce-para-12-1}{}
-\begin{longtable}[]{@{}lll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}lll@{}}
+\toprule
 Pilha & Entrada & A\c{c}\~{a}o \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \texttt{(1} & \texttt{)+2} & reduce
 \(E \to n\) \\
 \texttt{(E} & \texttt{)+2} & reduce
 \(S \to E\) \\
 \texttt{(S} & \texttt{)+2} & shift \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Trace Shift-Reduce para
 \texttt{(1)+2}}
 \protect\hypertarget{trace-shift-reduce-para-12-2}{}
-\begin{longtable}[]{@{}lll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}lll@{}}
+\toprule
 Pilha & Entrada & A\c{c}\~{a}o \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \texttt{E} & \texttt{+2} & reduce
 \(S \to E\) \\
 \texttt{S} & \texttt{+2} & shift \\
 \texttt{S+} & \texttt{2} & shift \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Trace Shift-Reduce para
 \texttt{(1)+2}}
 \protect\hypertarget{trace-shift-reduce-para-12-3}{}
-\begin{longtable}[]{@{}lll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}lll@{}}
+\toprule
 Pilha & Entrada & A\c{c}\~{a}o \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \texttt{S+2} & \texttt{$} & reduce
 \(E \to n\) \\
 \texttt{S+E} & \texttt{$} & reduce
 \(S \to S+E\) \\
 \texttt{S} & \texttt{$} &
 \textbf{aceitar} \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}{Decis\~{a}o: Quando Shift ou Reduce?}
@@ -500,7 +519,7 @@ goto g items sym = closure g $ Set.fromList
   Resolu\c{c}\~{a}o na lousa.
 \end{itemize}
 
-\includegraphics[width=0.7\textwidth,height=\textheight]{chapter09/imgs/lr0.png}
+\includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter09/imgs/lr0.png}
 \end{frame}
 
 \begin{frame}[fragile]{Regras de Preenchimento LR(0)}

@@ -1,5 +1,7 @@
-\hypertarget{objetivos}{%
-\section{Objetivos}\label{objetivos}}
+\subtitle{\bf Aula 19 - Introdu\c{c}\~{a}o}
+\begin{frame}[t,plain]
+\titlepage
+\end{frame}
 
 \begin{frame}{Objetivos}
 \protect\hypertarget{objetivos-1}{}
@@ -62,8 +64,7 @@
 \end{itemize}
 \end{frame}
 
-\hypertarget{o-formato-wat}{%
-\section{O Formato WAT}\label{o-formato-wat}}
+
 
 \begin{frame}[fragile]{Estrutura de um Módulo WAT}
 \protect\hypertarget{estrutura-de-um-muxf3dulo-wat}{}
@@ -140,17 +141,18 @@ Regras de avalia\c{c}\~{a}o ---
 WebAssembly usa controle de fluxo \textbf{estruturado} (sem
 \texttt{goto}):
 
-\begin{longtable}[]{@{}
+\begin{table}
+\begin{tabular}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
-\toprule\noalign{}
+\toprule
 \begin{minipage}[b]{\linewidth}\raggedright
 Construtor
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Comportamento de \texttt{br}
 \end{minipage} \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \texttt{(block $l ...)} & Salta para o \textbf{fim} do
 bloco (\emph{break}) \\
 \texttt{(loop $l ...)} & Salta para o \textbf{início}
@@ -159,8 +161,9 @@ do la\c{c}o (\emph{continue}) \\
 executa ramo verdadeiro se \(\neq 0\) \\
 \texttt{br\_if $l} & Consome topo; ramifica se
 \(\neq 0\) \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Padr\~{a}o Can\^{o}nico de While em WAT}
@@ -221,11 +224,12 @@ base.
 
 \begin{frame}[fragile]{Tabela de Operadores}
 \protect\hypertarget{tabela-de-operadores}{}
-\begin{longtable}[]{@{}llll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}llll@{}}
+\toprule
 IRT & WAT & IRT & WAT \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 ADD & \texttt{i32.add} & EQ &
 \texttt{i32.eq} \\
 SUB & \texttt{i32.sub} & NEQ &
@@ -239,8 +243,9 @@ MOD & \texttt{i32.rem\_s} & GT &
 AND & \texttt{i32.and} & GE &
 \texttt{i32.ge\_s} \\
 OR & \texttt{i32.or} & & \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}{Tradu\c{c}\~{a}o de Comandos

@@ -1,5 +1,7 @@
-\hypertarget{objetivos}{%
-\section{Objetivos}\label{objetivos}}
+\subtitle{\bf Aula 15 - Tipos em Linguagens de Programa\c{c}\~{a}o}
+\begin{frame}[t,plain]
+\titlepage
+\end{frame}
 
 \begin{frame}{Objetivos}
 \protect\hypertarget{objetivos-1}{}
@@ -182,8 +184,7 @@ nv & ::= & \mathbf{0} \mid \mathbf{succ}\ nv
 \end{array}\]
 \end{frame}
 
-\hypertarget{o-sistema-de-tipos}{%
-\section{O Sistema de Tipos}\label{o-sistema-de-tipos}}
+
 
 \begin{frame}{Rela\c{c}\~{a}o de Tipagem}
 \protect\hypertarget{relauxe7uxe3o-de-tipagem}{}
@@ -464,15 +465,17 @@ Em palavras: \textbf{programas bem tipados n\~{a}o ficam presos}.
 \protect\hypertarget{type-soundness-1}{}
 A prova apoia-se em dois lemas fundamentais e independentes:
 
-\begin{longtable}[]{@{}ll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}ll@{}}
+\toprule
 Lema & Enunciado \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \textbf{Preserva\c{c}\~{a}o} & O tipo se mantém após cada passo de redu\c{c}\~{a}o \\
 \textbf{Progresso} & Um termo bem tipado é valor ou pode reduzir \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}{Lema de Preserva\c{c}\~{a}o}

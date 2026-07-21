@@ -1,5 +1,7 @@
-\hypertarget{objetivos}{%
-\section{Objetivos}\label{objetivos}}
+\subtitle{\bf Aula 2 - Análise Léxica}
+\begin{frame}[t,plain]
+\titlepage
+\end{frame}
 
 \begin{frame}{Objetivos}
 \protect\hypertarget{objetivos-1}{}
@@ -11,8 +13,7 @@
 \end{itemize}
 \end{frame}
 
-\hypertarget{anuxe1lise-luxe9xica}{%
-\section{Análise Léxica}\label{anuxe1lise-luxe9xica}}
+
 
 \begin{frame}{O Papel da Análise Léxica}
 \protect\hypertarget{o-papel-da-anuxe1lise-luxe9xica}{}
@@ -114,35 +115,39 @@ data Token = Token
 
 \begin{frame}[fragile]{Tokens da Linguagem Exp}
 \protect\hypertarget{tokens-da-linguagem-exp}{}
-\begin{longtable}[]{@{}lll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}lll@{}}
+\toprule
 Token & Construtor & Descri\c{c}\~{a}o \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \texttt{n} & \texttt{TNumber Int} &
 número inteiro (carrega o valor) \\
 \texttt{+} & \texttt{TPlus} & operador
 de adi\c{c}\~{a}o \\
 \texttt{*} & \texttt{TTimes} &
 operador de multiplica\c{c}\~{a}o \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Tokens da Linguagem Exp}
 \protect\hypertarget{tokens-da-linguagem-exp-1}{}
-\begin{longtable}[]{@{}lll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}lll@{}}
+\toprule
 Token & Construtor & Descri\c{c}\~{a}o \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \texttt{(} & \texttt{TLParen} & abre
 par\^{e}nteses \\
 \texttt{)} & \texttt{TRParen} & fecha
 par\^{e}nteses \\
 EOF & \texttt{TEOF} & marcador de fim de entrada \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Defini\c{c}\~{a}o do Tipo Lexeme}
@@ -346,38 +351,42 @@ foldl (+) 0 [1,2,3]
 \protect\hypertarget{exemplo-de-execuuxe7uxe3o}{}
 Entrada: \texttt{"2 + 3"}
 
-\begin{longtable}[]{@{}ll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}ll@{}}
+\toprule
 Char & Estado (linha, col, dígitos, tokens) \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \texttt{2} &
 \texttt{(1, 2, "2", [])} \\
 \texttt{\_} &
 \texttt{(1, 3, "", [TNumber 2])} \\
 \texttt{+} &
 \texttt{(1, 4, "", [TPlus, TNumber 2])} \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo de Execu\c{c}\~{a}o}
 \protect\hypertarget{exemplo-de-execuuxe7uxe3o-1}{}
 Entrada: \texttt{"2 + 3"}
 
-\begin{longtable}[]{@{}ll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}ll@{}}
+\toprule
 Char & Estado (linha, col, dígitos, tokens) \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \texttt{\_} &
 \texttt{(1, 5, "", [TPlus, TNumber 2])} \\
 \texttt{3} &
 \texttt{(1, 6, "3", [TPlus, TNumber 2])} \\
 EOF & extrai →
 \texttt{[TNumber 2, TPlus, TNumber 3]} \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \hypertarget{vantagens-e-desvantagens}{%

@@ -1,5 +1,7 @@
-\hypertarget{objetivos}{%
-\section{Objetivos}\label{objetivos}}
+\subtitle{\bf Aula 18 - Introdu\c{c}\~{a}o}
+\begin{frame}[t,plain]
+\titlepage
+\end{frame}
 
 \begin{frame}{Objetivos}
 \protect\hypertarget{objetivos-1}{}
@@ -41,11 +43,12 @@
 
 \textbf{Classifica\c{c}\~{a}o por escopo:}
 
-\begin{longtable}[]{@{}
+\begin{table}
+\begin{tabular}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
-\toprule\noalign{}
+\toprule
 \begin{minipage}[b]{\linewidth}\raggedright
 Escopo
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
@@ -53,16 +56,17 @@ Descri\c{c}\~{a}o
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Exemplos
 \end{minipage} \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \textbf{Local} (intra-bloco) & Dentro de um bloco básico & Const
 folding, CSE \\
 \textbf{Global} (inter-bloco) & Análise de fluxo de controle & Const
 propagation global \\
 \textbf{De la\c{c}o} & Exploram estrutura iterativa & LICM, unrolling,
 fusion \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}{Dez Otimiza\c{c}\~{o}es Neste Capítulo}
@@ -112,8 +116,7 @@ Uma express\~{a}o é \textbf{pura} se n\~{a}o produz efeitos colaterais:
 \end{itemize}
 \end{frame}
 
-\hypertarget{dobramento-de-constantes}{%
-\section{Dobramento de Constantes}\label{dobramento-de-constantes}}
+
 
 \begin{frame}{Defini\c{c}\~{a}o Formal}
 \protect\hypertarget{definiuxe7uxe3o-formal}{}
@@ -513,17 +516,19 @@ Cauda}\label{eliminauxe7uxe3o-de-chamadas-em-cauda}}
 Uma chamada está em \textbf{posi\c{c}\~{a}o de cauda} se o único efeito
 posterior é retornar seu resultado:
 
-\begin{longtable}[]{@{}ll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}ll@{}}
+\toprule
 Padr\~{a}o & Descri\c{c}\~{a}o \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \texttt{RETURN [CALL(NAME(f), args)]} & Retorno com
 valor \\
 \texttt{EXP(CALL(NAME(f), args)); RETURN []} & Retorno
 vazio \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 
 \textbf{Ideia}: quando \(f = g\) (auto-recurs\~{a}o), o frame corrente pode
 ser \textbf{reutilizado} --- basta atualizar os par\^{a}metros e saltar para

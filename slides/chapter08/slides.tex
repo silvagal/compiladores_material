@@ -1,5 +1,7 @@
-\hypertarget{objetivos}{%
-\section{Objetivos}\label{objetivos}}
+\subtitle{\bf Aula 8 - O Algoritmo LL(1)}
+\begin{frame}[t,plain]
+\titlepage
+\end{frame}
 
 \begin{frame}{Objetivos}
 \protect\hypertarget{objetivos-1}{}
@@ -11,8 +13,7 @@
 \end{itemize}
 \end{frame}
 
-\hypertarget{o-algoritmo-ll1}{%
-\section{O Algoritmo LL(1)}\label{o-algoritmo-ll1}}
+
 
 \begin{frame}{O Nome LL(1)}
 \protect\hypertarget{o-nome-ll1}{}
@@ -110,26 +111,29 @@ F  &\to& (\; E\; ) \mid \mathbf{n}
 \begin{frame}{Trace Completo da Análise de
 \texttt{n + n}}
 \protect\hypertarget{trace-completo-da-anuxe1lise-de-n-n}{}
-\begin{longtable}[]{@{}lll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}lll@{}}
+\toprule
 Pilha & Entrada & A\c{c}\~{a}o \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \(E\;\$\) & \(n\;+\;n\;\$\) & \(M[E,n]\): aplicar \(E \to T\;E'\) \\
 \(T\;E'\;\$\) & \(n\;+\;n\;\$\) & \(M[T,n]\): aplicar \(T \to F\;T'\) \\
 \(F\;T'\;E'\;\$\) & \(n\;+\;n\;\$\) & \(M[F,n]\): aplicar \(F \to n\) \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}{Trace Completo da Análise de
 \texttt{n + n}}
 \protect\hypertarget{trace-completo-da-anuxe1lise-de-n-n-1}{}
-\begin{longtable}[]{@{}
+\begin{table}
+\begin{tabular}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2344}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2031}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.5625}}@{}}
-\toprule\noalign{}
+\toprule
 \begin{minipage}[b]{\linewidth}\raggedright
 Pilha
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
@@ -137,45 +141,50 @@ Entrada
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 A\c{c}\~{a}o
 \end{minipage} \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \(n\;T'\;E'\;\$\) & \(n\;+\;n\;\$\) & Casar: consumir \(n\) \\
 \(T'\;E'\;\$\) & \(+\;n\;\$\) & \(M[T',+]\): aplicar
 \(T' \to \lambda\) \\
 \(E'\;\$\) & \(+\;n\;\$\) & \(M[E',+]\): aplicar \(E' \to +\;T\;E'\) \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}{Trace Completo da Análise de
 \texttt{n + n}}
 \protect\hypertarget{trace-completo-da-anuxe1lise-de-n-n-2}{}
-\begin{longtable}[]{@{}lll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}lll@{}}
+\toprule
 Pilha & Entrada & A\c{c}\~{a}o \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \(+\;T\;E'\;\$\) & \(+\;n\;\$\) & Casar: consumir \(+\) \\
 \(T\;E'\;\$\) & \(n\;\$\) & \(M[T,n]\): aplicar \(T \to F\;T'\) \\
 \(F\;T'\;E'\;\$\) & \(n\;\$\) & \(M[F,n]\): aplicar \(F \to n\) \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}{Trace Completo da Análise de
 \texttt{n + n}}
 \protect\hypertarget{trace-completo-da-anuxe1lise-de-n-n-3}{}
-\begin{longtable}[]{@{}lll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}lll@{}}
+\toprule
 Pilha & Entrada & A\c{c}\~{a}o \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \(n\;T'\;E'\;\$\) & \(n\;\$\) & Casar: consumir \(n\) \\
 \(T'\;E'\;\$\) & \(\$\) & \(M[T',\$]\): aplicar \(T' \to \lambda\) \\
 \(E'\;\$\) & \(\$\) & \(M[E',\$]\): aplicar \(E' \to \lambda\) \\
 \(\$\) & \(\$\) & \textbf{Aceitar} \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \hypertarget{construuxe7uxe3o-da-tabela-ll1}{%
@@ -337,39 +346,44 @@ F  &\to& (\; E\; ) \mid \mathbf{n}
 
 \begin{frame}{Conjuntos FIRST}
 \protect\hypertarget{conjuntos-first}{}
-\begin{longtable}[]{@{}ll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}ll@{}}
+\toprule
 N\~{a}o-terminal & FIRST \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \(E\) & \(\{(, n\}\) \\
 \(E'\) & \(\{+, \lambda\}\) \\
 \(T\) & \(\{(, n\}\) \\
 \(T'\) & \(\{*, \lambda\}\) \\
 \(F\) & \(\{(, n\}\) \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}{Conjuntos FOLLOW}
 \protect\hypertarget{conjuntos-follow}{}
-\begin{longtable}[]{@{}ll@{}}
-\toprule\noalign{}
+\begin{table}
+\begin{tabular}[]{@{}ll@{}}
+\toprule
 N\~{a}o-terminal & FOLLOW \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \(E\) & \(\{\$, )\}\) \\
 \(E'\) & \(\{\$, )\}\) \\
 \(T\) & \(\{+, \$, )\}\) \\
 \(T'\) & \(\{+, \$, )\}\) \\
 \(F\) & \(\{*, +, \$, )\}\) \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 \end{frame}
 
 \begin{frame}{Tabela de Parsing LL(1)}
 \protect\hypertarget{tabela-de-parsing-ll1}{}
-\begin{longtable}[]{@{}
+\begin{table}
+\begin{tabular}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.0690}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1207}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1724}}
@@ -377,7 +391,7 @@ N\~{a}o-terminal & FOLLOW \\
   >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1552}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1552}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1552}}@{}}
-\toprule\noalign{}
+\toprule
 \begin{minipage}[b]{\linewidth}\raggedright
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 \(n\)
@@ -392,16 +406,17 @@ N\~{a}o-terminal & FOLLOW \\
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 \(\$\)
 \end{minipage} \\
-\midrule\noalign{}
-\endhead
+\midrule
+
 \(E\) & \(T\;E'\) & --- & --- & \(T\;E'\) & --- & --- \\
 \(E'\) & --- & \(+\;T\;E'\) & --- & --- & \(\lambda\) & \(\lambda\) \\
 \(T\) & \(F\;T'\) & --- & --- & \(F\;T'\) & --- & --- \\
 \(T'\) & --- & \(\lambda\) & \(*\;F\;T'\) & --- & \(\lambda\) &
 \(\lambda\) \\
 \(F\) & \(n\) & --- & --- & \((\;E\;)\) & --- & --- \\
-\bottomrule\noalign{}
-\end{longtable}
+\bottomrule
+\end{tabular}
+\end{table}
 
 Cada entrada tem no máximo uma produ\c{c}\~{a}o --- a gramática é LL(1).
 \end{frame}
