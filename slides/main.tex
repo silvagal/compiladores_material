@@ -12,7 +12,9 @@
 \usetheme[pageofpages=of,alternativetitlepage=true, titlepagelogo=]{Decom}
 \usecolortheme{decom}
 \usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
+usepackage[T1]{fontenc}
+
+
 \usepackage[brazilian]{babel}
 \usepackage{pgfplots}   % pacote para uso do pgfplots
 \usepackage{amsmath,amssymb}
@@ -139,7 +141,7 @@
 \institute{Universidade Federal de São João del-Rei - UFSJ\\ Departamento de Computação (Dcomp)}
 
     \title{{\bf Construção de Compiladores I}}
-    \author{BCC328}
+    \author{Prof. Rodrigo Ribeiro\\rodrigo.ribeiro@ufop.edu.br}
      \date{}%\today}
 
 %---Logo no canto direito de todas as páginas:
@@ -155,14 +157,14 @@
 }
 
 % Fix tightlist issue from pandoc
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+{%
+
 
 %----- Conteúdo da Aula:
 
 \begin{document}
 
-\newcommand{\passthrough}[1]{#1}
+
     \begin{frame}[t,plain]
         \titlepage
     \end{frame}

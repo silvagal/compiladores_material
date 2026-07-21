@@ -17,12 +17,12 @@
 \begin{frame}{Limita\c{c}\~{o}es: Top-Down}
 \protect\hypertarget{limitauxe7uxf5es-top-down}{}
 \begin{itemize}
-\tightlist
+
 \item
   Analisadores \textbf{LL} exigem transforma\c{c}\~{o}es na gramática
 
   \begin{itemize}
-  \tightlist
+
   \item
     Remo\c{c}\~{a}o de recurs\~{a}o \`{a} esquerda
   \item
@@ -34,7 +34,7 @@
 \begin{frame}{Limita\c{c}\~{o}es: Top-Down}
 \protect\hypertarget{limitauxe7uxf5es-top-down-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Decis\~{a}o com apenas \textbf{1 token de lookahead}
 \item
@@ -45,7 +45,7 @@
 \begin{frame}{A Ideia Bottom-Up}
 \protect\hypertarget{a-ideia-bottom-up}{}
 \begin{itemize}
-\tightlist
+
 \item
   Analisadores \textbf{bottom-up} l\^{e}em um prefixo maior antes de decidir
 \item
@@ -56,7 +56,7 @@
 \begin{frame}{A Ideia Bottom-Up}
 \protect\hypertarget{a-ideia-bottom-up-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Constroem uma \textbf{deriva\c{c}\~{a}o mais \`{a} direita invertida}
 \item
@@ -76,7 +76,7 @@ E &\to& (S) \mid n
 
 \begin{frame}[fragile]{Der. \`{a} Direita Invert.}
 \protect\hypertarget{der.-uxe0-direita-invert.-1}{}
-Analisando \passthrough{\lstinline!(1) + 2!}:
+Analisando \texttt{(1) + 2}:
 
 \begin{lstlisting}
 S'  =>  S  =>  S+E  =>  S+2  =>  E+2  →  (S)+2  =>  (E)+2  =>  (1)+2
@@ -92,7 +92,7 @@ a esquerda.
 \begin{frame}{A Ideia Central}
 \protect\hypertarget{a-ideia-central}{}
 \begin{itemize}
-\tightlist
+
 \item
   Simula \textbf{todas as análises possíveis} em paralelo
 \item
@@ -110,7 +110,7 @@ a esquerda.
 Um item Earley \([A \to \beta . \gamma, k]\) representa:
 
 \begin{itemize}
-\tightlist
+
 \item
   \(A \to \beta\gamma\): produ\c{c}\~{a}o sendo usada
 \item
@@ -123,13 +123,13 @@ Um item Earley \([A \to \beta . \gamma, k]\) representa:
 \begin{frame}[fragile]{Exemplos}
 \protect\hypertarget{exemplos}{}
 \begin{itemize}
-\tightlist
+
 \item
   \([E \to . (S), 0]\): come\c{c}amos a reconhecer \(E \to (S)\) na posi\c{c}\~{a}o
   0, nada visto ainda
 \item
-  \([E \to ( S . ), 0]\): vimos \passthrough{\lstinline!(S!}, esperamos
-  \passthrough{\lstinline!)!}
+  \([E \to ( S . ), 0]\): vimos \texttt{(S}, esperamos
+  \texttt{)}
 \item
   \([E \to (S) ., 0]\): \(E\) completamente reconhecida a partir da
   posi\c{c}\~{a}o 0
@@ -144,7 +144,7 @@ Um item Earley \([A \to \beta . \gamma, k]\) representa:
 \begin{frame}{Algoritmo de Earley}
 \protect\hypertarget{algoritmo-de-earley-2}{}
 \begin{enumerate}
-\tightlist
+
 \item
   \textbf{Predi\c{c}\~{a}o}: se \([A \to \alpha . B \beta, k] \in I_j\) e
   \(B \to \gamma\) é uma produ\c{c}\~{a}o, adiciona \([B \to . \gamma, j]\) a
@@ -156,7 +156,7 @@ Um item Earley \([A \to \beta . \gamma, k]\) representa:
 \protect\hypertarget{algoritmo-de-earley-3}{}
 \begin{enumerate}
 \setcounter{enumi}{1}
-\tightlist
+
 \item
   \textbf{Verificar (scan)}: se \([A \to \alpha . a \beta, k] \in I_j\)
   e o token atual é \(a\), adiciona \([A \to \alpha\, a . \beta, k]\) a
@@ -168,7 +168,7 @@ Um item Earley \([A \to \beta . \gamma, k]\) representa:
 \protect\hypertarget{algoritmo-de-earley-4}{}
 \begin{enumerate}
 \setcounter{enumi}{2}
-\tightlist
+
 \item
   \textbf{Completar}: se \([B \to \gamma ., k] \in I_j\), para cada
   \([A \to \alpha . B \beta, l] \in I_k\), adiciona
@@ -181,7 +181,7 @@ Um item Earley \([A \to \beta . \gamma, k]\) representa:
 \textbf{Aceita:} se \([S' \to S ., 0] \in I_n\)
 \end{frame}
 
-\begin{frame}{Exemplo: Análise de \passthrough{\lstinline!(1) + 2!}}
+\begin{frame}{Exemplo: Análise de \texttt{(1) + 2}}
 \protect\hypertarget{exemplo-anuxe1lise-de-1-2}{}
 Gramática: \(S \to S+E \mid E\) e \(E \to (S) \mid n\)
 
@@ -200,7 +200,7 @@ Conjunto & Item & Pos & Motivo \\
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo: Análise de
-\passthrough{\lstinline!(1) + 2!}}
+\texttt{(1) + 2}}
 \protect\hypertarget{exemplo-anuxe1lise-de-1-2-1}{}
 Gramática: \(S \to S+E \mid E\) e \(E \to (S) \mid n\)
 
@@ -210,7 +210,7 @@ Conjunto & Item & Pos & Motivo \\
 \midrule\noalign{}
 \endhead
 \(I_1\) & \(E \to ( . S )\) & 0 & consumir
-\passthrough{\lstinline!(!} \\
+\texttt{(} \\
 & \(S \to . S+E\) & 1 & prever \(S\) \\
 & \(S \to . E\) & 1 & prever \(S\) \\
 & \(E \to . n\) & 1 & prever \(E\) \\
@@ -220,14 +220,14 @@ Conjunto & Item & Pos & Motivo \\
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo: Análise de
-\passthrough{\lstinline!(1) + 2!} (continua\c{c}\~{a}o)}
+\texttt{(1) + 2} (continua\c{c}\~{a}o)}
 \protect\hypertarget{exemplo-anuxe1lise-de-1-2-continuauxe7uxe3o}{}
 \begin{longtable}[]{@{}llll@{}}
 \toprule\noalign{}
 Conjunto & Item & Pos & Motivo \\
 \midrule\noalign{}
 \endhead
-\(I_2\) & \(E \to n .\) & 1 & consumir \passthrough{\lstinline!1!} \\
+\(I_2\) & \(E \to n .\) & 1 & consumir \texttt{1} \\
 & \(S \to E .\) & 1 & completar \(E\) \\
 & \(E \to (S . )\) & 0 & completar \(S\) \\
 & \(S \to S . +E\) & 1 & completar \(S\) \\
@@ -236,14 +236,14 @@ Conjunto & Item & Pos & Motivo \\
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo: Análise de
-\passthrough{\lstinline!(1) + 2!} (continua\c{c}\~{a}o)}
+\texttt{(1) + 2} (continua\c{c}\~{a}o)}
 \protect\hypertarget{exemplo-anuxe1lise-de-1-2-continuauxe7uxe3o-1}{}
 \begin{longtable}[]{@{}llll@{}}
 \toprule\noalign{}
 Conjunto & Item & Pos & Motivo \\
 \midrule\noalign{}
 \endhead
-\(I_3\) & \(E \to (S) .\) & 0 & consumir \passthrough{\lstinline!)!} \\
+\(I_3\) & \(E \to (S) .\) & 0 & consumir \texttt{)} \\
 & \(S \to E .\) & 0 & completar \(E\) \\
 & \(S' \to S .\) & 0 & completar \(S\) \\
 & \(S \to S . +E\) & 0 & completar \(S\) \\
@@ -252,16 +252,16 @@ Conjunto & Item & Pos & Motivo \\
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo: Análise de
-\passthrough{\lstinline!(1) + 2!} (continua\c{c}\~{a}o)}
+\texttt{(1) + 2} (continua\c{c}\~{a}o)}
 \protect\hypertarget{exemplo-anuxe1lise-de-1-2-continuauxe7uxe3o-2}{}
 \begin{longtable}[]{@{}llll@{}}
 \toprule\noalign{}
 Conjunto & Item & Pos & Motivo \\
 \midrule\noalign{}
 \endhead
-\(I_4\) & \(S \to S+ . E\) & 0 & consumir \passthrough{\lstinline!+!} \\
+\(I_4\) & \(S \to S+ . E\) & 0 & consumir \texttt{+} \\
 & \(E \to . n\) & 4 & prever \(E\) \\
-\(I_5\) & \(E \to n .\) & 4 & consumir \passthrough{\lstinline!2!} \\
+\(I_5\) & \(E \to n .\) & 4 & consumir \texttt{2} \\
 & \(S \to S+E .\) & 0 & completar \(E\) \\
 & \(S' \to S .\) & 0 & completar \(S\): \textbf{sucesso!} \\
 \bottomrule\noalign{}
@@ -276,7 +276,7 @@ Conjunto & Item & Pos & Motivo \\
 \begin{frame}{Complexidade}
 \protect\hypertarget{complexidade}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Pior caso geral}: \(O(n^3)\) --- inclui gramáticas ambíguas
 \item
@@ -289,7 +289,7 @@ Conjunto & Item & Pos & Motivo \\
 \begin{frame}{Vantagens}
 \protect\hypertarget{vantagens}{}
 \begin{itemize}
-\tightlist
+
 \item
   Analisa \textbf{qualquer GLC}, incluindo ambíguas
 \item
@@ -308,7 +308,7 @@ Shift-Reduce}\label{analisadores-lr-shift-reduce}}
 LR pode ser visto como uma \textbf{otimiza\c{c}\~{a}o do Earley}:
 
 \begin{itemize}
-\tightlist
+
 \item
   As previs\~{o}es s\~{a}o \textbf{pré-computadas} como estados de um aut\^{o}mato
 \end{itemize}
@@ -317,7 +317,7 @@ LR pode ser visto como uma \textbf{otimiza\c{c}\~{a}o do Earley}:
 \begin{frame}{A Ideia Shift-Reduce}
 \protect\hypertarget{a-ideia-shift-reduce-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Estado do analisador: uma \textbf{pilha de estados}
 \item
@@ -334,67 +334,67 @@ Em qualquer ponto:
 \end{frame}
 
 \begin{frame}[fragile]{Trace Shift-Reduce para
-\passthrough{\lstinline!(1)+2!}}
+\texttt{(1)+2}}
 \protect\hypertarget{trace-shift-reduce-para-12}{}
 \begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Pilha & Entrada & A\c{c}\~{a}o \\
 \midrule\noalign{}
 \endhead
-& \passthrough{\lstinline!(1)+2!} & shift \\
-\passthrough{\lstinline!(!} & \passthrough{\lstinline!1)+2!} & shift \\
-\passthrough{\lstinline!(1!} & \passthrough{\lstinline!)+2!} & reduce
+& \texttt{(1)+2} & shift \\
+\texttt{(} & \texttt{1)+2} & shift \\
+\texttt{(1} & \texttt{)+2} & reduce
 \(E \to n\) \\
 \bottomrule\noalign{}
 \end{longtable}
 \end{frame}
 
 \begin{frame}[fragile]{Trace Shift-Reduce para
-\passthrough{\lstinline!(1)+2!}}
+\texttt{(1)+2}}
 \protect\hypertarget{trace-shift-reduce-para-12-1}{}
 \begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Pilha & Entrada & A\c{c}\~{a}o \\
 \midrule\noalign{}
 \endhead
-\passthrough{\lstinline!(1!} & \passthrough{\lstinline!)+2!} & reduce
+\texttt{(1} & \texttt{)+2} & reduce
 \(E \to n\) \\
-\passthrough{\lstinline!(E!} & \passthrough{\lstinline!)+2!} & reduce
+\texttt{(E} & \texttt{)+2} & reduce
 \(S \to E\) \\
-\passthrough{\lstinline!(S!} & \passthrough{\lstinline!)+2!} & shift \\
+\texttt{(S} & \texttt{)+2} & shift \\
 \bottomrule\noalign{}
 \end{longtable}
 \end{frame}
 
 \begin{frame}[fragile]{Trace Shift-Reduce para
-\passthrough{\lstinline!(1)+2!}}
+\texttt{(1)+2}}
 \protect\hypertarget{trace-shift-reduce-para-12-2}{}
 \begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Pilha & Entrada & A\c{c}\~{a}o \\
 \midrule\noalign{}
 \endhead
-\passthrough{\lstinline!E!} & \passthrough{\lstinline!+2!} & reduce
+\texttt{E} & \texttt{+2} & reduce
 \(S \to E\) \\
-\passthrough{\lstinline!S!} & \passthrough{\lstinline!+2!} & shift \\
-\passthrough{\lstinline!S+!} & \passthrough{\lstinline!2!} & shift \\
+\texttt{S} & \texttt{+2} & shift \\
+\texttt{S+} & \texttt{2} & shift \\
 \bottomrule\noalign{}
 \end{longtable}
 \end{frame}
 
 \begin{frame}[fragile]{Trace Shift-Reduce para
-\passthrough{\lstinline!(1)+2!}}
+\texttt{(1)+2}}
 \protect\hypertarget{trace-shift-reduce-para-12-3}{}
 \begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
 Pilha & Entrada & A\c{c}\~{a}o \\
 \midrule\noalign{}
 \endhead
-\passthrough{\lstinline!S+2!} & \passthrough{\lstinline!$!} & reduce
+\texttt{S+2} & \texttt{$} & reduce
 \(E \to n\) \\
-\passthrough{\lstinline!S+E!} & \passthrough{\lstinline!$!} & reduce
+\texttt{S+E} & \texttt{$} & reduce
 \(S \to S+E\) \\
-\passthrough{\lstinline!S!} & \passthrough{\lstinline!$!} &
+\texttt{S} & \texttt{$} &
 \textbf{aceitar} \\
 \bottomrule\noalign{}
 \end{longtable}
@@ -403,7 +403,7 @@ Pilha & Entrada & A\c{c}\~{a}o \\
 \begin{frame}{Decis\~{a}o: Quando Shift ou Reduce?}
 \protect\hypertarget{decisuxe3o-quando-shift-ou-reduce}{}
 \begin{itemize}
-\tightlist
+
 \item
   O analisador precisa decidir quando olha o topo da pilha e o próximo
   token.
@@ -413,13 +413,13 @@ Pilha & Entrada & A\c{c}\~{a}o \\
 \begin{frame}{Decis\~{a}o: Quando Shift ou Reduce?}
 \protect\hypertarget{decisuxe3o-quando-shift-ou-reduce-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Para isso, usamos um \textbf{aut\^{o}mato LR(0)} cujos estados s\~{a}o
   conjuntos de itens
 
   \begin{itemize}
-  \tightlist
+
   \item
     Os estados capturam exatamente o que já foi reconhecido
   \item
@@ -436,7 +436,7 @@ Pilha & Entrada & A\c{c}\~{a}o \\
 Um item LR(0) \(A \to \alpha . \beta\) (sem lookahead):
 
 \begin{itemize}
-\tightlist
+
 \item
   \(\alpha\): já reconhecido (no topo da pilha)
 \item
@@ -495,7 +495,7 @@ goto g items sym = closure g $ Set.fromList
 \begin{frame}{O Aut\^{o}mato LR(0)}
 \protect\hypertarget{o-autuxf4mato-lr0}{}
 \begin{itemize}
-\tightlist
+
 \item
   Resolu\c{c}\~{a}o na lousa.
 \end{itemize}
@@ -506,16 +506,16 @@ goto g items sym = closure g $ Set.fromList
 \begin{frame}[fragile]{Regras de Preenchimento LR(0)}
 \protect\hypertarget{regras-de-preenchimento-lr0}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Shift}: para terminal \(t\) após o ponto em item do estado
   \(i\):
 
   \begin{itemize}
-  \tightlist
+
   \item
-    \passthrough{\lstinline!action[i, t] = Shift j!} onde \(j\) = índice
-    de \passthrough{\lstinline!goto(i, t)!}
+    \texttt{action[i, t] = Shift j} onde \(j\) = índice
+    de \texttt{goto(i, t)}
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -523,15 +523,15 @@ goto g items sym = closure g $ Set.fromList
 \begin{frame}[fragile]{Regras de Preenchimento LR(0)}
 \protect\hypertarget{regras-de-preenchimento-lr0-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Reduce (LR0)}: para item completo \(A \to \alpha .\) no estado
   \(i\):
 
   \begin{itemize}
-  \tightlist
+
   \item
-    \passthrough{\lstinline!action[i, t] = Reduce(A → α)!} para
+    \texttt{action[i, t] = Reduce(A → α)} para
     \textbf{todos} os terminais \(t\)
   \item
     LR(0) ignora completamente o lookahead nas redu\c{c}\~{o}es!
@@ -542,14 +542,14 @@ goto g items sym = closure g $ Set.fromList
 \begin{frame}[fragile]{Regras de Preenchimento LR(0)}
 \protect\hypertarget{regras-de-preenchimento-lr0-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Accept}: quando o item completo é \(S' \to S .\):
 
   \begin{itemize}
-  \tightlist
+
   \item
-    \passthrough{\lstinline!action[i, $] = Accept!}
+    \texttt{action[i, $] = Accept}
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -573,9 +573,9 @@ LR(0) ignora o lookahead → gera muitos conflitos shift-reduce
   Estado com \(E \to T .\) e \(E \to T . + E\):
 \item
   Item completo \(E \to T .\) → LR(0) insere reduce em \textbf{todos} os
-  terminais, inclusive \passthrough{\lstinline!+!}
+  terminais, inclusive \texttt{+}
 \item
-  Item \(E \to T . + E\) → exige shift em \passthrough{\lstinline!+!}
+  Item \(E \to T . + E\) → exige shift em \texttt{+}
 \item
   \textbf{Conflito!}
 \end{itemize}
@@ -594,14 +594,14 @@ próximo token pode seguir \(A\) na gramática
 Para \(E \to T .\) com \(\mathrm{FOLLOW}(E) = \{\$, )\}\):
 
 \begin{itemize}
-\tightlist
+
 \item
   LR(0): insere reduce em todos os terminais (inclusive
-  \passthrough{\lstinline!+!})
+  \texttt{+})
 \item
-  SLR: insere reduce apenas em \passthrough{\lstinline!$!} e
-  \passthrough{\lstinline!)!} --- sem conflito com shift em
-  \passthrough{\lstinline!+!}!
+  SLR: insere reduce apenas em \texttt{$} e
+  \texttt{)} --- sem conflito com shift em
+  \texttt{+}!
 \end{itemize}
 \end{frame}
 
@@ -619,17 +619,17 @@ F &\to& (E) \mid n
 Estado com \(E \to T.\) e \(T \to T . * F\):
 
 \begin{itemize}
-\tightlist
+
 \item
-  LR(0): conflito shift-reduce em \passthrough{\lstinline!*!} (reduce
-  \(E \to T\) e shift de \passthrough{\lstinline!*!})
+  LR(0): conflito shift-reduce em \texttt{*} (reduce
+  \(E \to T\) e shift de \texttt{*})
 \item
   SLR: \(* \notin \mathrm{FOLLOW}(E) = \{+, ), \$\}\)
 
   \begin{itemize}
-  \tightlist
+
   \item
-    \passthrough{\lstinline!action[estado, *]!} recebe apenas Shift ---
+    \texttt{action[estado, *]} recebe apenas Shift ---
     \textbf{sem conflito!}
   \end{itemize}
 \end{itemize}
@@ -641,12 +641,12 @@ Estado com \(E \to T.\) e \(T \to T . * F\):
 \begin{frame}{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Análise bottom-up} é mais expressiva que top-down
 
   \begin{itemize}
-  \tightlist
+
   \item
     Suporta recurs\~{a}o \`{a} esquerda
   \item
@@ -658,7 +658,7 @@ Estado com \(E \to T.\) e \(T \to T . * F\):
 \begin{frame}{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Earley}: analisa qualquer GLC, \(O(n^3)\) no pior caso
 \item

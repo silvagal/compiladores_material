@@ -27,7 +27,7 @@
 \begin{frame}{O que s\~{a}o Otimiza\c{c}\~{o}es?}
 \protect\hypertarget{o-que-suxe3o-otimizauxe7uxf5es}{}
 \begin{itemize}
-\tightlist
+
 \item
   ``Otimiza\c{c}\~{a}o'' é um exagero: raramente o código é \textbf{ótimo}
   segundo alguma métrica global
@@ -68,7 +68,7 @@ fusion \\
 \begin{frame}{Dez Otimiza\c{c}\~{o}es Neste Capítulo}
 \protect\hypertarget{dez-otimizauxe7uxf5es-neste-capuxedtulo}{}
 \begin{enumerate}
-\tightlist
+
 \item
   \textbf{Dobramento de constantes} (\emph{constant folding})
 \item
@@ -99,7 +99,7 @@ Uma express\~{a}o é \textbf{pura} se n\~{a}o produz efeitos colaterais:
 \[e \text{ pura} \iff e \in \{\mathbf{CONST}, \mathbf{TEMP}, \mathbf{NAME}\} \text{ ou } e = \mathbf{BINOP}(\mathit{op}, e_1, e_2) \text{ com } e_1, e_2 \text{ puras}\]
 
 \begin{itemize}
-\tightlist
+
 \item
   \(\mathbf{MEM}\), \(\mathbf{CALL}\), \(\mathbf{ESEQ}\) \textbf{n\~{a}o s\~{a}o
   puras}
@@ -149,7 +149,7 @@ Também:
 BINOP(MUL, TEMP(x), CONST(0))  →  CONST(0)
 \end{lstlisting}
 
-(sem precisar saber o valor de \passthrough{\lstinline!x!})
+(sem precisar saber o valor de \texttt{x})
 
 \textbf{Corre\c{c}\~{a}o}:
 \(\sigma \vdash e \Downarrow v \iff \sigma \vdash \mathit{fold}(e) \Downarrow v\)
@@ -197,7 +197,7 @@ RETURN(CONST(10))
 \end{lstlisting}
 
 Combinado com DCE, as duas primeiras linhas s\~{a}o eliminadas:
-\passthrough{\lstinline!RETURN(CONST(10))!}
+\texttt{RETURN(CONST(10))}
 \end{frame}
 
 \hypertarget{eliminauxe7uxe3o-de-subexpressuxf5es-comuns-cse}{%
@@ -240,7 +240,7 @@ MOVE(TEMP(b),     TEMP(_cse0))
 
 A express\~{a}o \(x + y\) é calculada \textbf{uma única vez}.
 
-\textbf{Por que só express\~{o}es puras?} \passthrough{\lstinline!MEM(e)!}
+\textbf{Por que só express\~{o}es puras?} \texttt{MEM(e)}
 pode mudar após escrita em memória.
 \end{frame}
 
@@ -269,7 +269,7 @@ Uma instru\c{c}\~{a}o \(\mathbf{MOVE}(\mathbf{TEMP}(t), e)\) é \textbf{morta} s
 Estado de análise: \((\mathit{pend}, \mathit{dead})\)
 
 \begin{itemize}
-\tightlist
+
 \item
   \(\mathit{pend}\) = atribui\c{c}\~{o}es pendentes (ainda n\~{a}o consumidas)
 \item
@@ -302,7 +302,7 @@ RETURN(CONST(10))
 
 \begin{frame}[fragile]{Estrutura de La\c{c}o na IRT}
 \protect\hypertarget{estrutura-de-lauxe7o-na-irt}{}
-Um la\c{c}o \passthrough{\lstinline!while!} na IRT linearizada tem o padr\~{a}o:
+Um la\c{c}o \texttt{while} na IRT linearizada tem o padr\~{a}o:
 
 \[\underbrace{\mathbf{LABEL}(\ell_h)}_{\text{cabe\c{c}a}} \;\; \mathbf{CJUMP}(e, \ell_b, \ell_f) \;\; \underbrace{\mathbf{LABEL}(\ell_b)}_{\text{corpo}} \;\; s_1 \cdots s_k \;\; \mathbf{JUMP}(\mathbf{NAME}(\ell_h)) \;\; \underbrace{\mathbf{LABEL}(\ell_f)}_{\text{saída}}\]
 
@@ -316,7 +316,7 @@ Uma instru\c{c}\~{a}o \(\mathbf{MOVE}(\mathbf{TEMP}(t), e)\) é
 \textbf{invariante de la\c{c}o} se:
 
 \begin{enumerate}
-\tightlist
+
 \item
   \(e\) é pura
 \item
@@ -398,8 +398,8 @@ while (cond) { corpo1; corpo2 }
 dados.
 
 \textbf{Restri\c{c}\~{a}o}: os dois la\c{c}os devem ter a mesma condi\c{c}\~{a}o e n\~{a}o haver
-depend\^{e}ncias conflitantes entre \passthrough{\lstinline!corpo1!} e
-\passthrough{\lstinline!corpo2!}.
+depend\^{e}ncias conflitantes entre \texttt{corpo1} e
+\texttt{corpo2}.
 \end{frame}
 
 \hypertarget{inlining-de-funuxe7uxf5es}{%
@@ -413,15 +413,15 @@ corpo de \(f\):
 \[\mathit{inline}(f, \bar{a}) = \mathbf{ESEQ}\!\Bigl(\mathbf{MOVE}(x_1^s, a_1) \mathbin{;} \cdots \mathbin{;} B_f^s \mathbin{;} \mathbf{LABEL}(\ell_\mathit{exit}^s),\; \mathbf{TEMP}(r^s)\Bigr)\]
 
 \begin{itemize}
-\tightlist
+
 \item
   \(x_i^s\): par\^{a}metros \textbf{renomeados} com sufixo único \(s\)
 \item
   \(B_f^s\): corpo com temporários/rótulos locais \textbf{renomeados}
   com \(s\)
 \item
-  Cada \passthrough{\lstinline!RETURN(e)!} em \(B_f^s\) →
-  \passthrough{\lstinline!MOVE(r\^s, e); JUMP(exit\^s)!}
+  Cada \texttt{RETURN(e)} em \(B_f^s\) →
+  \texttt{MOVE(r\^s, e); JUMP(exit\^s)}
 \end{itemize}
 
 \textbf{Benefícios}: elimina overhead de chamada + exp\~{o}e código a
@@ -433,9 +433,9 @@ dobramento, CSE, LICM.
 Uma chamada é elegível se:
 
 \begin{enumerate}
-\tightlist
+
 \item
-  \textbf{Alvo estático}: \passthrough{\lstinline!NAME(f)!}, n\~{a}o um
+  \textbf{Alvo estático}: \texttt{NAME(f)}, n\~{a}o um
   ponteiro computado
 \item
   \textbf{N\~{a}o auto-recursiva}: \(f \notin \mathit{calls}(B_f)\) (evita
@@ -468,15 +468,15 @@ inlineProgram cfg prog =
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!inlineThreshold!}: limiar \(\tau\) (padr\~{a}o: 10
+  \texttt{inlineThreshold}: limiar \(\tau\) (padr\~{a}o: 10
   instru\c{c}\~{o}es)
 \item
-  \passthrough{\lstinline!removeDeadFuncs!}: elimina fun\c{c}\~{o}es sem
+  \texttt{removeDeadFuncs}: elimina fun\c{c}\~{o}es sem
   chamadores após inlining
 \item
-  M\^{o}nada \passthrough{\lstinline!State Int!} gera sufixos únicos para
+  M\^{o}nada \texttt{State Int} gera sufixos únicos para
   cada sítio de chamada
 \end{itemize}
 \end{frame}
@@ -487,8 +487,8 @@ inlineProgram cfg prog =
 rótulos locais
 
 \textbf{transformReturns}: substitui
-\passthrough{\lstinline!RETURN([e])!} por
-\passthrough{\lstinline!MOVE(r\^s, e); JUMP(exit\^s)!}
+\texttt{RETURN([e])} por
+\texttt{MOVE(r\^s, e); JUMP(exit\^s)}
 
 \begin{lstlisting}[language=Haskell]
 transformReturns retTemp exitLbl = go
@@ -518,9 +518,9 @@ posterior é retornar seu resultado:
 Padr\~{a}o & Descri\c{c}\~{a}o \\
 \midrule\noalign{}
 \endhead
-\passthrough{\lstinline!RETURN [CALL(NAME(f), args)]!} & Retorno com
+\texttt{RETURN [CALL(NAME(f), args)]} & Retorno com
 valor \\
-\passthrough{\lstinline!EXP(CALL(NAME(f), args)); RETURN []!} & Retorno
+\texttt{EXP(CALL(NAME(f), args)); RETURN []} & Retorno
 vazio \\
 \bottomrule\noalign{}
 \end{longtable}
@@ -538,7 +538,7 @@ Para fun\c{c}\~{a}o \(g\) com par\^{a}metros \(\bar{x} = (x_1,\ldots,x_n)\),
 introduz \(\ell_h = \mathtt{L\_tco\_}g\):
 
 \begin{enumerate}
-\tightlist
+
 \item
   Inserir \(\mathbf{LABEL}(\ell_h)\) no início do corpo
 \item
@@ -608,7 +608,7 @@ inlining pode expor novas chamadas em cauda.
 \begin{frame}{Sumário do Capítulo}
 \protect\hypertarget{sumuxe1rio-do-capuxedtulo}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Dobramento} e \textbf{propaga\c{c}\~{a}o} de constantes: avaliar em
   compile-time
@@ -632,7 +632,7 @@ inlining pode expor novas chamadas em cauda.
 \begin{frame}{Próximos Passos}
 \protect\hypertarget{pruxf3ximos-passos}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Gera\c{c}\~{a}o de código WebAssembly} (próximo capítulo): IRT → WAT
   executável

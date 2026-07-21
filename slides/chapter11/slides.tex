@@ -18,7 +18,7 @@
 \begin{frame}{Motiva\c{c}\~{a}o}
 \protect\hypertarget{motivauxe7uxe3o}{}
 \begin{itemize}
-\tightlist
+
 \item
   Construir tabelas LALR \`{a} m\~{a}o é impraticável para gramáticas reais
 \item
@@ -30,20 +30,20 @@
 \begin{frame}[fragile]{Motiva\c{c}\~{a}o}
 \protect\hypertarget{motivauxe7uxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Happy gera analisadores \textbf{LALR(1)} a partir de especifica\c{c}\~{o}es
   gramaticais no estilo BNF
 \item
   O próprio compilador \textbf{GHC} usa um parser gerado pelo Happy
 \item
-  Análogo ao \passthrough{\lstinline!yacc!} e
-  \passthrough{\lstinline!Bison!} do ecossistema C/C++
+  Análogo ao \texttt{yacc} e
+  \texttt{Bison} do ecossistema C/C++
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Estrutura de um Arquivo
-\passthrough{\lstinline!.y!}}
+\texttt{.y}}
 \protect\hypertarget{estrutura-de-um-arquivo-.y}{}
 \begin{lstlisting}
 { cabe\c{c}alho Haskell }
@@ -59,16 +59,16 @@ regras gramaticais
 \end{frame}
 
 \begin{frame}[fragile]{Estrutura de um Arquivo
-\passthrough{\lstinline!.y!}}
+\texttt{.y}}
 \protect\hypertarget{estrutura-de-um-arquivo-.y-1}{}
 \begin{itemize}
-\tightlist
+
 \item
-  Quatro partes separadas pelo marcador \passthrough{\lstinline!\%\%!}:
+  Quatro partes separadas pelo marcador \texttt{\%\%}:
 \end{itemize}
 
 \begin{enumerate}
-\tightlist
+
 \item
   \textbf{Cabe\c{c}alho}: módulo e imports Haskell (copiado literalmente)
 \item
@@ -92,10 +92,10 @@ happy -o ExpParser.hs ExpParser.y
 \begin{frame}[fragile]{Gerando o Parser}
 \protect\hypertarget{gerando-o-parser-1}{}
 \begin{itemize}
-\tightlist
+
 \item
-  Com Cabal: basta listar \passthrough{\lstinline!happy!} em
-  \passthrough{\lstinline!build-tool-depends!}
+  Com Cabal: basta listar \texttt{happy} em
+  \texttt{build-tool-depends}
 \end{itemize}
 \end{frame}
 
@@ -109,9 +109,9 @@ happy -o ExpParser.hs ExpParser.y
 Diretiva & Significado \\
 \midrule\noalign{}
 \endhead
-\passthrough{\lstinline!\%name p N!} & Gera fun\c{c}\~{a}o
-\passthrough{\lstinline!p!} iniciando pelo n\~{a}o-terminal
-\passthrough{\lstinline!N!} \\
+\texttt{\%name p N} & Gera fun\c{c}\~{a}o
+\texttt{p} iniciando pelo n\~{a}o-terminal
+\texttt{N} \\
 \bottomrule\noalign{}
 \end{longtable}
 \end{frame}
@@ -123,7 +123,7 @@ Diretiva & Significado \\
 Diretiva & Significado \\
 \midrule\noalign{}
 \endhead
-\passthrough{\lstinline!\%tokentype \{ T \}!} & Define o tipo Haskell
+\texttt{\%tokentype \{ T \}} & Define o tipo Haskell
 dos tokens consumidos \\
 \bottomrule\noalign{}
 \end{longtable}
@@ -142,8 +142,8 @@ Significado
 \end{minipage} \\
 \midrule\noalign{}
 \endhead
-\passthrough{\lstinline!\%monad \{ M \}\{ (>>=) \}\{ return \}!} &
-Executa o parser dentro da m\^{o}nada \passthrough{\lstinline!M!} \\
+\texttt{\%monad \{ M \}\{ (>>=) \}\{ return \}} &
+Executa o parser dentro da m\^{o}nada \texttt{M} \\
 \bottomrule\noalign{}
 \end{longtable}
 \end{frame}
@@ -155,8 +155,8 @@ Executa o parser dentro da m\^{o}nada \passthrough{\lstinline!M!} \\
 Diretiva & Significado \\
 \midrule\noalign{}
 \endhead
-\passthrough{\lstinline!\%lexer \{ f \}\{ eof \}!} & Lexer incremental:
-\passthrough{\lstinline!f!} obtém o próximo token \\
+\texttt{\%lexer \{ f \}\{ eof \}} & Lexer incremental:
+\texttt{f} obtém o próximo token \\
 \bottomrule\noalign{}
 \end{longtable}
 \end{frame}
@@ -168,8 +168,8 @@ Diretiva & Significado \\
 Diretiva & Significado \\
 \midrule\noalign{}
 \endhead
-\passthrough{\lstinline!\%error \{ h \}!} & Chama
-\passthrough{\lstinline!h!} ao encontrar erro de sintaxe \\
+\texttt{\%error \{ h \}} & Chama
+\texttt{h} ao encontrar erro de sintaxe \\
 \bottomrule\noalign{}
 \end{longtable}
 \end{frame}
@@ -187,8 +187,8 @@ Significado
 \end{minipage} \\
 \midrule\noalign{}
 \endhead
-\passthrough{\lstinline!\%expect n!} & Declara exatamente
-\passthrough{\lstinline!n!} conflitos shift-reduce esperados \\
+\texttt{\%expect n} & Declara exatamente
+\texttt{n} conflitos shift-reduce esperados \\
 \bottomrule\noalign{}
 \end{longtable}
 \end{frame}
@@ -200,8 +200,8 @@ Significado
 Diretiva & Significado \\
 \midrule\noalign{}
 \endhead
-\passthrough{\lstinline!\%left!}, \passthrough{\lstinline!\%right!},
-\passthrough{\lstinline!\%nonassoc!} & Preced\^{e}ncia e associatividade \\
+\texttt{\%left}, \texttt{\%right},
+\texttt{\%nonassoc} & Preced\^{e}ncia e associatividade \\
 \bottomrule\noalign{}
 \end{longtable}
 \end{frame}
@@ -220,13 +220,13 @@ Diretiva & Significado \\
 \begin{frame}[fragile]{Diretivas}
 \protect\hypertarget{diretivas-1}{}
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!\%monad!} integra com a m\^{o}nada
-  \passthrough{\lstinline!Alex!} do lexer gerado pelo Alex
+  \texttt{\%monad} integra com a m\^{o}nada
+  \texttt{Alex} do lexer gerado pelo Alex
 \item
-  \passthrough{\lstinline!\%lexer!} faz Happy chamar
-  \passthrough{\lstinline!lexer!} para obter cada token (modo
+  \texttt{\%lexer} faz Happy chamar
+  \texttt{lexer} para obter cada token (modo
   incremental)
 \item
   O modo incremental é necessário quando o lexer é monádico
@@ -236,9 +236,9 @@ Diretiva & Significado \\
 \begin{frame}[fragile]{Declara\c{c}\~{a}o de Tokens}
 \protect\hypertarget{declarauxe7uxe3o-de-tokens}{}
 \begin{itemize}
-\tightlist
+
 \item
-  A se\c{c}\~{a}o \passthrough{\lstinline!\%token!} associa nomes simbólicos a
+  A se\c{c}\~{a}o \texttt{\%token} associa nomes simbólicos a
   padr\~{o}es de correspond\^{e}ncia:
 \end{itemize}
 
@@ -255,20 +255,20 @@ Diretiva & Significado \\
 \begin{frame}[fragile]{Declara\c{c}\~{a}o de Tokens}
 \protect\hypertarget{declarauxe7uxe3o-de-tokens-1}{}
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!$$!} em
-  \passthrough{\lstinline!Token \_ (TNumber $$)!} captura o valor
+  \texttt{$$} em
+  \texttt{Token \_ (TNumber $$)} captura o valor
   inteiro
 \end{itemize}
 
---- Disponível nas a\c{c}\~{o}es como \passthrough{\lstinline!$1!},
-\passthrough{\lstinline!$2!}, etc.
+--- Disponível nas a\c{c}\~{o}es como \texttt{$1},
+\texttt{$2}, etc.
 
 \begin{itemize}
-\tightlist
+
 \item
-  Tokens sem valor (como \passthrough{\lstinline!TLParen!}) apenas
+  Tokens sem valor (como \texttt{TLParen}) apenas
   verificam o construtor
 \end{itemize}
 \end{frame}
@@ -284,12 +284,12 @@ Diretiva & Significado \\
 \begin{frame}[fragile]{Declara\c{c}\~{o}es de Preced\^{e}ncia}
 \protect\hypertarget{declarauxe7uxf5es-de-preceduxeancia-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   A \textbf{ordem} das linhas determina preced\^{e}ncia: de menor para maior
 \item
-  \passthrough{\lstinline!*!} aparece depois de
-  \passthrough{\lstinline!+!} → \passthrough{\lstinline!*!} tem
+  \texttt{*} aparece depois de
+  \texttt{+} → \texttt{*} tem
   \textbf{maior} preced\^{e}ncia
 \end{itemize}
 \end{frame}
@@ -297,13 +297,13 @@ Diretiva & Significado \\
 \begin{frame}[fragile]{Declara\c{c}\~{o}es de Preced\^{e}ncia}
 \protect\hypertarget{declarauxe7uxf5es-de-preceduxeancia-2}{}
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!\%left!}: associatividade \`{a} esquerda
+  \texttt{\%left}: associatividade \`{a} esquerda
 \item
-  \passthrough{\lstinline!\%right!}: associatividade \`{a} direita
+  \texttt{\%right}: associatividade \`{a} direita
 \item
-  \passthrough{\lstinline!\%nonassoc!}: n\~{a}o associativo (erro se
+  \texttt{\%nonassoc}: n\~{a}o associativo (erro se
   encadeado)
 \end{itemize}
 \end{frame}
@@ -315,9 +315,9 @@ A\c{c}\~{o}es}\label{regras-gramaticais-e-auxe7uxf5es}}
 \begin{frame}[fragile]{Regras Gramaticais}
 \protect\hypertarget{regras-gramaticais}{}
 \begin{itemize}
-\tightlist
+
 \item
-  Após o \passthrough{\lstinline!\%\%!}, produ\c{c}\~{o}es BNF com a\c{c}\~{o}es em
+  Após o \texttt{\%\%}, produ\c{c}\~{o}es BNF com a\c{c}\~{o}es em
   Haskell:
 \end{itemize}
 
@@ -332,16 +332,16 @@ Exp : num         { EInt $1 }
 \begin{frame}[fragile]{Regras Gramaticais}
 \protect\hypertarget{regras-gramaticais-1}{}
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!$1!}, \passthrough{\lstinline!$2!},
-  \passthrough{\lstinline!$3!}: valores sem\^{a}nticos dos símbolos (da
+  \texttt{$1}, \texttt{$2},
+  \texttt{$3}: valores sem\^{a}nticos dos símbolos (da
   esquerda para a direita)
 \item
   A\c{c}\~{a}o executada quando o parser \textbf{reduz} por aquela produ\c{c}\~{a}o
 \item
   Tipo inferido pelo compilador a partir das a\c{c}\~{o}es:
-  \passthrough{\lstinline!Exp!}
+  \texttt{Exp}
 \end{itemize}
 \end{frame}
 
@@ -361,7 +361,7 @@ expParser content = pure $ runAlex content parser
 \hypertarget{gerando-a-tabela-lalr}{%
 \section{Gerando a Tabela LALR}\label{gerando-a-tabela-lalr}}
 
-\begin{frame}[fragile]{A Op\c{c}\~{a}o \passthrough{\lstinline!-i!}}
+\begin{frame}[fragile]{A Op\c{c}\~{a}o \texttt{-i}}
 \protect\hypertarget{a-opuxe7uxe3o--i}{}
 \begin{lstlisting}[language=bash]
 happy -i ExpParser.y
@@ -371,10 +371,10 @@ happy -i ExpParser.y
 
 \begin{frame}[fragile]{Arquivos .info}
 \protect\hypertarget{arquivos-.info}{}
-O arquivo \passthrough{\lstinline!.info!} contém:
+O arquivo \texttt{.info} contém:
 
 \begin{enumerate}
-\tightlist
+
 \item
   \textbf{Gramática aumentada} com produ\c{c}\~{o}es numeradas
 \item
@@ -386,7 +386,7 @@ O arquivo \passthrough{\lstinline!.info!} contém:
 \protect\hypertarget{arquivos-.info-1}{}
 \begin{enumerate}
 \setcounter{enumi}{2}
-\tightlist
+
 \item
   \textbf{Estados do aut\^{o}mato LALR}:cada um com seus itens LR(1) e
   lookaheads
@@ -400,7 +400,7 @@ O arquivo \passthrough{\lstinline!.info!} contém:
 \protect\hypertarget{arquivos-.info-2}{}
 \begin{enumerate}
 \setcounter{enumi}{4}
-\tightlist
+
 \item
   \textbf{Tabela goto}: para cada (estado, n\~{a}o-terminal)
 \item
@@ -409,7 +409,7 @@ O arquivo \passthrough{\lstinline!.info!} contém:
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo de Estado no
-\passthrough{\lstinline!.info!}}
+\texttt{.info}}
 \protect\hypertarget{exemplo-de-estado-no-.info}{}
 \begin{lstlisting}
 State 7
@@ -435,7 +435,7 @@ State 7
 \begin{frame}[fragile]{Shift-Reduce}
 \protect\hypertarget{shift-reduce}{}
 \begin{itemize}
-\tightlist
+
 \item
   Ocorre quando o parser pode tanto fazer shift quanto reduce no mesmo
   estado e token.
@@ -454,25 +454,25 @@ Exp : num
 \begin{frame}[fragile]{Shift-Reduce}
 \protect\hypertarget{shift-reduce-1}{}
 \begin{itemize}
-\tightlist
+
 \item
-  Para \passthrough{\lstinline!1 + 2 * 3!}, após empilhar
-  \passthrough{\lstinline!Exp '+' Exp!} (com
-  \passthrough{\lstinline!Exp!} = \passthrough{\lstinline!2!}) e ver
-  \passthrough{\lstinline!*!}:
+  Para \texttt{1 + 2 * 3}, após empilhar
+  \texttt{Exp '+' Exp} (com
+  \texttt{Exp} = \texttt{2}) e ver
+  \texttt{*}:
 
   \begin{itemize}
-  \tightlist
+
   \item
-    \textbf{Reduce} \passthrough{\lstinline!Exp '+' Exp!} → interpreta
-    \passthrough{\lstinline!(1+2)*3!}
+    \textbf{Reduce} \texttt{Exp '+' Exp} → interpreta
+    \texttt{(1+2)*3}
   \item
-    \textbf{Shift} \passthrough{\lstinline!*!} → interpreta
-    \passthrough{\lstinline!1+(2*3)!} (correto!)
+    \textbf{Shift} \texttt{*} → interpreta
+    \texttt{1+(2*3)} (correto!)
   \end{itemize}
 \item
   Happy retorna:
-  \passthrough{\lstinline!ExpParser.y: shift/reduce conflicts: 4!}
+  \texttt{ExpParser.y: shift/reduce conflicts: 4}
 \end{itemize}
 \end{frame}
 
@@ -481,7 +481,7 @@ Exp : num
 Happy usa as declara\c{c}\~{o}es para resolver:
 
 \begin{itemize}
-\tightlist
+
 \item
   Token com \textbf{maior} preced\^{e}ncia que a produ\c{c}\~{a}o → \textbf{shift}
 \item
@@ -494,7 +494,7 @@ Happy usa as declara\c{c}\~{o}es para resolver:
 \begin{frame}[fragile]{Shift-Reduce}
 \protect\hypertarget{shift-reduce-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   Gramática para if/else
 \end{itemize}
@@ -509,20 +509,20 @@ Stmt : 'if' Exp 'then' Stmt
 \begin{frame}[fragile]{Shift-Reduce}
 \protect\hypertarget{shift-reduce-3}{}
 \begin{itemize}
-\tightlist
+
 \item
-  Para \passthrough{\lstinline!if e1 then if e2 then s1 else s2!}:
+  Para \texttt{if e1 then if e2 then s1 else s2}:
 
   \begin{itemize}
-  \tightlist
+
   \item
-    Shift \passthrough{\lstinline!else!} → pertence ao
-    \passthrough{\lstinline!if!} mais próximo (interno): conven\c{c}\~{a}o
+    Shift \texttt{else} → pertence ao
+    \texttt{if} mais próximo (interno): conven\c{c}\~{a}o
     padr\~{a}o
   \item
-    Reduce \passthrough{\lstinline!if ... then s1!} →
-    \passthrough{\lstinline!else!} pertence ao
-    \passthrough{\lstinline!if!} externo
+    Reduce \texttt{if ... then s1} →
+    \texttt{else} pertence ao
+    \texttt{if} externo
   \end{itemize}
 \item
   O comportamento padr\~{a}o do Happy (preferir shift) resolve esse problema
@@ -533,7 +533,7 @@ Stmt : 'if' Exp 'then' Stmt
 \begin{frame}[fragile]{Reduce-Reduce}
 \protect\hypertarget{reduce-reduce}{}
 \begin{itemize}
-\tightlist
+
 \item
   Ocorre quando dois itens completos diferentes reivindicam a mesma
   entrada.
@@ -550,13 +550,13 @@ Expr : 'id'
 
 \begin{frame}[fragile]{Reduce-Reduce}
 \protect\hypertarget{reduce-reduce-1}{}
-Ao ver \passthrough{\lstinline!id!} e precisar reduzir:
+Ao ver \texttt{id} e precisar reduzir:
 
 \begin{itemize}
-\tightlist
+
 \item
-  N\~{a}o sabe se deve criar \passthrough{\lstinline!Decl!} ou
-  \passthrough{\lstinline!Expr!}
+  N\~{a}o sabe se deve criar \texttt{Decl} ou
+  \texttt{Expr}
 \item
   Happy escolhe a \textbf{primeira regra} (aviso, n\~{a}o erro)
 \end{itemize}
@@ -565,7 +565,7 @@ Ao ver \passthrough{\lstinline!id!} e precisar reduzir:
 \begin{frame}{Reduce-Reduce}
 \protect\hypertarget{reduce-reduce-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   Diferentemente do shift-reduce, conflitos reduce-reduce raramente t\^{e}m
   resolu\c{c}\~{a}o padr\~{a}o correta.
@@ -577,7 +577,7 @@ Ao ver \passthrough{\lstinline!id!} e precisar reduzir:
 \begin{frame}[fragile]{Reduce-Reduce}
 \protect\hypertarget{reduce-reduce-3}{}
 \begin{itemize}
-\tightlist
+
 \item
   Solu\c{c}\~{a}o: Tornar os dois n\~{a}o-terminais sintáticos distintos por
   contexto:
@@ -596,12 +596,12 @@ Prog : 'let' 'id'    -- declara\c{c}\~{a}o
 \begin{frame}[fragile]{Reduce-Reduce}
 \protect\hypertarget{reduce-reduce-4}{}
 \begin{itemize}
-\tightlist
+
 \item
   Outra abordagem: remover ambiguidade na análise sem\^{a}ntica
 \end{itemize}
 
---- Exemplo: \passthrough{\lstinline!typedef!} de C, onde
+--- Exemplo: \texttt{typedef} de C, onde
 identificadores de tipo requerem consulta ao contexto.
 \end{frame}
 

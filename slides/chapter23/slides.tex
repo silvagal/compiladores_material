@@ -23,7 +23,7 @@
 \begin{frame}{Por que Pesquisar Compiladores?}
 \protect\hypertarget{por-que-pesquisar-compiladores}{}
 \begin{itemize}
-\tightlist
+
 \item
   Todo programa de alto nível passa pelo compilador --- um bug pode
   comprometer \textbf{todo o ecossistema}
@@ -38,7 +38,7 @@ A pesquisa em compiladores vai além de ``construir compiladores
 corretos'':
 
 \begin{itemize}
-\tightlist
+
 \item
   Como \textbf{testá-los} sistematicamente?
 \item
@@ -54,7 +54,7 @@ corretos'':
 \begin{frame}{Tópicos Deste Capítulo}
 \protect\hypertarget{tuxf3picos-deste-capuxedtulo}{}
 \begin{enumerate}
-\tightlist
+
 \item
   \textbf{Teste de compiladores}: fuzzing, testes diferenciais,
   metamórficos
@@ -78,7 +78,7 @@ corretos'':
 \textbf{CSmith} {[}Yang et al., 2011{]}:
 
 \begin{enumerate}
-\tightlist
+
 \item
   Gera programas C aleatórios com sem\^{a}ntica bem definida
 \item
@@ -103,7 +103,7 @@ correta.''
 Popularizado pelo \textbf{QuickCheck} {[}Claessen \& Hughes, 2000{]}:
 
 \begin{itemize}
-\tightlist
+
 \item
   Especifica \textbf{propriedades} que o compilador deve satisfazer
 \item
@@ -143,7 +143,7 @@ A compila\~{c}\~{a}o \textbf{preserva o comportamento observável} do programa.
 com preserva\c{c}\~{a}o sem\^{a}ntica provada formalmente.
 
 \begin{itemize}
-\tightlist
+
 \item
   Compila C para assembly x86, PowerPC e ARM
 \item
@@ -164,7 +164,7 @@ de uma rela\c{c}\~{a}o de \textbf{simula\c{c}\~{a}o}:
 Nem sempre é necessário verificar o compilador inteiro:
 
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Aloca\c{c}\~{a}o de registradores} {[}Rideau \& Leroy, 2010{]}:
   verificada no Coq
@@ -191,7 +191,7 @@ Em sistemas de tipos comuns, tipos e valores habitam mundos separados.
 \[\mathsf{append} : \mathsf{Vec}\ m\ A \to \mathsf{Vec}\ n\ A \to \mathsf{Vec}\ (m + n)\ A\]
 
 \begin{itemize}
-\tightlist
+
 \item
   O compilador verifica \textbf{em compila\~{c}\~{a}o} que tamanhos s\~{a}o corretos
 \item
@@ -264,7 +264,7 @@ A \textbf{fun\c{c}\~{a}o \(\phi\)} seleciona o valor correto no ponto de jun\c{c
 \textbf{Por que SSA facilita otimiza\c{c}\~{o}es?}
 
 \begin{itemize}
-\tightlist
+
 \item
   Propaga\c{c}\~{a}o de constantes: trivial (uma defini\c{c}\~{a}o por variável)
 \item
@@ -309,7 +309,7 @@ reordenadas livremente.
 pesquisa em compiladores hoje.
 
 \begin{itemize}
-\tightlist
+
 \item
   IR bem definida, documentada e manipulável via API
 \item
@@ -332,7 +332,7 @@ programas reais.
 \begin{frame}{Sumário do Capítulo}
 \protect\hypertarget{sumuxe1rio-do-capuxedtulo}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Fuzzing + testes diferenciais}: CSmith encontrou centenas de
   bugs sem oráculo explícito
@@ -356,7 +356,7 @@ programas reais.
 \begin{frame}{Perspectivas Futuras}
 \protect\hypertarget{perspectivas-futuras}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Compiladores para IA/ML}: compila\~{c}\~{a}o de grafos de tensores
   (XLA, TVM, MLIR)

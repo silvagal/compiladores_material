@@ -4,7 +4,7 @@
 \begin{frame}{Defini\c{c}\~{a}o}
 \protect\hypertarget{definiuxe7uxe3o}{}
 \begin{itemize}
-\tightlist
+
 \item
   Um compilador \textbf{traduz} um programa de uma linguagem de origem
   para uma de destino
@@ -17,7 +17,7 @@
 \begin{frame}{Defini\c{c}\~{a}o}
 \protect\hypertarget{definiuxe7uxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   A linguagem de destino é projetada para \textbf{execu\c{c}\~{a}o eficiente por
   hardware}
@@ -29,7 +29,7 @@
 \begin{frame}{Defini\c{c}\~{a}o}
 \protect\hypertarget{definiuxe7uxe3o-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   Compiladores s\~{a}o sistemas complexos que exigem técnicas sofisticadas
 \end{itemize}
@@ -38,7 +38,7 @@
 \begin{frame}{Exemplos de Compila\~{c}\~{a}o}
 \protect\hypertarget{exemplos-de-compilauxe7uxe3o}{}
 \begin{itemize}
-\tightlist
+
 \item
   C/C++ → código assembly x86-64
 \item
@@ -49,7 +49,7 @@
 \begin{frame}{Exemplos de Compila\~{c}\~{a}o}
 \protect\hypertarget{exemplos-de-compilauxe7uxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Haskell → código assembly via GHC
 \item
@@ -88,7 +88,7 @@ Tempo de compila\~{c}\~{a}o & Pode ser alto & Nenhum \\
 \begin{frame}{Compiladores vs.~Interpretadores}
 \protect\hypertarget{compiladores-vs.-interpretadores-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   Compilar faz sentido para programas executados \textbf{muitas vezes}
 \item
@@ -99,7 +99,7 @@ Tempo de compila\~{c}\~{a}o & Pode ser alto & Nenhum \\
 \begin{frame}{Por que Compiladores S\~{a}o Difíceis?}
 \protect\hypertarget{por-que-compiladores-suxe3o-difuxedceis}{}
 \begin{itemize}
-\tightlist
+
 \item
   Código-fonte: legível, estruturado, redundante, favorece análise
 \item
@@ -111,7 +111,7 @@ Tempo de compila\~{c}\~{a}o & Pode ser alto & Nenhum \\
 \begin{frame}{Por que Compiladores S\~{a}o Difíceis?}
 \protect\hypertarget{por-que-compiladores-suxe3o-difuxedceis-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   A diferen\c{c}a entre as duas representa\c{c}\~{o}es é enorme
 \item
@@ -125,7 +125,7 @@ Tempo de compila\~{c}\~{a}o & Pode ser alto & Nenhum \\
 \begin{frame}{Corre\c{c}\~{a}o de Compiladores}
 \protect\hypertarget{correuxe7uxe3o-de-compiladores}{}
 \begin{itemize}
-\tightlist
+
 \item
   É possível definir matematicamente o que significa um compilador estar
   correto
@@ -137,7 +137,7 @@ Tempo de compila\~{c}\~{a}o & Pode ser alto & Nenhum \\
 \begin{frame}{Corre\c{c}\~{a}o de Compiladores}
 \protect\hypertarget{correuxe7uxe3o-de-compiladores-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Vários compiladores foram desenvolvidos com \textbf{provas de
   corre\c{c}\~{a}o}
@@ -155,7 +155,7 @@ Tempo de compila\~{c}\~{a}o & Pode ser alto & Nenhum \\
 \begin{frame}{Vis\~{a}o Geral do Pipeline}
 \protect\hypertarget{visuxe3o-geral-do-pipeline}{}
 \begin{enumerate}
-\tightlist
+
 \item
   \textbf{Análise léxica} --- caracteres → tokens
 \item
@@ -169,7 +169,7 @@ Tempo de compila\~{c}\~{a}o & Pode ser alto & Nenhum \\
 \protect\hypertarget{visuxe3o-geral-do-pipeline-1}{}
 \begin{enumerate}
 \setcounter{enumi}{3}
-\tightlist
+
 \item
   \textbf{Gera\c{c}\~{a}o de código intermediário} --- árvore → representa\c{c}\~{a}o
   intermediária
@@ -184,7 +184,7 @@ Tempo de compila\~{c}\~{a}o & Pode ser alto & Nenhum \\
 \begin{frame}{A Ideia Central: Dividir para Conquistar}
 \protect\hypertarget{a-ideia-central-dividir-para-conquistar}{}
 \begin{itemize}
-\tightlist
+
 \item
   Em vez de traduzir diretamente do código-fonte para código de máquina
 \item
@@ -196,7 +196,7 @@ Tempo de compila\~{c}\~{a}o & Pode ser alto & Nenhum \\
 \begin{frame}{A Ideia Central: Dividir para Conquistar}
 \protect\hypertarget{a-ideia-central-dividir-para-conquistar-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Cada fase transforma o programa para uma representa\c{c}\~{a}o mais próxima do
   destino
@@ -213,7 +213,7 @@ if (val >= 0) pos = val
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
   Vamos acompanhar essa instru\c{c}\~{a}o pelas fases do compilador
 \item
@@ -228,17 +228,17 @@ if (val >= 0) pos = val
 \includegraphics[width=0.7\textwidth,height=\textheight]{chapter01/imgs/lexical.png}
 
 \begin{itemize}
-\tightlist
+
 \item
   Divide o texto em \textbf{tokens} (as ``palavras'' do programa)
 \item
   Descarta espa\c{c}os em branco e comentários
 \item
-  Exemplo: \passthrough{\lstinline!if!}, \passthrough{\lstinline!(!},
-  \passthrough{\lstinline!val!}, \passthrough{\lstinline!>=!},
-  \passthrough{\lstinline!0!}, \passthrough{\lstinline!)!},
-  \passthrough{\lstinline!pos!}, \passthrough{\lstinline!=!},
-  \passthrough{\lstinline!val!}
+  Exemplo: \texttt{if}, \texttt{(},
+  \texttt{val}, \texttt{>=},
+  \texttt{0}, \texttt{)},
+  \texttt{pos}, \texttt{=},
+  \texttt{val}
 \item
   Detecta erros léxicos: caracteres inválidos, identificadores
   malformados
@@ -250,7 +250,7 @@ if (val >= 0) pos = val
 \includegraphics[width=0.4\textwidth,height=\textheight]{chapter01/imgs/syntax-tree.png}
 
 \begin{itemize}
-\tightlist
+
 \item
   Verifica se os tokens formam uma sequ\^{e}ncia sintaticamente válida
 \item
@@ -263,7 +263,7 @@ if (val >= 0) pos = val
 \includegraphics[width=0.4\textwidth,height=\textheight]{chapter01/imgs/syntax-tree.png}
 
 \begin{itemize}
-\tightlist
+
 \item
   Captura a estrutura hierárquica do programa
 \item
@@ -276,7 +276,7 @@ if (val >= 0) pos = val
 \includegraphics[width=0.4\textwidth,height=\textheight]{chapter01/imgs/annotated-tree.png}
 
 \begin{itemize}
-\tightlist
+
 \item
   Completa a tarefa de verificar se o código representa um programa
   válido
@@ -290,7 +290,7 @@ if (val >= 0) pos = val
 \includegraphics[width=0.4\textwidth,height=\textheight]{chapter01/imgs/annotated-tree.png}
 
 \begin{itemize}
-\tightlist
+
 \item
   Coleta informa\c{c}\~{o}es adicionais sobre o programa
 \item
@@ -304,7 +304,7 @@ if (val >= 0) pos = val
 \includegraphics[width=0.4\textwidth,height=\textheight]{chapter01/imgs/cfg.png}
 
 \begin{itemize}
-\tightlist
+
 \item
   Produz uma \textbf{Representa\c{c}\~{a}o Intermediária (RI)}
 \item
@@ -322,7 +322,7 @@ L1:
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
   Traduz a RI para instru\c{c}\~{o}es assembly abstrato
 \item
@@ -340,7 +340,7 @@ L1:
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
   Atribui variáveis a \textbf{registradores de hardware} reais
 \item
@@ -395,14 +395,14 @@ L1: mov     rax, [rbp - 32]
 \begin{frame}[fragile]{Código Assembly N\~{a}o-Otimizado}
 \protect\hypertarget{cuxf3digo-assembly-nuxe3o-otimizado-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Variáveis armazenadas na pilha, acessadas por
-  \passthrough{\lstinline![rbp - offset]!}
+  \texttt{[rbp - offset]}
 \item
   Estruturas de controle substituídas por desvios
-  (\passthrough{\lstinline!jge!}, \passthrough{\lstinline!jne!},
-  \passthrough{\lstinline!jmp!})
+  (\texttt{jge}, \texttt{jne},
+  \texttt{jmp})
 \end{itemize}
 \end{frame}
 
@@ -428,10 +428,10 @@ L2: mov  rax, -1
 \begin{frame}[fragile]{Código Assembly Otimizado}
 \protect\hypertarget{cuxf3digo-assembly-otimizado-1}{}
 \begin{itemize}
-\tightlist
+
 \item
-  Variáveis em registradores (\passthrough{\lstinline!rcx!},
-  \passthrough{\lstinline!rdx!}, \passthrough{\lstinline!rax!})
+  Variáveis em registradores (\texttt{rcx},
+  \texttt{rdx}, \texttt{rax})
 \item
   Sem instru\c{c}\~{o}es de gerenciamento de pilha
 \item
@@ -460,7 +460,7 @@ f: 48 3b 04 d7    cmp  rax, [rdi + 8*rdx]
 \begin{frame}{Código de Máquina (hex)}
 \protect\hypertarget{cuxf3digo-de-muxe1quina-hex-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Rótulos substituídos por deslocamentos hexadecimais
 \item
@@ -487,7 +487,7 @@ Código-fonte
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
   Cada ferramenta tem uma responsabilidade bem definida
 \item
@@ -515,7 +515,7 @@ Assembler & Assembly & Código objeto & Tradu\c{c}\~{a}o de instru\c{c}\~{o}es \
 Ferramenta & Entrada & Saída & Fun\c{c}\~{a}o \\
 \midrule\noalign{}
 \endhead
-Linker & Múltiplos \passthrough{\lstinline!.o!} & Executável & Resolve
+Linker & Múltiplos \texttt{.o} & Executável & Resolve
 refer\^{e}ncias \\
 Loader & Executável & Processo & Carrega na memória \\
 \bottomrule\noalign{}
@@ -528,7 +528,7 @@ Loader & Executável & Processo & Carrega na memória \\
 \begin{frame}{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Compiladores traduzem programas de linguagens de alto nível para baixo
   nível
@@ -541,7 +541,7 @@ Loader & Executável & Processo & Carrega na memória \\
 \begin{frame}{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   Cada fase transforma o programa incrementalmente com representa\c{c}\~{o}es
   intermediárias
@@ -554,7 +554,7 @@ Loader & Executável & Processo & Carrega na memória \\
 \begin{frame}{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-3}{}
 \begin{itemize}
-\tightlist
+
 \item
   O pipeline completo envolve compilador, assembler, linker e loader
 \end{itemize}

@@ -19,7 +19,7 @@ Formal}\label{introduuxe7uxe3o-uxe0-semuxe2ntica-formal}}
 \begin{frame}{Sem\^{a}ntica Formal}
 \protect\hypertarget{semuxe2ntica-formal}{}
 \begin{itemize}
-\tightlist
+
 \item
   Após a análise léxica e sintática, sabemos se o programa está escrito
   corretamente.
@@ -31,7 +31,7 @@ Formal}\label{introduuxe7uxe3o-uxe0-semuxe2ntica-formal}}
 \begin{frame}{Sem\^{a}ntica Formal}
 \protect\hypertarget{semuxe2ntica-formal-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Sem\^{a}ntica operacional}: define o significado de um programa
   descrevendo como ele é \emph{executado}
@@ -44,12 +44,12 @@ Formal}\label{introduuxe7uxe3o-uxe0-semuxe2ntica-formal}}
 \begin{frame}{Dois Estilos}
 \protect\hypertarget{dois-estilos}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Small-step} (\emph{pequenos passos}):
 
   \begin{itemize}
-  \tightlist
+
   \item
     Define cada passo elementar de redu\c{c}\~{a}o
   \item
@@ -64,12 +64,12 @@ Formal}\label{introduuxe7uxe3o-uxe0-semuxe2ntica-formal}}
 \begin{frame}{Dois Estilos}
 \protect\hypertarget{dois-estilos-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Big-step} (\emph{grandes passos}, ou sem\^{a}ntica natural):
 
   \begin{itemize}
-  \tightlist
+
   \item
     Define diretamente o valor final
   \item
@@ -103,12 +103,12 @@ data Exp
 \begin{frame}{Valores}
 \protect\hypertarget{valores}{}
 \begin{itemize}
-\tightlist
+
 \item
   Um \textbf{valor} é uma express\~{a}o na forma final
 
   \begin{itemize}
-  \tightlist
+
   \item
     Para express\~{o}es aritméticas, é um número inteiro \(v ::= n\).
   \end{itemize}
@@ -118,7 +118,7 @@ data Exp
 \begin{frame}{Regras}
 \protect\hypertarget{regras}{}
 \begin{itemize}
-\tightlist
+
 \item
   As regras de redu\c{c}\~{a}o s\~{a}o apresentadas como sistemas de infer\^{e}ncia:
 \end{itemize}
@@ -129,7 +129,7 @@ data Exp
 \begin{frame}{Regras para Adi\c{c}\~{a}o}
 \protect\hypertarget{regras-para-adiuxe7uxe3o}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Adi\c{c}\~{a}o de valores} (axioma):
 \end{itemize}
@@ -140,7 +140,7 @@ data Exp
 \begin{frame}{Regras para Adi\c{c}\~{a}o}
 \protect\hypertarget{regras-para-adiuxe7uxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Redu\c{c}\~{a}o no lado esquerdo} (esquerda primeiro):
 \end{itemize}
@@ -151,7 +151,7 @@ data Exp
 \begin{frame}{Regras para Adi\c{c}\~{a}o}
 \protect\hypertarget{regras-para-adiuxe7uxe3o-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Redu\c{c}\~{a}o no lado direito} (quando esquerdo já é valor):
 \end{itemize}
@@ -162,12 +162,12 @@ data Exp
 \begin{frame}{Regras para Adi\c{c}\~{a}o}
 \protect\hypertarget{regras-para-adiuxe7uxe3o-3}{}
 \begin{itemize}
-\tightlist
+
 \item
   A regra (AddR) só se aplica quando \(n_1\) é um valor
 
   \begin{itemize}
-  \tightlist
+
   \item
     Garante avalia\c{c}\~{a}o \textbf{da esquerda para a direita}.
   \end{itemize}
@@ -192,7 +192,7 @@ data Exp
 \begin{frame}{Sequ\^{e}ncias de Redu\c{c}\~{a}o}
 \protect\hypertarget{sequuxeancias-de-reduuxe7uxe3o}{}
 \begin{itemize}
-\tightlist
+
 \item
   A execu\c{c}\~{a}o completa é uma sequ\^{e}ncia de passos terminando em um valor:
 \end{itemize}
@@ -200,7 +200,7 @@ data Exp
 \[e \to e_1 \to e_2 \to \cdots \to v\]
 
 \begin{itemize}
-\tightlist
+
 \item
   Escrevemos \(e \to^* v\) quando existe tal sequ\^{e}ncia (zero ou mais
   passos).
@@ -231,7 +231,7 @@ data Exp
 \begin{frame}{Regras Big-Step}
 \protect\hypertarget{regras-big-step}{}
 \begin{itemize}
-\tightlist
+
 \item
   A rela\c{c}\~{a}o \(e \Downarrow v\) define diretamente o valor final.
 \end{itemize}
@@ -240,7 +240,7 @@ data Exp
 \begin{frame}{Regras Big-Step}
 \protect\hypertarget{regras-big-step-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Um número avalia para si mesmo:}
 \end{itemize}
@@ -251,7 +251,7 @@ data Exp
 \begin{frame}{Regras Big-Step}
 \protect\hypertarget{regras-big-step-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Adi\c{c}\~{a}o:}
 \end{itemize}
@@ -262,7 +262,7 @@ data Exp
 \begin{frame}{Regras Big-Step}
 \protect\hypertarget{regras-big-step-3}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Multiplica\c{c}\~{a}o:}
 \end{itemize}
@@ -299,7 +299,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}}
 \begin{frame}[fragile]{Interpretador}
 \protect\hypertarget{interpretador}{}
 \begin{itemize}
-\tightlist
+
 \item
   A sem\^{a}ntica big-step se traduz em Haskell de forma quase literal:
 \end{itemize}
@@ -318,13 +318,13 @@ eval (e1 :*: e2) = eval e1 * eval e2
 \item
   Correspond\^{e}ncia com as regras:
 \item
-  \passthrough{\lstinline!eval (EInt n) = n!} implementa a regra
+  \texttt{eval (EInt n) = n} implementa a regra
   \textbf{(Num)}
 \item
-  \passthrough{\lstinline!eval (e1 :+: e2) = eval e1 + eval e2!}
+  \texttt{eval (e1 :+: e2) = eval e1 + eval e2}
   implementa \textbf{(Add)}
 \item
-  \passthrough{\lstinline!eval (e1 :*: e2) = eval e1 * eval e2!}
+  \texttt{eval (e1 :*: e2) = eval e1 * eval e2}
   implementa \textbf{(Mul)}
 \end{itemize}
 \end{frame}
@@ -335,8 +335,8 @@ eval (e1 :*: e2) = eval e1 * eval e2
 cabal run exp -- --interp --file input.exp
 \end{lstlisting}
 
-Para a entrada \passthrough{\lstinline!(2 + 3) * 4!}, o interpretador
-produz \passthrough{\lstinline!20!}.
+Para a entrada \texttt{(2 + 3) * 4}, o interpretador
+produz \texttt{20}.
 
 \begin{lstlisting}[language=Haskell]
 -- O pipeline completo:
@@ -352,12 +352,12 @@ produz \passthrough{\lstinline!20!}.
 \begin{frame}{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Apresentamos dois estilos de sem\^{a}ntica operacional
 
   \begin{itemize}
-  \tightlist
+
   \item
     Big-step e small-step
   \end{itemize}

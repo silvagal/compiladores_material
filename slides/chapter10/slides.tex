@@ -19,12 +19,12 @@
 \begin{frame}{Limita\c{c}\~{o}es}
 \protect\hypertarget{limitauxe7uxf5es}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{LR(0)}: insere reduce em todos os terminais
 
   \begin{itemize}
-  \tightlist
+
   \item
     Muitos conflitos
   \end{itemize}
@@ -32,7 +32,7 @@
   \textbf{SLR}: usa o follow(A)
 
   \begin{itemize}
-  \tightlist
+
   \item
     Ainda impreciso
   \end{itemize}
@@ -62,24 +62,24 @@ E \to T .
 \begin{frame}[fragile]{O Conflito Shift-Reduce}
 \protect\hypertarget{o-conflito-shift-reduce}{}
 \begin{itemize}
-\tightlist
+
 \item
   Item \(E \to T .\) está completo
 
   \begin{itemize}
-  \tightlist
+
   \item
     LR(0) insere reduce \(E \to T\) em \textbf{todos} os terminais.
   \end{itemize}
 \item
   Item \(E \to T . + E\) exige \textbf{shift} em
-  \passthrough{\lstinline!+!}
+  \texttt{+}
 
   \begin{itemize}
-  \tightlist
+
   \item
     Resultado: \textbf{conflito shift-reduce} em
-    \passthrough{\lstinline!+!}
+    \texttt{+}
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -87,19 +87,19 @@ E \to T .
 \begin{frame}[fragile]{O Conflito Shift-Reduce}
 \protect\hypertarget{o-conflito-shift-reduce-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   A raiz do problema
 
   \begin{itemize}
-  \tightlist
+
   \item
-    Quando o próximo token é \passthrough{\lstinline!+!}, ainda pode vir
+    Quando o próximo token é \texttt{+}, ainda pode vir
     \(+E\), ent\~{a}o \ldots{}
   \item
     \textbf{N\~{a}o} devemos reduzir.
   \item
-    Quando é \passthrough{\lstinline!$!} ou \passthrough{\lstinline!)!},
+    Quando é \texttt{$} ou \texttt{)},
     devemos reduzir.
   \end{itemize}
 \end{itemize}
@@ -108,13 +108,13 @@ E \to T .
 \begin{frame}{O Conflito de Shift-Reduce}
 \protect\hypertarget{o-conflito-de-shift-reduce}{}
 \begin{itemize}
-\tightlist
+
 \item
   Para tomar essa decis\~{a}o, precisamos analisar o próximo token de
   entrada.
 
   \begin{itemize}
-  \tightlist
+
   \item
     Lookahead.
   \end{itemize}
@@ -122,7 +122,7 @@ E \to T .
   Um único token de lookahead local resolve o conflito
 
   \begin{itemize}
-  \tightlist
+
   \item
     Essa é a ideia do \textbf{LR(1)}.
   \end{itemize}
@@ -137,7 +137,7 @@ E \to T .
 Um item LR(1) \([A \to \beta . \gamma, a]\) carrega:
 
 \begin{itemize}
-\tightlist
+
 \item
   \(A \to \beta\gamma\): produ\c{c}\~{a}o sendo reconhecida
 \item
@@ -151,12 +151,12 @@ Um item LR(1) \([A \to \beta . \gamma, a]\) carrega:
 \begin{frame}{Redu\c{c}\~{a}o}
 \protect\hypertarget{reduuxe7uxe3o}{}
 \begin{itemize}
-\tightlist
+
 \item
   Quando o item está completo (\(\gamma = \lambda\)):
 
   \begin{itemize}
-  \tightlist
+
   \item
     reduzir \(A \to \beta\) \textbf{somente} na coluna \(a\).
   \end{itemize}
@@ -166,7 +166,7 @@ Um item LR(1) \([A \to \beta . \gamma, a]\) carrega:
 \begin{frame}{Redu\c{c}\~{a}o}
 \protect\hypertarget{reduuxe7uxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Lookahead é \textbf{calculado localmente} para cada item, n\~{a}o
   globalmente como no SLR.
@@ -176,7 +176,7 @@ Um item LR(1) \([A \to \beta . \gamma, a]\) carrega:
 \begin{frame}{Fechamento LR(1)}
 \protect\hypertarget{fechamento-lr1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Para item \([A \to \alpha . B \beta, a]\), adicionar
   \([B \to . \gamma, b]\) para toda produ\c{c}\~{a}o \(B \to \gamma\) e todo
@@ -187,7 +187,7 @@ Um item LR(1) \([A \to \beta . \gamma, a]\) carrega:
 \begin{frame}{Fechamento LR(1)}
 \protect\hypertarget{fechamento-lr1-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Se \(\beta\) n\~{a}o é anulável: \(b \in \mathrm{FIRST}(\beta)\)
 \item
@@ -210,20 +210,20 @@ Um item LR(1) \([A \to \beta . \gamma, a]\) carrega:
 \begin{frame}[fragile]{Tabela LR(1)}
 \protect\hypertarget{tabela-lr1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Shift}: \([A \to \alpha . a \beta, b]\) com \(a\) terminal →
-  \passthrough{\lstinline!action[I, a] = Shift j!}
+  \texttt{action[I, a] = Shift j}
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Tabela LR(1)}
 \protect\hypertarget{tabela-lr1-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Reduce}: \([A \to \alpha ., a]\) completo →
-  \passthrough{\lstinline!action[I, a] = Reduce(A → α)!} \textbf{apenas
+  \texttt{action[I, a] = Reduce(A → α)} \textbf{apenas
   na coluna \(a\)}
 \end{itemize}
 \end{frame}
@@ -231,17 +231,17 @@ Um item LR(1) \([A \to \beta . \gamma, a]\) carrega:
 \begin{frame}[fragile]{Tabela LR(1)}
 \protect\hypertarget{tabela-lr1-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Accept}: \([S' \to S ., \$]\) →
-  \passthrough{\lstinline!action[I, $] = Accept!}
+  \texttt{action[I, $] = Accept}
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Tabela LR(1)}
 \protect\hypertarget{tabela-lr1-3}{}
 \begin{itemize}
-\tightlist
+
 \item
   Cada reduce aparece \textbf{apenas na coluna do lookahead do item} ---
   n\~{a}o em todas.
@@ -263,7 +263,7 @@ F &\to& (E) \mid n
 \begin{frame}{Estado 0}
 \protect\hypertarget{estado-0}{}
 \begin{itemize}
-\tightlist
+
 \item
   Fechamento de \(\{[S' \to . E, \$]\}\):
 \end{itemize}
@@ -338,7 +338,7 @@ item} --- n\~{a}o em todas.
 \begin{frame}{Motiva\c{c}\~{a}o}
 \protect\hypertarget{motivauxe7uxe3o}{}
 \begin{itemize}
-\tightlist
+
 \item
   LR(1) gera estados distintos para o mesmo conjunto de itens LR(0)
   quando os lookaheads diferem.
@@ -348,13 +348,13 @@ item} --- n\~{a}o em todas.
 \begin{frame}{Motiva\c{c}\~{a}o}
 \protect\hypertarget{motivauxe7uxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Exemplo:} os estados 3 e 10 da gramática de express\~{o}es t\^{e}m o
   mesmo núcleo \(T \to F .\):
 
   \begin{itemize}
-  \tightlist
+
   \item
     Estado 3 (fora de par\^{e}nteses): lookaheads \(\{\$, +, *\}\)
   \item
@@ -366,7 +366,7 @@ item} --- n\~{a}o em todas.
 \begin{frame}{Motiva\c{c}\~{a}o}
 \protect\hypertarget{motivauxe7uxe3o-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   Para gramáticas reais, o número de estados LR(1) pode ser uma
   \textbf{ordem de grandeza maior} que LR(0).
@@ -376,7 +376,7 @@ item} --- n\~{a}o em todas.
 \begin{frame}{A Ideia LALR}
 \protect\hypertarget{a-ideia-lalr}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Observa\c{c}\~{a}o}: dois estados com o mesmo \textbf{núcleo} t\^{e}m a
   mesma estrutura de shifts e gotos.
@@ -398,13 +398,13 @@ item} --- n\~{a}o em todas.
 \begin{frame}{Algoritmo LALR}
 \protect\hypertarget{algoritmo-lalr}{}
 \begin{itemize}
-\tightlist
+
 \item
   Dois passos:
 \end{itemize}
 
 \begin{enumerate}
-\tightlist
+
 \item
   Construir todos os estados LR(1)
 \item
@@ -427,7 +427,7 @@ item} --- n\~{a}o em todas.
 \begin{frame}{Problemas}
 \protect\hypertarget{problemas-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Quando isso ocorre: gramática é LR(1) mas \textbf{n\~{a}o LALR(1)}
 \item
@@ -439,7 +439,7 @@ item} --- n\~{a}o em todas.
 \begin{frame}{Problemas}
 \protect\hypertarget{problemas-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   Na prática: a imensa maioria das gramáticas de linguagens de
   programa\c{c}\~{a}o é LALR(1).

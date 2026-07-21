@@ -25,8 +25,8 @@ Sistemas de tipos com igualdade exata de tipos rejeitam programas
 seguros:
 
 \begin{quote}
-Se uma fun\c{c}\~{a}o espera \passthrough{\lstinline!Number!} e fornecemos um
-\passthrough{\lstinline!Int!}, por que reclamar? Todo inteiro é um
+Se uma fun\c{c}\~{a}o espera \texttt{Number} e fornecemos um
+\texttt{Int}, por que reclamar? Todo inteiro é um
 número.
 \end{quote}
 
@@ -52,7 +52,7 @@ orienta\c{c}\~{a}o a objetos.
   \textbf{Featherweight Java (FJ)}: núcleo formal mínimo de Java com:
 
   \begin{itemize}
-  \tightlist
+
   \item
     Classes, heran\c{c}a, campos, métodos
   \item
@@ -93,7 +93,7 @@ Menor rela\c{c}\~{a}o reflexivo-transitiva que satisfaz:
 \[\frac{T_1 <: S_1 \quad S_2 <: T_2}{S_1 \to S_2 <: T_1 \to T_2} \quad\text{(S-Arrow)}\]
 
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{S-Arrow}: contravariante no domínio, covariante no
   contradomínio
@@ -115,7 +115,7 @@ A regra central que conecta subtipagem e tipagem:
 Demais regras padr\~{a}o: T-Var, T-Int, T-True, T-False, T-Add, T-If, T-Abs,
 T-App.
 
-Gra\c{c}as \`{a} subsun\c{c}\~{a}o: se os ramos de um \passthrough{\lstinline!if!} t\^{e}m
+Gra\c{c}as \`{a} subsun\c{c}\~{a}o: se os ramos de um \texttt{if} t\^{e}m
 tipos \(\mathsf{Bool}\) e \(\mathsf{Int}\), podemos elevar o primeiro
 para \(\mathsf{Int}\) e unificar.
 \end{frame}
@@ -136,7 +136,7 @@ para \(\mathsf{Int}\) e unificar.
 \textbf{Teorema (Decidibilidade de \(S <: T\))}:
 
 \begin{enumerate}
-\tightlist
+
 \item
   Se \(S = T\): true (S-Refl)
 \item
@@ -160,7 +160,7 @@ correto e termina.
 Proposto por Igarashi, Pierce e Wadler (2001):
 
 \begin{itemize}
-\tightlist
+
 \item
   Núcleo formal \textbf{mínimo} de Java
 \item
@@ -204,7 +204,7 @@ declara\c{c}\~{o}es.
 \textbf{Fun\c{c}\~{o}es de consulta:}
 
 \begin{itemize}
-\tightlist
+
 \item
   \(\mathit{fields}(C)\) --- todos os campos de \(C\) (incluindo
   herdados)
@@ -219,7 +219,7 @@ declara\c{c}\~{o}es.
 
 \[\frac{}{C <: C} \quad\text{(S-Refl)} \qquad \frac{C <: D \quad D <: E}{C <: E} \quad\text{(S-Trans)} \qquad \frac{\mathit{CT}(C) = \mathtt{class}\ C\ \mathtt{extends}\ D\ \{\ldots\}}{C <: D} \quad\text{(S-Extends)}\]
 
-Todo tipo é subtipo de \passthrough{\lstinline!Object!}.
+Todo tipo é subtipo de \texttt{Object}.
 \end{frame}
 
 \begin{frame}[fragile]{Sem\^{a}ntica Operacional de FJ}
@@ -236,14 +236,14 @@ Todo tipo é subtipo de \passthrough{\lstinline!Object!}.
 
 \[\frac{C <: D}{(D)\, \mathtt{new}\ C(\bar{v}) \to \mathtt{new}\ C(\bar{v})}\]
 
-Se \(C \not<: D\): lan\c{c}a \passthrough{\lstinline!ClassCastException!}
+Se \(C \not<: D\): lan\c{c}a \texttt{ClassCastException}
 --- erro em tempo de execu\c{c}\~{a}o!
 \end{frame}
 
 \begin{frame}[fragile]{Gera\c{c}\~{a}o de Código para FJ}
 \protect\hypertarget{gerauxe7uxe3o-de-cuxf3digo-para-fj}{}
 \textbf{Layout de objeto}:
-\passthrough{\lstinline![class\_tag | f0 | f1 | ... | fn]!} --- palavras
+\texttt{[class\_tag | f0 | f1 | ... | fn]} --- palavras
 de 8 bytes
 
 \begin{lstlisting}[language=Haskell]
@@ -274,7 +274,7 @@ buildDispatchChain m ((tag, cls):rest) =
 \begin{frame}{Sumário do Capítulo}
 \protect\hypertarget{sumuxe1rio-do-capuxedtulo}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Subtipagem} \(S <: T\): todo valor de \(S\) pode ser usado
   onde \(T\) é esperado
@@ -298,7 +298,7 @@ buildDispatchChain m ((tag, cls):rest) =
 \begin{frame}{Próximos Passos}
 \protect\hypertarget{pruxf3ximos-passos}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Infer\^{e}ncia de tipos com subtipagem}: algoritmos mais complexos
   (bivariance, polimorfismo + subtipagem)

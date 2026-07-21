@@ -4,7 +4,7 @@
 \begin{frame}{Limita\c{c}\~{o}es do Analisador Ad-Hoc}
 \protect\hypertarget{limitauxe7uxf5es-do-analisador-ad-hoc}{}
 \begin{itemize}
-\tightlist
+
 \item
   Difícil de manter e extender para linguagens maiores
 \item
@@ -15,10 +15,10 @@
 \begin{frame}[fragile]{Limita\c{c}\~{o}es do Analisador Ad-Hoc}
 \protect\hypertarget{limitauxe7uxf5es-do-analisador-ad-hoc-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Como suportar \textbf{comentários em bloco}
-  (\passthrough{\lstinline!/* */!})?
+  (\texttt{/* */})?
 \item
   Como garantir que a implementa\c{c}\~{a}o está correta?
 \end{itemize}
@@ -27,7 +27,7 @@
 \begin{frame}{Limita\c{c}\~{o}es do Analisador Ad-Hoc}
 \protect\hypertarget{limitauxe7uxf5es-do-analisador-ad-hoc-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   Pergunta: existe uma forma extensível e eficiente para construir
   analisadores?
@@ -37,7 +37,7 @@
 \begin{frame}{A Solu\c{c}\~{a}o: Express\~{o}es Regulares + Aut\^{o}matos}
 \protect\hypertarget{a-soluuxe7uxe3o-expressuxf5es-regulares-autuxf4matos}{}
 \begin{itemize}
-\tightlist
+
 \item
   Especificamos tokens como \textbf{express\~{o}es regulares} (declarativo)
 \item
@@ -49,7 +49,7 @@
 \begin{frame}{A Solu\c{c}\~{a}o: Express\~{o}es Regulares + Aut\^{o}matos}
 \protect\hypertarget{a-soluuxe7uxe3o-expressuxf5es-regulares-autuxf4matos-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   O analisador gerado é um \textbf{Aut\^{o}mato Finito Determinístico (AFD)}
 \item
@@ -68,7 +68,7 @@ Determinísticos}\label{autuxf4matos-finitos-determinuxedsticos}}
 Um AFD \(M = (E, \Sigma, \delta, i, F)\):
 
 \begin{itemize}
-\tightlist
+
 \item
   \(E\): conjunto finito de \textbf{estados}
 \item
@@ -94,31 +94,31 @@ data DFA a = DFA
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
-  Parametrizado pelo tipo \passthrough{\lstinline!a!} dos estados
+  Parametrizado pelo tipo \texttt{a} dos estados
 \item
-  A fun\c{c}\~{a}o \passthrough{\lstinline!finals!} retorna
-  \passthrough{\lstinline!True!} para estados finais
+  A fun\c{c}\~{a}o \texttt{finals} retorna
+  \texttt{True} para estados finais
 \item
-  Flexível: estados podem ser \passthrough{\lstinline!Bool!},
-  \passthrough{\lstinline!Int!}, \passthrough{\lstinline!Set Int!}, etc.
+  Flexível: estados podem ser \texttt{Bool},
+  \texttt{Int}, \texttt{Set Int}, etc.
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo: AFD para Palavras Terminadas em
-\passthrough{\lstinline!1!}}
+\texttt{1}}
 \protect\hypertarget{exemplo-afd-para-palavras-terminadas-em-1}{}
 \includegraphics[width=0.6\textwidth,height=\textheight]{chapter03/imgs/afd.png}
 
 \begin{itemize}
-\tightlist
+
 \item
-  Estado \passthrough{\lstinline!False!}: último caractere n\~{a}o foi
-  \passthrough{\lstinline!1!} (ou início)
+  Estado \texttt{False}: último caractere n\~{a}o foi
+  \texttt{1} (ou início)
 \item
-  Estado \passthrough{\lstinline!True!}: último caractere foi
-  \passthrough{\lstinline!1!} (estado final)
+  Estado \texttt{True}: último caractere foi
+  \texttt{1} (estado final)
 \end{itemize}
 \end{frame}
 
@@ -136,12 +136,12 @@ endsWithOne = DFA False transition id
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
-  Estado inicial: \passthrough{\lstinline!False!}
+  Estado inicial: \texttt{False}
 \item
-  Fun\c{c}\~{a}o final: \passthrough{\lstinline!id!} (só
-  \passthrough{\lstinline!True!} é estado final)
+  Fun\c{c}\~{a}o final: \texttt{id} (só
+  \texttt{True} é estado final)
 \item
   Transi\c{c}\~{o}es por casamento de padr\~{o}es
 \end{itemize}
@@ -162,16 +162,16 @@ accept m s = finals m (deltaStar m s)
 Exemplos:
 
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!accept endsWithOne "01"!} →
-  \passthrough{\lstinline!True!}
+  \texttt{accept endsWithOne "01"} →
+  \texttt{True}
 \item
-  \passthrough{\lstinline!accept endsWithOne "10"!} →
-  \passthrough{\lstinline!False!}
+  \texttt{accept endsWithOne "10"} →
+  \texttt{False}
 \item
-  \passthrough{\lstinline!accept endsWithOne "001"!} →
-  \passthrough{\lstinline!True!}
+  \texttt{accept endsWithOne "001"} →
+  \texttt{True}
 \end{itemize}
 \end{frame}
 
@@ -184,7 +184,7 @@ N\~{a}o-Determinísticos}\label{autuxf4matos-finitos-nuxe3o-determinuxedsticos}}
 Um AFN \(M = (E, \Sigma, \delta, I, F)\):
 
 \begin{itemize}
-\tightlist
+
 \item
   \(\delta : E \times \Sigma \to \mathcal{P}(E)\): transi\c{c}\~{a}o para
   \textbf{conjunto} de estados
@@ -210,7 +210,7 @@ data NFA a = NFA
 \end{frame}
 
 \begin{frame}{Exemplo: AFD para Palavras Terminadas em
-\passthrough{\lstinline!00!}}
+\texttt{00}}
 \protect\hypertarget{exemplo-afd-para-palavras-terminadas-em-00}{}
 \includegraphics[width=0.6\textwidth,height=\textheight]{chapter03/imgs/endswith00.png}
 \end{frame}
@@ -232,7 +232,7 @@ endsWith00 = NFA 3 (Set.singleton 0)
 \begin{frame}{Convers\~{a}o AFN -\textgreater{} AFD}
 \protect\hypertarget{conversuxe3o-afn---afd}{}
 \begin{itemize}
-\tightlist
+
 \item
   Seja \(M = (E, \Sigma, \delta, I, F)\) um AFN.
 \item
@@ -245,7 +245,7 @@ endsWith00 = NFA 3 (Set.singleton 0)
 \begin{frame}{Convers\~{a}o AFN -\textgreater{} AFD}
 \protect\hypertarget{conversuxe3o-afn---afd-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Estados} do AFD: subconjuntos de estados do AFN
 \item
@@ -260,10 +260,10 @@ endsWith00 = NFA 3 (Set.singleton 0)
 \begin{frame}[fragile]{Implementa\c{c}\~{a}o}
 \protect\hypertarget{implementauxe7uxe3o}{}
 \begin{itemize}
-\tightlist
+
 \item
   O AFD resultante tem \textbf{estados do tipo
-  \passthrough{\lstinline!Set a!}}
+  \texttt{Set a}}
 \item
   A transi\c{c}\~{a}o une os destinos de todos os estados do conjunto atual
 \item
@@ -293,7 +293,7 @@ subset m = DFA
 \[e \to \emptyset \mid \lambda \mid a \mid ee \mid e+e \mid e^*\]
 
 \begin{itemize}
-\tightlist
+
 \item
   \(\emptyset\): conjunto vazio (nunca casa)
 \item
@@ -334,10 +334,10 @@ data Regex
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
-  Operadores infixos (\passthrough{\lstinline!:+:!},
-  \passthrough{\lstinline!:@:!}) refletem a nota\c{c}\~{a}o matemática
+  Operadores infixos (\texttt{:+:},
+  \texttt{:@:}) refletem a nota\c{c}\~{a}o matemática
 \item
   Construtores de dados representam diretamente a gramática
 \end{itemize}
@@ -349,7 +349,7 @@ data Regex
 \begin{frame}{A Ideia Central}
 \protect\hypertarget{a-ideia-central}{}
 \begin{itemize}
-\tightlist
+
 \item
   Converte ER em AFN por \textbf{recurs\~{a}o estrutural}
 \item
@@ -360,7 +360,7 @@ data Regex
 \begin{frame}{A Ideia Central}
 \protect\hypertarget{a-ideia-central-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   AFNs parciais s\~{a}o \textbf{compostos} para formar o AFN final
 \item
@@ -412,7 +412,7 @@ data Regex
 \(e = s^*\): os estados finais de \(N(s)\) retornam aos estados iniciais
 \end{frame}
 
-\begin{frame}[fragile]{A Fun\c{c}\~{a}o \passthrough{\lstinline!thompson!} em
+\begin{frame}[fragile]{A Fun\c{c}\~{a}o \texttt{thompson} em
 Haskell}
 \protect\hypertarget{a-funuxe7uxe3o-thompson-em-haskell}{}
 \begin{lstlisting}[language=Haskell]
@@ -434,14 +434,14 @@ lexer = subset . foldr unionNFA emptyNFA . map thompson
 \end{lstlisting}
 
 \begin{enumerate}
-\tightlist
+
 \item
-  \passthrough{\lstinline!map thompson!}: cada ER → AFN (via Thompson)
+  \texttt{map thompson}: cada ER → AFN (via Thompson)
 \item
-  \passthrough{\lstinline!foldr unionNFA emptyNFA!}: combina todos os
+  \texttt{foldr unionNFA emptyNFA}: combina todos os
   AFNs em um só
 \item
-  \passthrough{\lstinline!subset!}: converte o AFN combinado em um AFD
+  \texttt{subset}: converte o AFN combinado em um AFD
 \end{enumerate}
 \end{frame}
 
@@ -455,42 +455,42 @@ if (x > 0) ift = x + 1;
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!if!} é uma palavra reservada
+  \texttt{if} é uma palavra reservada
 \item
-  \passthrough{\lstinline!ift!} é um identificador
+  \texttt{ift} é um identificador
 \item
   O analisador precisa reconhecer o \textbf{maior prefixo} que forma um
   token válido
 \item
-  Sem esse critério: \passthrough{\lstinline!ift!} poderia ser lido como
-  \passthrough{\lstinline!if!} + \passthrough{\lstinline!t!}
+  Sem esse critério: \texttt{ift} poderia ser lido como
+  \texttt{if} + \texttt{t}
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Por que o Maior Prefixo é Necessário?}
 \protect\hypertarget{por-que-o-maior-prefixo-uxe9-necessuxe1rio}{}
 \begin{itemize}
-\tightlist
+
 \item
   Garante que tokens compostos sejam reconhecidos \textbf{atomicamente}
 \item
-  Evita ambiguidades sem\^{a}nticas: \passthrough{\lstinline!>=!} n\~{a}o deve
-  ser lido como \passthrough{\lstinline!>!} seguido de
-  \passthrough{\lstinline!=!}
+  Evita ambiguidades sem\^{a}nticas: \texttt{>=} n\~{a}o deve
+  ser lido como \texttt{>} seguido de
+  \texttt{=}
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Por que o Maior Prefix é Necessário?}
 \protect\hypertarget{por-que-o-maior-prefix-uxe9-necessuxe1rio}{}
 \begin{itemize}
-\tightlist
+
 \item
   Padr\~{a}o universal em compiladores: \textbf{maximal munch}
 \item
-  Sem isso: \passthrough{\lstinline!integer!} poderia ser lido como
-  \passthrough{\lstinline!int!} + \passthrough{\lstinline!eger!}
+  Sem isso: \texttt{integer} poderia ser lido como
+  \texttt{int} + \texttt{eger}
 \end{itemize}
 \end{frame}
 
@@ -501,28 +501,28 @@ longest :: DFA a -> String -> Maybe String
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
   Percorre a string mantendo o \textbf{último prefixo aceito} encontrado
 \item
   O acumulador é uma tripla:
-  \passthrough{\lstinline!(prefixo atual, melhor prefixo, estado atual)!}
+  \texttt{(prefixo atual, melhor prefixo, estado atual)}
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Implementa\c{c}\~{a}o}
 \protect\hypertarget{implementauxe7uxe3o-3}{}
 \begin{itemize}
-\tightlist
+
 \item
-  Retorna \passthrough{\lstinline!Nothing!} se nenhum prefixo é aceito
+  Retorna \texttt{Nothing} se nenhum prefixo é aceito
 \item
-  Retorna \passthrough{\lstinline!Just s!} com o maior prefixo aceito
+  Retorna \texttt{Just s} com o maior prefixo aceito
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Lógica da Fun\c{c}\~{a}o
-\passthrough{\lstinline!longest!}}
+\texttt{longest}}
 \protect\hypertarget{luxf3gica-da-funuxe7uxe3o-longest}{}
 \begin{lstlisting}[language=Haskell]
 longest m = combine . foldl step (Just "", Nothing, start m)
@@ -545,7 +545,7 @@ Regulares}\label{derivadas-de-expressuxf5es-regulares}}
 \begin{frame}{Motiva\c{c}\~{a}o}
 \protect\hypertarget{motivauxe7uxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Thompson + subset pode ser computacionalmente custoso
 \item
@@ -557,7 +557,7 @@ Regulares}\label{derivadas-de-expressuxf5es-regulares}}
 \begin{frame}{Motiva\c{c}\~{a}o}
 \protect\hypertarget{motivauxe7uxe3o-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   Derivadas de Brzozowski: abordagem alternativa eficiente
 \item
@@ -577,10 +577,10 @@ consumir \(a\):
 \begin{frame}[fragile]{Exemplos}
 \protect\hypertarget{exemplos}{}
 \begin{itemize}
-\tightlist
+
 \item
-  Se \(e\) aceita \passthrough{\lstinline!"abc"!}, ent\~{a}o
-  \(\partial(e, \text{'a'})\) aceita \passthrough{\lstinline!"bc"!}
+  Se \(e\) aceita \texttt{"abc"}, ent\~{a}o
+  \(\partial(e, \text{'a'})\) aceita \texttt{"bc"}
 \item
   Podemos construir o AFD computando derivadas sucessivas
 \end{itemize}
@@ -673,7 +673,7 @@ e .+. e'     = e :+: e'
 \begin{frame}{AFD via Derivadas}
 \protect\hypertarget{afd-via-derivadas}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Estados}: express\~{o}es regulares alcan\c{c}áveis por deriva\c{c}\~{a}o
 \item
@@ -703,7 +703,7 @@ derivDFA e = DFA
 \begin{frame}{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{AFDs}: reconhecem linguagens regulares eficientemente
 \item
@@ -714,7 +714,7 @@ derivDFA e = DFA
 \begin{frame}{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Thompson}: converte ER em AFN por recurs\~{a}o estrutural
 \item
@@ -725,7 +725,7 @@ derivDFA e = DFA
 \begin{frame}{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-3}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Critério do maior prefixo}: resolve ambiguidades léxicas
 \item

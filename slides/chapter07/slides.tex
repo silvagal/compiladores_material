@@ -19,12 +19,12 @@
 \begin{frame}{Motiva\c{c}\~{a}o}
 \protect\hypertarget{motivauxe7uxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Combinadores de parsing s\~{a}o poderosos, mas GLCs podem ser ambíguas.
 
   \begin{itemize}
-  \tightlist
+
   \item
     Como lidar com recurs\~{a}o \`{a} esquerda?
   \end{itemize}
@@ -36,7 +36,7 @@
 \begin{frame}{Motiva\c{c}\~{a}o}
 \protect\hypertarget{motivauxe7uxe3o-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{PEGs}: formalismo com escolha determinística
 \item
@@ -87,7 +87,7 @@ Poder expressivo & Linguagens livres de contexto & N\~{a}o determ. \\
 \begin{frame}[fragile]{Escolha N\~{a}o-Determinística vs.~Ordenada}
 \protect\hypertarget{escolha-nuxe3o-determinuxedstica-vs.-ordenada}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{GLC}: \(A \to \alpha \mid \beta\) --- tenta \(\alpha\)
   \textbf{e} \(\beta\) em paralelo
@@ -95,7 +95,7 @@ Poder expressivo & Linguagens livres de contexto & N\~{a}o determ. \\
   \textbf{PEG}: \(A \leftarrow e_1 / e_2\) --- tenta \(e_1\); \textbf{só
   se \(e_1\) falhar}, tenta \(e_2\)
 \item
-  A escolha ordenada \passthrough{\lstinline!/!} é determinística: no
+  A escolha ordenada \texttt{/} é determinística: no
   máximo um resultado
 \item
   Essa sem\^{a}ntica elimina toda ambiguidade
@@ -183,7 +183,7 @@ Se e1 FALHA:
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
   Elimina ambiguidade: o primeiro match sempre vence
 \item
@@ -194,7 +194,7 @@ Se e1 FALHA:
 \begin{frame}{Predicados: Lookahead sem Consumo}
 \protect\hypertarget{predicados-lookahead-sem-consumo}{}
 \begin{itemize}
-\tightlist
+
 \item
   \(!e\) (\textbf{predicado negativo}): tem sucesso se e somente se
   \(e\) falha; n\~{a}o consome entrada
@@ -208,16 +208,16 @@ Se e1 FALHA:
 
 \begin{frame}[fragile]{Exemplo}
 \protect\hypertarget{exemplo}{}
-Exemplo --- reconhece \passthrough{\lstinline!if!} sem aceitar
-\passthrough{\lstinline!iff!}:
+Exemplo --- reconhece \texttt{if} sem aceitar
+\texttt{iff}:
 
 \[\texttt{if}\; ![\text{a-zA-Z0-9}]\]
 
 \begin{itemize}
-\tightlist
+
 \item
-  Casa \passthrough{\lstinline!if!} (com espa\c{c}o) mas n\~{a}o
-  \passthrough{\lstinline!iff!}
+  Casa \texttt{if} (com espa\c{c}o) mas n\~{a}o
+  \texttt{iff}
 \item
   O predicado verifica sem consumir o caractere seguinte
 \end{itemize}
@@ -233,7 +233,7 @@ A repeti\c{c}\~{a}o em PEGs é definida como:
 \begin{frame}{Repeti\c{c}\~{a}o Gulosa}
 \protect\hypertarget{repetiuxe7uxe3o-gulosa-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   A escolha é ordenada: \textbf{sempre tenta mais uma ocorr\^{e}ncia} antes
   de aceitar vazio
@@ -246,7 +246,7 @@ A repeti\c{c}\~{a}o em PEGs é definida como:
 \begin{frame}{Repeti\c{c}\~{a}o Gulosa}
 \protect\hypertarget{repetiuxe7uxe3o-gulosa-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   Contraste com GLCs: a repeti\c{c}\~{a}o n\~{a}o é determinística
 \item
@@ -260,12 +260,12 @@ A repeti\c{c}\~{a}o em PEGs é definida como:
 \begin{frame}{Exemplo}
 \protect\hypertarget{exemplo-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   A linguagem \(\{a^nb^nc^n\,|\,n\geq 0\}\) n\~{a}o é uma LLC.
 
   \begin{itemize}
-  \tightlist
+
   \item
     Demonstra\c{c}\~{a}o usando lema do bombeamento.
   \end{itemize}
@@ -277,7 +277,7 @@ A repeti\c{c}\~{a}o em PEGs é definida como:
 \begin{frame}{Exemplo}
 \protect\hypertarget{exemplo-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   Chave: uso de predicados positivos para permitir um lookahead
   arbitrário.
@@ -294,7 +294,7 @@ A repeti\c{c}\~{a}o em PEGs é definida como:
 \]
 
 \begin{itemize}
-\tightlist
+
 \item
   Express\~{a}o inicial: \(\& A a^*B\,/\,!.\)
 \end{itemize}
@@ -303,7 +303,7 @@ A repeti\c{c}\~{a}o em PEGs é definida como:
 \begin{frame}{Exemplo}
 \protect\hypertarget{exemplo-4}{}
 \begin{itemize}
-\tightlist
+
 \item
   PEG para express\~{o}es
 \end{itemize}
@@ -318,7 +318,7 @@ F &\leftarrow& \texttt{(}\; E\; \texttt{)} \;/\; [0\text{-}9]^+
 \begin{frame}{Exemplo}
 \protect\hypertarget{exemplo-5}{}
 \begin{itemize}
-\tightlist
+
 \item
   Associatividade \`{a} esquerda expressa por \textbf{repeti\c{c}\~{a}o}, n\~{a}o
   recurs\~{a}o
@@ -340,7 +340,7 @@ PEG equivalente:
 \[E \leftarrow T\; (\texttt{+}\; T)^* \qquad T \leftarrow F\; (*\; F)^*\]
 
 \begin{itemize}
-\tightlist
+
 \item
   PEG é mais direta: n\~{a}o precisa de recurs\~{a}o \`{a} esquerda
 \item
@@ -357,7 +357,7 @@ Boa-Forma\c{c}\~{a}o}\label{terminauxe7uxe3o-e-boa-formauxe7uxe3o}}
 Uma PEG é \textbf{bem formada} (e portanto termina) se:
 
 \begin{enumerate}
-\tightlist
+
 \item
   \textbf{N\~{a}o há recurs\~{a}o \`{a} esquerda} direta ou indireta
 \item
@@ -369,7 +369,7 @@ Uma PEG é \textbf{bem formada} (e portanto termina) se:
 \begin{frame}{Termina\c{c}\~{a}o}
 \protect\hypertarget{terminauxe7uxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Condi\c{c}\~{a}o 1: recurs\~{a}o \`{a} esquerda causaria loop infinito em parsers
   descendentes
@@ -383,7 +383,7 @@ Uma PEG é \textbf{bem formada} (e portanto termina) se:
 \section{Implementa\c{c}\~{a}o em
 Haskell}\label{implementauxe7uxe3o-em-haskell}}
 
-\begin{frame}[fragile]{O Tipo \passthrough{\lstinline!Result!}}
+\begin{frame}[fragile]{O Tipo \texttt{Result}}
 \protect\hypertarget{o-tipo-result}{}
 \begin{lstlisting}[language=Haskell]
 data Result d a
@@ -393,49 +393,49 @@ data Result d a
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{O Tipo \passthrough{\lstinline!Result!}}
+\begin{frame}[fragile]{O Tipo \texttt{Result}}
 \protect\hypertarget{o-tipo-result-1}{}
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!Pure!}: sucesso sem consumo → pode tentar
+  \texttt{Pure}: sucesso sem consumo → pode tentar
   alternativa
 \item
-  \passthrough{\lstinline!Commit!}: sucesso com consumo → sem retrocesso
+  \texttt{Commit}: sucesso com consumo → sem retrocesso
   possível
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{O Tipo \passthrough{\lstinline!Result!}}
+\begin{frame}[fragile]{O Tipo \texttt{Result}}
 \protect\hypertarget{o-tipo-result-2}{}
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!Fail \_ False!}: falha sem consumo → pode
+  \texttt{Fail \_ False}: falha sem consumo → pode
   tentar alternativa
 \item
-  \passthrough{\lstinline!Fail \_ True!}: falha \textbf{com consumo} →
+  \texttt{Fail \_ True}: falha \textbf{com consumo} →
   \textbf{sem} retrocesso
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{O Tipo \passthrough{\lstinline!PExp!}}
+\begin{frame}[fragile]{O Tipo \texttt{PExp}}
 \protect\hypertarget{o-tipo-pexp}{}
 \begin{lstlisting}[language=Haskell]
 newtype PExp d a = PExp { runPExp :: d -> Result d a }
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!d!}: tipo da entrada (tipicamente
-  \passthrough{\lstinline!String!})
+  \texttt{d}: tipo da entrada (tipicamente
+  \texttt{String})
 \item
-  \passthrough{\lstinline!a!}: tipo do resultado
+  \texttt{a}: tipo do resultado
 \item
-  Inst\^{a}ncia de \passthrough{\lstinline!Functor!},
-  \passthrough{\lstinline!Applicative!},
-  \passthrough{\lstinline!Alternative!}, \passthrough{\lstinline!Monad!}
+  Inst\^{a}ncia de \texttt{Functor},
+  \texttt{Applicative},
+  \texttt{Alternative}, \texttt{Monad}
 \end{itemize}
 \end{frame}
 
@@ -468,7 +468,7 @@ instance Alternative (PExp d) where
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{O Combinador \passthrough{\lstinline!try!}}
+\begin{frame}[fragile]{O Combinador \texttt{try}}
 \protect\hypertarget{o-combinador-try}{}
 \begin{lstlisting}[language=Haskell]
 try :: PExp d a -> PExp d a
@@ -479,17 +479,17 @@ try (PExp m) = PExp $ \d ->
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{O Combinador \passthrough{\lstinline!try!}}
+\begin{frame}[fragile]{O Combinador \texttt{try}}
 \protect\hypertarget{o-combinador-try-1}{}
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!try p!} executa \passthrough{\lstinline!p!}
+  \texttt{try p} executa \texttt{p}
   normalmente
 \item
   Em caso de falha, \textbf{cancela} o consumo para fins de backtracking
 \item
-  Permite retroceder mesmo que \passthrough{\lstinline!p!} tenha
+  Permite retroceder mesmo que \texttt{p} tenha
   consumido parte da entrada
 \end{itemize}
 \end{frame}
@@ -506,20 +506,20 @@ p </> q = try p <|> q
 \begin{frame}[fragile]{Escolha Ordenada}
 \protect\hypertarget{escolha-ordenada-2}{}
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!p </> q!}: tenta \passthrough{\lstinline!p!}
+  \texttt{p </> q}: tenta \texttt{p}
   com backtracking garantido
 \item
-  Se \passthrough{\lstinline!p!} falha por qualquer raz\~{a}o,
-  \passthrough{\lstinline!q!} é tentado sobre a entrada original
+  Se \texttt{p} falha por qualquer raz\~{a}o,
+  \texttt{q} é tentado sobre a entrada original
 \item
   Implementa diretamente a sem\^{a}ntica de PEGs
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{O Predicado Negativo
-\passthrough{\lstinline!not!}}
+\texttt{not}}
 \protect\hypertarget{o-predicado-negativo-not}{}
 \begin{lstlisting}[language=Haskell]
 not :: PExp d a -> PExp d ()
@@ -597,7 +597,7 @@ factP = between (symbol '(') (symbol ')') expP
 \begin{frame}{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   PEGs usam \textbf{escolha ordenada} \(e_1 / e_2\) em vez de
   n\~{a}o-determinística
@@ -609,7 +609,7 @@ factP = between (symbol '(') (symbol ')') expP
 \begin{frame}{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Predicados} \(!e\) e \(\&e\) permitem lookahead de tamanho
   arbitrário
@@ -621,15 +621,15 @@ factP = between (symbol '(') (symbol ')') expP
 \begin{frame}[fragile]{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-3}{}
 \begin{itemize}
-\tightlist
+
 \item
   PEGs bem formadas terminam sempre (sem recurs\~{a}o \`{a} esquerda, sem ciclos
   vazios)
 \item
-  Implementa\c{c}\~{a}o: o tipo \passthrough{\lstinline!Result!} distingue falha
+  Implementa\c{c}\~{a}o: o tipo \texttt{Result} distingue falha
   com e sem consumo
 \item
-  \passthrough{\lstinline!try!} e \passthrough{\lstinline!</>!}
+  \texttt{try} e \texttt{</>}
   implementam backtracking explícito
 \end{itemize}
 \end{frame}

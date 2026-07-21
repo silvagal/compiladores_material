@@ -20,7 +20,7 @@
 \begin{frame}{O Papel da Análise Sintática}
 \protect\hypertarget{o-papel-da-anuxe1lise-sintuxe1tica}{}
 \begin{itemize}
-\tightlist
+
 \item
   Após a análise léxica, o programa é uma \textbf{lista de tokens}
 \item
@@ -34,7 +34,7 @@
 \begin{frame}{O Papel da Análise Sintática}
 \protect\hypertarget{o-papel-da-anuxe1lise-sintuxe1tica-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   N\~{a}o verifica tipos, declara\c{c}\~{o}es de variáveis, etc. (papel da análise
   sem\^{a}ntica)
@@ -46,7 +46,7 @@
 \begin{frame}{Por que n\~{a}o ERs?}
 \protect\hypertarget{por-que-nuxe3o-ers}{}
 \begin{itemize}
-\tightlist
+
 \item
   Par\^{e}nteses balanceados requerem \textbf{contar} indefinidamente
 \item
@@ -59,7 +59,7 @@
 \begin{frame}{Por que n\~{a}o ERs?}
 \protect\hypertarget{por-que-nuxe3o-ers-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Lema do Bombeamento: \(\{a^n b^n \mid n \geq 0\}\) n\~{a}o é regular
 \item
@@ -76,7 +76,7 @@ Contexto}\label{gramuxe1ticas-livres-de-contexto}}
 Uma GLC \(G = (V, \Sigma, R, P)\):
 
 \begin{itemize}
-\tightlist
+
 \item
   \(V\): conjunto de \textbf{n\~{a}o-terminais} (variáveis sintáticas)
 \item
@@ -93,7 +93,7 @@ Uma GLC \(G = (V, \Sigma, R, P)\):
 \[E \to n \mid E + E \mid E * E \mid (E)\]
 
 \begin{itemize}
-\tightlist
+
 \item
   \(\Sigma = \{+, *, (, ), n\}\) s\~{a}o os tokens da linguagem
 \item
@@ -106,7 +106,7 @@ Uma GLC \(G = (V, \Sigma, R, P)\):
 \begin{frame}{Deriva\c{c}\~{o}es}
 \protect\hypertarget{derivauxe7uxf5es}{}
 \begin{itemize}
-\tightlist
+
 \item
   Uma string pertence a \(L(G)\) se existe uma \textbf{deriva\c{c}\~{a}o} a
   partir do símbolo inicial:
@@ -125,12 +125,12 @@ Uma GLC \(G = (V, \Sigma, R, P)\):
 \begin{frame}{Deriva\c{c}\~{o}es}
 \protect\hypertarget{derivauxe7uxf5es-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Cada passo aplica uma produ\c{c}\~{a}o:
 
   \begin{itemize}
-  \tightlist
+
   \item
     Forma sentencial atual: \(\alpha A \beta\)
   \item
@@ -144,7 +144,7 @@ Uma GLC \(G = (V, \Sigma, R, P)\):
 \begin{frame}{Deriva\c{c}\~{o}es}
 \protect\hypertarget{derivauxe7uxf5es-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Deriva\c{c}\~{a}o mais \`{a} esquerda}: expande o n\~{a}o-terminal mais \`{a}
   esquerda
@@ -156,9 +156,9 @@ Uma GLC \(G = (V, \Sigma, R, P)\):
 \begin{frame}[fragile]{Exemplo}
 \protect\hypertarget{exemplo}{}
 \begin{itemize}
-\tightlist
+
 \item
-  Deriva\c{c}\~{a}o Mais \`{a} Esquerda de \passthrough{\lstinline!(1+4)+2!}
+  Deriva\c{c}\~{a}o Mais \`{a} Esquerda de \texttt{(1+4)+2}
 \end{itemize}
 
 \[\begin{array}{lc}
@@ -175,9 +175,9 @@ E + E & \Rightarrow \\
 \begin{frame}[fragile]{Exemplo}
 \protect\hypertarget{exemplo-1}{}
 \begin{itemize}
-\tightlist
+
 \item
-  Deriva\c{c}\~{a}o Mais \`{a} Direita de \passthrough{\lstinline!(1+4)+2!}
+  Deriva\c{c}\~{a}o Mais \`{a} Direita de \texttt{(1+4)+2}
 \end{itemize}
 
 \[\begin{array}{lc}
@@ -199,21 +199,21 @@ Ambas as deriva\c{c}\~{o}es correspondem \`{a} mesma árvore sintática.
 \begin{frame}[fragile]{Ambiguidade}
 \protect\hypertarget{ambiguidade-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Uma gramática é \textbf{ambígua} se alguma string tem \textbf{mais de
   uma árvore sintática}
 \item
   A gramática \(E \to n \mid E+E \mid E*E \mid (E)\) é ambígua!
 \item
-  Para \passthrough{\lstinline!2 + 3 * 4!}:
+  Para \texttt{2 + 3 * 4}:
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Duas Árvores}
 \protect\hypertarget{duas-uxe1rvores}{}
 \begin{itemize}
-\tightlist
+
 \item
   Árvore 1: raiz é \(E+E\) → calcula \((2+3)*4 = 20\) (errado!)
 \item
@@ -226,7 +226,7 @@ Ambas as deriva\c{c}\~{o}es correspondem \`{a} mesma árvore sintática.
 \begin{frame}{Solu\c{c}\~{a}o}
 \protect\hypertarget{soluuxe7uxe3o}{}
 \begin{itemize}
-\tightlist
+
 \item
   Hierarquia de Preced\^{e}ncia
 \end{itemize}
@@ -241,7 +241,7 @@ F &\to& n \mid (E)
 \begin{frame}{Solu\c{c}\~{a}o}
 \protect\hypertarget{soluuxe7uxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \(E\) (Express\~{a}o): somas
 \item
@@ -256,12 +256,12 @@ F &\to& n \mid (E)
 \begin{frame}{Preced\^{e}ncia}
 \protect\hypertarget{preceduxeancia}{}
 \begin{itemize}
-\tightlist
+
 \item
   Express\~{a}o de preced\^{e}ncia \(i+1\)
 
   \begin{itemize}
-  \tightlist
+
   \item
     Associatividade \`{a} direita
   \end{itemize}
@@ -275,12 +275,12 @@ E_{i + 1} \to E_i \otimes E_{i + 1}
 \begin{frame}{Preced\^{e}ncia}
 \protect\hypertarget{preceduxeancia-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Express\~{a}o de preced\^{e}ncia \(i+1\)
 
   \begin{itemize}
-  \tightlist
+
   \item
     Associatividade \`{a} esquerda
   \end{itemize}
@@ -294,7 +294,7 @@ E_{i + 1} \to E_{i + 1} \otimes E_i
 \begin{frame}{Preced\^{e}ncia}
 \protect\hypertarget{preceduxeancia-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   A produ\c{c}\~{a}o \(E \to E+T\) impede que soma apare\c{c}a \textbf{dentro} de um
   produto sem par\^{e}nteses
@@ -306,7 +306,7 @@ E_{i + 1} \to E_{i + 1} \otimes E_i
 \begin{frame}{Preced\^{e}ncia}
 \protect\hypertarget{preceduxeancia-3}{}
 \begin{itemize}
-\tightlist
+
 \item
   Para recurs\~{a}o \`{a} direita: \(E \to T+E\)
 \item
@@ -325,23 +325,23 @@ S &\to& \mathbf{if}\; E\; \mathbf{then}\; S \\
 
 \begin{frame}[fragile]{O Problema do Else}
 \protect\hypertarget{o-problema-do-else-1}{}
-Para \passthrough{\lstinline!if E1 then if E2 then S1 else S2!}:
+Para \texttt{if E1 then if E2 then S1 else S2}:
 
 \begin{itemize}
-\tightlist
+
 \item
-  O \passthrough{\lstinline!else!} pertence ao primeiro
-  \passthrough{\lstinline!if!} ou ao segundo?
+  O \texttt{else} pertence ao primeiro
+  \texttt{if} ou ao segundo?
 \item
-  \textbf{Regra convencional}: \passthrough{\lstinline!else!} liga ao
-  \passthrough{\lstinline!if!} mais próximo
+  \textbf{Regra convencional}: \texttt{else} liga ao
+  \texttt{if} mais próximo
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Solu\c{c}\~{a}o do Else}
 \protect\hypertarget{soluuxe7uxe3o-do-else}{}
 \begin{itemize}
-\tightlist
+
 \item
   Introduzindo n\~{a}o-terminais para instru\c{c}\~{o}es correspondentes e
   n\~{a}o-correspondentes:
@@ -361,7 +361,7 @@ Gramática}\label{transformauxe7uxf5es-de-gramuxe1tica}}
 \begin{frame}{Remo\c{c}\~{a}o de Recurs\~{a}o \`{a} Esquerda}
 \protect\hypertarget{remouxe7uxe3o-de-recursuxe3o-uxe0-esquerda}{}
 \begin{itemize}
-\tightlist
+
 \item
   Parsers descendentes entram em \textbf{loop infinito} com recurs\~{a}o \`{a}
   esquerda:
@@ -373,7 +373,7 @@ Gramática}\label{transformauxe7uxf5es-de-gramuxe1tica}}
 \begin{frame}{Remo\c{c}\~{a}o de Recurs\~{a}o \`{a} Esquerda}
 \protect\hypertarget{remouxe7uxe3o-de-recursuxe3o-uxe0-esquerda-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Transforma\c{c}\~{a}o --- introduz novo n\~{a}o-terminal \(A'\):
 \end{itemize}
@@ -387,7 +387,7 @@ A' &\to& \alpha_1\;A' \mid \alpha_2\;A' \mid \cdots \mid \alpha_m\;A' \mid \lamb
 \begin{frame}{Exemplo}
 \protect\hypertarget{exemplo-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   Gramática original (recurs\~{a}o \`{a} esquerda):
 \end{itemize}
@@ -401,7 +401,7 @@ T &\to& T * F \mid F
 \begin{frame}{Exemplo}
 \protect\hypertarget{exemplo-3}{}
 \begin{itemize}
-\tightlist
+
 \item
   Após transforma\c{c}\~{a}o:
 \end{itemize}
@@ -418,7 +418,7 @@ F  &\to& n \mid (\;E\;)
 \begin{frame}{Recurs\~{a}o Indireta \`{a} Esquerda}
 \protect\hypertarget{recursuxe3o-indireta-uxe0-esquerda}{}
 \begin{itemize}
-\tightlist
+
 \item
   Também é possível ter recurs\~{a}o \`{a} esquerda \textbf{indireta}:
 \end{itemize}
@@ -444,7 +444,7 @@ B &\to& A\,b \mid c
 \begin{frame}{Fatora\c{c}\~{a}o \`{a} Esquerda}
 \protect\hypertarget{fatorauxe7uxe3o-uxe0-esquerda}{}
 \begin{itemize}
-\tightlist
+
 \item
   Quando duas produ\c{c}\~{o}es compartilham um prefixo, o parser n\~{a}o sabe qual
   escolher com 1 token de lookahead:
@@ -456,7 +456,7 @@ B &\to& A\,b \mid c
 \begin{frame}{Fatora\c{c}\~{a}o \`{a} Esquerda}
 \protect\hypertarget{fatorauxe7uxe3o-uxe0-esquerda-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Fatorando o prefixo comum \(\mathbf{if}\; E\; \mathbf{then}\; S\):
 \end{itemize}
@@ -477,7 +477,7 @@ Dado:
 \begin{frame}{Padr\~{a}o Geral de Fatora\c{c}\~{a}o}
 \protect\hypertarget{padruxe3o-geral-de-fatorauxe7uxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Após fatora\c{c}\~{a}o:
 \end{itemize}
@@ -488,7 +488,7 @@ A' &\to& \beta_1 \mid \beta_2 \mid \cdots \mid \beta_k
 \end{array}\]
 
 \begin{itemize}
-\tightlist
+
 \item
   O analisador consome \(\alpha\) e depois decide com base no próximo
   token
@@ -502,7 +502,7 @@ Abstratas}\label{uxe1rvores-sintuxe1ticas-abstratas}}
 \begin{frame}{AST vs.~Árvore de Deriva\c{c}\~{a}o}
 \protect\hypertarget{ast-vs.-uxe1rvore-de-derivauxe7uxe3o}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Árvore de deriva\c{c}\~{a}o}: descreve os passos da deriva\c{c}\~{a}o, inclui
   todos os nós
@@ -512,12 +512,12 @@ Abstratas}\label{uxe1rvores-sintuxe1ticas-abstratas}}
 \begin{frame}{AST vs.~Árvore de Deriva\c{c}\~{a}o}
 \protect\hypertarget{ast-vs.-uxe1rvore-de-derivauxe7uxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{AST}: apenas as constru\c{c}\~{o}es relevantes para fases seguintes
 
   \begin{itemize}
-  \tightlist
+
   \item
     Sem par\^{e}nteses (já capturados pela estrutura da árvore)
   \item
@@ -526,12 +526,12 @@ Abstratas}\label{uxe1rvores-sintuxe1ticas-abstratas}}
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Exemplo de AST para \passthrough{\lstinline!(1+4)*2!}}
+\begin{frame}{Exemplo de AST para \texttt{(1+4)*2}}
 \protect\hypertarget{exemplo-de-ast-para-142}{}
 \includegraphics[width=0.55\textwidth,height=\textheight]{chapter05/imgs/tree.png}
 
 \begin{itemize}
-\tightlist
+
 \item
   Par\^{e}nteses determinam a estrutura mas n\~{a}o aparecem na AST
 \item
@@ -549,7 +549,7 @@ data Exp
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
   Um construtor por constru\c{c}\~{a}o da linguagem relevante
 \item
@@ -562,7 +562,7 @@ data Exp
 \begin{frame}{Outros Desafios na Análise Sintática}
 \protect\hypertarget{outros-desafios-na-anuxe1lise-sintuxe1tica}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Indenta\c{c}\~{a}o significativa} (Python, Haskell): o lexer insere
   tokens de indenta\c{c}\~{a}o/desindenta\c{c}\~{a}o.
@@ -572,15 +572,15 @@ data Exp
 \begin{frame}[fragile]{Outros Desafios na Análise Sintática}
 \protect\hypertarget{outros-desafios-na-anuxe1lise-sintuxe1tica-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Identificadores dependentes de contexto} (C++):
-  \passthrough{\lstinline!HashTable<K,V> x;!} pode ser ambíguo
+  \texttt{HashTable<K,V> x;} pode ser ambíguo
 
   \begin{itemize}
-  \tightlist
+
   \item
-    Depende se \passthrough{\lstinline!HashTable!} é um tipo ou uma
+    Depende se \texttt{HashTable} é um tipo ou uma
     variável
   \item
     Requer feedback do analisador sem\^{a}ntico para o léxico
@@ -594,7 +594,7 @@ data Exp
 \begin{frame}{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{GLCs} permitem especificar estruturas recursivas que ERs n\~{a}o
   conseguem
@@ -606,7 +606,7 @@ data Exp
 \begin{frame}{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Ambiguidade} é resolvida com hierarquias de preced\^{e}ncia e
   associatividade
@@ -619,7 +619,7 @@ data Exp
 \begin{frame}{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-3}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Fatora\c{c}\~{a}o \`{a} esquerda}: elimina ambiguidades de escolha com 1
   lookahead

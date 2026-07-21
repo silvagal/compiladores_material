@@ -18,7 +18,7 @@
 \begin{frame}{Motiva\c{c}\~{a}o: Express\~{o}es Puras N\~{a}o Bastam}
 \protect\hypertarget{motivauxe7uxe3o-expressuxf5es-puras-nuxe3o-bastam}{}
 \begin{itemize}
-\tightlist
+
 \item
   No capítulo anterior: express\~{o}es \textbf{puras} sem variáveis
 \item
@@ -32,7 +32,7 @@
 \begin{frame}{Motiva\c{c}\~{a}o: Express\~{o}es Puras N\~{a}o Bastam}
 \protect\hypertarget{motivauxe7uxe3o-expressuxf5es-puras-nuxe3o-bastam-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Programas reais manipulam \textbf{estado}: valores armazenados em
   variáveis
@@ -86,13 +86,13 @@ Um \textbf{ambiente}
 \(\sigma : \mathit{Var} \rightharpoonup \mathbb{Z}\) é uma fun\c{c}\~{a}o
 parcial que mapeia nomes de variáveis para inteiros.
 
-Em Haskell: \passthrough{\lstinline!type Env = Map String Int!}
+Em Haskell: \texttt{type Env = Map String Int}
 \end{frame}
 
 \begin{frame}{Nota\c{c}\~{a}o}
 \protect\hypertarget{notauxe7uxe3o}{}
 \begin{itemize}
-\tightlist
+
 \item
   \(\sigma(x)\): valor de \(x\) em \(\sigma\) (supondo
   \(x \in \mathrm{dom}(\sigma)\))
@@ -106,12 +106,12 @@ Em Haskell: \passthrough{\lstinline!type Env = Map String Int!}
 \begin{frame}[fragile]{Por que Precisamos de Ambientes?}
 \protect\hypertarget{por-que-precisamos-de-ambientes}{}
 \begin{itemize}
-\tightlist
+
 \item
   Express\~{o}es agora podem conter \textbf{variáveis}:
-  \passthrough{\lstinline!x * 4!}
+  \texttt{x * 4}
 \item
-  O valor de \passthrough{\lstinline!x!} só é conhecido durante a
+  O valor de \texttt{x} só é conhecido durante a
   execu\c{c}\~{a}o
 \end{itemize}
 \end{frame}
@@ -119,7 +119,7 @@ Em Haskell: \passthrough{\lstinline!type Env = Map String Int!}
 \begin{frame}{Por que Precisamos de Ambientes?}
 \protect\hypertarget{por-que-precisamos-de-ambientes-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   O ambiente \(\sigma\) registra o estado da memória em cada instante
 \item
@@ -131,7 +131,7 @@ Em Haskell: \passthrough{\lstinline!type Env = Map String Int!}
 \begin{frame}{Por que Precisamos de Ambientes?}
 \protect\hypertarget{por-que-precisamos-de-ambientes-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   Express\~{o}es apenas \textbf{consultam} o ambiente, sem modificá-lo
 \end{itemize}
@@ -143,7 +143,7 @@ Em Haskell: \passthrough{\lstinline!type Env = Map String Int!}
 \begin{frame}{Express\~{o}es com Variáveis}
 \protect\hypertarget{expressuxf5es-com-variuxe1veis}{}
 \begin{itemize}
-\tightlist
+
 \item
   A configura\c{c}\~{a}o de uma express\~{a}o é um par \((\sigma, e)\); a redu\c{c}\~{a}o é
   \((\sigma, e) \to (\sigma, e')\).
@@ -153,7 +153,7 @@ Em Haskell: \passthrough{\lstinline!type Env = Map String Int!}
 \begin{frame}{Express\~{o}es com Variáveis}
 \protect\hypertarget{expressuxf5es-com-variuxe1veis-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Variável:}
 \end{itemize}
@@ -164,7 +164,7 @@ Em Haskell: \passthrough{\lstinline!type Env = Map String Int!}
 \begin{frame}{Express\~{o}es com Variáveis}
 \protect\hypertarget{expressuxf5es-com-variuxe1veis-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   Uma variável é substituída pelo seu valor corrente.
 \item
@@ -190,12 +190,12 @@ Em Haskell: \passthrough{\lstinline!type Env = Map String Int!}
 \[\frac{}{(\sigma,\, n_1 + n_2) \to (\sigma,\, n_1 \mathbin{\hat{+}} n_2)} \quad\text{(Add)}\]
 
 \begin{itemize}
-\tightlist
+
 \item
   Note que as express\~{o}es \textbf{n\~{a}o modificam} \(\sigma\)
 
   \begin{itemize}
-  \tightlist
+
   \item
     S\~{a}o puras no sentido de que apenas consultam o ambiente.
   \end{itemize}
@@ -211,7 +211,7 @@ A configura\c{c}\~{a}o de um comando é \((\sigma, s) \to (\sigma', s')\), onde
 \begin{frame}{Regras para Comandos}
 \protect\hypertarget{regras-para-comandos-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Atribui\c{c}\~{a}o (avalia primeiro):}
   \[\frac{(\sigma, e) \to (\sigma, e')}{(\sigma,\; x \mathbin{:=} e) \to (\sigma,\; x \mathbin{:=} e')} \quad\text{(AssignStep)}\]
@@ -221,7 +221,7 @@ A configura\c{c}\~{a}o de um comando é \((\sigma, s) \to (\sigma', s')\), onde
 \begin{frame}{Regras para Comandos}
 \protect\hypertarget{regras-para-comandos-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Atribui\c{c}\~{a}o (valor final):}
   \[\frac{}{(\sigma,\; x \mathbin{:=} n) \to (\sigma[x \mapsto n],\; \mathbf{skip})} \quad\text{(Assign)}\]
@@ -231,7 +231,7 @@ A configura\c{c}\~{a}o de um comando é \((\sigma, s) \to (\sigma', s')\), onde
 \begin{frame}{Impress\~{a}o}
 \protect\hypertarget{impressuxe3o}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Impress\~{a}o (avalia primeiro):}
   \[\frac{(\sigma, e) \to (\sigma, e')}{(\sigma,\; \mathbf{print}\; e) \to (\sigma,\; \mathbf{print}\; e')} \quad\text{(PrintStep)}\]
@@ -241,7 +241,7 @@ A configura\c{c}\~{a}o de um comando é \((\sigma, s) \to (\sigma', s')\), onde
 \begin{frame}{Impress\~{a}o}
 \protect\hypertarget{impressuxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Impress\~{a}o (valor final):}
   \[\frac{}{(\sigma,\; \mathbf{print}\; n) \to (\sigma,\; \mathbf{skip})} \quad\text{(Print) [emite } n\text{]}\]
@@ -251,7 +251,7 @@ A configura\c{c}\~{a}o de um comando é \((\sigma, s) \to (\sigma', s')\), onde
 \begin{frame}{Sequ\^{e}ncia}
 \protect\hypertarget{sequuxeancia}{}
 \begin{itemize}
-\tightlist
+
 \item
   Skip \`{a} esquerda
 \end{itemize}
@@ -262,7 +262,7 @@ A configura\c{c}\~{a}o de um comando é \((\sigma, s) \to (\sigma', s')\), onde
 \begin{frame}{Sequ\^{e}ncia}
 \protect\hypertarget{sequuxeancia-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Caso geral:
 \end{itemize}
@@ -273,12 +273,12 @@ A configura\c{c}\~{a}o de um comando é \((\sigma, s) \to (\sigma', s')\), onde
 \begin{frame}[fragile]{Exemplo}
 \protect\hypertarget{exemplo}{}
 \begin{itemize}
-\tightlist
+
 \item
-  Small-Step: \passthrough{\lstinline!x := 2 + 3; print x * 4!}
+  Small-Step: \texttt{x := 2 + 3; print x * 4}
 
   \begin{itemize}
-  \tightlist
+
   \item
     Partindo do ambiente vazio \(\emptyset\):
   \end{itemize}
@@ -290,12 +290,12 @@ A configura\c{c}\~{a}o de um comando é \((\sigma, s) \to (\sigma', s')\), onde
 \begin{frame}[fragile]{Exemplo}
 \protect\hypertarget{exemplo-1}{}
 \begin{itemize}
-\tightlist
+
 \item
-  Small-Step: \passthrough{\lstinline!x := 2 + 3; print x * 4!}
+  Small-Step: \texttt{x := 2 + 3; print x * 4}
 
   \begin{itemize}
-  \tightlist
+
   \item
     Partindo do ambiente vazio \(\emptyset\):
   \end{itemize}
@@ -309,12 +309,12 @@ A configura\c{c}\~{a}o de um comando é \((\sigma, s) \to (\sigma', s')\), onde
 \begin{frame}[fragile]{Exemplo}
 \protect\hypertarget{exemplo-2}{}
 \begin{itemize}
-\tightlist
+
 \item
-  Small-Step: \passthrough{\lstinline!x := 2 + 3; print x * 4!}
+  Small-Step: \texttt{x := 2 + 3; print x * 4}
 
   \begin{itemize}
-  \tightlist
+
   \item
     Partindo do ambiente vazio \(\emptyset\):
   \end{itemize}
@@ -328,12 +328,12 @@ A configura\c{c}\~{a}o de um comando é \((\sigma, s) \to (\sigma', s')\), onde
 \begin{frame}[fragile]{Exemplo}
 \protect\hypertarget{exemplo-3}{}
 \begin{itemize}
-\tightlist
+
 \item
-  Small-Step: \passthrough{\lstinline!x := 2 + 3; print x * 4!}
+  Small-Step: \texttt{x := 2 + 3; print x * 4}
 
   \begin{itemize}
-  \tightlist
+
   \item
     Partindo do ambiente vazio \(\emptyset\):
   \end{itemize}
@@ -350,7 +350,7 @@ A configura\c{c}\~{a}o de um comando é \((\sigma, s) \to (\sigma', s')\), onde
 \begin{frame}{Express\~{o}es}
 \protect\hypertarget{expressuxf5es}{}
 \begin{itemize}
-\tightlist
+
 \item
   Nova regra: variáveis.
 \end{itemize}
@@ -361,7 +361,7 @@ A configura\c{c}\~{a}o de um comando é \((\sigma, s) \to (\sigma', s')\), onde
 \begin{frame}{Comandos}
 \protect\hypertarget{comandos}{}
 \begin{itemize}
-\tightlist
+
 \item
   A rela\c{c}\~{a}o \(\sigma, s \Downarrow \sigma'\) significa ``executar \(s\)
   no ambiente \(\sigma\) produz \(\sigma'\)''.
@@ -402,7 +402,7 @@ A configura\c{c}\~{a}o de um comando é \((\sigma, s) \to (\sigma', s')\), onde
 \quad\text{(SeqCons)}\]
 \end{frame}
 
-\begin{frame}{Deriva\c{c}\~{a}o: \passthrough{\lstinline!x := 2 + 3!}}
+\begin{frame}{Deriva\c{c}\~{a}o: \texttt{x := 2 + 3}}
 \protect\hypertarget{derivauxe7uxe3o-x-2-3}{}
 \[\dfrac{
   \dfrac{
@@ -413,10 +413,10 @@ A configura\c{c}\~{a}o de um comando é \((\sigma, s) \to (\sigma', s')\), onde
 }{\emptyset,\; x \mathbin{:=} 2 + 3 \;\Downarrow\; [x \mapsto 5]}\]
 \end{frame}
 
-\begin{frame}{Deriva\c{c}\~{a}o: \passthrough{\lstinline!x := 2+3; print x*4!}}
+\begin{frame}{Deriva\c{c}\~{a}o: \texttt{x := 2+3; print x*4}}
 \protect\hypertarget{derivauxe7uxe3o-x-23-print-x4}{}
 \begin{itemize}
-\tightlist
+
 \item
   Resolu\c{c}\~{a}o na lousa.
 \end{itemize}
@@ -429,7 +429,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}}
 \begin{frame}[fragile]{M\^{o}nada}
 \protect\hypertarget{muxf4nada}{}
 \begin{itemize}
-\tightlist
+
 \item
   A sem\^{a}ntica big-step dita que cada comando recebe e produz um
   ambiente.
@@ -444,22 +444,22 @@ type Interp a = ExceptT String (StateT Env IO) a
 \begin{frame}[fragile]{M\^{o}nada}
 \protect\hypertarget{muxf4nada-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   A pilha de m\^{o}nadas combina:
 
   \begin{itemize}
-  \tightlist
+
   \item
-    \passthrough{\lstinline!StateT Env!}: o ambiente \(\sigma\)
-    implícito --- lido com \passthrough{\lstinline!get!}, modificado com
-    \passthrough{\lstinline!modify!}
+    \texttt{StateT Env}: o ambiente \(\sigma\)
+    implícito --- lido com \texttt{get}, modificado com
+    \texttt{modify}
   \item
-    \passthrough{\lstinline!ExceptT String!}: tratamento de erros
+    \texttt{ExceptT String}: tratamento de erros
     (variável n\~{a}o definida)
   \item
-    \passthrough{\lstinline!IO!}: efeitos de I/O para
-    \passthrough{\lstinline!read!} e \passthrough{\lstinline!print!}
+    \texttt{IO}: efeitos de I/O para
+    \texttt{read} e \texttt{print}
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -524,13 +524,13 @@ interpProgram (Line ss) = mapM_ interpStmt ss
 \begin{frame}{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Apresentamos a sem\^{a}ntica operacional de uma linguagem imperativa
   simples.
 
   \begin{itemize}
-  \tightlist
+
   \item
     Foco: representa\c{c}\~{a}o do estado.
   \item

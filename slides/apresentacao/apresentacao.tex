@@ -4,7 +4,7 @@
 \begin{frame}{Objetivos}
 \protect\hypertarget{objetivos-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Apresentar a import\^{a}ncia da constru\c{c}\~{a}o de compiladores na forma\c{c}\~{a}o de
   um cientista da computa\c{c}\~{a}o.
@@ -17,7 +17,7 @@
 \begin{frame}{Objetivos}
 \protect\hypertarget{objetivos-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   Apresentar a vis\~{a}o geral de um compilador.
 \end{itemize}
@@ -29,12 +29,12 @@
 \begin{frame}{Como executamos programas?}
 \protect\hypertarget{como-executamos-programas}{}
 \begin{itemize}
-\tightlist
+
 \item
   Tr\^{e}s técnicas principais
 
   \begin{itemize}
-  \tightlist
+
   \item
     Interpreta\c{c}\~{a}o
   \item
@@ -48,7 +48,7 @@
 \begin{frame}{Interpreta\c{c}\~{a}o}
 \protect\hypertarget{interpretauxe7uxe3o}{}
 \begin{itemize}
-\tightlist
+
 \item
   Código fonte é representado como uma estrutura de dados e o
   intepretador executa o programa diretamente.
@@ -61,7 +61,7 @@
 \begin{frame}{Compila\~{c}\~{a}o}
 \protect\hypertarget{compilauxe7uxe3o}{}
 \begin{itemize}
-\tightlist
+
 \item
   Código fonte é traduzido para uma nova linguagem.
 \item
@@ -74,7 +74,7 @@
 \begin{frame}{Virtualiza\c{c}\~{a}o}
 \protect\hypertarget{virtualizauxe7uxe3o}{}
 \begin{itemize}
-\tightlist
+
 \item
   Código fonte é traduzido para uma linguagem de baixo nível, n\~{a}o
   diretamente entendida pelo hardware.
@@ -87,18 +87,18 @@
 
 \begin{frame}{Vis\~{a}o geral (montanha)}
 \protect\hypertarget{visuxe3o-geral-montanha}{}
-\includegraphics{apresentacao/montain.png}
+\includegraphics[width=0.85\textwidth,height=0.7\textheight,keepaspectratio]{apresentacao/montain.png}
 \end{frame}
 
 \begin{frame}{Escalando a montanha}
 \protect\hypertarget{escalando-a-montanha}{}
 \begin{itemize}
-\tightlist
+
 \item
   Análise Léxica: Dividir o código em \textbf{tokens}.
 
   \begin{itemize}
-  \tightlist
+
   \item
     Eliminar comentários e espa\c{c}os em branco.
   \end{itemize}
@@ -108,13 +108,13 @@
 \begin{frame}{Escalando a montanha}
 \protect\hypertarget{escalando-a-montanha-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Análise sintática: Organiza a sequ\^{e}ncia de tokens em sua estrutura
   gramatical.
 
   \begin{itemize}
-  \tightlist
+
   \item
     Produz uma árvore de sintaxe abstrata.
   \end{itemize}
@@ -124,13 +124,13 @@
 \begin{frame}{Escalando a montanha}
 \protect\hypertarget{escalando-a-montanha-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   Análise sem\^{a}ntica: Verifica se a árvore produzida pelo analisador
   sintático atende restri\c{c}\~{o}es sem\^{a}nticas.
 
   \begin{itemize}
-  \tightlist
+
   \item
     Todos os símbolos foram declarados?
   \item
@@ -142,13 +142,13 @@
 \begin{frame}{Escalando a montanha}
 \protect\hypertarget{escalando-a-montanha-3}{}
 \begin{itemize}
-\tightlist
+
 \item
   Intepretador: executa o código diretamente a partir da árvore de
   sintaxe.
 
   \begin{itemize}
-  \tightlist
+
   \item
     N\~{a}o há gera\c{c}\~{a}o de código
   \item
@@ -160,13 +160,13 @@
 \begin{frame}{Escalando a montanha}
 \protect\hypertarget{escalando-a-montanha-4}{}
 \begin{itemize}
-\tightlist
+
 \item
   ``Transpilador'': converte a árvore de sintaxe para outra linguagem de
   alto nível.
 
   \begin{itemize}
-  \tightlist
+
   \item
     Ideal para permitir independ\^{e}ncia de plataformas.
   \item
@@ -178,13 +178,13 @@
 \begin{frame}{Escalando a montanha}
 \protect\hypertarget{escalando-a-montanha-5}{}
 \begin{itemize}
-\tightlist
+
 \item
   Gera\c{c}\~{a}o de código intermediário: código de baixo nível independente de
   plataforma.
 
   \begin{itemize}
-  \tightlist
+
   \item
     Utilizado para otimiza\c{c}\~{o}es independentes de hardware.
   \end{itemize}
@@ -194,12 +194,12 @@
 \begin{frame}{Escalando a montanha}
 \protect\hypertarget{escalando-a-montanha-6}{}
 \begin{itemize}
-\tightlist
+
 \item
   Otimiza\c{c}\~{a}o de código.
 
   \begin{itemize}
-  \tightlist
+
   \item
     Otimiza\c{c}\~{a}o de consumo de memória, tempo de execu\c{c}\~{a}o, tamanho de
     código, etc\ldots{}
@@ -210,7 +210,7 @@
 \begin{frame}{Escalando a montanha}
 \protect\hypertarget{escalando-a-montanha-7}{}
 \begin{itemize}
-\tightlist
+
 \item
   Gera\c{c}\~{a}o de código: tradu\c{c}\~{a}o da representa\c{c}\~{a}o intermediária para o
   código de máquina, diretamente executável pelo hardware.
@@ -220,13 +220,13 @@
 \begin{frame}{Escalando a montanha}
 \protect\hypertarget{escalando-a-montanha-8}{}
 \begin{itemize}
-\tightlist
+
 \item
   Virtualiza\c{c}\~{a}o: gera\c{c}\~{a}o de código para máquinas virtuais como a JVM /
   EVM.
 
   \begin{itemize}
-  \tightlist
+
   \item
     Diferentes plataformas podem executar o mesmo programa utilizando
     VMs para a plataforma.
@@ -240,12 +240,12 @@
 \begin{frame}{Porque estudar compiladores?}
 \protect\hypertarget{porque-estudar-compiladores}{}
 \begin{itemize}
-\tightlist
+
 \item
   Desenvolver um compilador permite consolidar conhecimentos de:
 
   \begin{itemize}
-  \tightlist
+
   \item
     Teoria da computa\c{c}\~{a}o (aut\^{o}matos e gramáticas)
   \end{itemize}
@@ -255,12 +255,12 @@
 \begin{frame}{Porque estudar compiladores?}
 \protect\hypertarget{porque-estudar-compiladores-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Desenvolver um compilador permite consolidar conhecimentos de:
 
   \begin{itemize}
-  \tightlist
+
   \item
     Engenharia de software (testes e arquitetura de software)
   \end{itemize}
@@ -270,12 +270,12 @@
 \begin{frame}{Porque estudar compiladores?}
 \protect\hypertarget{porque-estudar-compiladores-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   Desenvolver um compilador permite consolidar conhecimentos de:
 
   \begin{itemize}
-  \tightlist
+
   \item
     Arquitetura de computadores (conhecer detalhes do alvo de
     compila\~{c}\~{a}o)
@@ -286,7 +286,7 @@
 \begin{frame}{Porque estudar compiladores?}
 \protect\hypertarget{porque-estudar-compiladores-3}{}
 \begin{itemize}
-\tightlist
+
 \item
   Possivelmente, o primeiro artefato de software complexo produzido por
   estudantes de gradua\c{c}\~{a}o.
@@ -296,12 +296,12 @@
 \begin{frame}{Porque estudar compiladores?}
 \protect\hypertarget{porque-estudar-compiladores-4}{}
 \begin{itemize}
-\tightlist
+
 \item
   Compiladores aparecem em toda parte!
 
   \begin{itemize}
-  \tightlist
+
   \item
     Navegadores web (JavaScript e WebASM)
   \end{itemize}
@@ -311,12 +311,12 @@
 \begin{frame}{Porque estudar compiladores?}
 \protect\hypertarget{porque-estudar-compiladores-5}{}
 \begin{itemize}
-\tightlist
+
 \item
   Compiladores aparecem em toda parte!
 
   \begin{itemize}
-  \tightlist
+
   \item
     Monitoramento do Kernel Linux (eBPF)
   \end{itemize}
@@ -326,12 +326,12 @@
 \begin{frame}{Porque estudar compiladores?}
 \protect\hypertarget{porque-estudar-compiladores-6}{}
 \begin{itemize}
-\tightlist
+
 \item
   Compiladores aparecem em toda parte!
 
   \begin{itemize}
-  \tightlist
+
   \item
     Várias aplica\c{c}\~{o}es possuem linguagens para customiza\c{c}\~{a}o.
   \end{itemize}
@@ -339,7 +339,7 @@
   Exemplos:
 
   \begin{itemize}
-  \tightlist
+
   \item
     VBA, elisp, Lua
   \end{itemize}
@@ -349,12 +349,12 @@
 \begin{frame}{Porque estudar compiladores?}
 \protect\hypertarget{porque-estudar-compiladores-7}{}
 \begin{itemize}
-\tightlist
+
 \item
   Projeto de compiladores envolve problemas difíceis:
 
   \begin{itemize}
-  \tightlist
+
   \item
     Executam várias tarefas e devem ser eficientes.
   \end{itemize}
@@ -364,12 +364,12 @@
 \begin{frame}{Porque estudar compiladores?}
 \protect\hypertarget{porque-estudar-compiladores-8}{}
 \begin{itemize}
-\tightlist
+
 \item
   Projeto de compiladores envolve problemas difíceis:
 
   \begin{itemize}
-  \tightlist
+
   \item
     Responsáveis por bom uso de uma linguagem.
   \end{itemize}
@@ -379,12 +379,12 @@
 \begin{frame}{Porque estudar compiladores?}
 \protect\hypertarget{porque-estudar-compiladores-9}{}
 \begin{itemize}
-\tightlist
+
 \item
   Projeto de compiladores envolve problemas difíceis:
 
   \begin{itemize}
-  \tightlist
+
   \item
     Devem ocultar detalhes de arquitetura e SO de desenvolvedores.
   \end{itemize}
@@ -394,7 +394,7 @@
 \begin{frame}{Porque estudar compiladores?}
 \protect\hypertarget{porque-estudar-compiladores-10}{}
 \begin{itemize}
-\tightlist
+
 \item
   Provavelmente, uma das áreas mais consolidadas da ci\^{e}ncia da
   computa\c{c}\~{a}o!
@@ -404,12 +404,12 @@
 \begin{frame}{Porque estudar compiladores?}
 \protect\hypertarget{porque-estudar-compiladores-11}{}
 \begin{itemize}
-\tightlist
+
 \item
   Vários pesquisadores da área foram agraciados com o Turing Award!
 
   \begin{itemize}
-  \tightlist
+
   \item
     John Backus, Barbara Liskov, Niklaus Wirth, Edsger Djikstra, Robin
     Milner e C.A. Hoare.
@@ -420,7 +420,7 @@
 \begin{frame}{Porque estudar compiladores?}
 \protect\hypertarget{porque-estudar-compiladores-12}{}
 \begin{itemize}
-\tightlist
+
 \item
   A área de linguagens de programa\c{c}\~{a}o, apesar de teórica, possui demanda
   de vagas!
@@ -430,12 +430,12 @@
 \begin{frame}{Porque estudar Compiladores?}
 \protect\hypertarget{porque-estudar-compiladores-13}{}
 \begin{itemize}
-\tightlist
+
 \item
   Áreas de atua\c{c}\~{a}o: Compiladores.
 
   \begin{itemize}
-  \tightlist
+
   \item
     Cadence contrata Engenheiros de compiladores para desenvolvimento de
     compiladores de modelos de IA.
@@ -448,7 +448,7 @@
 \begin{frame}{Porque estudar Compiladores?}
 \protect\hypertarget{porque-estudar-compiladores-14}{}
 \begin{itemize}
-\tightlist
+
 \item
   Ferramentas de análise estática de código e teste automatizado.
 \item
@@ -461,7 +461,7 @@
 \begin{frame}{Porque estudar compiladores?}
 \protect\hypertarget{porque-estudar-compiladores-15}{}
 \begin{itemize}
-\tightlist
+
 \item
   Como determinar se o bug em seu código está presente em seu programa
   fonte ou foi inserido durante o processo de compilador?
@@ -477,7 +477,7 @@
   Como determinar se um compilador é ou n\~{a}o correto?
 
   \begin{itemize}
-  \tightlist
+
   \item
     Código produzido pelo compilador deve ter o mesmo significado que o
     código fonte original.
@@ -494,7 +494,7 @@
   Imagine a situa\c{c}\~{a}o:
 
   \begin{itemize}
-  \tightlist
+
   \item
     Dado um programa fonte P, o compilador produz o código alvo E, que é
     equivalente a P, exceto que E imprime um ``Hello world'' adicional.
@@ -505,12 +505,12 @@
 \begin{frame}{Porque estudar compiladores?}
 \protect\hypertarget{porque-estudar-compiladores-18}{}
 \begin{itemize}
-\tightlist
+
 \item
   Pode-se pensar, um print adicional é inócuo\ldots{}
 
   \begin{itemize}
-  \tightlist
+
   \item
     Depende da informa\c{c}\~{a}o impressa!
   \item
@@ -525,12 +525,12 @@
 \begin{frame}{Porque estudar compiladores?}
 \protect\hypertarget{porque-estudar-compiladores-19}{}
 \begin{itemize}
-\tightlist
+
 \item
   Pesquisa em compiladores:
 
   \begin{itemize}
-  \tightlist
+
   \item
     Como produzir código mais eficiente? Otimiza\c{c}\~{a}o de código.
   \item
@@ -544,12 +544,12 @@
 \begin{frame}{Porque estudar compiladores?}
 \protect\hypertarget{porque-estudar-compiladores-20}{}
 \begin{itemize}
-\tightlist
+
 \item
   Pesquisa realizada no DECOM / UFOP
 
   \begin{itemize}
-  \tightlist
+
   \item
     Novos algoritmos para análise sintática / léxica.
   \item
@@ -563,12 +563,12 @@
 \begin{frame}{Porque estudar compiladores?}
 \protect\hypertarget{porque-estudar-compiladores-21}{}
 \begin{itemize}
-\tightlist
+
 \item
   Novos algoritmos para análise sintática / léxica
 
   \begin{itemize}
-  \tightlist
+
   \item
     Termina\c{c}\~{a}o de análise sintática usando PEGs.
   \item
@@ -582,17 +582,17 @@
 \begin{frame}{Porque estudar compiladores?}
 \protect\hypertarget{porque-estudar-compiladores-22}{}
 \begin{itemize}
-\tightlist
+
 \item
   Verifica\c{c}\~{a}o e teste de programas.
 
   \begin{itemize}
-  \tightlist
+
   \item
     Filtros de pacotes e extens\~{o}es de Kernel (eBPF).
 
     \begin{itemize}
-    \tightlist
+
     \item
       Teste automatizado de programas.
     \item
@@ -605,12 +605,12 @@
 \begin{frame}{Porque estudar compiladores?}
 \protect\hypertarget{porque-estudar-compiladores-23}{}
 \begin{itemize}
-\tightlist
+
 \item
   Verifica\c{c}\~{a}o e teste programas.
 
   \begin{itemize}
-  \tightlist
+
   \item
     Análise de complexidade assintótica de tempo.
   \end{itemize}
@@ -618,7 +618,7 @@
   Análise de código fonte
 
   \begin{itemize}
-  \tightlist
+
   \item
     Desenvolvimento de bibliotecas para manipula\c{c}\~{a}o de código.
   \end{itemize}
@@ -628,12 +628,12 @@
 \begin{frame}{Porque estudar compiladores?}
 \protect\hypertarget{porque-estudar-compiladores-24}{}
 \begin{itemize}
-\tightlist
+
 \item
   Desenvolvimento de contratos inteligentes
 
   \begin{itemize}
-  \tightlist
+
   \item
     Software responsável por transa\c{c}\~{o}es em blockchain.
   \item
@@ -643,7 +643,7 @@
   Problemas em aberto:
 
   \begin{itemize}
-  \tightlist
+
   \item
     Ferramentas para teste e verifica\c{c}\~{a}o formal.
   \end{itemize}
@@ -656,18 +656,18 @@
 \begin{frame}{Estrutura geral}
 \protect\hypertarget{estrutura-geral}{}
 \begin{itemize}
-\tightlist
+
 \item
   Estrutura geral de um compilador
 \end{itemize}
 
-\includegraphics{apresentacao/compiler_structure.png}
+\includegraphics[width=0.85\textwidth,height=0.7\textheight,keepaspectratio]{apresentacao/compiler_structure.png}
 \end{frame}
 
 \begin{frame}{Front-end de um compilador}
 \protect\hypertarget{front-end-de-um-compilador}{}
 \begin{itemize}
-\tightlist
+
 \item
   Responsável pela análise do código.
 \item
@@ -678,12 +678,12 @@
 \begin{frame}{Middle-end de um compilador}
 \protect\hypertarget{middle-end-de-um-compilador}{}
 \begin{itemize}
-\tightlist
+
 \item
   Responsável por otimiza\c{c}\~{o}es independentes de arquitetura.
 
   \begin{itemize}
-  \tightlist
+
   \item
     Constant folding: substituir 3 + 4 por 7 no código.
   \item
@@ -697,12 +697,12 @@
 \begin{frame}{Back-end de um compilador}
 \protect\hypertarget{back-end-de-um-compilador}{}
 \begin{itemize}
-\tightlist
+
 \item
   Responsável por otimiza\c{c}\~{o}es dependentes do hardware.
 
   \begin{itemize}
-  \tightlist
+
   \item
     Aloca\c{c}\~{a}o de registradores: como usar registradores da melhor
     maneira?
@@ -719,7 +719,7 @@
 \begin{frame}{Porque essa arquitetura?}
 \protect\hypertarget{porque-essa-arquitetura}{}
 \begin{itemize}
-\tightlist
+
 \item
   Um mesmo front-end pode suportar diferentes middle-ends, sem
   modifica\c{c}\~{o}es na linguagem fonte.
@@ -733,22 +733,22 @@
 
 \begin{frame}{Exemplos}
 \protect\hypertarget{exemplos}{}
-\includegraphics{apresentacao/llvm1.png}
+\includegraphics[width=0.85\textwidth,height=0.7\textheight,keepaspectratio]{apresentacao/llvm1.png}
 \end{frame}
 
 \begin{frame}{Exemplos}
 \protect\hypertarget{exemplos-1}{}
-\includegraphics{apresentacao/javascript.png}
+\includegraphics[width=0.85\textwidth,height=0.7\textheight,keepaspectratio]{apresentacao/javascript.png}
 \end{frame}
 
 \begin{frame}{Exemplos}
 \protect\hypertarget{exemplos-2}{}
-\includegraphics{apresentacao/net.png}
+\includegraphics[width=0.85\textwidth,height=0.7\textheight,keepaspectratio]{apresentacao/net.png}
 \end{frame}
 
 \begin{frame}{Exemplos}
 \protect\hypertarget{exemplos-3}{}
-\includegraphics{apresentacao/java.png}
+\includegraphics[width=0.85\textwidth,height=0.7\textheight,keepaspectratio]{apresentacao/java.png}
 \end{frame}
 
 \hypertarget{ementa}{%
@@ -774,12 +774,12 @@
 \begin{frame}{Pré-requisitos}
 \protect\hypertarget{pruxe9-requisitos-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Essa disciplina faz uso \textbf{INTENSO} de conceitos:
 
   \begin{itemize}
-  \tightlist
+
   \item
     BCC222 Programa\c{c}\~{a}o Funcional
   \item
@@ -791,12 +791,12 @@
 \begin{frame}{Pré-requisitos}
 \protect\hypertarget{pruxe9-requisitos-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   BCC222 Programa\c{c}\~{a}o funcional
 
   \begin{itemize}
-  \tightlist
+
   \item
     Tipos de dados algébricos e casamento de padr\~{a}o.
   \item
@@ -816,7 +816,7 @@
   Utilize o Hoogle, para pesquisar sobre fun\c{c}\~{o}es.
 
   \begin{itemize}
-  \tightlist
+
   \item
     \url{https://hoogle.haskell.org/}
   \end{itemize}
@@ -826,12 +826,12 @@
 \begin{frame}{Pré-requisitos}
 \protect\hypertarget{pruxe9-requisitos-4}{}
 \begin{itemize}
-\tightlist
+
 \item
   BCC244 Teoria da computa\c{c}\~{a}o
 
   \begin{itemize}
-  \tightlist
+
   \item
     Aut\^{o}matos finitos determinísticos, n\~{a}o determinísticos e express\~{o}es
     regulares.
@@ -864,7 +864,7 @@
 \begin{frame}{Materiais de apoio}
 \protect\hypertarget{materiais-de-apoio-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Slides e código de exemplo ser\~{a}o disponibilizados no seguinte
   repositório online.
@@ -889,12 +889,12 @@
 \begin{frame}{Critérios de Avalia\c{c}\~{a}o}
 \protect\hypertarget{crituxe9rios-de-avaliauxe7uxe3o-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   Exercícios de programa\c{c}\~{a}o
 
   \begin{itemize}
-  \tightlist
+
   \item
     Desenvolvimento incremental de uma linguagem de programa\c{c}\~{a}o simples
   \end{itemize}
@@ -902,7 +902,7 @@
   Implementa\c{c}\~{a}o
 
   \begin{itemize}
-  \tightlist
+
   \item
     Compila\~{c}\~{a}o para WASM e C.
   \item
@@ -914,12 +914,12 @@
 \begin{frame}{Critérios de Avalia\c{c}\~{a}o}
 \protect\hypertarget{crituxe9rios-de-avaliauxe7uxe3o-3}{}
 \begin{itemize}
-\tightlist
+
 \item
   Datas de entregas de exercícios ser\~{a}o postadas na plataforma Moodle.
 
   \begin{itemize}
-  \tightlist
+
   \item
     Entrega via Github classroom.
   \end{itemize}
@@ -927,7 +927,7 @@
   Trabalhos pode ser feito individualmente ou em dupla.
 
   \begin{itemize}
-  \tightlist
+
   \item
     Uso de IA generativa: Resolu\c{c}\~{a}o CONPEP 144.
   \end{itemize}
@@ -940,7 +940,7 @@
 \begin{frame}{Critérios de Avalia\c{c}\~{a}o}
 \protect\hypertarget{crituxe9rios-de-avaliauxe7uxe3o-4}{}
 \begin{itemize}
-\tightlist
+
 \item
   Data avalia\c{c}\~{a}o 1: 11/05/2026
 \item
@@ -960,7 +960,7 @@
   Exame especial parcial para alunos que perderam uma avalia\c{c}\~{a}o.
 
   \begin{itemize}
-  \tightlist
+
   \item
     Envolverá tarefas de codifica\c{c}\~{a}o e atividades teóricas (em papel).
   \end{itemize}
@@ -972,7 +972,7 @@
 \begin{frame}{Exame especial}
 \protect\hypertarget{exame-especial-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   Data do exame especial: 27/07/2026
 \end{itemize}
@@ -1020,12 +1020,12 @@
 \begin{frame}{Atendimento}
 \protect\hypertarget{atendimento}{}
 \begin{itemize}
-\tightlist
+
 \item
   Horários de atendimento
 
   \begin{itemize}
-  \tightlist
+
   \item
     Segunda-feira: 16:00 - 17:00h
   \end{itemize}
@@ -1037,7 +1037,7 @@
 \begin{frame}{Finalizando}
 \protect\hypertarget{finalizando}{}
 \begin{itemize}
-\tightlist
+
 \item
   Tenhamos todos um excelente semestre de trabalho!
 \end{itemize}

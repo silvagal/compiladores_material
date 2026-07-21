@@ -30,7 +30,7 @@
 \begin{frame}{Motiva\c{c}\~{a}o}
 \protect\hypertarget{motivauxe7uxe3o}{}
 \begin{itemize}
-\tightlist
+
 \item
   A linguagem \emph{Line} executa apenas sequ\^{e}ncias de comandos
 \end{itemize}
@@ -39,12 +39,12 @@
 \begin{frame}{Motiva\c{c}\~{a}o}
 \protect\hypertarget{motivauxe7uxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Programas reais precisam de estruturas de controlo:
 
   \begin{itemize}
-  \tightlist
+
   \item
     \textbf{Condicional}: executar blocos diferentes dependendo de uma
     condi\c{c}\~{a}o
@@ -94,12 +94,12 @@ type Block = [Stmt]
 \begin{frame}{Express\~{o}es}
 \protect\hypertarget{expressuxf5es}{}
 \begin{itemize}
-\tightlist
+
 \item
   Id\^{e}ntico \`{a} linguagem Line.
 
   \begin{itemize}
-  \tightlist
+
   \item
     Exceto por novos operadores, que funcionam de maneira similar.
   \end{itemize}
@@ -109,7 +109,7 @@ type Block = [Stmt]
 \begin{frame}{Condicional}
 \protect\hypertarget{condicional}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Avalia\c{c}\~{a}o da condi\c{c}\~{a}o:}
   \[\frac{(\sigma, e) \to (\sigma, e')}{\left(\begin{array}{ll}
@@ -125,7 +125,7 @@ type Block = [Stmt]
 \begin{frame}{Condicional}
 \protect\hypertarget{condicional-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Ramo verdadeiro:}
   \[\frac{}{(\sigma,\; \mathbf{if}\; \mathbf{true}\; \mathbf{then}\; B_1\; \mathbf{else}\; B_2) \to (\sigma,\; B_1)}\]
@@ -135,7 +135,7 @@ type Block = [Stmt]
 \begin{frame}{Condicional}
 \protect\hypertarget{condicional-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Ramo falso:}
 \end{itemize}
@@ -147,7 +147,7 @@ type Block = [Stmt]
 \begin{frame}{While}
 \protect\hypertarget{while}{}
 \begin{itemize}
-\tightlist
+
 \item
   Caso em que há repeti\c{c}\~{a}o.
 \end{itemize}
@@ -159,7 +159,7 @@ type Block = [Stmt]
 
 \begin{frame}[fragile]{Exemplo}
 \protect\hypertarget{exemplo}{}
-\passthrough{\lstinline!while i < 3 do \{ i := i + 1 \}!}
+\texttt{while i < 3 do \{ i := i + 1 \}}
 
 \[(\sigma_0,\; \mathbf{while}\; i < 3\; \mathbf{do}\; \{i \mathbin{:=} i+1\})\]
 \end{frame}
@@ -194,12 +194,12 @@ type Block = [Stmt]
 \begin{frame}{Express\~{o}es}
 \protect\hypertarget{expressuxf5es-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Similar \`{a} sem\^{a}ntica de Line.
 
   \begin{itemize}
-  \tightlist
+
   \item
     Apenas introduz novos operadores
   \end{itemize}
@@ -223,7 +223,7 @@ type Block = [Stmt]
 \begin{frame}{While}
 \protect\hypertarget{while-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Condi\c{c}\~{a}o falsa (termina\c{c}\~{a}o):}
 \end{itemize}
@@ -236,7 +236,7 @@ type Block = [Stmt]
 \begin{frame}{While}
 \protect\hypertarget{while-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Condi\c{c}\~{a}o verdadeira (itera\c{c}\~{a}o):}
 \end{itemize}
@@ -300,14 +300,14 @@ interpStmt (SWhile e blk1) = do
 \begin{frame}{Motiva\c{c}\~{a}o}
 \protect\hypertarget{motivauxe7uxe3o-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   \emph{While} cobre atribui\c{c}\~{a}o, controlo de fluxo e I/O
 \item
   Mas n\~{a}o permite:
 
   \begin{itemize}
-  \tightlist
+
   \item
     Definir \textbf{abstra\c{c}\~{o}es reutilizáveis} (fun\c{c}\~{o}es)
   \item
@@ -350,7 +350,7 @@ O domínio de valores cresce com registros e o valor unitário:
   \;\mid\; \mathbf{unit}\]
 
 \begin{itemize}
-\tightlist
+
 \item
   Registros t\^{e}m \textbf{sem\^{a}ntica de valor}: toda atribui\c{c}\~{a}o e passagem
   de par\^{a}metro copia o registro.
@@ -365,7 +365,7 @@ global:
 \[\Phi : \mathit{Name} \rightharpoonup (\overline{x_i},\; B)\]
 
 \begin{itemize}
-\tightlist
+
 \item
   Construído uma vez a partir das declara\c{c}\~{o}es
 \item
@@ -375,17 +375,17 @@ global:
 
 \begin{frame}[fragile]{Resultado de Bloco}
 \protect\hypertarget{resultado-de-bloco}{}
-O comando \passthrough{\lstinline!return!} interrompe a execu\c{c}\~{a}o normal.
+O comando \texttt{return} interrompe a execu\c{c}\~{a}o normal.
 Modelamos isso com:
 
 \[r \;::=\; \mathbf{normal} \;\mid\; {\uparrow}\, v\]
 
 \begin{itemize}
-\tightlist
+
 \item
   \(\mathbf{normal}\): termina\c{c}\~{a}o sem retorno
 \item
-  \({\uparrow}\, v\): \passthrough{\lstinline!return!} executado, \(v\)
+  \({\uparrow}\, v\): \texttt{return} executado, \(v\)
   propagado ao chamador
 \end{itemize}
 
@@ -423,7 +423,7 @@ As rela\c{c}\~{o}es de avalia\c{c}\~{a}o tornam-se:
 \quad\text{(FieldAssign)}\]
 
 \begin{itemize}
-\tightlist
+
 \item
   Atualiza apenas o campo \(f\); copia modificada vai para \(\sigma\).
 \end{itemize}
@@ -475,7 +475,7 @@ As rela\c{c}\~{o}es de avalia\c{c}\~{a}o tornam-se:
 \quad\text{(CallExpr)}\]
 
 \begin{itemize}
-\tightlist
+
 \item
   Corpo executado em um \textbf{novo ambiente} com apenas os par\^{a}metros.
 \end{itemize}
@@ -492,7 +492,7 @@ As rela\c{c}\~{o}es de avalia\c{c}\~{a}o tornam-se:
 \quad\text{(CallStmt)}\]
 
 \begin{itemize}
-\tightlist
+
 \item
   Ambiente de chamada devolvido \textbf{inalterado}.
 \end{itemize}
@@ -603,7 +603,7 @@ withFreshEnv bindings m = do
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
   Salva o ambiente corrente, inicializa apenas com os par\^{a}metros,
   restaura ao terminar.
@@ -628,7 +628,7 @@ withFreshEnv bindings m = do
 \begin{frame}{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Registros}: \(\mathbf{rec}(R, \mathit{flds})\) com sem\^{a}ntica
   de valor; regras (New), (Field), (FieldAssign).
@@ -638,11 +638,11 @@ withFreshEnv bindings m = do
 \begin{frame}[fragile]{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-3}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Fun\c{c}\~{o}es}: resultado de bloco
   \(r \in \{\mathbf{normal}, {\uparrow}\,v\}\) modela
-  \passthrough{\lstinline!return!}; (CallExpr) executa em ambiente
+  \texttt{return}; (CallExpr) executa em ambiente
   fresco.
 \end{itemize}
 \end{frame}
@@ -650,7 +650,7 @@ withFreshEnv bindings m = do
 \begin{frame}{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-4}{}
 \begin{itemize}
-\tightlist
+
 \item
   A especifica\c{c}\~{a}o formal guia diretamente a implementa\c{c}\~{a}o em Haskell.
 \end{itemize}

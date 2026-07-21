@@ -33,7 +33,7 @@ Regra (T-Abs) no STLC:
 \[\frac{\Gamma,\, x : T_1 \vdash t : T_2}{\Gamma \vdash \lambda x {:} T_1.\; t : T_1 \to T_2}\]
 
 \begin{itemize}
-\tightlist
+
 \item
   Verifica\c{c}\~{a}o: \(T_1\) é fornecido pelo programador
 \item
@@ -53,7 +53,7 @@ e ::= x              -- variável
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
   Abstra\c{c}\~{o}es \textbf{n\~{a}o} t\^{e}m anota\c{c}\~{o}es de tipo
 \item
@@ -72,7 +72,7 @@ e ::= x              -- variável
 \[\sigma ::= T \mid \forall \vec{\alpha}.\; T\]
 
 \begin{itemize}
-\tightlist
+
 \item
   Esquema \(\forall \alpha_1 \ldots \alpha_n.\; T\) generaliza \(T\) nas
   variáveis \(\alpha_i\)
@@ -102,7 +102,7 @@ C & ::= & \top & \text{trivial} \\
 \end{array}\]
 
 \begin{itemize}
-\tightlist
+
 \item
   \(\exists \alpha.\; C\) --- variável de tipo local, visível apenas em
   \(C\)
@@ -258,21 +258,21 @@ TImp
 
 \begin{frame}[fragile]{Exemplo Completo}
 \protect\hypertarget{exemplo-completo}{}
-Para \passthrough{\lstinline!let f = \\x . x in f 42!}:
+Para \texttt{let f = \\x . x in f 42}:
 
 \begin{enumerate}
 \item
-  \textbf{Infer\^{e}ncia}: tipo \passthrough{\lstinline!Int!}, árvore tipada
+  \textbf{Infer\^{e}ncia}: tipo \texttt{Int}, árvore tipada
   \(\mathbf{let}\; f = (\lambda x{:}\alpha.\; x){:}\alpha \to \alpha\; \mathbf{in}\; (f\; 42){:}\mathbf{Int}\)
 \item
   \textbf{Elimina\c{c}\~{a}o}: \((\lambda f.\; f\; 42)\; (\lambda x.\; x)\)
 \item
   \textbf{Closure conversion}: duas fun\c{c}\~{o}es promovidas,
-  \passthrough{\lstinline!lam\_0!} (identidade) e
-  \passthrough{\lstinline!lam\_1!} (aplica\c{c}\~{a}o de
-  \passthrough{\lstinline!f!})
+  \texttt{lam\_0} (identidade) e
+  \texttt{lam\_1} (aplica\c{c}\~{a}o de
+  \texttt{f})
 \item
-  \textbf{Execu\c{c}\~{a}o TImp}: imprime \passthrough{\lstinline!42!}
+  \textbf{Execu\c{c}\~{a}o TImp}: imprime \texttt{42}
 \end{enumerate}
 \end{frame}
 
@@ -282,7 +282,7 @@ Para \passthrough{\lstinline!let f = \\x . x in f 42!}:
 \begin{frame}{Sumário do Capítulo}
 \protect\hypertarget{sumuxe1rio-do-capuxedtulo}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Infer\^{e}ncia de tipos} resolve um problema mais difícil que
   verifica\c{c}\~{a}o: sem anota\c{c}\~{o}es
@@ -303,7 +303,7 @@ Para \passthrough{\lstinline!let f = \\x . x in f 42!}:
 \begin{frame}{Próximos Passos}
 \protect\hypertarget{pruxf3ximos-passos}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Subtipagem} (capítulo 19): \(S <: T\) --- todo \(S\) pode ser
   usado onde \(T\) é esperado

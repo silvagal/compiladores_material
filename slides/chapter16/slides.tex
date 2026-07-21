@@ -19,7 +19,7 @@
 \begin{frame}{Introdu\c{c}\~{a}o}
 \protect\hypertarget{introduuxe7uxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   O sistema de tipos define \textbf{o que} é um programa bem tipado via
   regras de infer\^{e}ncia
@@ -32,7 +32,7 @@
 \begin{frame}{Introdu\c{c}\~{a}o}
 \protect\hypertarget{introduuxe7uxe3o-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   Correspond\^{e}ncia direta: cada regra de infer\^{e}ncia vira uma equa\c{c}\~{a}o
   Haskell
@@ -62,13 +62,13 @@ data Term
 \begin{frame}[fragile]{A Linguagem TExp}
 \protect\hypertarget{a-linguagem-texp-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Dois tipos: \(\mathbf{Bool}\) e \(\mathbf{Nat}\)
 \item
   \textbf{Sem variáveis} → sem contexto externo necessário
 \item
-  M\^{o}nada: \passthrough{\lstinline!TcM = ExceptT String Identity!}
+  M\^{o}nada: \texttt{TcM = ExceptT String Identity}
 \end{itemize}
 \end{frame}
 
@@ -140,20 +140,20 @@ data Stmt
 \begin{frame}[fragile]{Linguagem TLine}
 \protect\hypertarget{linguagem-tline}{}
 \begin{itemize}
-\tightlist
+
 \item
   Principal novidade: \textbf{variáveis} precisam de contexto
 \item
   Contexto \(\Gamma : \mathit{Var} \rightharpoonup \mathit{Ty}\)
 \item
-  M\^{o}nada: \passthrough{\lstinline!StateT Ctx (ExceptT String Identity)!}
+  M\^{o}nada: \texttt{StateT Ctx (ExceptT String Identity)}
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Linguagem TLine}
 \protect\hypertarget{linguagem-tline-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Regras para comandos: \(\Gamma \vdash s \dashv \Gamma'\)
 \end{itemize}
@@ -166,7 +166,7 @@ data Stmt
 \[\frac{x \in \mathrm{dom}(\Gamma) \quad \Gamma \vdash e : \Gamma(x)}{\Gamma \vdash x \mathbin{:=} e \dashv \Gamma} \quad\text{(T-Assign)}\]
 
 \begin{itemize}
-\tightlist
+
 \item
   Declara\c{c}\~{a}o \textbf{estende} o contexto:
   \(\Gamma' = \Gamma[x \mapsto T]\)
@@ -214,7 +214,7 @@ tcStmt (SPrint e) = tcExp e >> pure ()
 \begin{frame}[fragile]{Escopo}
 \protect\hypertarget{escopo}{}
 \begin{itemize}
-\tightlist
+
 \item
   TWhile adiciona condicionais e repeti\c{c}\~{a}o com \textbf{escopo local}:
 \end{itemize}
@@ -232,10 +232,10 @@ type Block = [Stmt]
 \begin{frame}[fragile]{Escopo}
 \protect\hypertarget{escopo-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Variáveis declaradas dentro de
-  \passthrough{\lstinline!if!}/\passthrough{\lstinline!while!}
+  \texttt{if}/\texttt{while}
   \textbf{n\~{a}o escapam} para fora
 \item
   Regras formalizam isso: contexto de saída = contexto de entrada
@@ -284,20 +284,20 @@ tcStmt (SIf e b1 b2) = do
 \begin{frame}{Ambientes}
 \protect\hypertarget{ambientes}{}
 \begin{itemize}
-\tightlist
+
 \item
   TImp estende TWhile com fun\c{c}\~{o}es e registros
 
   \begin{itemize}
   \item
     \begin{description}
-    \tightlist
+
     \item[\[\Delta\]]
     ambiente de campos de registros
     \end{description}
   \item
     \begin{description}
-    \tightlist
+
     \item[\[\Phi\]]
     ambiente de fun\c{c}\~{o}es
     \end{description}
@@ -308,7 +308,7 @@ tcStmt (SIf e b1 b2) = do
 \begin{frame}{Rela\c{c}\~{o}es}
 \protect\hypertarget{relauxe7uxf5es}{}
 \begin{itemize}
-\tightlist
+
 \item
   Express\~{o}es: \(\Gamma;\Delta;\Phi \vdash e : \tau\)
 \item
@@ -320,7 +320,7 @@ tcStmt (SIf e b1 b2) = do
 \begin{frame}{Registros}
 \protect\hypertarget{registros}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Acesso a campo (T-Field):}
 \end{itemize}
@@ -331,7 +331,7 @@ tcStmt (SIf e b1 b2) = do
 \begin{frame}{Registros}
 \protect\hypertarget{registros-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Constru\c{c}\~{a}o de registro (T-New):}
 \end{itemize}
@@ -342,7 +342,7 @@ tcStmt (SIf e b1 b2) = do
 \begin{frame}{Fun\c{c}\~{o}es}
 \protect\hypertarget{funuxe7uxf5es}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Chamada como express\~{a}o (T-CallExpr):}
 \end{itemize}
@@ -353,7 +353,7 @@ tcStmt (SIf e b1 b2) = do
 \begin{frame}{Fun\c{c}\~{o}es}
 \protect\hypertarget{funuxe7uxf5es-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Declara\c{c}\~{a}o de fun\c{c}\~{a}o (T-FuncDecl):}
 \end{itemize}
@@ -367,10 +367,10 @@ tcStmt (SIf e b1 b2) = do
 \begin{frame}[fragile]{A M\^{o}nada}
 \protect\hypertarget{a-muxf4nada}{}
 \begin{itemize}
-\tightlist
+
 \item
   TImp adiciona fun\c{c}\~{o}es e registros --- Informa\c{c}\~{a}o \textbf{imutável} vai
-  em \passthrough{\lstinline!ReaderT!}:
+  em \texttt{ReaderT}:
 \end{itemize}
 
 \begin{lstlisting}[language=Haskell]
@@ -438,13 +438,13 @@ tcFuncDecl baseEnv (FuncDecl name params retTy body) = do
 \begin{frame}[fragile]{Fun\c{c}\~{a}o}
 \protect\hypertarget{funuxe7uxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Contexto inicial = par\^{a}metros formais
 \item
-  \passthrough{\lstinline!returnType!} fixado via
-  \passthrough{\lstinline!local!} para verificar
-  \passthrough{\lstinline!return!}
+  \texttt{returnType} fixado via
+  \texttt{local} para verificar
+  \texttt{return}
 \item
   Variáveis externas \`{a} fun\c{c}\~{a}o s\~{a}o \textbf{invisíveis}
 \end{itemize}
@@ -456,7 +456,7 @@ tcFuncDecl baseEnv (FuncDecl name params retTy body) = do
 \begin{frame}{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   O verificador de tipos é uma \textbf{transcri\c{c}\~{a}o sistemática} do
   sistema de tipos

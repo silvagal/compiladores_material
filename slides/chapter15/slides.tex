@@ -19,12 +19,12 @@ Programa\c{c}\~{a}o}\label{tipos-em-linguagens-de-programauxe7uxe3o}}
 \begin{frame}{O que é um Tipo?}
 \protect\hypertarget{o-que-uxe9-um-tipo}{}
 \begin{itemize}
-\tightlist
+
 \item
   Um \textbf{tipo} classifica valores e define:
 
   \begin{itemize}
-  \tightlist
+
   \item
     Quais opera\c{c}\~{o}es s\~{a}o aplicáveis
   \item
@@ -38,13 +38,13 @@ Programa\c{c}\~{a}o}\label{tipos-em-linguagens-de-programauxe7uxe3o}}
 \begin{frame}[fragile]{Sistema de Tipo}
 \protect\hypertarget{sistema-de-tipo}{}
 \begin{itemize}
-\tightlist
+
 \item
   O \textbf{sistema de tipos} associa tipos a express\~{o}es e verifica a
   coer\^{e}ncia dessas associa\c{c}\~{o}es
 \item
   Erros de tipo: somar um booleano a um inteiro, aplicar
-  \passthrough{\lstinline!pred true!}
+  \texttt{pred true}
 \item
   Express\~{o}es com erros de tipo s\~{a}o \textbf{sintaticamente válidas}, mas
   \textbf{semanticamente sem significado}
@@ -57,7 +57,7 @@ Programa\c{c}\~{a}o}\label{tipos-em-linguagens-de-programauxe7uxe3o}}
 \textbf{tempo de compila\~{c}\~{a}o}
 
 \begin{itemize}
-\tightlist
+
 \item
   O compilador rejeita o programa se houver erro de tipo
 \item
@@ -68,13 +68,13 @@ Programa\c{c}\~{a}o}\label{tipos-em-linguagens-de-programauxe7uxe3o}}
 \begin{frame}{Tipagem Din\^{a}mica}
 \protect\hypertarget{tipagem-dinuxe2mica}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Tipagem din\^{a}mica} (\emph{dynamic typing}): verifica\c{c}\~{a}o em
   \textbf{tempo de execu\c{c}\~{a}o}
 
   \begin{itemize}
-  \tightlist
+
   \item
     Erros detectados apenas quando a opera\c{c}\~{a}o inválida é executada
   \item
@@ -86,13 +86,13 @@ Programa\c{c}\~{a}o}\label{tipos-em-linguagens-de-programauxe7uxe3o}}
 \begin{frame}{Tipagem Forte}
 \protect\hypertarget{tipagem-forte}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Tipagem forte} (\emph{strong typing}): n\~{a}o permite convers\~{o}es
   implícitas entre tipos incompatíveis
 
   \begin{itemize}
-  \tightlist
+
   \item
     Opera\c{c}\~{o}es entre tipos diferentes resultam em erro
   \item
@@ -104,20 +104,20 @@ Programa\c{c}\~{a}o}\label{tipos-em-linguagens-de-programauxe7uxe3o}}
 \begin{frame}[fragile]{Tipagem Fraca}
 \protect\hypertarget{tipagem-fraca}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Tipagem fraca} (\emph{weak typing}): realiza convers\~{o}es
   implícitas entre tipos
 
   \begin{itemize}
-  \tightlist
+
   \item
     Comportamentos frequentemente surpreendentes
   \item
     C: converte implicitamente entre inteiros e ponteiros
   \item
-    JavaScript: \passthrough{\lstinline!1 + "1"!} resulta em
-    \passthrough{\lstinline!"11"!}
+    JavaScript: \texttt{1 + "1"} resulta em
+    \texttt{"11"}
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -125,12 +125,12 @@ Programa\c{c}\~{a}o}\label{tipos-em-linguagens-de-programauxe7uxe3o}}
 \begin{frame}{Fraca vs Forte}
 \protect\hypertarget{fraca-vs-forte}{}
 \begin{itemize}
-\tightlist
+
 \item
   Estas classifica\c{c}\~{o}es s\~{a}o \textbf{independentes}.
 
   \begin{itemize}
-  \tightlist
+
   \item
     Python é dinamicamente tipado e fortemente tipado; C é estaticamente
     tipado e fracamente tipado.
@@ -161,12 +161,12 @@ t & ::= & \mathbf{true} \mid \mathbf{false} & \text{(booleanos)} \\
 \begin{frame}{Valores}
 \protect\hypertarget{valores}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Valores} (termos que n\~{a}o podem ser reduzidos):
 
   \begin{itemize}
-  \tightlist
+
   \item
     \(nv\) s\~{a}o os \textbf{valores numéricos}: \(\mathbf{0}\),
     \(\mathbf{succ}\ \mathbf{0}\),
@@ -188,12 +188,12 @@ nv & ::= & \mathbf{0} \mid \mathbf{succ}\ nv
 \begin{frame}{Rela\c{c}\~{a}o de Tipagem}
 \protect\hypertarget{relauxe7uxe3o-de-tipagem}{}
 \begin{itemize}
-\tightlist
+
 \item
   Nota\c{c}\~{a}o \(\vdash t : T\)
 
   \begin{itemize}
-  \tightlist
+
   \item
     o termo \(t\) tem tipo \(T\).
   \end{itemize}
@@ -259,12 +259,12 @@ A regra (T-If) exige que os dois ramos tenham o \textbf{mesmo tipo}
 \begin{frame}{Exemplo}
 \protect\hypertarget{exemplo-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \(\mathbf{succ}\ \mathbf{true}\) \textbf{n\~{a}o é tipável}:
 
   \begin{itemize}
-  \tightlist
+
   \item
     A regra (T-Succ) exige que o argumento tenha tipo \(\mathbf{Nat}\)
   \item
@@ -279,12 +279,12 @@ A regra (T-If) exige que os dois ramos tenham o \textbf{mesmo tipo}
 \begin{frame}{Exemplo}
 \protect\hypertarget{exemplo-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   Outros exemplos de termos n\~{a}o tipáveis:
 
   \begin{itemize}
-  \tightlist
+
   \item
     \(\mathbf{pred}\ \mathbf{false}\): (T-Pred) exige \(\mathbf{Nat}\),
     argumento é \(\mathbf{Bool}\)
@@ -313,13 +313,13 @@ A regra (T-If) exige que os dois ramos tenham o \textbf{mesmo tipo}
 \begin{frame}{Formas Presas}
 \protect\hypertarget{formas-presas}{}
 \begin{itemize}
-\tightlist
+
 \item
   Os termos irredutíveis s\~{a}o \textbf{valores} \(v\) ou \textbf{formas
   presas} (\emph{stuck terms}):
 
   \begin{itemize}
-  \tightlist
+
   \item
     Termos que n\~{a}o s\~{a}o valores e para os quais nenhuma regra se aplica
   \item
@@ -335,7 +335,7 @@ A regra (T-If) exige que os dois ramos tenham o \textbf{mesmo tipo}
   Exemplos de formas presas:
 
   \begin{itemize}
-  \tightlist
+
   \item
     \(\mathbf{succ}\ \mathbf{true}\): \(\mathbf{true}\) n\~{a}o é \(nv\), e
     nenhuma regra reduz isso
@@ -351,7 +351,7 @@ A regra (T-If) exige que os dois ramos tenham o \textbf{mesmo tipo}
 \begin{frame}{Formas Presas}
 \protect\hypertarget{formas-presas-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{O papel do sistema de tipos}: garantir que termos bem tipados
   \textbf{nunca} se tornem formas presas.
@@ -565,7 +565,7 @@ estado de erro irrecuperável.
 sobre \(t_1\): ou \(t_1\) é valor, ou reduz.
 
 \begin{itemize}
-\tightlist
+
 \item
   Se \(t_1 \to t_1'\): aplica-se (E-If). ✓
 \item
@@ -574,7 +574,7 @@ sobre \(t_1\): ou \(t_1\) é valor, ou reduz.
   \(t_1 \in \{\mathbf{true}, \mathbf{false}\}\).
 
   \begin{itemize}
-  \tightlist
+
   \item
     \(t_1 = \mathbf{true}\): aplica-se (E-IfTrue). ✓
   \item
@@ -589,7 +589,7 @@ sobre \(t_1\): ou \(t_1\) é valor, ou reduz.
 ou \(t_1\) reduz, ou é valor.
 
 \begin{itemize}
-\tightlist
+
 \item
   \(t_1 \to t_1'\): aplica-se (E-Succ). ✓
 \item
@@ -604,7 +604,7 @@ ou \(t_1\) reduz, ou é valor.
 ou \(t_1\) reduz, ou é \(nv\).
 
 \begin{itemize}
-\tightlist
+
 \item
   \(t_1 \to t_1'\): aplica-se (E-Pred). ✓ \textbar{}
   \(nv = \mathbf{0}\): (E-PredZero). ✓ \textbar{}
@@ -633,7 +633,7 @@ TLine}\label{sistema-de-tipos-para-tline}}
 \begin{frame}{TLine: Contexto e Rela\c{c}\~{a}o de Tipagem}
 \protect\hypertarget{tline-contexto-e-relauxe7uxe3o-de-tipagem}{}
 \begin{itemize}
-\tightlist
+
 \item
   TLine tem tr\^{e}s tipos (\(\mathbf{Int}\), \(\mathbf{Bool}\),
   \(\mathbf{String}\)) e um \textbf{contexto de tipagem}:
@@ -645,7 +645,7 @@ TLine}\label{sistema-de-tipos-para-tline}}
 \begin{frame}{Regras de Tipos}
 \protect\hypertarget{regras-de-tipos}{}
 \begin{itemize}
-\tightlist
+
 \item
   Regras para express\~{o}es: \(\Gamma \vdash e : T\)
 \end{itemize}
@@ -674,7 +674,7 @@ TLine}\label{sistema-de-tipos-para-tline}}
 \begin{frame}{Regras de Tipos}
 \protect\hypertarget{regras-de-tipos-4}{}
 \begin{itemize}
-\tightlist
+
 \item
   Regras para comandos: \(\Gamma \vdash s \dashv \Gamma'\)
 \end{itemize}
@@ -695,7 +695,7 @@ TLine}\label{sistema-de-tipos-para-tline}}
 \begin{frame}{Regras de Tipos}
 \protect\hypertarget{regras-de-tipos-7}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{T-Decl} é a única regra que \textbf{estende} o contexto:
   \(\Gamma' = \Gamma[x \mapsto T]\)
@@ -711,10 +711,10 @@ TWhile}\label{sistema-de-tipos-para-twhile}}
 \begin{frame}[fragile]{Escopo}
 \protect\hypertarget{escopo}{}
 \begin{itemize}
-\tightlist
+
 \item
-  TWhile adiciona \passthrough{\lstinline!if!} e
-  \passthrough{\lstinline!while!} com \textbf{escopo léxico}: variáveis
+  TWhile adiciona \texttt{if} e
+  \texttt{while} com \textbf{escopo léxico}: variáveis
   declaradas dentro de um bloco n\~{a}o escapam.
 \end{itemize}
 \end{frame}
@@ -732,7 +732,7 @@ contexto de \textbf{entrada} \(\Gamma\):
 \[\frac{\Gamma \vdash e : \mathbf{Bool} \quad \Gamma \vdash B \dashv \Gamma'}{\Gamma \vdash \mathbf{while}\ e\ \mathbf{do}\ B \dashv \Gamma} \quad\text{(T-While)}\]
 
 \begin{itemize}
-\tightlist
+
 \item
   Os contextos \(\Gamma_1\), \(\Gamma_2\) e \(\Gamma'\) s\~{a}o
   \textbf{descartados}: variáveis locais aos blocos n\~{a}o s\~{a}o visíveis
@@ -746,7 +746,7 @@ contexto de \textbf{entrada} \(\Gamma\):
 \begin{frame}{Tipos e Ambientes}
 \protect\hypertarget{tipos-e-ambientes}{}
 \begin{itemize}
-\tightlist
+
 \item
   TImp estende TWhile com fun\c{c}\~{o}es e registros
 \end{itemize}
@@ -757,7 +757,7 @@ contexto de \textbf{entrada} \(\Gamma\):
 \begin{frame}{Tipos e Ambientes}
 \protect\hypertarget{tipos-e-ambientes-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Rela\c{c}\~{a}o de tipagem: \(\Gamma;\Delta;\Phi \vdash e : \tau\) e
   \(\Gamma;\Delta;\Phi;\rho_\mathit{ret} \vdash s \dashv \Gamma'\)
@@ -806,7 +806,7 @@ contexto de \textbf{entrada} \(\Gamma\):
 \begin{frame}{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Tipos} classificam valores e restringem opera\c{c}\~{o}es; tipagem
   pode ser estática ou din\^{a}mica, forte ou fraca
@@ -820,7 +820,7 @@ contexto de \textbf{entrada} \(\Gamma\):
 \begin{frame}{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Formas presas}: termos sem valor e sem redu\c{c}\~{a}o possível ---
   representam erros em tempo de execu\c{c}\~{a}o
@@ -833,7 +833,7 @@ contexto de \textbf{entrada} \(\Gamma\):
 \begin{frame}{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-3}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Preserva\c{c}\~{a}o}: prova que o tipo n\~{a}o muda durante a execu\c{c}\~{a}o
   (indu\c{c}\~{a}o na redu\c{c}\~{a}o \(t \to t'\))

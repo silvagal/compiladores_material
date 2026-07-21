@@ -17,7 +17,7 @@
 \begin{frame}{O Papel da Análise Léxica}
 \protect\hypertarget{o-papel-da-anuxe1lise-luxe9xica}{}
 \begin{itemize}
-\tightlist
+
 \item
   Primeira fase do compilador
 \item
@@ -30,7 +30,7 @@
 \begin{frame}{O Papel da Análise Léxica}
 \protect\hypertarget{o-papel-da-anuxe1lise-luxe9xica-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Remove espa\c{c}os em branco e comentários
 \item
@@ -43,7 +43,7 @@
 \begin{frame}{O que é um Token?}
 \protect\hypertarget{o-que-uxe9-um-token}{}
 \begin{itemize}
-\tightlist
+
 \item
   Um \textbf{token} é um componente indivisível da sintaxe de uma
   linguagem
@@ -59,7 +59,7 @@
 \begin{frame}{O que é um Token?}
 \protect\hypertarget{o-que-uxe9-um-token-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   O analisador léxico produz uma \textbf{lista de tokens} para o
   analisador sintático
@@ -82,7 +82,7 @@ data Token = Token
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
   A posi\c{c}\~{a}o é essencial para \textbf{mensagens de erro} precisas
 \item
@@ -98,7 +98,7 @@ data Token = Token
 \[E \to n \mid E + E \mid E * E \mid (E)\]
 
 \begin{itemize}
-\tightlist
+
 \item
   \(n\): constante numérica inteira
 \item
@@ -119,11 +119,11 @@ data Token = Token
 Token & Construtor & Descri\c{c}\~{a}o \\
 \midrule\noalign{}
 \endhead
-\passthrough{\lstinline!n!} & \passthrough{\lstinline!TNumber Int!} &
+\texttt{n} & \texttt{TNumber Int} &
 número inteiro (carrega o valor) \\
-\passthrough{\lstinline!+!} & \passthrough{\lstinline!TPlus!} & operador
+\texttt{+} & \texttt{TPlus} & operador
 de adi\c{c}\~{a}o \\
-\passthrough{\lstinline!*!} & \passthrough{\lstinline!TTimes!} &
+\texttt{*} & \texttt{TTimes} &
 operador de multiplica\c{c}\~{a}o \\
 \bottomrule\noalign{}
 \end{longtable}
@@ -136,11 +136,11 @@ operador de multiplica\c{c}\~{a}o \\
 Token & Construtor & Descri\c{c}\~{a}o \\
 \midrule\noalign{}
 \endhead
-\passthrough{\lstinline!(!} & \passthrough{\lstinline!TLParen!} & abre
+\texttt{(} & \texttt{TLParen} & abre
 par\^{e}nteses \\
-\passthrough{\lstinline!)!} & \passthrough{\lstinline!TRParen!} & fecha
+\texttt{)} & \texttt{TRParen} & fecha
 par\^{e}nteses \\
-EOF & \passthrough{\lstinline!TEOF!} & marcador de fim de entrada \\
+EOF & \texttt{TEOF} & marcador de fim de entrada \\
 \bottomrule\noalign{}
 \end{longtable}
 \end{frame}
@@ -161,11 +161,11 @@ data Lexeme
 \begin{frame}[fragile]{Defini\c{c}\~{a}o do Tipo Lexeme}
 \protect\hypertarget{definiuxe7uxe3o-do-tipo-lexeme-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Cada construtor corresponde a uma categoria de token
 \item
-  \passthrough{\lstinline!TNumber!} carrega o valor inteiro do número
+  \texttt{TNumber} carrega o valor inteiro do número
 \item
   Os demais construtores apenas identificam o símbolo
 \end{itemize}
@@ -178,7 +178,7 @@ Ad-Hoc}\label{analisadores-luxe9xicos-ad-hoc}}
 \begin{frame}{Analisadores Ad-Hoc}
 \protect\hypertarget{analisadores-ad-hoc}{}
 \begin{itemize}
-\tightlist
+
 \item
   Implementa\c{c}\~{a}o \textbf{manual} e específica para uma linguagem
 \item
@@ -189,7 +189,7 @@ Ad-Hoc}\label{analisadores-luxe9xicos-ad-hoc}}
 \begin{frame}{Analisadores Ad-Hoc}
 \protect\hypertarget{analisadores-ad-hoc-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   N\~{a}o usa geradores automáticos como o Alex
 \item
@@ -210,12 +210,12 @@ lexer :: String -> Either String [Token]
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!Left msg!} indica um \textbf{erro léxico} com
-  mensagem \passthrough{\lstinline!msg!}
+  \texttt{Left msg} indica um \textbf{erro léxico} com
+  mensagem \texttt{msg}
 \item
-  \passthrough{\lstinline!Right tokens!} indica \textbf{sucesso} com a
+  \texttt{Right tokens} indica \textbf{sucesso} com a
   lista de tokens produzida
 \end{itemize}
 \end{frame}
@@ -227,13 +227,13 @@ data Either a b = Left a | Right b
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!Left a!} representa falha/erro com valor do
-  tipo \passthrough{\lstinline!a!}
+  \texttt{Left a} representa falha/erro com valor do
+  tipo \texttt{a}
 \item
-  \passthrough{\lstinline!Right b!} representa sucesso com valor do tipo
-  \passthrough{\lstinline!b!}
+  \texttt{Right b} representa sucesso com valor do tipo
+  \texttt{b}
 \end{itemize}
 \end{frame}
 
@@ -247,15 +247,15 @@ type State = (Line, Column, String, [Token])
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!Line!}, \passthrough{\lstinline!Column!}:
+  \texttt{Line}, \texttt{Column}:
   posi\c{c}\~{a}o atual no arquivo de entrada
 \item
-  \passthrough{\lstinline!String!}: dígitos consecutivos acumulados
+  \texttt{String}: dígitos consecutivos acumulados
   (para montar números)
 \item
-  \passthrough{\lstinline![Token]!}: tokens reconhecidos até o momento
+  \texttt{[Token]}: tokens reconhecidos até o momento
 \end{itemize}
 \end{frame}
 
@@ -293,7 +293,7 @@ mkDigits state@(l, col, s, ts) c
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{A Fun\c{c}\~{a}o \passthrough{\lstinline!lexer!}
+\begin{frame}[fragile]{A Fun\c{c}\~{a}o \texttt{lexer}
 Completa}
 \protect\hypertarget{a-funuxe7uxe3o-lexer-completa}{}
 \begin{lstlisting}[language=Haskell]
@@ -313,7 +313,7 @@ lexer = finish . foldl step base
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Como \passthrough{\lstinline!foldl!} Funciona}
+\begin{frame}[fragile]{Como \texttt{foldl} Funciona}
 \protect\hypertarget{como-foldl-funciona}{}
 \begin{lstlisting}[language=Haskell]
 foldl :: (b -> a -> b) -> b -> [a] -> b
@@ -321,8 +321,8 @@ foldl _ v []     = v
 foldl f v (x:xs) = foldl f (f v x) xs
 \end{lstlisting}
 
-Exemplo: \passthrough{\lstinline!sum [1,2,3]!} com
-\passthrough{\lstinline!foldl (+) 0!}:
+Exemplo: \texttt{sum [1,2,3]} com
+\texttt{foldl (+) 0}:
 
 \begin{lstlisting}
 foldl (+) 0 [1,2,3]
@@ -333,9 +333,9 @@ foldl (+) 0 [1,2,3]
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!foldl!} percorre a lista \textbf{da esquerda
+  \texttt{foldl} percorre a lista \textbf{da esquerda
   para a direita}
 \item
   Acumula um resultado a cada passo
@@ -344,38 +344,38 @@ foldl (+) 0 [1,2,3]
 
 \begin{frame}[fragile]{Exemplo de Execu\c{c}\~{a}o}
 \protect\hypertarget{exemplo-de-execuuxe7uxe3o}{}
-Entrada: \passthrough{\lstinline!"2 + 3"!}
+Entrada: \texttt{"2 + 3"}
 
 \begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Char & Estado (linha, col, dígitos, tokens) \\
 \midrule\noalign{}
 \endhead
-\passthrough{\lstinline!2!} &
-\passthrough{\lstinline!(1, 2, "2", [])!} \\
-\passthrough{\lstinline!\_!} &
-\passthrough{\lstinline!(1, 3, "", [TNumber 2])!} \\
-\passthrough{\lstinline!+!} &
-\passthrough{\lstinline!(1, 4, "", [TPlus, TNumber 2])!} \\
+\texttt{2} &
+\texttt{(1, 2, "2", [])} \\
+\texttt{\_} &
+\texttt{(1, 3, "", [TNumber 2])} \\
+\texttt{+} &
+\texttt{(1, 4, "", [TPlus, TNumber 2])} \\
 \bottomrule\noalign{}
 \end{longtable}
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo de Execu\c{c}\~{a}o}
 \protect\hypertarget{exemplo-de-execuuxe7uxe3o-1}{}
-Entrada: \passthrough{\lstinline!"2 + 3"!}
+Entrada: \texttt{"2 + 3"}
 
 \begin{longtable}[]{@{}ll@{}}
 \toprule\noalign{}
 Char & Estado (linha, col, dígitos, tokens) \\
 \midrule\noalign{}
 \endhead
-\passthrough{\lstinline!\_!} &
-\passthrough{\lstinline!(1, 5, "", [TPlus, TNumber 2])!} \\
-\passthrough{\lstinline!3!} &
-\passthrough{\lstinline!(1, 6, "3", [TPlus, TNumber 2])!} \\
+\texttt{\_} &
+\texttt{(1, 5, "", [TPlus, TNumber 2])} \\
+\texttt{3} &
+\texttt{(1, 6, "3", [TPlus, TNumber 2])} \\
 EOF & extrai →
-\passthrough{\lstinline![TNumber 2, TPlus, TNumber 3]!} \\
+\texttt{[TNumber 2, TPlus, TNumber 3]} \\
 \bottomrule\noalign{}
 \end{longtable}
 \end{frame}
@@ -386,7 +386,7 @@ EOF & extrai →
 \begin{frame}{Vantagens dos Analisadores Ad-Hoc}
 \protect\hypertarget{vantagens-dos-analisadores-ad-hoc}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Simples de implementar} para linguagens pequenas
 \item
@@ -399,7 +399,7 @@ EOF & extrai →
 \begin{frame}{Vantagens dos Analisadores Ad-Hoc}
 \protect\hypertarget{vantagens-dos-analisadores-ad-hoc-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Fácil de entender e depurar para casos simples
 \item
@@ -410,17 +410,17 @@ EOF & extrai →
 \begin{frame}[fragile]{Desvantagens dos Analisadores Ad-Hoc}
 \protect\hypertarget{desvantagens-dos-analisadores-ad-hoc}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Difíceis de manter e extender}:
 
   \begin{itemize}
-  \tightlist
+
   \item
     Como adicionar identificadores?
   \item
-    Como suportar comentários de linha (\passthrough{\lstinline!//!})? E
-    comentários em bloco (\passthrough{\lstinline!/* */!})?
+    Como suportar comentários de linha (\texttt{//})? E
+    comentários em bloco (\texttt{/* */})?
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -428,12 +428,12 @@ EOF & extrai →
 \begin{frame}{Desvantagens dos Analisadores Ad-Hoc}
 \protect\hypertarget{desvantagens-dos-analisadores-ad-hoc-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Ineficientes para estruturas léxicas complexas}
 
   \begin{itemize}
-  \tightlist
+
   \item
     Cada nova funcionalidade exige modificar toda a estrutura do estado
   \item
@@ -449,10 +449,10 @@ if (x > 0) ift = x + 1;
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
-  Como distinguir \passthrough{\lstinline!if!} (palavra reservada) de
-  \passthrough{\lstinline!ift!} (identificador)?
+  Como distinguir \texttt{if} (palavra reservada) de
+  \texttt{ift} (identificador)?
 \item
   Como tratar palavras reservadas de forma eficiente?
 \end{itemize}
@@ -461,7 +461,7 @@ if (x > 0) ift = x + 1;
 \begin{frame}{Dificuldades}
 \protect\hypertarget{dificuldades-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Para linguagens reais: dezenas de tokens, comentários aninhados, etc.
 \item
@@ -475,14 +475,14 @@ if (x > 0) ift = x + 1;
 \begin{frame}[fragile]{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Análise léxica transforma \textbf{texto bruto} em uma \textbf{lista de
   tokens}
 \item
   Cada token carrega categoria (lexema) e posi\c{c}\~{a}o no fonte
 \item
-  O tipo \passthrough{\lstinline!Either!} de Haskell permite tratamento
+  O tipo \texttt{Either} de Haskell permite tratamento
   elegante de erros
 \end{itemize}
 \end{frame}
@@ -490,7 +490,7 @@ if (x > 0) ift = x + 1;
 \begin{frame}{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   Analisadores ad-hoc funcionam para linguagens simples
 \item

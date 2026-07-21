@@ -18,7 +18,7 @@
 \begin{frame}{Análise Descendente Recursiva}
 \protect\hypertarget{anuxe1lise-descendente-recursiva}{}
 \begin{itemize}
-\tightlist
+
 \item
   Técnica para construir analisadores sintáticos como um
   \textbf{conjunto de fun\c{c}\~{o}es}
@@ -30,7 +30,7 @@
 \begin{frame}{Análise Descendente Recursiva}
 \protect\hypertarget{anuxe1lise-descendente-recursiva-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   A chamada de fun\c{c}\~{o}es reflete a estrutura das produ\c{c}\~{o}es
 \item
@@ -40,7 +40,7 @@
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{O Tipo \passthrough{\lstinline!Parser!}}
+\begin{frame}[fragile]{O Tipo \texttt{Parser}}
 \protect\hypertarget{o-tipo-parser}{}
 \begin{lstlisting}[language=Haskell]
 newtype Parser s a =
@@ -48,24 +48,24 @@ newtype Parser s a =
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!s!}: tipo dos símbolos de entrada (ex.:
-  \passthrough{\lstinline!Char!}, \passthrough{\lstinline!Token!})
+  \texttt{s}: tipo dos símbolos de entrada (ex.:
+  \texttt{Char}, \texttt{Token})
 \item
-  \passthrough{\lstinline!a!}: tipo do resultado (ex.:
-  \passthrough{\lstinline!Exp!}, \passthrough{\lstinline![Token]!})
+  \texttt{a}: tipo do resultado (ex.:
+  \texttt{Exp}, \texttt{[Token]})
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{O Tipo \passthrough{\lstinline!Parser!}}
+\begin{frame}[fragile]{O Tipo \texttt{Parser}}
 \protect\hypertarget{o-tipo-parser-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Retorna \textbf{lista de pares} (resultado, entrada restante)
 \item
-  Lista vazia \passthrough{\lstinline![]!} significa \textbf{falha}
+  Lista vazia \texttt{[]} significa \textbf{falha}
 \item
   Lista com vários elementos significa \textbf{ambiguidade}
 \end{itemize}
@@ -74,12 +74,12 @@ newtype Parser s a =
 \begin{frame}[fragile]{Resultados}
 \protect\hypertarget{resultados}{}
 \begin{itemize}
-\tightlist
+
 \item
   Sucesso sem n\~{a}o determinismo.
 
   \begin{itemize}
-  \tightlist
+
   \item
     Apenas um resultado.
   \end{itemize}
@@ -94,7 +94,7 @@ runParser (symbol 'a') "abc"
 \begin{frame}[fragile]{Resultados}
 \protect\hypertarget{resultados-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Falha: Lista vazia de resultados
 \end{itemize}
@@ -108,12 +108,12 @@ runParser (symbol 'x') "abc"
 \begin{frame}[fragile]{Resultados}
 \protect\hypertarget{resultados-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   Mais de um resultado: n\~{a}o determinismo
 
   \begin{itemize}
-  \tightlist
+
   \item
     Pode resultar em backtracking.
   \end{itemize}
@@ -128,7 +128,7 @@ runParser (item <|> item) "abc"
 \begin{frame}{Resultados}
 \protect\hypertarget{resultados-3}{}
 \begin{itemize}
-\tightlist
+
 \item
   Parsers determinísticos retornam no máximo um par
 \item
@@ -143,12 +143,12 @@ Tipos}\label{instuxe2ncias-de-classes-de-tipos}}
 \begin{frame}[fragile]{Functor}
 \protect\hypertarget{functor}{}
 \begin{itemize}
-\tightlist
+
 \item
-  Um parser é um \passthrough{\lstinline!Functor!}
+  Um parser é um \texttt{Functor}
 
   \begin{itemize}
-  \tightlist
+
   \item
     Responsável por executar a\c{c}\~{o}es.
   \item
@@ -166,19 +166,19 @@ instance Functor (Parser s) where
 \begin{frame}[fragile]{Functor}
 \protect\hypertarget{functor-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Transforma o resultado sem modificar o que é consumido
 \item
-  Exemplo: \passthrough{\lstinline!EInt <$> naturalParser!} aplica
-  \passthrough{\lstinline!EInt!} ao resultado
+  Exemplo: \texttt{EInt <$> naturalParser} aplica
+  \texttt{EInt} ao resultado
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Applicative}
 \protect\hypertarget{applicative}{}
 \begin{itemize}
-\tightlist
+
 \item
   Concatena\c{c}\~{a}o (sequ\^{e}ncia) de parsers.
 \end{itemize}
@@ -195,13 +195,13 @@ instance Applicative (Parser s) where
 \begin{frame}[fragile]{Applicative}
 \protect\hypertarget{applicative-1}{}
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!pure a!}: sempre tem sucesso sem consumir
+  \texttt{pure a}: sempre tem sucesso sem consumir
   entrada
 \item
-  \passthrough{\lstinline!p1 <*> p2!}: executa
-  \passthrough{\lstinline!p1!} e depois \passthrough{\lstinline!p2!} com
+  \texttt{p1 <*> p2}: executa
+  \texttt{p1} e depois \texttt{p2} com
   a entrada restante
 \end{itemize}
 \end{frame}
@@ -209,7 +209,7 @@ instance Applicative (Parser s) where
 \begin{frame}[fragile]{Alternative}
 \protect\hypertarget{alternative}{}
 \begin{itemize}
-\tightlist
+
 \item
   Escolha entre dois parsers.
 \end{itemize}
@@ -225,22 +225,22 @@ instance Alternative (Parser t) where
 \begin{frame}[fragile]{Alternative}
 \protect\hypertarget{alternative-1}{}
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!empty!}: sempre falha
+  \texttt{empty}: sempre falha
 \item
-  \passthrough{\lstinline!p1 <|> p2!}: tenta ambas as alternativas
+  \texttt{p1 <|> p2}: tenta ambas as alternativas
   (concatena resultados)
 \item
-  Devido \`{a} avalia\c{c}\~{a}o lazy, \passthrough{\lstinline!p2!} só é avaliado se
-  \passthrough{\lstinline!p1!} falhar
+  Devido \`{a} avalia\c{c}\~{a}o lazy, \texttt{p2} só é avaliado se
+  \texttt{p1} falhar
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Monad}
 \protect\hypertarget{monad}{}
 \begin{itemize}
-\tightlist
+
 \item
   Permite a defini\c{c}\~{a}o de parsers que dependem do resultado de um parser
   anterior.
@@ -258,11 +258,11 @@ instance Monad (Parser t) where
 \begin{frame}[fragile]{Monad}
 \protect\hypertarget{monad-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Permite que o segundo parser \textbf{dependa do resultado} do primeiro
 \item
-  Habilita nota\c{c}\~{a}o \passthrough{\lstinline!do!} para parsers mais
+  Habilita nota\c{c}\~{a}o \texttt{do} para parsers mais
   legíveis
 \end{itemize}
 \end{frame}
@@ -270,7 +270,7 @@ instance Monad (Parser t) where
 \hypertarget{combinadores-primitivos}{%
 \section{Combinadores Primitivos}\label{combinadores-primitivos}}
 
-\begin{frame}[fragile]{Combinador \passthrough{\lstinline!item!}}
+\begin{frame}[fragile]{Combinador \texttt{item}}
 \protect\hypertarget{combinador-item}{}
 \begin{lstlisting}[language=Haskell]
 -- Consome um símbolo qualquer
@@ -281,7 +281,7 @@ item = Parser (\ts -> case ts of
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Combinador \passthrough{\lstinline!sat!}}
+\begin{frame}[fragile]{Combinador \texttt{sat}}
 \protect\hypertarget{combinador-sat}{}
 \begin{lstlisting}[language=Haskell]
 -- Consome um símbolo se satisfaz o predicado
@@ -292,7 +292,7 @@ sat p = do
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Combinador \passthrough{\lstinline!symbol!}}
+\begin{frame}[fragile]{Combinador \texttt{symbol}}
 \protect\hypertarget{combinador-symbol}{}
 \begin{lstlisting}[language=Haskell]
 symbol :: Eq s => s -> Parser s s
@@ -300,7 +300,7 @@ symbol c = sat (c ==)
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Combinador \passthrough{\lstinline!token!}}
+\begin{frame}[fragile]{Combinador \texttt{token}}
 \protect\hypertarget{combinador-token}{}
 \begin{lstlisting}[language=Haskell]
 token :: Eq s => [s] -> Parser s [s]
@@ -308,7 +308,7 @@ token = mapM symbol
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Combinador \passthrough{\lstinline!digit!}}
+\begin{frame}[fragile]{Combinador \texttt{digit}}
 \protect\hypertarget{combinador-digit}{}
 \begin{lstlisting}[language=Haskell]
 digit :: Parser Char Int
@@ -317,7 +317,7 @@ digit = f <$> sat isDigit
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Combinador \passthrough{\lstinline!natural!}}
+\begin{frame}[fragile]{Combinador \texttt{natural}}
 \protect\hypertarget{combinador-natural}{}
 \begin{lstlisting}[language=Haskell]
 natural :: Parser Char Int
@@ -401,9 +401,9 @@ greedy  = determ . many
 \item
   Para gramáticas da forma \(E \to E \oplus T \mid T\):
 \item
-  \passthrough{\lstinline!chainl!}: associatividade \textbf{\`{a} esquerda}
-  --- \passthrough{\lstinline!1+2+3!} →
-  \passthrough{\lstinline!(1+2)+3!}
+  \texttt{chainl}: associatividade \textbf{\`{a} esquerda}
+  --- \texttt{1+2+3} →
+  \texttt{(1+2)+3}
 \end{itemize}
 
 \begin{lstlisting}[language=Haskell]
@@ -420,9 +420,9 @@ chainl pe po = h <$> pe <*> many (j <$> po <*> pe)
 \item
   Para gramáticas da forma \(E \to T \oplus E \mid T\):
 \item
-  \passthrough{\lstinline!chainr!}: associatividade \textbf{\`{a} direita}
-  --- \passthrough{\lstinline!1+2+3!} →
-  \passthrough{\lstinline!1+(2+3)!}
+  \texttt{chainr}: associatividade \textbf{\`{a} direita}
+  --- \texttt{1+2+3} →
+  \texttt{1+(2+3)}
 \end{itemize}
 
 \begin{lstlisting}[language=Haskell]
@@ -447,7 +447,7 @@ data Expr = Var String | Lit Int
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{O Combinador \passthrough{\lstinline!gen!}}
+\begin{frame}[fragile]{O Combinador \texttt{gen}}
 \protect\hypertarget{o-combinador-gen}{}
 \begin{lstlisting}[language=Haskell]
 type Op s a = (s, a -> a -> a)
@@ -458,13 +458,13 @@ gen ops p = chainl p (choice (map f ops))
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!gen ops p!} reconhece express\~{o}es com
-  operadores de \passthrough{\lstinline!ops!} e operandos de
-  \passthrough{\lstinline!p!}
+  \texttt{gen ops p} reconhece express\~{o}es com
+  operadores de \texttt{ops} e operandos de
+  \texttt{p}
 \item
-  Associatividade \`{a} esquerda via \passthrough{\lstinline!chainl!}
+  Associatividade \`{a} esquerda via \texttt{chainl}
 \end{itemize}
 \end{frame}
 
@@ -474,7 +474,7 @@ gen ops p = chainl p (choice (map f ops))
 \begin{frame}[fragile]{Parser de Express\~{o}es}
 \protect\hypertarget{parser-de-expressuxf5es-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   \(E \to E + T \,|\, T\)
 \end{itemize}
@@ -489,7 +489,7 @@ exprParser = addtable `gen` termParser
 \begin{frame}[fragile]{Parser de Express\~{o}es}
 \protect\hypertarget{parser-de-expressuxf5es-3}{}
 \begin{itemize}
-\tightlist
+
 \item
   \(T \to T * F \,|\, F\)
 \end{itemize}
@@ -518,7 +518,7 @@ factParser = numParser <|> varParser
 \begin{frame}{Por que Megaparsec?}
 \protect\hypertarget{por-que-megaparsec}{}
 \begin{itemize}
-\tightlist
+
 \item
   A biblioteca didática é para ensino; \textbf{Megaparsec} é para
   produ\c{c}\~{a}o
@@ -531,11 +531,11 @@ factParser = numParser <|> varParser
 \begin{frame}[fragile]{Por que Megaparsec?}
 \protect\hypertarget{por-que-megaparsec-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Melhor desempenho com \emph{committed choice}
 \item
-  Combinador \passthrough{\lstinline!makeExprParser!} para hierarquias
+  Combinador \texttt{makeExprParser} para hierarquias
   de preced\^{e}ncia
 \end{itemize}
 \end{frame}
@@ -548,19 +548,19 @@ type Parser a = Parsec Void String a
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!Void!}: sem tipo de erro customizado (usa os
+  \texttt{Void}: sem tipo de erro customizado (usa os
   padr\~{o}es da biblioteca)
 \item
-  \passthrough{\lstinline!String!}: entrada como lista de caracteres
+  \texttt{String}: entrada como lista de caracteres
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Tratamento de Espa\c{c}os}
 \protect\hypertarget{tratamento-de-espauxe7os}{}
 \begin{itemize}
-\tightlist
+
 \item
   Remover espa\c{c}os e lidar com comentários
 \end{itemize}
@@ -588,7 +588,7 @@ parens = between (symbol "(") (symbol ")")
 \end{frame}
 
 \begin{frame}[fragile]{Operadores com
-\passthrough{\lstinline!makeExprParser!}}
+\texttt{makeExprParser}}
 \protect\hypertarget{operadores-com-makeexprparser}{}
 \begin{lstlisting}[language=Haskell]
 opTable :: [[Operator Parser Exp]]
@@ -603,20 +603,20 @@ opTable
 \begin{frame}[fragile]{Operadores}
 \protect\hypertarget{operadores-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   Lista externa: do \textbf{maior} para o \textbf{menor} nível de
   preced\^{e}ncia
 \item
   Lista interna: operadores de mesma preced\^{e}ncia
 \item
-  \passthrough{\lstinline!InfixL!}: associatividade \`{a} esquerda;
-  \passthrough{\lstinline!InfixR!}: \`{a} direita
+  \texttt{InfixL}: associatividade \`{a} esquerda;
+  \texttt{InfixR}: \`{a} direita
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Parser com
-\passthrough{\lstinline!makeExprParser!}}
+\texttt{makeExprParser}}
 \protect\hypertarget{parser-com-makeexprparser}{}
 \begin{lstlisting}[language=Haskell]
 termP :: Parser Exp
@@ -628,12 +628,12 @@ expP = makeExprParser termP opTable
 \end{frame}
 
 \begin{frame}[fragile]{Parser com
-\passthrough{\lstinline!makeExprParser!}}
+\texttt{makeExprParser}}
 \protect\hypertarget{parser-com-makeexprparser-1}{}
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!makeExprParser!} constrói automaticamente toda
+  \texttt{makeExprParser} constrói automaticamente toda
   a hierarquia de preced\^{e}ncias
 \item
   Sem necessidade de codificar manualmente cada nível como fun\c{c}\~{a}o
@@ -647,17 +647,17 @@ expP = makeExprParser termP opTable
 \begin{frame}[fragile]{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Combinadores de parsing} tratam parsers como valores de
   primeira classe
 \item
-  O tipo \passthrough{\lstinline!Parser s a!} retorna lista de pares
+  O tipo \texttt{Parser s a} retorna lista de pares
   (resultado, entrada restante)
 \item
-  Inst\^{a}ncias de \passthrough{\lstinline!Functor!},
-  \passthrough{\lstinline!Applicative!},
-  \passthrough{\lstinline!Alternative!}, \passthrough{\lstinline!Monad!}
+  Inst\^{a}ncias de \texttt{Functor},
+  \texttt{Applicative},
+  \texttt{Alternative}, \texttt{Monad}
   d\~{a}o expressividade
 \end{itemize}
 \end{frame}
@@ -665,16 +665,16 @@ expP = makeExprParser termP opTable
 \begin{frame}[fragile]{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-2}{}
 \begin{itemize}
-\tightlist
+
 \item
-  Primitivos: \passthrough{\lstinline!item!},
-  \passthrough{\lstinline!sat!}, \passthrough{\lstinline!symbol!};
-  combinadores: \passthrough{\lstinline!many!},
-  \passthrough{\lstinline!option!}, \passthrough{\lstinline!pack!},
-  \passthrough{\lstinline!chainl!}
+  Primitivos: \texttt{item},
+  \texttt{sat}, \texttt{symbol};
+  combinadores: \texttt{many},
+  \texttt{option}, \texttt{pack},
+  \texttt{chainl}
 \item
-  O combinador \passthrough{\lstinline!gen!} +
-  \passthrough{\lstinline!chainl!} resolve associatividade sem
+  O combinador \texttt{gen} +
+  \texttt{chainl} resolve associatividade sem
   transformar a gramática
 \end{itemize}
 \end{frame}
@@ -682,7 +682,7 @@ expP = makeExprParser termP opTable
 \begin{frame}{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-3}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Megaparsec}: mesmos princípios, porém com uma implementa\c{c}\~{a}o
   eficiente.

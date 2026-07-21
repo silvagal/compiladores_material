@@ -4,7 +4,7 @@
 \begin{frame}{Objetivos}
 \protect\hypertarget{objetivos-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Apresenta\c{c}\~{a}o da linguagem do Alex e seu uso para especifica\c{c}\~{a}o de
   analisadores léxicos em Haskell.
@@ -17,7 +17,7 @@
 \begin{frame}{Motiva\c{c}\~{a}o}
 \protect\hypertarget{motivauxe7uxe3o-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Construir analisadores léxicos manualmente é trabalhoso e propenso a
   erros
@@ -30,7 +30,7 @@
 \begin{frame}{Motiva\c{c}\~{a}o}
 \protect\hypertarget{motivauxe7uxe3o-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{Alex} automatiza esse processo para Haskell
 \item
@@ -47,21 +47,21 @@
 \begin{frame}[fragile]{O que é o Alex?}
 \protect\hypertarget{o-que-uxe9-o-alex-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Gerador de analisadores léxicos para \textbf{Haskell}
 \item
-  Análogo ao \passthrough{\lstinline!flex!} (C) e ao
-  \passthrough{\lstinline!JFlex!} (Java)
+  Análogo ao \texttt{flex} (C) e ao
+  \texttt{JFlex} (Java)
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{O que é o Alex?}
 \protect\hypertarget{o-que-uxe9-o-alex-2}{}
 \begin{itemize}
-\tightlist
+
 \item
-  Recebe um arquivo \passthrough{\lstinline!.x!} com especifica\c{c}\~{o}es de
+  Recebe um arquivo \texttt{.x} com especifica\c{c}\~{o}es de
   tokens
 \item
   Gera um módulo Haskell com o analisador léxico completo
@@ -74,7 +74,7 @@
 \section{Sess\~{o}es de um Arquivo .x}\label{sessuxf5es-de-um-arquivo-.x}}
 
 \begin{frame}[fragile]{Se\c{c}\~{o}es de um Arquivo
-\passthrough{\lstinline!.x!}}
+\texttt{.x}}
 \protect\hypertarget{seuxe7uxf5es-de-um-arquivo-.x}{}
 \begin{lstlisting}
 { cabe\c{c}alho Haskell }
@@ -89,10 +89,10 @@ tokens :-
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}{Se\c{c}\~{o}es de um Arquivo \passthrough{\lstinline!.x!}}
+\begin{frame}{Se\c{c}\~{o}es de um Arquivo \texttt{.x}}
 \protect\hypertarget{seuxe7uxf5es-de-um-arquivo-.x-1}{}
 \begin{enumerate}
-\tightlist
+
 \item
   \textbf{Cabe\c{c}alho}: módulo e imports Haskell
 \item
@@ -125,14 +125,14 @@ data Lexeme
 \begin{frame}[fragile]{Tipos de Tokens para Exp}
 \protect\hypertarget{tipos-de-tokens-para-exp-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Mesma estrutura vista no capítulo de análise ad-hoc
 \item
-  A posi\c{c}\~{a}o \passthrough{\lstinline!(linha, coluna)!} é essencial para
+  A posi\c{c}\~{a}o \texttt{(linha, coluna)} é essencial para
   mensagens de erro
 \item
-  \passthrough{\lstinline!TEOF!} marca o fim de entrada
+  \texttt{TEOF} marca o fim de entrada
 \end{itemize}
 \end{frame}
 
@@ -147,12 +147,12 @@ Alex}\label{sintaxe-de-expressuxf5es-regulares-no-alex}}
 Padr\~{a}o & Significado \\
 \midrule\noalign{}
 \endhead
-\passthrough{\lstinline![0-9]!} & Qualquer dígito de 0 a 9 \\
-\passthrough{\lstinline![a-zA-Z]!} & Qualquer letra minúscula ou
+\texttt{[0-9]} & Qualquer dígito de 0 a 9 \\
+\texttt{[a-zA-Z]} & Qualquer letra minúscula ou
 maiúscula \\
-\passthrough{\lstinline![\^\\"]!} & Qualquer coisa \textbf{exceto} aspas
+\texttt{[\^\\"]} & Qualquer coisa \textbf{exceto} aspas
 duplas \\
-\passthrough{\lstinline!$digit!} & Conjunto de caracteres definido pelo
+\texttt{$digit} & Conjunto de caracteres definido pelo
 usuário \\
 \bottomrule\noalign{}
 \end{longtable}
@@ -165,11 +165,11 @@ usuário \\
 Operador & Significado \\
 \midrule\noalign{}
 \endhead
-\passthrough{\lstinline!e*!} & Zero ou mais repeti\c{c}\~{o}es de
-\passthrough{\lstinline!e!} \\
-\passthrough{\lstinline!e+!} & Uma ou mais repeti\c{c}\~{o}es de
-\passthrough{\lstinline!e!} \\
-\passthrough{\lstinline!e?!} & Zero ou uma ocorr\^{e}ncia (opcional) \\
+\texttt{e*} & Zero ou mais repeti\c{c}\~{o}es de
+\texttt{e} \\
+\texttt{e+} & Uma ou mais repeti\c{c}\~{o}es de
+\texttt{e} \\
+\texttt{e?} & Zero ou uma ocorr\^{e}ncia (opcional) \\
 \bottomrule\noalign{}
 \end{longtable}
 \end{frame}
@@ -181,12 +181,12 @@ Operador & Significado \\
 Operador & Significado \\
 \midrule\noalign{}
 \endhead
-\passthrough{\lstinline!.!} & Qualquer caractere exceto
-\passthrough{\lstinline!\\n!} \\
-\passthrough{\lstinline!"str"!} & A string literal
-\passthrough{\lstinline!str!} exatamente \\
-\passthrough{\lstinline!e1 \\| e2!} & Alternativa:
-\passthrough{\lstinline!e1!} ou \passthrough{\lstinline!e2!} \\
+\texttt{.} & Qualquer caractere exceto
+\texttt{\\n} \\
+\texttt{"str"} & A string literal
+\texttt{str} exatamente \\
+\texttt{e1 \\| e2} & Alternativa:
+\texttt{e1} ou \texttt{e2} \\
 \bottomrule\noalign{}
 \end{longtable}
 \end{frame}
@@ -203,11 +203,11 @@ $digit    = 0-9  -- classe: dígitos
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
-  Macros com \passthrough{\lstinline!@!} tornam as regras mais legíveis
+  Macros com \texttt{@} tornam as regras mais legíveis
 \item
-  Conjuntos com \passthrough{\lstinline!$!} definem classes de
+  Conjuntos com \texttt{$} definem classes de
   caracteres reutilizáveis
 \end{itemize}
 \end{frame}
@@ -240,9 +240,9 @@ $digit = 0-9
 Wrapper & Características \\
 \midrule\noalign{}
 \endhead
-\passthrough{\lstinline!basic!} & Processa
-\passthrough{\lstinline!String!} de forma simples e pura \\
-\passthrough{\lstinline!posn!} & Adiciona informa\c{c}\~{a}o de linha e coluna
+\texttt{basic} & Processa
+\texttt{String} de forma simples e pura \\
+\texttt{posn} & Adiciona informa\c{c}\~{a}o de linha e coluna
 automaticamente \\
 \bottomrule\noalign{}
 \end{longtable}
@@ -255,9 +255,9 @@ automaticamente \\
 Wrapper & Características \\
 \midrule\noalign{}
 \endhead
-\passthrough{\lstinline!monad!} & Executa dentro de uma m\^{o}nada
-\passthrough{\lstinline!Alex!} \\
-\passthrough{\lstinline!monadUserState!} & M\^{o}nada com estado customizado
+\texttt{monad} & Executa dentro de uma m\^{o}nada
+\texttt{Alex} \\
+\texttt{monadUserState} & M\^{o}nada com estado customizado
 pelo usuário \\
 \bottomrule\noalign{}
 \end{longtable}
@@ -266,11 +266,11 @@ pelo usuário \\
 \begin{frame}[fragile]{Wrappers Disponíveis}
 \protect\hypertarget{wrappers-disponuxedveis-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   A principal diferen\c{c}a: controle sobre o estado e os efeitos
 \item
-  \passthrough{\lstinline!monadUserState!} é o mais flexível e poderoso
+  \texttt{monadUserState} é o mais flexível e poderoso
 \end{itemize}
 \end{frame}
 
@@ -293,15 +293,15 @@ tokens :-
 \begin{frame}[fragile]{Regras Léxicas}
 \protect\hypertarget{regras-luxe9xicas-1}{}
 \begin{itemize}
-\tightlist
+
 \item
-  Regras sem a\c{c}\~{a}o (\passthrough{\lstinline!;!}) descartam o match
+  Regras sem a\c{c}\~{a}o (\texttt{;}) descartam o match
   silenciosamente
 \item
-  \passthrough{\lstinline!mkNumber!} cria um token com o valor inteiro
+  \texttt{mkNumber} cria um token com o valor inteiro
   do número
 \item
-  \passthrough{\lstinline!simpleToken!} cria um token sem valor
+  \texttt{simpleToken} cria um token sem valor
   associado
 \end{itemize}
 \end{frame}
@@ -323,7 +323,7 @@ Bloco}\label{start-codes-e-comentuxe1rios-em-bloco}}
 \begin{frame}{Comentários Aninhados}
 \protect\hypertarget{comentuxe1rios-aninhados-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Comentários em bloco podem ser \textbf{aninhados}
 \item
@@ -336,17 +336,17 @@ Bloco}\label{start-codes-e-comentuxe1rios-em-bloco}}
 \begin{frame}[fragile]{Solu\c{c}\~{a}o: Start Codes}
 \protect\hypertarget{soluuxe7uxe3o-start-codes}{}
 \begin{itemize}
-\tightlist
+
 \item
   Start codes permitem ao analisador ter \textbf{múltiplos modos}
 \item
-  \passthrough{\lstinline!<0>!}: modo normal de análise
+  \texttt{<0>}: modo normal de análise
 \item
-  \passthrough{\lstinline!<state\_comment>!}: modo ``dentro de
+  \texttt{<state\_comment>}: modo ``dentro de
   comentário em bloco''
 \item
   O analisador muda de modo conforme encontra
-  \passthrough{\lstinline!/*!} e \passthrough{\lstinline!*/!}
+  \texttt{/*} e \texttt{*/}
 \end{itemize}
 \end{frame}
 
@@ -366,15 +366,15 @@ Bloco}\label{start-codes-e-comentuxe1rios-em-bloco}}
 \begin{frame}[fragile]{Regras com Start Codes}
 \protect\hypertarget{regras-com-start-codes-1}{}
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!andBegin state\_comment!}: muda para o modo de
+  \texttt{andBegin state\_comment}: muda para o modo de
   comentário
 \item
-  Em \passthrough{\lstinline!state\_comment!}: ignora tudo exceto
-  \passthrough{\lstinline!/*!} e \passthrough{\lstinline!*/!}
+  Em \texttt{state\_comment}: ignora tudo exceto
+  \texttt{/*} e \texttt{*/}
 \item
-  \passthrough{\lstinline!*/!} sem \passthrough{\lstinline!/*!}
+  \texttt{*/} sem \texttt{/*}
   correspondente → erro imediato
 \end{itemize}
 \end{frame}
@@ -394,22 +394,22 @@ alexInitUserState = AlexUserState { nestLevel = 0 }
 \begin{frame}[fragile]{Def. do Estado}
 \protect\hypertarget{def.-do-estado-1}{}
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!nestLevel = 0!}: fora de qualquer comentário
+  \texttt{nestLevel = 0}: fora de qualquer comentário
 \item
-  \passthrough{\lstinline!nestLevel = 1!}: dentro de
-  \passthrough{\lstinline!/* ... */!}
+  \texttt{nestLevel = 1}: dentro de
+  \texttt{/* ... */}
 \item
-  \passthrough{\lstinline!nestLevel = 2!}: dentro de
-  \passthrough{\lstinline!/* /* ... */ */!}
+  \texttt{nestLevel = 2}: dentro de
+  \texttt{/* /* ... */ */}
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Fun\c{c}\~{o}es de Aninhamento}
 \protect\hypertarget{funuxe7uxf5es-de-aninhamento}{}
 \begin{itemize}
-\tightlist
+
 \item
   Aumentando o aninhamento
 \end{itemize}
@@ -425,7 +425,7 @@ nestComment _ _ = do
 \begin{frame}[fragile]{Fun\c{c}\~{o}es de Aninhamento}
 \protect\hypertarget{funuxe7uxf5es-de-aninhamento-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   Diminuindo o aninhamento
 \end{itemize}
@@ -454,17 +454,17 @@ modify :: (AlexUserState -> AlexUserState) -> Alex ()
 \begin{frame}[fragile]{Manipula\c{c}\~{a}o do Estado}
 \protect\hypertarget{manipulauxe7uxe3o-do-estado-1}{}
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!get!}: l\^{e} o estado customizado atual
+  \texttt{get}: l\^{e} o estado customizado atual
 \item
-  \passthrough{\lstinline!put!}: substitui o estado por um novo
+  \texttt{put}: substitui o estado por um novo
 \item
-  \passthrough{\lstinline!modify!}: aplica uma fun\c{c}\~{a}o de transforma\c{c}\~{a}o
+  \texttt{modify}: aplica uma fun\c{c}\~{a}o de transforma\c{c}\~{a}o
   ao estado
 \item
   Padr\~{a}o id\^{e}ntico \`{a} m\^{o}nada de estado de Haskell
-  (\passthrough{\lstinline!State!})
+  (\texttt{State})
 \end{itemize}
 \end{frame}
 
@@ -482,10 +482,10 @@ alex -o ExpLexer.hs ExpLexer.x  # especifica o arquivo de saída
 \begin{frame}[fragile]{Como Gerar o Analisador}
 \protect\hypertarget{como-gerar-o-analisador-1}{}
 \begin{itemize}
-\tightlist
+
 \item
-  Com Cabal: automático se \passthrough{\lstinline!alex!} está em
-  \passthrough{\lstinline!build-tool-depends!}
+  Com Cabal: automático se \texttt{alex} está em
+  \texttt{build-tool-depends}
 \item
   O arquivo gerado é um módulo Haskell normal
 \end{itemize}

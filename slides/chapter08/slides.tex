@@ -17,7 +17,7 @@
 \begin{frame}{O Nome LL(1)}
 \protect\hypertarget{o-nome-ll1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \textbf{L} (primeiro): l\^{e} a entrada da \textbf{esquerda para a
   direita} (\emph{Left-to-right})
@@ -33,7 +33,7 @@
 \begin{frame}{A Ideia Central}
 \protect\hypertarget{a-ideia-central}{}
 \begin{itemize}
-\tightlist
+
 \item
   Substitui a \textbf{recurs\~{a}o} por um \textbf{algoritmo dirigido por
   tabela}
@@ -46,7 +46,7 @@
 \begin{frame}{A Ideia Central}
 \protect\hypertarget{a-ideia-central-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   O analisador mantém uma \textbf{pilha} de símbolos (o que ainda falta
   reconhecer)
@@ -63,7 +63,7 @@ símbolo inicial
 \textbf{Repita}:
 
 \begin{itemize}
-\tightlist
+
 \item
   Seja \(X\) o topo da pilha e \(a\) o token corrente
 \item
@@ -74,7 +74,7 @@ símbolo inicial
 \begin{frame}{O Algoritmo LL(1)}
 \protect\hypertarget{o-algoritmo-ll1-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   Se \(X\) é terminal \(t\): se \(t = a\), desempilha e avan\c{c}a; sen\~{a}o
   \textbf{erro}
@@ -82,7 +82,7 @@ símbolo inicial
   Se \(X\) é n\~{a}o-terminal \(A\): consulta \(M[A, a]\)
 
   \begin{itemize}
-  \tightlist
+
   \item
     Se \(M[A, a] = A \to \alpha\): substitui \(A\) na pilha por
     \(\alpha\) (da direita para esquerda)
@@ -108,7 +108,7 @@ F  &\to& (\; E\; ) \mid \mathbf{n}
 \end{frame}
 
 \begin{frame}{Trace Completo da Análise de
-\passthrough{\lstinline!n + n!}}
+\texttt{n + n}}
 \protect\hypertarget{trace-completo-da-anuxe1lise-de-n-n}{}
 \begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
@@ -123,7 +123,7 @@ Pilha & Entrada & A\c{c}\~{a}o \\
 \end{frame}
 
 \begin{frame}{Trace Completo da Análise de
-\passthrough{\lstinline!n + n!}}
+\texttt{n + n}}
 \protect\hypertarget{trace-completo-da-anuxe1lise-de-n-n-1}{}
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2344}}
@@ -148,7 +148,7 @@ A\c{c}\~{a}o
 \end{frame}
 
 \begin{frame}{Trace Completo da Análise de
-\passthrough{\lstinline!n + n!}}
+\texttt{n + n}}
 \protect\hypertarget{trace-completo-da-anuxe1lise-de-n-n-2}{}
 \begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
@@ -163,7 +163,7 @@ Pilha & Entrada & A\c{c}\~{a}o \\
 \end{frame}
 
 \begin{frame}{Trace Completo da Análise de
-\passthrough{\lstinline!n + n!}}
+\texttt{n + n}}
 \protect\hypertarget{trace-completo-da-anuxe1lise-de-n-n-3}{}
 \begin{longtable}[]{@{}lll@{}}
 \toprule\noalign{}
@@ -196,7 +196,7 @@ os \(X_i\) s\~{a}o anuláveis.
 Casos base:
 
 \begin{itemize}
-\tightlist
+
 \item
   Todo terminal n\~{a}o é anulável
 \item
@@ -219,7 +219,7 @@ anulável.
 \textbf{Regras para \(\mathrm{FIRST}(X_1\, X_2\, \cdots\, X_n)\):}
 
 \begin{enumerate}
-\tightlist
+
 \item
   Sequ\^{e}ncia vazia: \(\mathrm{FIRST}(\lambda) = \{\lambda\}\)
 \item
@@ -228,7 +228,7 @@ anulável.
   \(X_1\) é n\~{a}o-terminal:
 
   \begin{itemize}
-  \tightlist
+
   \item
     Incluir \(\mathrm{FIRST}(X_1) \setminus \{\lambda\}\)
   \item
@@ -248,14 +248,14 @@ anulável.
 \textbf{Regras:}
 
 \begin{enumerate}
-\tightlist
+
 \item
   \(\$ \in \mathrm{FOLLOW}(S)\) (símbolo inicial)
 \item
   Para cada produ\c{c}\~{a}o \(B \to \alpha\,A\,\beta\):
 
   \begin{itemize}
-  \tightlist
+
   \item
     Adicionar \(\mathrm{FIRST}(\beta) \setminus \{\lambda\}\) a
     \(\mathrm{FOLLOW}(A)\)
@@ -273,12 +273,12 @@ Calculado iterativamente até ponto fixo.
 Para cada produ\c{c}\~{a}o \(A \to \alpha\):
 
 \begin{enumerate}
-\tightlist
+
 \item
   Para cada \(a \in \mathrm{FIRST}(\alpha) \setminus \{\lambda\}\):
 
   \begin{itemize}
-  \tightlist
+
   \item
     Definir \(M[A, a] = A \to \alpha\)
   \end{itemize}
@@ -289,17 +289,17 @@ Para cada produ\c{c}\~{a}o \(A \to \alpha\):
 \protect\hypertarget{construuxe7uxe3o-da-tabela-1}{}
 \begin{enumerate}
 \setcounter{enumi}{1}
-\tightlist
+
 \item
   Se \(\lambda \in \mathrm{FIRST}(\alpha)\):
 
   \begin{itemize}
-  \tightlist
+
   \item
     Para cada \(b \in \mathrm{FOLLOW}(A)\):
 
     \begin{itemize}
-    \tightlist
+
     \item
       Definir \(M[A, b] = A \to \alpha\)
     \end{itemize}
@@ -314,7 +314,7 @@ Entradas n\~{a}o preenchidas indicam \textbf{erro}.
 \textbf{Conflito} = uma entrada recebe mais de uma produ\c{c}\~{a}o
 
 \begin{itemize}
-\tightlist
+
 \item
   gramática n\~{a}o é LL(1)!
 \end{itemize}
@@ -444,7 +444,7 @@ A → a | λ
 \begin{frame}{Conflito FIRST/FOLLOW}
 \protect\hypertarget{conflito-firstfollow-1}{}
 \begin{itemize}
-\tightlist
+
 \item
   \(\mathrm{FIRST}(A) = \{a, \lambda\}\)
 \item
@@ -491,16 +491,16 @@ computeFirstSets g = fixedPoint step initial
 \end{lstlisting}
 
 \begin{itemize}
-\tightlist
+
 \item
-  \passthrough{\lstinline!fixedPoint step initial!}: aplica
-  \passthrough{\lstinline!step!} repetidamente até converg\^{e}ncia
+  \texttt{fixedPoint step initial}: aplica
+  \texttt{step} repetidamente até converg\^{e}ncia
 \item
   Cada itera\c{c}\~{a}o pode expandir os conjuntos FIRST
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{\passthrough{\lstinline!firstForSequence!}:
+\begin{frame}[fragile]{\texttt{firstForSequence}:
 Implementa\c{c}\~{a}o das Regras}
 \protect\hypertarget{firstforsequence-implementauxe7uxe3o-das-regras}{}
 \begin{lstlisting}[language=Haskell]
@@ -565,7 +565,7 @@ go (NonTerminal nt : stack') inp@(a : _) acc =
 \begin{frame}{Conclus\~{a}o}
 \protect\hypertarget{conclusuxe3o-2}{}
 \begin{itemize}
-\tightlist
+
 \item
   N\~{a}o suporta \textbf{recurs\~{a}o \`{a} esquerda} (requer transforma\c{c}\~{a}o)
 \item
