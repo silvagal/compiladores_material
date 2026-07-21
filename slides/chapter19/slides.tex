@@ -1,0 +1,305 @@
+\hypertarget{objetivos}{%
+\section{Objetivos}\label{objetivos}}
+
+\begin{frame}{Objetivos}
+\protect\hypertarget{objetivos-1}{}
+\begin{itemize}
+\item
+  Apresentar o formato textual WebAssembly (WAT) e o modelo de execu\c{c}\~{a}o
+  baseado em máquina de pilha.
+\item
+  Definir as regras de tradu\c{c}\~{a}o de express\~{o}es e comandos da IRT para
+  instru\c{c}\~{o}es WAT.
+\item
+  Discutir a reconstru\c{c}\~{a}o do controle de fluxo estruturado de
+  WebAssembly a partir dos saltos explícitos da IRT.
+\end{itemize}
+\end{frame}
+
+\hypertarget{introduuxe7uxe3o}{%
+\section{Introdu\c{c}\~{a}o}\label{introduuxe7uxe3o}}
+
+\begin{frame}[fragile]{WebAssembly como Alvo}
+\protect\hypertarget{webassembly-como-alvo}{}
+\[\text{IRT} \xrightarrow{\text{opt}} \text{IRT otimizada} \xrightarrow{\text{codegen}} \text{Módulo WAT} \xrightarrow{\texttt{wat2wasm}} \text{Binário Wasm}\]
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{WebAssembly} (Wasm): especifica\c{c}\~{a}o de máquina virtual com
+  sem\^{a}ntica formal (W3C)
+\item
+  Excelente para fins pedagógicos:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Sem\^{a}ntica \textbf{precisa} e publicada
+  \item
+    Representa\c{c}\~{a}o textual (WAT) \textbf{legível}
+  \item
+    Ferramentas: \passthrough{\lstinline!wabt!} (compilar) e
+    \passthrough{\lstinline!wasmtime!} (executar)
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Por que WebAssembly?}
+\protect\hypertarget{por-que-webassembly}{}
+\begin{itemize}
+\tightlist
+\item
+  Executado no browser (Chrome, Firefox, Safari) e fora dele (wasmtime,
+  wasmer)
+\item
+  Modelo de seguran\c{c}a: sandbox + verifica\c{c}\~{a}o de tipos estática
+\item
+  Tipo único no nosso subconjunto: \passthrough{\lstinline!i32!}
+  (inteiro de 32 bits)
+\item
+  Todos os valores da IRT --- inteiros, ponteiros, endere\c{c}os --- mapeiam
+  para \passthrough{\lstinline!i32!}
+\end{itemize}
+\end{frame}
+
+\hypertarget{o-formato-wat}{%
+\section{O Formato WAT}\label{o-formato-wat}}
+
+\begin{frame}[fragile]{Estrutura de um Módulo WAT}
+\protect\hypertarget{estrutura-de-um-muxf3dulo-wat}{}
+\begin{lstlisting}
+(module
+  (import "env" "print"    (func $print    (param i32)))
+  (import "env" "read_int" (func $read_int (result i32)))
+  (memory 4)
+  (global $heap_ptr (mut i32) (i32.const 0))
+  (func $main
+    ;; corpo da fun\c{c}\~{a}o
+  )
+  (export "main" (func $main))
+)
+\end{lstlisting}
+
+\begin{itemize}
+\tightlist
+\item
+  \passthrough{\lstinline!(memory 4)!} = 4 páginas de 64 KB = 256 KB de
+  memória linear
+\item
+  \passthrough{\lstinline!$heap\_ptr!} = ponteiro de aloca\c{c}\~{a}o
+  (\emph{bump-pointer})
+\item
+  Fun\c{c}\~{o}es \passthrough{\lstinline!print!} e
+  \passthrough{\lstinline!read\_int!} importadas do ambiente
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Gramática do Subconjunto WAT}
+\protect\hypertarget{gramuxe1tica-do-subconjunto-wat}{}
+\[\begin{array}{lcl}
+\mathit{mod} & ::= & \mathtt{(module}\ \vec{\mathit{import}}\ \mathit{mem}?\ \vec{\mathit{global}}\ \vec{\mathit{func}}\ \vec{\mathit{export}}\mathtt{)} \\
+\mathit{func} & ::= & \mathtt{(func}\ \$f\ \vec{\mathit{param}}\ \mathit{result}?\ \vec{\mathit{local}}\ \vec{i}\mathtt{)} \\
+i & ::= & \mathtt{i32.const}\ n \mid \mathtt{local.get}\ \$x \mid \mathtt{local.set}\ \$x \\
+  & \mid & \mathit{binop} \mid \mathtt{i32.load} \mid \mathtt{i32.store} \\
+  & \mid & \mathtt{call}\ \$f \mid \mathtt{drop} \mid \mathtt{return} \\
+  & \mid & \mathtt{(block}\ \$\ell\ \vec{i}\mathtt{)} \mid \mathtt{(loop}\ \$\ell\ \vec{i}\mathtt{)} \\
+  & \mid & \mathtt{(if\ (then\ \vec{i})\ (else\ \vec{i}))} \\
+  & \mid & \mathtt{br}\ \$\ell \mid \mathtt{br\_if}\ \$\ell
+\end{array}\]
+\end{frame}
+
+\hypertarget{semuxe2ntica-operacional}{%
+\section{Sem\^{a}ntica Operacional}\label{semuxe2ntica-operacional}}
+
+\begin{frame}{Máquina de Pilha}
+\protect\hypertarget{muxe1quina-de-pilha}{}
+WebAssembly é uma \textbf{máquina de pilha}: instru\c{c}\~{o}es consomem do topo
+e empilham resultados.
+
+Estado de uma fun\c{c}\~{a}o: \((\sigma, \mu)\)
+
+\begin{itemize}
+\tightlist
+\item
+  \(\sigma = [v_1, \ldots, v_n]\) --- pilha de operandos (topo \`{a}
+  direita)
+\item
+  \(\mu\) --- variáveis locais (incluindo par\^{a}metros)
+\end{itemize}
+
+Regras de avalia\c{c}\~{a}o ---
+\((\sigma, \mu) \xrightarrow{i} (\sigma', \mu')\):
+
+\[\frac{}{{(\sigma, \mu) \xrightarrow{\mathtt{i32.const}\ n} (\sigma \cdot n,\ \mu)}} \qquad \frac{\mu(\$x) = v}{(\sigma, \mu) \xrightarrow{\mathtt{local.get}\ \$x} (\sigma \cdot v,\ \mu)}\]
+
+\[\frac{\sigma = \sigma' \cdot v_2 \cdot v_1 \quad v = \mathit{eval}(\mathit{op}, v_1, v_2)}{(\sigma, \mu) \xrightarrow{\mathit{binop}} (\sigma' \cdot v,\ \mu)}\]
+\end{frame}
+
+\begin{frame}[fragile]{Controle de Fluxo Estruturado}
+\protect\hypertarget{controle-de-fluxo-estruturado}{}
+WebAssembly usa controle de fluxo \textbf{estruturado} (sem
+\passthrough{\lstinline!goto!}):
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Construtor
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Comportamento de \passthrough{\lstinline!br!}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\passthrough{\lstinline!(block $l ...)!} & Salta para o \textbf{fim} do
+bloco (\emph{break}) \\
+\passthrough{\lstinline!(loop $l ...)!} & Salta para o \textbf{início}
+do la\c{c}o (\emph{continue}) \\
+\passthrough{\lstinline!(if (then ...) (else ...))!} & Consome topo;
+executa ramo verdadeiro se \(\neq 0\) \\
+\passthrough{\lstinline!br\_if $l!} & Consome topo; ramifica se
+\(\neq 0\) \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}[fragile]{Padr\~{a}o Can\^{o}nico de While em WAT}
+\protect\hypertarget{padruxe3o-canuxf4nico-de-while-em-wat}{}
+\begin{lstlisting}
+(block $exit
+  (loop $head
+    ;; avalia\c{c}\~{a}o da condi\c{c}\~{a}o de saída
+    <condi\c{c}\~{a}o>
+    i32.eqz          ;; nega\c{c}\~{a}o
+    br_if $exit      ;; sai se condi\c{c}\~{a}o falsa
+    ;; corpo do la\c{c}o
+    <corpo>
+    br $head         ;; volta ao início
+  )
+)
+\end{lstlisting}
+\end{frame}
+
+\hypertarget{traduuxe7uxe3o-da-irt-para-wat}{%
+\section{Tradu\c{c}\~{a}o da IRT para
+WAT}\label{traduuxe7uxe3o-da-irt-para-wat}}
+
+\begin{frame}[fragile]{Alocador de Memória (Bump-Pointer)}
+\protect\hypertarget{alocador-de-memuxf3ria-bump-pointer}{}
+\begin{lstlisting}
+(func $alloc (param $n i32) (result i32)
+  (local $base i32)
+  global.get $heap_ptr
+  local.set $base
+  global.get $heap_ptr
+  local.get $n
+  i32.const 8
+  i32.mul
+  i32.add
+  global.set $heap_ptr
+  local.get $base
+)
+\end{lstlisting}
+
+\(\mathit{alloc}(n)\): aloca \(n\) palavras de 8 bytes, retorna endere\c{c}o
+base.
+\end{frame}
+
+\begin{frame}{Tradu\c{c}\~{a}o de Express\~{o}es
+\(\mathcal{E}\llbracket \cdot \rrbracket\)}
+\protect\hypertarget{traduuxe7uxe3o-de-expressuxf5es-mathcalellbracket-cdot-rrbracket}{}
+\[\mathcal{E}\llbracket \mathbf{CONST}(n) \rrbracket = [\mathtt{i32.const}\ n]\]
+
+\[\mathcal{E}\llbracket \mathbf{TEMP}(t) \rrbracket = [\mathtt{local.get}\ \$t]\]
+
+\[\mathcal{E}\llbracket \mathbf{BINOP}(\mathit{op}, e_1, e_2) \rrbracket = \mathcal{E}\llbracket e_1 \rrbracket \cdot \mathcal{E}\llbracket e_2 \rrbracket \cdot [\mathit{op}_\mathtt{i32}]\]
+
+\[\mathcal{E}\llbracket \mathbf{MEM}(e) \rrbracket = \mathcal{E}\llbracket e \rrbracket \cdot [\mathtt{i32.load}]\]
+
+\[\mathcal{E}\llbracket \mathbf{CALL}(\mathbf{NAME}\ f, \vec{e}) \rrbracket = \mathcal{E}\llbracket \vec{e} \rrbracket \cdot [\mathtt{call}\ \$f]\]
+\end{frame}
+
+\begin{frame}[fragile]{Tabela de Operadores}
+\protect\hypertarget{tabela-de-operadores}{}
+\begin{longtable}[]{@{}llll@{}}
+\toprule\noalign{}
+IRT & WAT & IRT & WAT \\
+\midrule\noalign{}
+\endhead
+ADD & \passthrough{\lstinline!i32.add!} & EQ &
+\passthrough{\lstinline!i32.eq!} \\
+SUB & \passthrough{\lstinline!i32.sub!} & NEQ &
+\passthrough{\lstinline!i32.ne!} \\
+MUL & \passthrough{\lstinline!i32.mul!} & LT &
+\passthrough{\lstinline!i32.lt\_s!} \\
+DIV & \passthrough{\lstinline!i32.div\_s!} & LE &
+\passthrough{\lstinline!i32.le\_s!} \\
+MOD & \passthrough{\lstinline!i32.rem\_s!} & GT &
+\passthrough{\lstinline!i32.gt\_s!} \\
+AND & \passthrough{\lstinline!i32.and!} & GE &
+\passthrough{\lstinline!i32.ge\_s!} \\
+OR & \passthrough{\lstinline!i32.or!} & & \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}{Tradu\c{c}\~{a}o de Comandos
+\(\mathcal{S}\llbracket \cdot \rrbracket\)}
+\protect\hypertarget{traduuxe7uxe3o-de-comandos-mathcalsllbracket-cdot-rrbracket}{}
+\[\mathcal{S}\llbracket \mathbf{MOVE}(\mathbf{TEMP}\ t, e) \rrbracket = \mathcal{E}\llbracket e \rrbracket \cdot [\mathtt{local.set}\ \$t]\]
+
+\[\mathcal{S}\llbracket \mathbf{MOVE}(\mathbf{MEM}(a), e) \rrbracket = \mathcal{E}\llbracket a \rrbracket \cdot \mathcal{E}\llbracket e \rrbracket \cdot [\mathtt{i32.store}]\]
+
+\[\mathcal{S}\llbracket \mathbf{RETURN}([e]) \rrbracket = \mathcal{E}\llbracket e \rrbracket \cdot [\mathtt{return}]\]
+\end{frame}
+
+\begin{frame}{Reconstru\c{c}\~{a}o de Controle de Fluxo}
+\protect\hypertarget{reconstruuxe7uxe3o-de-controle-de-fluxo}{}
+A IRT usa JUMP/CJUMP/LABEL; WAT usa block/loop/if.
+
+\textbf{Reconhecimento de while}: padr\~{a}o na sequ\^{e}ncia linearizada:
+\[\mathbf{LABEL}\ \ell_h \;\; \mathbf{CJUMP}(e, \ell_b, \ell_f) \;\; \mathbf{LABEL}\ \ell_b \;\; \text{corpo} \;\; \mathbf{JUMP}(\ell_h) \;\; \mathbf{LABEL}\ \ell_f\]
+
+\textbf{Reconhecimento de if/else}: padr\~{a}o:
+\[\mathbf{CJUMP}(e, \ell_t, \ell_f) \;\; \mathbf{LABEL}\ \ell_t \;\; \text{then} \;\; \mathbf{JUMP}(\ell_e) \;\; \mathbf{LABEL}\ \ell_f \;\; \text{else} \;\; \mathbf{LABEL}\ \ell_e\]
+\end{frame}
+
+\hypertarget{conclusuxe3o}{%
+\section{Conclus\~{a}o}\label{conclusuxe3o}}
+
+\begin{frame}[fragile]{Sumário do Capítulo}
+\protect\hypertarget{sumuxe1rio-do-capuxedtulo}{}
+\begin{itemize}
+\tightlist
+\item
+  WebAssembly é uma máquina de \textbf{pilha} com tipo único
+  \passthrough{\lstinline!i32!}
+\item
+  Controle de fluxo \textbf{estruturado}: block, loop, if (sem goto)
+\item
+  Pipeline completo: \textbf{TImp → IRT → WAT → Wasm}
+\item
+  Tradu\c{c}\~{a}o de express\~{o}es: empilhar operandos, depois opera\c{c}\~{a}o
+\item
+  Tradu\c{c}\~{a}o de la\c{c}os: \emph{linearizar} IRT, \emph{reconhecer} padr\~{a}o,
+  \emph{reconstruir} block/loop
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Próximos Passos}
+\protect\hypertarget{pruxf3ximos-passos}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Tipos múltiplos}: Wasm 2.0 adiciona
+  \passthrough{\lstinline!f32!}, \passthrough{\lstinline!f64!},
+  \passthrough{\lstinline!v128!} (SIMD)
+\item
+  \textbf{Aloca\c{c}\~{a}o de memória avan\c{c}ada}: GC, ponteiros managed
+\item
+  \textbf{Otimiza\c{c}\~{o}es específicas de Wasm}: tail calls, instru\c{c}\~{o}es SIMD
+\item
+  \textbf{Pipeline completo}: integrar todos os capítulos em um
+  compilador funcional
+\end{itemize}
+\end{frame}

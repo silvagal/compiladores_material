@@ -1,0 +1,542 @@
+\hypertarget{objetivos}{%
+\section{Objetivos}\label{objetivos}}
+
+\begin{frame}{Objetivos}
+\protect\hypertarget{objetivos-1}{}
+\begin{itemize}
+\item
+  Apresentar a sem\^{a}ntica operacional para uma linguagem imperativa
+  simples.
+\item
+  Apresentar a implementa\c{c}\~{a}o do interpretador desta linguagem.
+\end{itemize}
+\end{frame}
+
+\hypertarget{a-linguagem-line}{%
+\section{A Linguagem Line}\label{a-linguagem-line}}
+
+\begin{frame}{Motiva\c{c}\~{a}o: Express\~{o}es Puras N\~{a}o Bastam}
+\protect\hypertarget{motivauxe7uxe3o-expressuxf5es-puras-nuxe3o-bastam}{}
+\begin{itemize}
+\tightlist
+\item
+  No capítulo anterior: express\~{o}es \textbf{puras} sem variáveis
+\item
+  O valor de uma express\~{a}o dependia apenas da sua estrutura sintática
+\end{itemize}
+\end{frame}
+
+\hypertarget{a-linguagem-line-1}{%
+\section{A Linguagem Line}\label{a-linguagem-line-1}}
+
+\begin{frame}{Motiva\c{c}\~{a}o: Express\~{o}es Puras N\~{a}o Bastam}
+\protect\hypertarget{motivauxe7uxe3o-expressuxf5es-puras-nuxe3o-bastam-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Programas reais manipulam \textbf{estado}: valores armazenados em
+  variáveis
+\item
+  Precisamos estender a sem\^{a}ntica com um componente de estado
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Sintaxe da Linguagem Line}
+\protect\hypertarget{sintaxe-da-linguagem-line}{}
+\[\begin{array}{lcl}
+\mathit{prog} &::=& s^* \\[4pt]
+s &::=& x \mathbin{:=} e \\
+  &\mid& \mathbf{read}\; x \\
+  &\mid& \mathbf{print}\; e \\[4pt]
+e &::=& n \mid x \mid e_1 + e_2 \mid e_1 * e_2
+\end{array}\]
+\end{frame}
+
+\begin{frame}[fragile]{Tipos em Haskell}
+\protect\hypertarget{tipos-em-haskell}{}
+\begin{lstlisting}[language=Haskell]
+data Line = Line [Stmt]
+
+data Stmt
+  = SAssign Var Exp
+  | SRead   Var
+  | SPrint  Exp
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Tipos em Haskell}
+\protect\hypertarget{tipos-em-haskell-1}{}
+\begin{lstlisting}[language=Haskell]
+data Exp
+  = EInt Int
+  | EVar Var
+  | Exp :+: Exp
+  | Exp :*: Exp
+
+type Var = String
+\end{lstlisting}
+\end{frame}
+
+\hypertarget{ambientes}{%
+\section{Ambientes}\label{ambientes}}
+
+\begin{frame}[fragile]{Defini\c{c}\~{a}o de Ambiente}
+\protect\hypertarget{definiuxe7uxe3o-de-ambiente}{}
+Um \textbf{ambiente}
+\(\sigma : \mathit{Var} \rightharpoonup \mathbb{Z}\) é uma fun\c{c}\~{a}o
+parcial que mapeia nomes de variáveis para inteiros.
+
+Em Haskell: \passthrough{\lstinline!type Env = Map String Int!}
+\end{frame}
+
+\begin{frame}{Nota\c{c}\~{a}o}
+\protect\hypertarget{notauxe7uxe3o}{}
+\begin{itemize}
+\tightlist
+\item
+  \(\sigma(x)\): valor de \(x\) em \(\sigma\) (supondo
+  \(x \in \mathrm{dom}(\sigma)\))
+\item
+  \(\sigma[x \mapsto n]\): ambiente obtido atualizando \(x\) com \(n\)
+\item
+  \(\emptyset\): ambiente vazio (sem variáveis definidas)
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Por que Precisamos de Ambientes?}
+\protect\hypertarget{por-que-precisamos-de-ambientes}{}
+\begin{itemize}
+\tightlist
+\item
+  Express\~{o}es agora podem conter \textbf{variáveis}:
+  \passthrough{\lstinline!x * 4!}
+\item
+  O valor de \passthrough{\lstinline!x!} só é conhecido durante a
+  execu\c{c}\~{a}o
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Por que Precisamos de Ambientes?}
+\protect\hypertarget{por-que-precisamos-de-ambientes-1}{}
+\begin{itemize}
+\tightlist
+\item
+  O ambiente \(\sigma\) registra o estado da memória em cada instante
+\item
+  Comandos de atribui\c{c}\~{a}o \textbf{modificam} o ambiente:
+  \(\sigma \to \sigma[x \mapsto n]\)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Por que Precisamos de Ambientes?}
+\protect\hypertarget{por-que-precisamos-de-ambientes-2}{}
+\begin{itemize}
+\tightlist
+\item
+  Express\~{o}es apenas \textbf{consultam} o ambiente, sem modificá-lo
+\end{itemize}
+\end{frame}
+
+\hypertarget{semuxe2ntica-small-step}{%
+\section{Sem\^{a}ntica Small-Step}\label{semuxe2ntica-small-step}}
+
+\begin{frame}{Express\~{o}es com Variáveis}
+\protect\hypertarget{expressuxf5es-com-variuxe1veis}{}
+\begin{itemize}
+\tightlist
+\item
+  A configura\c{c}\~{a}o de uma express\~{a}o é um par \((\sigma, e)\); a redu\c{c}\~{a}o é
+  \((\sigma, e) \to (\sigma, e')\).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Express\~{o}es com Variáveis}
+\protect\hypertarget{expressuxf5es-com-variuxe1veis-1}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Variável:}
+\end{itemize}
+
+\[\frac{x \in \mathrm{dom}(\sigma)}{(\sigma,\, x) \to (\sigma,\, \sigma(x))} \quad\text{(Var)}\]
+\end{frame}
+
+\begin{frame}{Express\~{o}es com Variáveis}
+\protect\hypertarget{expressuxf5es-com-variuxe1veis-2}{}
+\begin{itemize}
+\tightlist
+\item
+  Uma variável é substituída pelo seu valor corrente.
+\item
+  Se \(x \notin \mathrm{dom}(\sigma)\): \textbf{erro} de variável n\~{a}o
+  inicializada.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Regras para Express\~{o}es}
+\protect\hypertarget{regras-para-expressuxf5es}{}
+\[\frac{(\sigma, e_1) \to (\sigma, e_1')}{(\sigma,\, e_1 + e_2) \to (\sigma,\, e_1' + e_2)} \quad\text{(AddL)}
+\]
+\end{frame}
+
+\begin{frame}{Regras para Express\~{o}es}
+\protect\hypertarget{regras-para-expressuxf5es-1}{}
+\[
+\frac{(\sigma, e_2) \to (\sigma, e_2')}{(\sigma,\, n_1 + e_2) \to (\sigma,\, n_1 + e_2')} \quad\text{(AddR)}\]
+\end{frame}
+
+\begin{frame}{Regras para Express\~{o}es}
+\protect\hypertarget{regras-para-expressuxf5es-2}{}
+\[\frac{}{(\sigma,\, n_1 + n_2) \to (\sigma,\, n_1 \mathbin{\hat{+}} n_2)} \quad\text{(Add)}\]
+
+\begin{itemize}
+\tightlist
+\item
+  Note que as express\~{o}es \textbf{n\~{a}o modificam} \(\sigma\)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    S\~{a}o puras no sentido de que apenas consultam o ambiente.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Regras para Comandos}
+\protect\hypertarget{regras-para-comandos}{}
+A configura\c{c}\~{a}o de um comando é \((\sigma, s) \to (\sigma', s')\), onde
+\(s'\) é o resíduo após a redu\c{c}\~{a}o.
+\end{frame}
+
+\begin{frame}{Regras para Comandos}
+\protect\hypertarget{regras-para-comandos-1}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Atribui\c{c}\~{a}o (avalia primeiro):}
+  \[\frac{(\sigma, e) \to (\sigma, e')}{(\sigma,\; x \mathbin{:=} e) \to (\sigma,\; x \mathbin{:=} e')} \quad\text{(AssignStep)}\]
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Regras para Comandos}
+\protect\hypertarget{regras-para-comandos-2}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Atribui\c{c}\~{a}o (valor final):}
+  \[\frac{}{(\sigma,\; x \mathbin{:=} n) \to (\sigma[x \mapsto n],\; \mathbf{skip})} \quad\text{(Assign)}\]
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Impress\~{a}o}
+\protect\hypertarget{impressuxe3o}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Impress\~{a}o (avalia primeiro):}
+  \[\frac{(\sigma, e) \to (\sigma, e')}{(\sigma,\; \mathbf{print}\; e) \to (\sigma,\; \mathbf{print}\; e')} \quad\text{(PrintStep)}\]
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Impress\~{a}o}
+\protect\hypertarget{impressuxe3o-1}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Impress\~{a}o (valor final):}
+  \[\frac{}{(\sigma,\; \mathbf{print}\; n) \to (\sigma,\; \mathbf{skip})} \quad\text{(Print) [emite } n\text{]}\]
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Sequ\^{e}ncia}
+\protect\hypertarget{sequuxeancia}{}
+\begin{itemize}
+\tightlist
+\item
+  Skip \`{a} esquerda
+\end{itemize}
+
+\[\frac{}{(\sigma,\; \mathbf{skip};\, s^*) \to (\sigma,\; s^*)} \quad\text{(SeqSkip)}\]
+\end{frame}
+
+\begin{frame}{Sequ\^{e}ncia}
+\protect\hypertarget{sequuxeancia-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Caso geral:
+\end{itemize}
+
+\[\frac{(\sigma, s) \to (\sigma', s')}{(\sigma,\; s;\, s_1) \to (\sigma',\; s';\,s_1)} \quad\text{(Seq)}\]
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo}
+\protect\hypertarget{exemplo}{}
+\begin{itemize}
+\tightlist
+\item
+  Small-Step: \passthrough{\lstinline!x := 2 + 3; print x * 4!}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Partindo do ambiente vazio \(\emptyset\):
+  \end{itemize}
+\end{itemize}
+
+\[(\emptyset,\; x \mathbin{:=} 2+3;\; \mathbf{print}\; x*4)\]
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo}
+\protect\hypertarget{exemplo-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Small-Step: \passthrough{\lstinline!x := 2 + 3; print x * 4!}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Partindo do ambiente vazio \(\emptyset\):
+  \end{itemize}
+\end{itemize}
+
+\[\xrightarrow{\text{Seq, Add}} (\emptyset,\; x \mathbin{:=} 5;\; \mathbf{print}\; x*4)\]
+
+\[\xrightarrow{\text{Assign}} ([x \mapsto 5],\; \mathbf{skip};\; \mathbf{print}\; x*4)\]
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo}
+\protect\hypertarget{exemplo-2}{}
+\begin{itemize}
+\tightlist
+\item
+  Small-Step: \passthrough{\lstinline!x := 2 + 3; print x * 4!}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Partindo do ambiente vazio \(\emptyset\):
+  \end{itemize}
+\end{itemize}
+
+\[\xrightarrow{\text{SeqSkip}} ([x \mapsto 5],\; \mathbf{print}\; x*4)\]
+
+\[\xrightarrow{\text{PrintStep, Var}} ([x \mapsto 5],\; \mathbf{print}\; 5*4)\]
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo}
+\protect\hypertarget{exemplo-3}{}
+\begin{itemize}
+\tightlist
+\item
+  Small-Step: \passthrough{\lstinline!x := 2 + 3; print x * 4!}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Partindo do ambiente vazio \(\emptyset\):
+  \end{itemize}
+\end{itemize}
+
+\[\xrightarrow{\text{PrintStep, Mul}} ([x \mapsto 5],\; \mathbf{print}\; 20)\]
+
+\[\xrightarrow{\text{Print}} ([x \mapsto 5],\; \mathbf{skip}) \quad\text{[emite 20]}\]
+\end{frame}
+
+\hypertarget{semuxe2ntica-big-step}{%
+\section{Sem\^{a}ntica Big-Step}\label{semuxe2ntica-big-step}}
+
+\begin{frame}{Express\~{o}es}
+\protect\hypertarget{expressuxf5es}{}
+\begin{itemize}
+\tightlist
+\item
+  Nova regra: variáveis.
+\end{itemize}
+
+\[\frac{x \in \mathrm{dom}(\sigma)}{\sigma \vdash x \Downarrow \sigma(x)} \quad\text{(Var)}\]
+\end{frame}
+
+\begin{frame}{Comandos}
+\protect\hypertarget{comandos}{}
+\begin{itemize}
+\tightlist
+\item
+  A rela\c{c}\~{a}o \(\sigma, s \Downarrow \sigma'\) significa ``executar \(s\)
+  no ambiente \(\sigma\) produz \(\sigma'\)''.
+\end{itemize}
+
+\[\frac{\sigma \vdash e \Downarrow n}
+     {\sigma,\; x \mathbin{:=} e \;\Downarrow\; \sigma[x \mapsto n]}
+\quad\text{(Assign)}
+\]
+\end{frame}
+
+\begin{frame}{Comandos}
+\protect\hypertarget{comandos-1}{}
+\[
+\frac{\sigma \vdash e \Downarrow n}
+     {\sigma,\; \mathbf{print}\; e \;\Downarrow\; \sigma}
+\quad\text{(Print) [emite } n\text{]}\]
+\end{frame}
+
+\begin{frame}{Comandos}
+\protect\hypertarget{comandos-2}{}
+\[\frac{}{\sigma,\; \mathbf{read}\; x \;\Downarrow\; \sigma[x \mapsto n]}
+\quad\text{(Read) [} n\text{ lido da entrada]}\]
+\end{frame}
+
+\begin{frame}{Comandos}
+\protect\hypertarget{comandos-3}{}
+\[\frac{}{\sigma,\; \epsilon \;\Downarrow\; \sigma}
+\quad\text{(SeqNil)}
+\]
+\end{frame}
+
+\begin{frame}{Comandos}
+\protect\hypertarget{comandos-4}{}
+\[
+\frac{\sigma,\; s \;\Downarrow\; \sigma' \quad \sigma',\; s^* \;\Downarrow\; \sigma''}
+     {\sigma,\; s;\, s^* \;\Downarrow\; \sigma''}
+\quad\text{(SeqCons)}\]
+\end{frame}
+
+\begin{frame}{Deriva\c{c}\~{a}o: \passthrough{\lstinline!x := 2 + 3!}}
+\protect\hypertarget{derivauxe7uxe3o-x-2-3}{}
+\[\dfrac{
+  \dfrac{
+    \dfrac{}{\emptyset \vdash 2 \Downarrow 2}
+    \quad
+    \dfrac{}{\emptyset \vdash 3 \Downarrow 3}
+  }{\emptyset \vdash 2 + 3 \Downarrow 5}
+}{\emptyset,\; x \mathbin{:=} 2 + 3 \;\Downarrow\; [x \mapsto 5]}\]
+\end{frame}
+
+\begin{frame}{Deriva\c{c}\~{a}o: \passthrough{\lstinline!x := 2+3; print x*4!}}
+\protect\hypertarget{derivauxe7uxe3o-x-23-print-x4}{}
+\begin{itemize}
+\tightlist
+\item
+  Resolu\c{c}\~{a}o na lousa.
+\end{itemize}
+\end{frame}
+
+\hypertarget{implementauxe7uxe3o-em-haskell}{%
+\section{Implementa\c{c}\~{a}o em
+Haskell}\label{implementauxe7uxe3o-em-haskell}}
+
+\begin{frame}[fragile]{M\^{o}nada}
+\protect\hypertarget{muxf4nada}{}
+\begin{itemize}
+\tightlist
+\item
+  A sem\^{a}ntica big-step dita que cada comando recebe e produz um
+  ambiente.
+\end{itemize}
+
+\begin{lstlisting}[language=Haskell]
+type Env    = Map String Int
+type Interp a = ExceptT String (StateT Env IO) a
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{M\^{o}nada}
+\protect\hypertarget{muxf4nada-1}{}
+\begin{itemize}
+\tightlist
+\item
+  A pilha de m\^{o}nadas combina:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \passthrough{\lstinline!StateT Env!}: o ambiente \(\sigma\)
+    implícito --- lido com \passthrough{\lstinline!get!}, modificado com
+    \passthrough{\lstinline!modify!}
+  \item
+    \passthrough{\lstinline!ExceptT String!}: tratamento de erros
+    (variável n\~{a}o definida)
+  \item
+    \passthrough{\lstinline!IO!}: efeitos de I/O para
+    \passthrough{\lstinline!read!} e \passthrough{\lstinline!print!}
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Express\~{o}es}
+\protect\hypertarget{expressuxf5es-1}{}
+\begin{lstlisting}[language=Haskell]
+interpExp :: Exp -> Interp Int
+interpExp (EInt n)    = pure n
+interpExp (EVar v)    = askVar v
+interpExp (e1 :+: e2) = (+) <$> interpExp e1 <*> interpExp e2
+interpExp (e1 :*: e2) = (*) <$> interpExp e1 <*> interpExp e2
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Variáveis}
+\protect\hypertarget{variuxe1veis}{}
+\begin{lstlisting}[language=Haskell]
+askVar :: String -> Interp Int
+askVar s = do
+    env <- get
+    case Map.lookup s env of
+      Nothing  -> throwError $ unwords ["Undefined variable:", s]
+      Just val -> pure val
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Comandos}
+\protect\hypertarget{comandos-5}{}
+\begin{lstlisting}[language=Haskell]
+interpStmt :: Stmt -> Interp ()
+interpStmt (SAssign v e) = do
+    val <- interpExp e
+    modify (Map.insert v val)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Comandos}
+\protect\hypertarget{comandos-6}{}
+\begin{lstlisting}[language=Haskell]
+interpStmt (SPrint e) = do
+    val <- interpExp e
+    liftIO $ print val
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Comandos}
+\protect\hypertarget{comandos-7}{}
+\begin{lstlisting}[language=Haskell]
+interpStmt (SRead v) = do
+    str <- liftIO getLine
+    modify (Map.insert v (read str))
+
+interpProgram :: Line -> Interp ()
+interpProgram (Line ss) = mapM_ interpStmt ss
+\end{lstlisting}
+\end{frame}
+
+\hypertarget{conclusuxe3o}{%
+\section{Conclus\~{a}o}\label{conclusuxe3o}}
+
+\begin{frame}{Conclus\~{a}o}
+\protect\hypertarget{conclusuxe3o-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Apresentamos a sem\^{a}ntica operacional de uma linguagem imperativa
+  simples.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Foco: representa\c{c}\~{a}o do estado.
+  \item
+    Small e big step
+  \end{itemize}
+\item
+  Apresentamos a implementa\c{c}\~{a}o em Haskell
+\end{itemize}
+\end{frame}

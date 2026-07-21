@@ -1,0 +1,311 @@
+\hypertarget{objetivos}{%
+\section{Objetivos}\label{objetivos}}
+
+\begin{frame}{Objetivos}
+\protect\hypertarget{objetivos-1}{}
+\begin{itemize}
+\item
+  Apresentar a rela\c{c}\~{a}o de subtipagem e o princípio de substitui\c{c}\~{a}o de
+  Liskov, incluindo a contravari\^{a}ncia nos tipos fun\c{c}\~{a}o.
+\item
+  Apresentar o Featherweight Java (FJ) como núcleo formal mínimo de
+  Java, com suas regras de subtipagem, tipagem e sem\^{a}ntica operacional.
+\item
+  Discutir a gera\c{c}\~{a}o de código para FJ: layout de objeto em memória,
+  despacho din\^{a}mico de métodos e verifica\c{c}\~{a}o de casts.
+\end{itemize}
+\end{frame}
+
+\hypertarget{introduuxe7uxe3o}{%
+\section{Introdu\c{c}\~{a}o}\label{introduuxe7uxe3o}}
+
+\begin{frame}[fragile]{Motiva\c{c}\~{a}o: O Princípio de Liskov}
+\protect\hypertarget{motivauxe7uxe3o-o-princuxedpio-de-liskov}{}
+Sistemas de tipos com igualdade exata de tipos rejeitam programas
+seguros:
+
+\begin{quote}
+Se uma fun\c{c}\~{a}o espera \passthrough{\lstinline!Number!} e fornecemos um
+\passthrough{\lstinline!Int!}, por que reclamar? Todo inteiro é um
+número.
+\end{quote}
+
+A \textbf{subtipagem} torna esse raciocínio preciso:
+
+\begin{quote}
+\(S <: T\) significa: \emph{todo valor de tipo \(S\) pode ser usado com
+seguran\c{c}a onde um valor de tipo \(T\) é esperado.}
+\end{quote}
+
+Este é o \textbf{Princípio de Substitui\c{c}\~{a}o de Liskov} --- a base da
+orienta\c{c}\~{a}o a objetos.
+\end{frame}
+
+\begin{frame}{Dois Sistemas Neste Capítulo}
+\protect\hypertarget{dois-sistemas-neste-capuxedtulo}{}
+\begin{enumerate}
+\item
+  \textbf{\(\lambda\)-cálculo com subtipagem}:
+  \(\mathsf{Bool} <: \mathsf{Int}\), progresso, preserva\c{c}\~{a}o,
+  decidibilidade
+\item
+  \textbf{Featherweight Java (FJ)}: núcleo formal mínimo de Java com:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Classes, heran\c{c}a, campos, métodos
+  \item
+    Cria\c{c}\~{a}o de objetos e \emph{casts}
+  \item
+    Subtipagem por heran\c{c}a
+  \end{itemize}
+\end{enumerate}
+\end{frame}
+
+\hypertarget{lambda-cuxe1lculo-com-subtipagem}{%
+\section{\texorpdfstring{\(\lambda\)-cálculo com
+Subtipagem}{\textbackslash lambda-cálculo com Subtipagem}}\label{lambda-cuxe1lculo-com-subtipagem}}
+
+\begin{frame}{Sintaxe e Tipos}
+\protect\hypertarget{sintaxe-e-tipos}{}
+\textbf{Termos:}
+
+\[t ::= x \mid n \mid \mathsf{true} \mid \mathsf{false} \mid t + t \mid \mathsf{if}\ t\ \mathsf{then}\ t\ \mathsf{else}\ t \mid \lambda x {:} T.\, t \mid t\, t\]
+
+\textbf{Tipos:}
+
+\[T ::= \mathsf{Int} \mid \mathsf{Bool} \mid T \to T\]
+
+\textbf{Valores:}
+
+\[v ::= n \mid \mathsf{true} \mid \mathsf{false} \mid \lambda x {:} T.\, t\]
+\end{frame}
+
+\begin{frame}{A Rela\c{c}\~{a}o de Subtipagem}
+\protect\hypertarget{a-relauxe7uxe3o-de-subtipagem}{}
+Menor rela\c{c}\~{a}o reflexivo-transitiva que satisfaz:
+
+\[\frac{}{T <: T} \quad\text{(S-Refl)} \qquad \frac{S <: U \quad U <: T}{S <: T} \quad\text{(S-Trans)}\]
+
+\[\frac{}{\mathsf{Bool} <: \mathsf{Int}} \quad\text{(S-Bool)}\]
+
+\[\frac{T_1 <: S_1 \quad S_2 <: T_2}{S_1 \to S_2 <: T_1 \to T_2} \quad\text{(S-Arrow)}\]
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{S-Arrow}: contravariante no domínio, covariante no
+  contradomínio
+\item
+  A fun\c{c}\~{a}o que aceita mais (\(T_1 <: S_1\)) e retorna menos
+  (\(S_2 <: T_2\)) é subtipo
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Sistema de Tipos: Regra de Subsun\c{c}\~{a}o}
+\protect\hypertarget{sistema-de-tipos-regra-de-subsunuxe7uxe3o}{}
+A regra central que conecta subtipagem e tipagem:
+
+\[\frac{\Gamma \vdash t : S \quad S <: T}{\Gamma \vdash t : T} \quad\text{(T-Sub)}\]
+
+``Se \(t\) tem tipo \(S\) e \(S <: T\), ent\~{a}o \(t\) também tem tipo
+\(T\).''
+
+Demais regras padr\~{a}o: T-Var, T-Int, T-True, T-False, T-Add, T-If, T-Abs,
+T-App.
+
+Gra\c{c}as \`{a} subsun\c{c}\~{a}o: se os ramos de um \passthrough{\lstinline!if!} t\^{e}m
+tipos \(\mathsf{Bool}\) e \(\mathsf{Int}\), podemos elevar o primeiro
+para \(\mathsf{Int}\) e unificar.
+\end{frame}
+
+\begin{frame}{Progresso, Preserva\c{c}\~{a}o e Decidibilidade}
+\protect\hypertarget{progresso-preservauxe7uxe3o-e-decidibilidade}{}
+\textbf{Lema (Formas Can\^{o}nicas)} --- se \(\vdash v : T\): -
+\(T = \mathsf{Int} \Rightarrow v\) é inteiro ou booleano -
+\(T = T_1 \to T_2 \Rightarrow v = \lambda x {:} T.\, t\) com
+\(T <: T_1\)
+
+\textbf{Teorema (Progresso)}: \(\vdash t : T \Rightarrow t\) valor ou
+\(\exists t'.\; t \to t'\)
+
+\textbf{Teorema (Preserva\c{c}\~{a}o)}: \(\vdash t : T\) e
+\(t \to t' \Rightarrow \vdash t' : T\)
+
+\textbf{Teorema (Decidibilidade de \(S <: T\))}:
+
+\begin{enumerate}
+\tightlist
+\item
+  Se \(S = T\): true (S-Refl)
+\item
+  Se \(S = \mathsf{Bool}\), \(T = \mathsf{Int}\): true (S-Bool)
+\item
+  Se \(S = S_1 \to S_2\), \(T = T_1 \to T_2\):
+  \(T_1 <: S_1 \wedge S_2 <: T_2\) (S-Arrow)
+\item
+  Caso contrário: false
+\end{enumerate}
+
+A transitividade n\~{a}o precisa de tratamento especial --- o algoritmo é
+correto e termina.
+\end{frame}
+
+\hypertarget{featherweight-java}{%
+\section{Featherweight Java}\label{featherweight-java}}
+
+\begin{frame}{O que é FJ?}
+\protect\hypertarget{o-que-uxe9-fj}{}
+Proposto por Igarashi, Pierce e Wadler (2001):
+
+\begin{itemize}
+\tightlist
+\item
+  Núcleo formal \textbf{mínimo} de Java
+\item
+  Captura os mecanismos essenciais de OO: classes, heran\c{c}a, campos,
+  métodos, casts
+\item
+  Pequeno o suficiente para análise formal rigorosa
+\end{itemize}
+
+\textbf{FJ omite} (deliberadamente): atribui\c{c}\~{a}o, controle de fluxo,
+interfaces, sobrecarga, tipos primitivos.
+
+O que permanece é suficiente para demonstrar \textbf{progresso},
+\textbf{preserva\c{c}\~{a}o} e corre\c{c}\~{a}o dos \emph{casts}.
+\end{frame}
+
+\begin{frame}{Sintaxe de FJ}
+\protect\hypertarget{sintaxe-de-fj}{}
+\textbf{Declara\c{c}\~{a}o de classe:}
+\[\mathtt{class}\ C\ \mathtt{extends}\ D\ \{\ \overline{T\ f};\ K\ \overline{M}\ \}\]
+
+\textbf{Construtor can\^{o}nico:}
+\[C(\overline{D\ g},\, \overline{T\ f})\ \{\ \mathtt{super}(\bar{g});\ \overline{\mathtt{this}.f = f};\ \}\]
+
+\textbf{Método:} \[T\ m(\overline{T\ x})\ \{\ \mathtt{return}\ e;\ \}\]
+
+\textbf{Express\~{o}es:}
+
+\[e ::= x \mid e.f \mid e.m(\bar{e}) \mid \mathtt{new}\ C(\bar{e}) \mid (C)\ e\]
+
+\textbf{Único tipo de valor:}
+
+\[v ::= \mathtt{new}\ C(\bar{v})\]
+\end{frame}
+
+\begin{frame}[fragile]{Tabela de Classes e Fun\c{c}\~{o}es Auxiliares}
+\protect\hypertarget{tabela-de-classes-e-funuxe7uxf5es-auxiliares}{}
+A \textbf{tabela de classes} \(\mathit{CT}\) mapeia nomes de classe para
+declara\c{c}\~{o}es.
+
+\textbf{Fun\c{c}\~{o}es de consulta:}
+
+\begin{itemize}
+\tightlist
+\item
+  \(\mathit{fields}(C)\) --- todos os campos de \(C\) (incluindo
+  herdados)
+\item
+  \(\mathit{mtype}(m, C)\) --- assinatura de \(m\) em \(C\) (busca na
+  hierarquia)
+\item
+  \(\mathit{mbody}(m, C)\) --- par\^{a}metros e corpo de \(m\) em \(C\)
+\end{itemize}
+
+\textbf{Subtipagem por heran\c{c}a:}
+
+\[\frac{}{C <: C} \quad\text{(S-Refl)} \qquad \frac{C <: D \quad D <: E}{C <: E} \quad\text{(S-Trans)} \qquad \frac{\mathit{CT}(C) = \mathtt{class}\ C\ \mathtt{extends}\ D\ \{\ldots\}}{C <: D} \quad\text{(S-Extends)}\]
+
+Todo tipo é subtipo de \passthrough{\lstinline!Object!}.
+\end{frame}
+
+\begin{frame}[fragile]{Sem\^{a}ntica Operacional de FJ}
+\protect\hypertarget{semuxe2ntica-operacional-de-fj}{}
+\textbf{Acesso a campo (B-Field):}
+
+\[\frac{\mathit{fields}(C) = \overline{C\ f}}{(\mathtt{new}\ C(\bar{v})).f_i \to v_i}\]
+
+\textbf{Invoca\c{c}\~{a}o de método (B-Invk):}
+
+\[\frac{\mathit{mbody}(m, C) = (\bar{x}, e)}{(\mathtt{new}\ C(\bar{v})).m(\bar{u}) \to e[\bar{x} \mapsto \bar{u},\, \mathtt{this} \mapsto \mathtt{new}\ C(\bar{v})]}\]
+
+\textbf{Cast (B-Cast):}
+
+\[\frac{C <: D}{(D)\, \mathtt{new}\ C(\bar{v}) \to \mathtt{new}\ C(\bar{v})}\]
+
+Se \(C \not<: D\): lan\c{c}a \passthrough{\lstinline!ClassCastException!}
+--- erro em tempo de execu\c{c}\~{a}o!
+\end{frame}
+
+\begin{frame}[fragile]{Gera\c{c}\~{a}o de Código para FJ}
+\protect\hypertarget{gerauxe7uxe3o-de-cuxf3digo-para-fj}{}
+\textbf{Layout de objeto}:
+\passthrough{\lstinline![class\_tag | f0 | f1 | ... | fn]!} --- palavras
+de 8 bytes
+
+\begin{lstlisting}[language=Haskell]
+data CgEnv = CgEnv
+  { classTable :: Map ClassName ClassDecl
+  , fieldLayout :: Map ClassName [FieldName]
+  , methodImpls :: Map (ClassName, MethodName) FuncDecl
+  }
+
+type CgM = StateT CgState (ExceptT String Identity)
+\end{lstlisting}
+
+\textbf{Despacho din\^{a}mico}: l\^{e} tag no offset 0, cadeia de CJUMPs:
+
+\begin{lstlisting}[language=Haskell]
+buildDispatchChain :: MethodName -> [(Int, ClassName)] -> Stmt
+buildDispatchChain m [] = JUMP(NAME("method_not_found"))
+buildDispatchChain m ((tag, cls):rest) =
+  SEQ(CJUMP(BEq(MEM(TEMP("recv")), CONST tag),
+            "call_" ++ cls ++ "_" ++ m, "next"),
+      buildDispatchChain m rest)
+\end{lstlisting}
+\end{frame}
+
+\hypertarget{conclusuxe3o}{%
+\section{Conclus\~{a}o}\label{conclusuxe3o}}
+
+\begin{frame}{Sumário do Capítulo}
+\protect\hypertarget{sumuxe1rio-do-capuxedtulo}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Subtipagem} \(S <: T\): todo valor de \(S\) pode ser usado
+  onde \(T\) é esperado
+\item
+  \textbf{Regra de subsun\c{c}\~{a}o} (T-Sub): permite usar subtipo onde
+  supertipo é esperado
+\item
+  \textbf{S-Arrow}: contravariante no domínio, covariante no
+  contradomínio
+\item
+  \textbf{FJ}: núcleo formal mínimo de Java com classes, heran\c{c}a e casts
+\item
+  \textbf{Subtipagem por heran\c{c}a}: \(C <: D\) se \(C\) estende \(D\)
+  (fecho reflexivo-transitivo)
+\item
+  \textbf{Gera\c{c}\~{a}o de código}: tags de classe, layout de objeto, despacho
+  din\^{a}mico
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Próximos Passos}
+\protect\hypertarget{pruxf3ximos-passos}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Infer\^{e}ncia de tipos com subtipagem}: algoritmos mais complexos
+  (bivariance, polimorfismo + subtipagem)
+\item
+  \textbf{Subtipagem estrutural} vs.~\textbf{nominal} (Java
+  vs.~Go/TypeScript)
+\item
+  \textbf{A pesquisa em compiladores} (capítulo 23): tópicos avan\c{c}ados
+\end{itemize}
+\end{frame}

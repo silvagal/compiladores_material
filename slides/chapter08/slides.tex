@@ -1,0 +1,576 @@
+\hypertarget{objetivos}{%
+\section{Objetivos}\label{objetivos}}
+
+\begin{frame}{Objetivos}
+\protect\hypertarget{objetivos-1}{}
+\begin{itemize}
+\item
+  Apresentar os conceitos de conjuntos first e follow.
+\item
+  Apresentar o algoritmo LL(1): primeiro baseado em tabela.
+\end{itemize}
+\end{frame}
+
+\hypertarget{o-algoritmo-ll1}{%
+\section{O Algoritmo LL(1)}\label{o-algoritmo-ll1}}
+
+\begin{frame}{O Nome LL(1)}
+\protect\hypertarget{o-nome-ll1}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{L} (primeiro): l\^{e} a entrada da \textbf{esquerda para a
+  direita} (\emph{Left-to-right})
+\item
+  \textbf{L} (segundo): produz uma \textbf{deriva\c{c}\~{a}o mais \`{a} esquerda}
+  (\emph{Leftmost derivation})
+\item
+  \textbf{1}: usa apenas \textbf{1 símbolo de lookahead} para decidir
+  qual produ\c{c}\~{a}o aplicar
+\end{itemize}
+\end{frame}
+
+\begin{frame}{A Ideia Central}
+\protect\hypertarget{a-ideia-central}{}
+\begin{itemize}
+\tightlist
+\item
+  Substitui a \textbf{recurs\~{a}o} por um \textbf{algoritmo dirigido por
+  tabela}
+\item
+  Tabela de parsing \(M[A, a]\): dado n\~{a}o-terminal \(A\) e token \(a\),
+  qual produ\c{c}\~{a}o aplicar?
+\end{itemize}
+\end{frame}
+
+\begin{frame}{A Ideia Central}
+\protect\hypertarget{a-ideia-central-1}{}
+\begin{itemize}
+\tightlist
+\item
+  O analisador mantém uma \textbf{pilha} de símbolos (o que ainda falta
+  reconhecer)
+\item
+  Cada passo: consulta \(M[\text{topo da pilha}, \text{token atual}]\)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{O Algoritmo LL(1)}
+\protect\hypertarget{o-algoritmo-ll1-1}{}
+\textbf{Inicializa\c{c}\~{a}o}: pilha \(\leftarrow [S, \$]\), onde \(S\) é o
+símbolo inicial
+
+\textbf{Repita}:
+
+\begin{itemize}
+\tightlist
+\item
+  Seja \(X\) o topo da pilha e \(a\) o token corrente
+\item
+  Se \(X = \$\) e \(a = \$\): \textbf{aceitar}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{O Algoritmo LL(1)}
+\protect\hypertarget{o-algoritmo-ll1-2}{}
+\begin{itemize}
+\tightlist
+\item
+  Se \(X\) é terminal \(t\): se \(t = a\), desempilha e avan\c{c}a; sen\~{a}o
+  \textbf{erro}
+\item
+  Se \(X\) é n\~{a}o-terminal \(A\): consulta \(M[A, a]\)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Se \(M[A, a] = A \to \alpha\): substitui \(A\) na pilha por
+    \(\alpha\) (da direita para esquerda)
+  \item
+    Se \(M[A, a] = vazio\) erro: \textbf{erro sintático}
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\hypertarget{exemplo-anuxe1lise-de-n-n}{%
+\section{\texorpdfstring{Exemplo: Análise de
+\texttt{n\ +\ n}}{Exemplo: Análise de n + n}}\label{exemplo-anuxe1lise-de-n-n}}
+
+\begin{frame}{Gramática de Express\~{o}es (LL(1))}
+\protect\hypertarget{gramuxe1tica-de-expressuxf5es-ll1}{}
+\[\begin{array}{lcl}
+E  &\to& T\; E' \\
+E' &\to& +\; T\; E' \mid \lambda \\
+T  &\to& F\; T' \\
+T' &\to& *\; F\; T' \mid \lambda \\
+F  &\to& (\; E\; ) \mid \mathbf{n}
+\end{array}\]
+\end{frame}
+
+\begin{frame}{Trace Completo da Análise de
+\passthrough{\lstinline!n + n!}}
+\protect\hypertarget{trace-completo-da-anuxe1lise-de-n-n}{}
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Pilha & Entrada & A\c{c}\~{a}o \\
+\midrule\noalign{}
+\endhead
+\(E\;\$\) & \(n\;+\;n\;\$\) & \(M[E,n]\): aplicar \(E \to T\;E'\) \\
+\(T\;E'\;\$\) & \(n\;+\;n\;\$\) & \(M[T,n]\): aplicar \(T \to F\;T'\) \\
+\(F\;T'\;E'\;\$\) & \(n\;+\;n\;\$\) & \(M[F,n]\): aplicar \(F \to n\) \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}{Trace Completo da Análise de
+\passthrough{\lstinline!n + n!}}
+\protect\hypertarget{trace-completo-da-anuxe1lise-de-n-n-1}{}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2344}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2031}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.5625}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Pilha
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Entrada
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+A\c{c}\~{a}o
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\(n\;T'\;E'\;\$\) & \(n\;+\;n\;\$\) & Casar: consumir \(n\) \\
+\(T'\;E'\;\$\) & \(+\;n\;\$\) & \(M[T',+]\): aplicar
+\(T' \to \lambda\) \\
+\(E'\;\$\) & \(+\;n\;\$\) & \(M[E',+]\): aplicar \(E' \to +\;T\;E'\) \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}{Trace Completo da Análise de
+\passthrough{\lstinline!n + n!}}
+\protect\hypertarget{trace-completo-da-anuxe1lise-de-n-n-2}{}
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Pilha & Entrada & A\c{c}\~{a}o \\
+\midrule\noalign{}
+\endhead
+\(+\;T\;E'\;\$\) & \(+\;n\;\$\) & Casar: consumir \(+\) \\
+\(T\;E'\;\$\) & \(n\;\$\) & \(M[T,n]\): aplicar \(T \to F\;T'\) \\
+\(F\;T'\;E'\;\$\) & \(n\;\$\) & \(M[F,n]\): aplicar \(F \to n\) \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}{Trace Completo da Análise de
+\passthrough{\lstinline!n + n!}}
+\protect\hypertarget{trace-completo-da-anuxe1lise-de-n-n-3}{}
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Pilha & Entrada & A\c{c}\~{a}o \\
+\midrule\noalign{}
+\endhead
+\(n\;T'\;E'\;\$\) & \(n\;\$\) & Casar: consumir \(n\) \\
+\(T'\;E'\;\$\) & \(\$\) & \(M[T',\$]\): aplicar \(T' \to \lambda\) \\
+\(E'\;\$\) & \(\$\) & \(M[E',\$]\): aplicar \(E' \to \lambda\) \\
+\(\$\) & \(\$\) & \textbf{Aceitar} \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\hypertarget{construuxe7uxe3o-da-tabela-ll1}{%
+\section{Constru\c{c}\~{a}o da Tabela
+LL(1)}\label{construuxe7uxe3o-da-tabela-ll1}}
+
+\begin{frame}{Conceito: Anulável}
+\protect\hypertarget{conceito-anuluxe1vel}{}
+Um n\~{a}o-terminal \(A\) é \textbf{anulável} se
+\(A \Rightarrow^* \lambda\).
+
+Uma sequ\^{e}ncia \(X_1\, X_2\, \cdots\, X_n\) é anulável se \textbf{todos}
+os \(X_i\) s\~{a}o anuláveis.
+\end{frame}
+
+\begin{frame}{Conceito: Anulável}
+\protect\hypertarget{conceito-anuluxe1vel-1}{}
+Casos base:
+
+\begin{itemize}
+\tightlist
+\item
+  Todo terminal n\~{a}o é anulável
+\item
+  \(A\) anulável se tem produ\c{c}\~{a}o \(A \to \lambda\)
+\item
+  Calculado iterativamente até ponto fixo
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Conjunto FIRST}
+\protect\hypertarget{conjunto-first}{}
+\[\mathrm{FIRST}(\alpha) = \{a \in \Sigma \mid \alpha \Rightarrow^* a\,\beta\}\]
+
+Incluir \(\lambda\) em \(\mathrm{FIRST}(\alpha)\) se \(\alpha\) é
+anulável.
+\end{frame}
+
+\begin{frame}{Conjunto FIRST}
+\protect\hypertarget{conjunto-first-1}{}
+\textbf{Regras para \(\mathrm{FIRST}(X_1\, X_2\, \cdots\, X_n)\):}
+
+\begin{enumerate}
+\tightlist
+\item
+  Sequ\^{e}ncia vazia: \(\mathrm{FIRST}(\lambda) = \{\lambda\}\)
+\item
+  \(X_1\) é terminal \(a\): \(\mathrm{FIRST}(X_1\cdots) = \{a\}\)
+\item
+  \(X_1\) é n\~{a}o-terminal:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Incluir \(\mathrm{FIRST}(X_1) \setminus \{\lambda\}\)
+  \item
+    Se \(\lambda \in \mathrm{FIRST}(X_1)\): incluir também
+    \(\mathrm{FIRST}(X_2\cdots X_n)\)
+  \end{itemize}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Conjunto FOLLOW}
+\protect\hypertarget{conjunto-follow}{}
+\[\mathrm{FOLLOW}(A) = \{a \in \Sigma \cup \{\$\} \mid S \Rightarrow^* \alpha\,A\,a\,\beta\}\]
+\end{frame}
+
+\begin{frame}{Conjunto FOLLOW}
+\protect\hypertarget{conjunto-follow-1}{}
+\textbf{Regras:}
+
+\begin{enumerate}
+\tightlist
+\item
+  \(\$ \in \mathrm{FOLLOW}(S)\) (símbolo inicial)
+\item
+  Para cada produ\c{c}\~{a}o \(B \to \alpha\,A\,\beta\):
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Adicionar \(\mathrm{FIRST}(\beta) \setminus \{\lambda\}\) a
+    \(\mathrm{FOLLOW}(A)\)
+  \item
+    Se \(\lambda \in \mathrm{FIRST}(\beta)\): adicionar
+    \(\mathrm{FOLLOW}(B)\) a \(\mathrm{FOLLOW}(A)\)
+  \end{itemize}
+\end{enumerate}
+
+Calculado iterativamente até ponto fixo.
+\end{frame}
+
+\begin{frame}{Constru\c{c}\~{a}o da Tabela}
+\protect\hypertarget{construuxe7uxe3o-da-tabela}{}
+Para cada produ\c{c}\~{a}o \(A \to \alpha\):
+
+\begin{enumerate}
+\tightlist
+\item
+  Para cada \(a \in \mathrm{FIRST}(\alpha) \setminus \{\lambda\}\):
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Definir \(M[A, a] = A \to \alpha\)
+  \end{itemize}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Constru\c{c}\~{a}o da Tabela}
+\protect\hypertarget{construuxe7uxe3o-da-tabela-1}{}
+\begin{enumerate}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Se \(\lambda \in \mathrm{FIRST}(\alpha)\):
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Para cada \(b \in \mathrm{FOLLOW}(A)\):
+
+    \begin{itemize}
+    \tightlist
+    \item
+      Definir \(M[A, b] = A \to \alpha\)
+    \end{itemize}
+  \end{itemize}
+\end{enumerate}
+
+Entradas n\~{a}o preenchidas indicam \textbf{erro}.
+\end{frame}
+
+\begin{frame}{Constru\c{c}\~{a}o da Tabela}
+\protect\hypertarget{construuxe7uxe3o-da-tabela-2}{}
+\textbf{Conflito} = uma entrada recebe mais de uma produ\c{c}\~{a}o
+
+\begin{itemize}
+\tightlist
+\item
+  gramática n\~{a}o é LL(1)!
+\end{itemize}
+\end{frame}
+
+\hypertarget{exemplo-completo-tabela-ll1}{%
+\section{Exemplo Completo: Tabela
+LL(1)}\label{exemplo-completo-tabela-ll1}}
+
+\begin{frame}{Gramática de Express\~{o}es (LL(1))}
+\protect\hypertarget{gramuxe1tica-de-expressuxf5es-ll1-1}{}
+\[\begin{array}{lcl}
+E  &\to& T\; E' \\
+E' &\to& +\; T\; E' \mid \lambda \\
+T  &\to& F\; T' \\
+T' &\to& *\; F\; T' \mid \lambda \\
+F  &\to& (\; E\; ) \mid \mathbf{n}
+\end{array}\]
+\end{frame}
+
+\begin{frame}{Conjuntos FIRST}
+\protect\hypertarget{conjuntos-first}{}
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+N\~{a}o-terminal & FIRST \\
+\midrule\noalign{}
+\endhead
+\(E\) & \(\{(, n\}\) \\
+\(E'\) & \(\{+, \lambda\}\) \\
+\(T\) & \(\{(, n\}\) \\
+\(T'\) & \(\{*, \lambda\}\) \\
+\(F\) & \(\{(, n\}\) \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}{Conjuntos FOLLOW}
+\protect\hypertarget{conjuntos-follow}{}
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+N\~{a}o-terminal & FOLLOW \\
+\midrule\noalign{}
+\endhead
+\(E\) & \(\{\$, )\}\) \\
+\(E'\) & \(\{\$, )\}\) \\
+\(T\) & \(\{+, \$, )\}\) \\
+\(T'\) & \(\{+, \$, )\}\) \\
+\(F\) & \(\{*, +, \$, )\}\) \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}{Tabela de Parsing LL(1)}
+\protect\hypertarget{tabela-de-parsing-ll1}{}
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.0690}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1207}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1724}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1724}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1552}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1552}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1552}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(n\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(+\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(*\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\((\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\()\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(\$\)
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\(E\) & \(T\;E'\) & --- & --- & \(T\;E'\) & --- & --- \\
+\(E'\) & --- & \(+\;T\;E'\) & --- & --- & \(\lambda\) & \(\lambda\) \\
+\(T\) & \(F\;T'\) & --- & --- & \(F\;T'\) & --- & --- \\
+\(T'\) & --- & \(\lambda\) & \(*\;F\;T'\) & --- & \(\lambda\) &
+\(\lambda\) \\
+\(F\) & \(n\) & --- & --- & \((\;E\;)\) & --- & --- \\
+\bottomrule\noalign{}
+\end{longtable}
+
+Cada entrada tem no máximo uma produ\c{c}\~{a}o --- a gramática é LL(1).
+\end{frame}
+
+\hypertarget{conflitos-na-tabela-ll1}{%
+\section{Conflitos na Tabela LL(1)}\label{conflitos-na-tabela-ll1}}
+
+\begin{frame}[fragile]{Conflito FIRST/FIRST}
+\protect\hypertarget{conflito-firstfirst}{}
+Quando duas alternativas de um mesmo n\~{a}o-terminal come\c{c}am com o mesmo
+terminal:
+
+\begin{lstlisting}
+S → if E then S else S
+  | if E then S
+  | other
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Conflito FIRST/FIRST}
+\protect\hypertarget{conflito-firstfirst-1}{}
+\(\mathrm{FIRST}(\mathbf{if}\;E\;\mathbf{then}\;S\;\mathbf{else}\;S) = \{\mathbf{if}\}\)
+\(\mathrm{FIRST}(\mathbf{if}\;E\;\mathbf{then}\;S) = \{\mathbf{if}\}\)
+
+\(M[S, \mathbf{if}]\) recebe \textbf{duas produ\c{c}\~{o}es}: \textbf{conflito
+FIRST/FIRST}!
+\end{frame}
+
+\begin{frame}[fragile]{Conflito FIRST/FOLLOW}
+\protect\hypertarget{conflito-firstfollow}{}
+Quando uma produ\c{c}\~{a}o pode derivar \(\lambda\) e os conjuntos FIRST e
+FOLLOW n\~{a}o s\~{a}o disjuntos:
+
+\begin{lstlisting}
+S → A a
+A → a | λ
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Conflito FIRST/FOLLOW}
+\protect\hypertarget{conflito-firstfollow-1}{}
+\begin{itemize}
+\tightlist
+\item
+  \(\mathrm{FIRST}(A) = \{a, \lambda\}\)
+\item
+  \(\mathrm{FOLLOW}(A) = \{a\}\)
+\end{itemize}
+
+Para \(M[A, a]\): tanto \(A \to a\) (pois \(a \in \mathrm{FIRST}(A)\))
+quanto \(A \to \lambda\) (pois \(a \in \mathrm{FOLLOW}(A)\)):
+\textbf{conflito FIRST/FOLLOW}!
+\end{frame}
+
+\hypertarget{implementauxe7uxe3o-em-haskell}{%
+\section{Implementa\c{c}\~{a}o em
+Haskell}\label{implementauxe7uxe3o-em-haskell}}
+
+\begin{frame}[fragile]{Tipos Principais}
+\protect\hypertarget{tipos-principais}{}
+\begin{lstlisting}[language=Haskell]
+data Symbol = Terminal String | NonTerminal String
+
+type Production = [Symbol]
+type Grammar    = Map String [Production]
+
+type ParseTable = Map (String, String) ParseAction
+
+data ParseAction
+  = Derive Production
+  | Accept
+  | Error
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Cálculo de FIRST por Ponto Fixo}
+\protect\hypertarget{cuxe1lculo-de-first-por-ponto-fixo}{}
+\begin{lstlisting}[language=Haskell]
+computeFirstSets :: Grammar -> FirstSet
+computeFirstSets g = fixedPoint step initial
+  where
+    initial = Map.fromList [(nt, []) | nt <- nonTerminals g]
+    step cur = Map.mapWithKey update cur
+      where
+        update nt _ = unions $ map (firstForSequence g cur)
+                                   (fromMaybe [] (Map.lookup nt g))
+\end{lstlisting}
+
+\begin{itemize}
+\tightlist
+\item
+  \passthrough{\lstinline!fixedPoint step initial!}: aplica
+  \passthrough{\lstinline!step!} repetidamente até converg\^{e}ncia
+\item
+  Cada itera\c{c}\~{a}o pode expandir os conjuntos FIRST
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{\passthrough{\lstinline!firstForSequence!}:
+Implementa\c{c}\~{a}o das Regras}
+\protect\hypertarget{firstforsequence-implementauxe7uxe3o-das-regras}{}
+\begin{lstlisting}[language=Haskell]
+firstForSequence :: Grammar -> FirstSet -> [Symbol] -> [String]
+firstForSequence _ _ [] = ["λ"]
+firstForSequence g fs (sym:syms)
+    | isTerminal sym =
+        if isLambda sym
+        then firstForSequence g fs syms
+        else [symbolString sym]
+    | otherwise =
+        let nt         = symbolString sym
+            firstOfSym = fromMaybe [] (Map.lookup nt fs)
+            withoutLam = firstOfSym \\ ["λ"]
+        in if "λ" `elem` firstOfSym
+           then withoutLam `union` firstForSequence g fs syms
+           else withoutLam
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{O Parser LL(1)}
+\protect\hypertarget{o-parser-ll1}{}
+\begin{lstlisting}[language=Haskell]
+parse :: Grammar -> ParseTable -> [String] -> ParseResult
+parse grammar table tokens = go initialStack (tokens ++ ["$"]) []
+  where
+    startSym     = head (nonTerminals grammar)
+    initialStack = [NonTerminal startSym, Terminal "$"]
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Parser LL(1)}
+\protect\hypertarget{parser-ll1}{}
+\begin{lstlisting}[language=Haskell]
+go (Terminal "$" : _) ("$" : _) acc = ParseOk (reverse acc)
+
+go (Terminal t : stack') (a : inp') acc
+    | t == a    = go stack' inp' acc
+    | otherwise = ParseError ("expected '" ++ t ++ "'")
+
+go (NonTerminal nt : stack') inp@(a : _) acc =
+    case Map.lookup (nt, a) table of
+        Just (Derive prod) ->
+            go (filter (not . isLambda) prod ++ stack') inp (prod : acc)
+        _ -> ParseError ("no rule for (" ++ nt ++ ", " ++ a ++ ")")
+\end{lstlisting}
+\end{frame}
+
+\hypertarget{conclusuxe3o}{%
+\section{Conclus\~{a}o}\label{conclusuxe3o}}
+
+\begin{frame}{Conclus\~{a}o}
+\protect\hypertarget{conclusuxe3o-1}{}
+\begin{itemize}
+\item
+  Apresentamos os conceitos de FIRST, FOLLOW e anulável.
+\item
+  Apresentamos a constru\c{c}\~{a}o da tabela LL(1) e seu algoritmo de parsing.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Conclus\~{a}o}
+\protect\hypertarget{conclusuxe3o-2}{}
+\begin{itemize}
+\tightlist
+\item
+  N\~{a}o suporta \textbf{recurs\~{a}o \`{a} esquerda} (requer transforma\c{c}\~{a}o)
+\item
+  Exige \textbf{fatora\c{c}\~{a}o \`{a} esquerda} (prefixos comuns causam conflitos)
+\item
+  Algumas gramáticas s\~{a}o inerentemente n\~{a}o-LL(1)
+\end{itemize}
+\end{frame}

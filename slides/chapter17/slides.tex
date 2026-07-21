@@ -1,0 +1,415 @@
+\hypertarget{objetivos}{%
+\section{Objetivos}\label{objetivos}}
+
+\begin{frame}{Objetivos}
+\protect\hypertarget{objetivos-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Motivar o uso de representa\c{c}\~{o}es intermediárias no pipeline de
+  compila\~{c}\~{a}o e apresentar suas propriedades desejáveis.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Objetivos}
+\protect\hypertarget{objetivos-2}{}
+\begin{itemize}
+\tightlist
+\item
+  Definir a sintaxe e a sem\^{a}ntica operacional big-step da Representa\c{c}\~{a}o
+  Intermediária em Árvore (IRT).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Objetivos}
+\protect\hypertarget{objetivos-3}{}
+\begin{itemize}
+\tightlist
+\item
+  Apresentar as regras de tradu\c{c}\~{a}o dirigida por sintaxe que convertem a
+  AST de TWhile e TImp para a IRT.
+\end{itemize}
+\end{frame}
+
+\hypertarget{introduuxe7uxe3o}{%
+\section{Introdu\c{c}\~{a}o}\label{introduuxe7uxe3o}}
+
+\begin{frame}{O Papel da Representa\c{c}\~{a}o Intermediária}
+\protect\hypertarget{o-papel-da-representauxe7uxe3o-intermediuxe1ria}{}
+\begin{itemize}
+\tightlist
+\item
+  Converter a AST diretamente em código de máquina
+\item
+  Problemas:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Código de baixa qualidade
+  \item
+    Compilador fortemente acoplado \`{a} arquitetura
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{O Papel da Representa\c{c}\~{a}o Intermediária}
+\protect\hypertarget{o-papel-da-representauxe7uxe3o-intermediuxe1ria-1}{}
+\begin{itemize}
+\tightlist
+\item
+  A \textbf{RI} desacopla \emph{front-end} de \emph{back-end}
+\item
+  Um \emph{front-end} pode gerar RI
+
+  \begin{itemize}
+  \tightlist
+  \item
+    A partir da RI pode-se suportar múltiplas arquiteturas
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Propriedades Desejáveis de uma RI}
+\protect\hypertarget{propriedades-desejuxe1veis-de-uma-ri}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Simplicidade}: \(\approx 15\) formas sintáticas (análise e
+  transforma\c{c}\~{a}o mais fáceis)
+\item
+  \textbf{Independ\^{e}ncia de máquina}: sem detalhes de hardware
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Propriedades Desejáveis de uma RI}
+\protect\hypertarget{propriedades-desejuxe1veis-de-uma-ri-1}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Independ\^{e}ncia de linguagem}: múltiplos \emph{front-ends}
+  compartilham o mesmo \emph{back-end}.
+\item
+  \textbf{Suporte a transforma\c{c}\~{o}es}: facilitar análise de fluxo e
+  otimiza\c{c}\~{o}es
+\item
+  \textbf{Proximidade do código-alvo}: opera\c{c}\~{o}es de memória e controle
+  explícitos
+\end{itemize}
+\end{frame}
+
+\hypertarget{a-irt-sintaxe}{%
+\section{A IRT: Sintaxe}\label{a-irt-sintaxe}}
+
+\begin{frame}{Express\~{o}es da IRT}
+\protect\hypertarget{expressuxf5es-da-irt}{}
+\[\begin{array}{lcll}
+e & ::= & \mathbf{CONST}(n)  \\
+  & \mid & \mathbf{TEMP}(t)  \\
+  & \mid & \mathbf{NAME}(\ell) \\
+  & \mid & \mathbf{BINOP}(\mathit{op}, e_1, e_2) \\
+  & \mid & \mathbf{MEM}(e) \\
+  & \mid & \mathbf{CALL}(e_f, e_1, \ldots, e_n) \\
+  & \mid & \mathbf{ESEQ}(s, e)
+\end{array}\]
+\end{frame}
+
+\begin{frame}{Express\~{o}es da IRT}
+\protect\hypertarget{expressuxf5es-da-irt-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Booleanos: \(\mathbf{CONST}(0)\) = falso, \(\mathbf{CONST}(1)\) =
+  verdadeiro
+\item
+  \textbf{TEMP}: o alocador de registradores decide se vai para
+  registrador ou pilha
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Comandos da IRT}
+\protect\hypertarget{comandos-da-irt}{}
+\[\begin{array}{lcll}
+s & ::= & \mathbf{MOVE}(\mathbf{TEMP}(t), e) \\
+  & \mid & \mathbf{MOVE}(\mathbf{MEM}(e_a), e) \\
+  & \mid & \mathbf{EXP}(e) \\
+  & \mid & \mathbf{SEQ}(s_1, s_2) \\
+  & \mid & \mathbf{JUMP}(e) \\
+  & \mid & \mathbf{CJUMP}(e, \ell_t, \ell_f) \\
+  & \mid & \mathbf{LABEL}(\ell) \\
+  & \mid & \mathbf{RETURN}(e_1, \ldots, e_n)
+\end{array}\]
+\end{frame}
+
+\hypertarget{semuxe2ntica-operacional}{%
+\section{Sem\^{a}ntica Operacional}\label{semuxe2ntica-operacional}}
+
+\begin{frame}{Estado e Valores}
+\protect\hypertarget{estado-e-valores}{}
+O estado da IRT é um par \(\sigma = \langle \tau, \mu \rangle\):
+
+\begin{itemize}
+\tightlist
+\item
+  \(\tau : \mathit{Temp} \rightharpoonup \mathbb{Z}\)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Armazenamento de temporários
+  \end{itemize}
+\item
+  \(\mu : \mathbb{Z} \rightharpoonup \mathbb{Z}\)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Memória (endere\c{c}os → valores)
+  \end{itemize}
+\end{itemize}
+
+Todos os valores s\~{a}o inteiros de precis\~{a}o de máquina.
+\end{frame}
+
+\begin{frame}{Express\~{o}es}
+\protect\hypertarget{expressuxf5es}{}
+\textbf{Regras para express\~{o}es}: \(\sigma \vdash e \Downarrow v\):
+
+\[
+\begin{array}{c}
+  \frac{}{\sigma \vdash \mathbf{CONST}(n) \Downarrow n} \\
+  \frac{\sigma.\tau(t) = v}{\sigma \vdash \mathbf{TEMP}(t) \Downarrow v}\\
+\end{array}
+\]
+\end{frame}
+
+\begin{frame}{Express\~{o}es}
+\protect\hypertarget{expressuxf5es-1}{}
+\[
+\begin{array}{c}
+   \frac{\sigma \vdash e_1 \Downarrow v_1 \quad \sigma \vdash e_2 \Downarrow v_2}
+        {\sigma \vdash \mathbf{BINOP}(\mathit{op}, e_1, e_2) \Downarrow \mathit{op}(v_1, v_2)}
+\end{array}
+\]
+\end{frame}
+
+\begin{frame}{Comandos}
+\protect\hypertarget{comandos}{}
+Resultado \(r\) de um comando:
+
+\begin{itemize}
+\tightlist
+\item
+  \(\langle \sigma', \blacksquare \rangle\): termina\c{c}\~{a}o normal
+\item
+  \(\langle \sigma', \uparrow (v_1,\ldots,v_k) \rangle\): retorno de
+  fun\c{c}\~{a}o
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Comandos}
+\protect\hypertarget{comandos-1}{}
+\[
+  \begin{array}{c}
+  \frac{\sigma \vdash e \Downarrow v \quad \sigma' = \langle \tau[t \mapsto v], \mu \rangle}
+       {P, \sigma \vdash \mathbf{MOVE}(\mathbf{TEMP}(t), e) \Downarrow \langle \sigma', \blacksquare \rangle}
+  \end{array}
+\]
+\end{frame}
+
+\begin{frame}{Comandos}
+\protect\hypertarget{comandos-2}{}
+\[
+  \begin{array}{c}
+    \frac{P, \sigma \vdash s_1 \Downarrow \langle \sigma', \blacksquare \rangle \quad P, \sigma' \vdash s_2 \Downarrow \langle \sigma'', r \rangle}{P, \sigma \vdash \mathbf{SEQ}(s_1, s_2) \Downarrow \langle \sigma'', r \rangle}
+  \end{array}
+\]
+
+\begin{itemize}
+\tightlist
+\item
+  Se \(s_1\) retorna, \(s_2\) \textbf{n\~{a}o é executado} (retorno
+  propaga).
+\end{itemize}
+\end{frame}
+
+\hypertarget{traduuxe7uxe3o-dirigida-por-sintaxe}{%
+\section{Tradu\c{c}\~{a}o Dirigida por
+Sintaxe}\label{traduuxe7uxe3o-dirigida-por-sintaxe}}
+
+\begin{frame}{Express\~{o}es}
+\protect\hypertarget{expressuxf5es-2}{}
+\begin{itemize}
+\tightlist
+\item
+  Literais e variáveis
+\end{itemize}
+
+\[\mathcal{E}\lbrack \mathtt{false} \rbrack = \mathbf{CONST}(0) \qquad \mathcal{E}\lbrack \mathtt{true} \rbrack = \mathbf{CONST}(1)\]
+
+\[\mathcal{E}\lbrack n \rbrack = \mathbf{CONST}(n) \qquad \mathcal{E}\lbrack x \rbrack = \mathbf{TEMP}(x)\]
+\end{frame}
+
+\begin{frame}{Express\~{o}es}
+\protect\hypertarget{expressuxf5es-3}{}
+\begin{itemize}
+\tightlist
+\item
+  Opera\c{c}\~{o}es:
+\end{itemize}
+
+\[\mathcal{E}\lbrack e_1 \oplus e_2 \rbrack = \mathbf{BINOP}(\widehat{\oplus},\; \mathcal{E}\lbrack e_1 \rbrack,\; \mathcal{E}\lbrack e_2 \rbrack)\]
+\end{frame}
+
+\begin{frame}[fragile]{Express\~{o}es}
+\protect\hypertarget{expressuxf5es-4}{}
+\begin{longtable}[]{@{}llll@{}}
+\toprule\noalign{}
+TWhile & IRT & TWhile & IRT \\
+\midrule\noalign{}
+\endhead
+\passthrough{\lstinline!+!} & ADD & \passthrough{\lstinline!==!} & EQ \\
+\passthrough{\lstinline!-!} & SUB & \passthrough{\lstinline!<!} & LT \\
+\passthrough{\lstinline!*!} & MUL & \passthrough{\lstinline!\&\&!} &
+AND \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}{Comandos}
+\protect\hypertarget{comandos-3}{}
+\begin{itemize}
+\tightlist
+\item
+  Declara\c{c}\~{a}o:
+\end{itemize}
+
+\[\begin{array}{c}
+   \mathcal{S}\lbrack \mathbf{var}\ x : T = e \rbrack = \mathbf{MOVE}(\mathbf{TEMP}(x),\; \mathcal{E}\lbrack e \rbrack)
+\end{array}\]
+\end{frame}
+
+\begin{frame}{Comandos}
+\protect\hypertarget{comandos-4}{}
+\begin{itemize}
+\tightlist
+\item
+  Atribui\c{c}\~{a}o:
+\end{itemize}
+
+\[\begin{array}{c}
+   \mathcal{S}\lbrack x := e \rbrack = \mathbf{MOVE}(\mathbf{TEMP}(x),\; \mathcal{E}\lbrack e \rbrack)
+\end{array}\]
+\end{frame}
+
+\begin{frame}{Comandos}
+\protect\hypertarget{comandos-5}{}
+\begin{itemize}
+\tightlist
+\item
+  Condicional:
+\end{itemize}
+
+\[\mathcal{S}\lbrack \mathbf{if}\ e\ \mathbf{then}\ b_1\ \mathbf{else}\ b_2 \rbrack =\]
+
+\[\mathbf{SEQ}(\mathbf{CJUMP}(\mathcal{E}\lbrack e \rbrack, \ell_t, \ell_f),\; \mathbf{SEQ}(\mathbf{LABEL}(\ell_t),\; \ldots))\]
+\end{frame}
+
+\begin{frame}[fragile]{Comandos}
+\protect\hypertarget{comandos-6}{}
+\begin{itemize}
+\tightlist
+\item
+  While:
+\end{itemize}
+
+\[\mathcal{S}\lbrack \mathbf{while}\ e\ \mathbf{do}\ B \rbrack =\]
+
+\begin{lstlisting}
+LABEL(loop_head)
+CJUMP(E[[e]], loop_body, loop_exit)
+LABEL(loop_body)
+  S[[B]]
+JUMP(NAME(loop_head))
+LABEL(loop_exit)
+\end{lstlisting}
+
+\begin{itemize}
+\tightlist
+\item
+  \(\ell_h\) = cabe\c{c}a; \(\ell_b\) = corpo; \(\ell_f\) = saída
+\item
+  A condi\c{c}\~{a}o é reavaliada a cada itera\c{c}\~{a}o
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Implementa\c{c}\~{a}o: A M\^{o}nada CgM}
+\protect\hypertarget{implementauxe7uxe3o-a-muxf4nada-cgm}{}
+\begin{lstlisting}[language=Haskell]
+data CgState = CgState
+  { freshCounter :: Int
+  , emitted      :: [Stmt]
+  }
+
+type CgM = StateT CgState (ExceptT String Identity)
+
+freshLabel :: String -> CgM Label
+freshLabel prefix = do
+    n <- gets freshCounter
+    modify (\s -> s { freshCounter = n + 1 })
+    return (prefix ++ "_" ++ show n)
+
+emit :: Stmt -> CgM ()
+emit s = modify (\st -> st { emitted = emitted st ++ [s] })
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Compilando While}
+\protect\hypertarget{compilando-while}{}
+\begin{lstlisting}[language=Haskell]
+compileTWhile :: [Stmt] -> CgM ()
+compileTWhile stmts = mapM_ compileStmt stmts
+
+compileStmt (SWhile cond body) = do
+    lHead <- freshLabel "loop_head"
+    lBody <- freshLabel "loop_body"
+    lExit <- freshLabel "loop_exit"
+    emit (LABEL lHead)
+    cExpr <- compileExp cond
+    emit (CJUMP cExpr lBody lExit)
+    emit (LABEL lBody)
+    mapM_ compileStmt body
+    emit (JUMP (NAME lHead))
+    emit (LABEL lExit)
+\end{lstlisting}
+\end{frame}
+
+\hypertarget{conclusuxe3o}{%
+\section{Conclus\~{a}o}\label{conclusuxe3o}}
+
+\begin{frame}{Conclus\~{a}o}
+\protect\hypertarget{conclusuxe3o-1}{}
+\begin{itemize}
+\tightlist
+\item
+  A \textbf{IRT} separa express\~{o}es (produzem valor) de comandos
+  (produzem efeitos)
+\item
+  \textbf{7 express\~{o}es}: CONST, TEMP, NAME, BINOP, MEM, CALL, ESEQ
+\item
+  \textbf{7 comandos}: MOVE, EXP, SEQ, JUMP, CJUMP, LABEL, RETURN
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Conclus\~{a}o}
+\protect\hypertarget{conclusuxe3o-2}{}
+\begin{itemize}
+\tightlist
+\item
+  A sem\^{a}ntica big-step define o estado como par
+  \(\langle \tau, \mu \rangle\)
+\item
+  A tradu\c{c}\~{a}o \textbf{dirigida por sintaxe} converte AST na IRT
+  sistematicamente
+\end{itemize}
+\end{frame}

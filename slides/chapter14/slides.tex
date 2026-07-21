@@ -1,0 +1,657 @@
+\hypertarget{objetivos}{%
+\section{Objetivos}\label{objetivos}}
+
+\begin{frame}{Objetivos}
+\protect\hypertarget{objetivos-1}{}
+\begin{itemize}
+\item
+  Estender a sem\^{a}ntica da linguagem com comandos condicionais e de
+  repeti\c{c}\~{a}o.
+\item
+  Apresentar a linguagem \emph{TImp}, com declara\c{c}\~{o}es de fun\c{c}\~{o}es e tipos
+  registro.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Objetivos}
+\protect\hypertarget{objetivos-2}{}
+\begin{itemize}
+\item
+  Definir a sem\^{a}ntica big-step para as novas constru\c{c}\~{o}es.
+\item
+  Mostrar como a especifica\c{c}\~{a}o formal guia a implementa\c{c}\~{a}o do
+  interpretador.
+\end{itemize}
+\end{frame}
+
+\hypertarget{a-linguagem-while}{%
+\section{A Linguagem While}\label{a-linguagem-while}}
+
+\begin{frame}{Motiva\c{c}\~{a}o}
+\protect\hypertarget{motivauxe7uxe3o}{}
+\begin{itemize}
+\tightlist
+\item
+  A linguagem \emph{Line} executa apenas sequ\^{e}ncias de comandos
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Motiva\c{c}\~{a}o}
+\protect\hypertarget{motivauxe7uxe3o-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Programas reais precisam de estruturas de controlo:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \textbf{Condicional}: executar blocos diferentes dependendo de uma
+    condi\c{c}\~{a}o
+  \item
+    \textbf{Repeti\c{c}\~{a}o}: executar um bloco enquanto uma condi\c{c}\~{a}o for
+    verdadeira
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Sintaxe}
+\protect\hypertarget{sintaxe}{}
+\[\begin{array}{lcl}
+\mathit{prog} &::=& s^* \\[4pt]
+s &::=& x \mathbin{:=} e \mid \mathbf{read}\; x \mid \mathbf{print}\; e \\
+  &\mid& \mathbf{if}\; e\; \mathbf{then}\; \{s^*\}\; \mathbf{else}\; \{s^*\} \\
+  &\mid& \mathbf{while}\; e\; \mathbf{do}\; \{s^*\} \\[4pt]
+e &::=& v \mid x \mid e_1 + e_2 \mid e_1 * e_2 \\
+  &\mid& e_1 < e_2 \mid e_1 = e_2 \mid e_1 \mathbin{|} e_2 \mid \neg e \\[4pt]
+v &::=& n \mid \mathbf{true} \mid \mathbf{false}
+\end{array}\]
+\end{frame}
+
+\begin{frame}[fragile]{Tipos em Haskell}
+\protect\hypertarget{tipos-em-haskell}{}
+\begin{lstlisting}[language=Haskell]
+data Value = VInt Int | VBool Bool
+
+data Exp
+  = EValue Value | EVar Var
+  | Exp :+: Exp  | Exp :*: Exp
+  | Exp :<: Exp  | Exp :=: Exp
+  | Exp :|: Exp  | ENot Exp
+
+data Stmt
+  = SAssign Var Exp | SRead Var | SPrint Exp
+  | SIf    Exp Block Block
+  | SWhile Exp Block
+
+type Block = [Stmt]
+\end{lstlisting}
+\end{frame}
+
+\hypertarget{semuxe2ntica-small-step}{%
+\section{Sem\^{a}ntica Small-Step}\label{semuxe2ntica-small-step}}
+
+\begin{frame}{Express\~{o}es}
+\protect\hypertarget{expressuxf5es}{}
+\begin{itemize}
+\tightlist
+\item
+  Id\^{e}ntico \`{a} linguagem Line.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Exceto por novos operadores, que funcionam de maneira similar.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Condicional}
+\protect\hypertarget{condicional}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Avalia\c{c}\~{a}o da condi\c{c}\~{a}o:}
+  \[\frac{(\sigma, e) \to (\sigma, e')}{\left(\begin{array}{ll}
+             \sigma,&\; \mathbf{if}\; e\; \mathbf{then}\; B_1\\
+                    & \mathbf{else}\; B_2\\
+             \end{array}\right) \to \left(\begin{array}{ll}\sigma,& \mathbf{if}\; e'\; \mathbf{then}\; B_1\\
+                & \mathbf{else}\; B_2\\
+            \end{array}\right)}
+  \]
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Condicional}
+\protect\hypertarget{condicional-1}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Ramo verdadeiro:}
+  \[\frac{}{(\sigma,\; \mathbf{if}\; \mathbf{true}\; \mathbf{then}\; B_1\; \mathbf{else}\; B_2) \to (\sigma,\; B_1)}\]
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Condicional}
+\protect\hypertarget{condicional-2}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Ramo falso:}
+\end{itemize}
+
+\[\frac{}{(\sigma,\; \mathbf{if}\; \mathbf{false}\; \mathbf{then}\; B_1\; \mathbf{else}\; B_2) \to (\sigma,\; B_2)}
+\]
+\end{frame}
+
+\begin{frame}{While}
+\protect\hypertarget{while}{}
+\begin{itemize}
+\tightlist
+\item
+  Caso em que há repeti\c{c}\~{a}o.
+\end{itemize}
+
+\[\frac{}{(\sigma,\; \mathbf{while}\; e\; \mathbf{do}\; B) \to
+(\sigma,\; \mathbf{if}\; e\; \mathbf{then}\; (B;\; \mathbf{while}\; e\; \mathbf{do}\; B))}
+\]
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo}
+\protect\hypertarget{exemplo}{}
+\passthrough{\lstinline!while i < 3 do \{ i := i + 1 \}!}
+
+\[(\sigma_0,\; \mathbf{while}\; i < 3\; \mathbf{do}\; \{i \mathbin{:=} i+1\})\]
+\end{frame}
+
+\begin{frame}{Exemplo}
+\protect\hypertarget{exemplo-1}{}
+\[\xrightarrow{\text{While}}
+(\sigma_0,\; \mathbf{if}\; i < 3\; \mathbf{then}\; \{i \mathbin{:=} i+1;\; \mathbf{while}\ldots\})\]
+\end{frame}
+
+\begin{frame}{Exemplo}
+\protect\hypertarget{exemplo-2}{}
+\[\xrightarrow{\text{IfStep, Var, Lt}}
+(\sigma_0,\; \mathbf{if}\; \mathbf{true}\; \mathbf{then}\; \{i \mathbin{:=} i+1;\; \mathbf{while}\ldots\})\]
+\end{frame}
+
+\begin{frame}{Exemplo}
+\protect\hypertarget{exemplo-3}{}
+\[\xrightarrow{\text{IfTrue}}
+(\sigma_0,\; i \mathbin{:=} i+1;\; \mathbf{while}\; i < 3\; \mathbf{do}\; \{i \mathbin{:=} i+1\})\]
+\end{frame}
+
+\begin{frame}{Exemplo}
+\protect\hypertarget{exemplo-4}{}
+\[\xrightarrow{\text{Assign}}
+([i \mapsto 1],\; \mathbf{while}\; i < 3\; \mathbf{do}\; \{i \mathbin{:=} i+1\})\]
+\end{frame}
+
+\hypertarget{semuxe2ntica-big-step}{%
+\section{Sem\^{a}ntica Big-Step}\label{semuxe2ntica-big-step}}
+
+\begin{frame}{Express\~{o}es}
+\protect\hypertarget{expressuxf5es-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Similar \`{a} sem\^{a}ntica de Line.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Apenas introduz novos operadores
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Condicional}
+\protect\hypertarget{condicional-3}{}
+\[\frac{\sigma \vdash e \Downarrow \mathbf{true} \quad \sigma,\; B_1 \Downarrow \sigma'}
+     {\sigma,\; \mathbf{if}\; e\; \mathbf{then}\; B_1\; \mathbf{else}\; B_2 \;\Downarrow\; \sigma'}
+\quad\text{(IfTrue)}\]
+\end{frame}
+
+\begin{frame}{Condicional}
+\protect\hypertarget{condicional-4}{}
+\[\frac{\sigma \vdash e \Downarrow \mathbf{false} \quad \sigma,\; B_2 \Downarrow \sigma'}
+     {\sigma,\; \mathbf{if}\; e\; \mathbf{then}\; B_1\; \mathbf{else}\; B_2 \;\Downarrow\; \sigma'}
+\quad\text{(IfFalse)}\]
+\end{frame}
+
+\begin{frame}{While}
+\protect\hypertarget{while-1}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Condi\c{c}\~{a}o falsa (termina\c{c}\~{a}o):}
+\end{itemize}
+
+\[\frac{\sigma \vdash e \Downarrow \mathbf{false}}
+     {\sigma,\; \mathbf{while}\; e\; \mathbf{do}\; B \;\Downarrow\; \sigma}
+\]
+\end{frame}
+
+\begin{frame}{While}
+\protect\hypertarget{while-2}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Condi\c{c}\~{a}o verdadeira (itera\c{c}\~{a}o):}
+\end{itemize}
+
+\[\frac{\begin{array}{c}\sigma \vdash e \Downarrow \mathbf{true}\\ \sigma,\; B
+\Downarrow \sigma'\\ \sigma',\; \mathbf{while}\; e\; \mathbf{do}\; B \Downarrow
+\sigma'' \end{array}}{\sigma,\; \mathbf{while}\; e\; \mathbf{do}\; B
+\;\Downarrow\; \sigma''}\]
+\end{frame}
+
+\begin{frame}{Deriva\c{c}\~{a}o}
+\protect\hypertarget{derivauxe7uxe3o}{}
+\[\dfrac{
+  \dfrac{
+    \dfrac{}{\emptyset \vdash 2 \Downarrow 2}
+    \quad
+    \dfrac{}{\emptyset \vdash 3 \Downarrow 3}
+  }{\emptyset \vdash 2 < 3 \Downarrow \mathbf{true}}
+  \quad
+  \dfrac{
+    \dfrac{}{\emptyset \vdash 10 \Downarrow 10}
+  }{\emptyset,\; x \mathbin{:=} 10 \;\Downarrow\; [x \mapsto 10]}
+}{\emptyset,\; \mathbf{if}\; 2<3\; \mathbf{then}\; \{x \mathbin{:=} 10\}\; \mathbf{else}\; \{x \mathbin{:=} 20\} \;\Downarrow\; [x \mapsto 10]}\]
+\end{frame}
+
+\hypertarget{implementauxe7uxe3o-em-haskell}{%
+\section{Implementa\c{c}\~{a}o em
+Haskell}\label{implementauxe7uxe3o-em-haskell}}
+
+\begin{frame}[fragile]{Condicional}
+\protect\hypertarget{condicional-5}{}
+\begin{lstlisting}[language=Haskell]
+interpStmt (SIf e blk1 blk2) = do
+    v <- interpExp e
+    case v of
+      VBool True  -> mapM_ interpStmt blk1
+      VBool False -> mapM_ interpStmt blk2
+      _ -> throwError $ unlines
+        ["Expecting a boolean value, but found:", pretty e]
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Repeti\c{c}\~{a}o}
+\protect\hypertarget{repetiuxe7uxe3o}{}
+\begin{lstlisting}[language=Haskell]
+interpStmt (SWhile e blk1) = do
+    v <- interpExp e
+    case v of
+      VBool False -> pure ()
+      VBool True  -> do
+          mapM_ interpStmt blk1
+          interpStmt (SWhile e blk1)
+      _ -> throwError $ unlines
+    ["Expecting a boolean value, but found:", pretty e]
+\end{lstlisting}
+\end{frame}
+
+\hypertarget{a-linguagem-timp}{%
+\section{A Linguagem TImp}\label{a-linguagem-timp}}
+
+\begin{frame}{Motiva\c{c}\~{a}o}
+\protect\hypertarget{motivauxe7uxe3o-2}{}
+\begin{itemize}
+\tightlist
+\item
+  \emph{While} cobre atribui\c{c}\~{a}o, controlo de fluxo e I/O
+\item
+  Mas n\~{a}o permite:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Definir \textbf{abstra\c{c}\~{o}es reutilizáveis} (fun\c{c}\~{o}es)
+  \item
+    Agrupar \textbf{dados heterog\^{e}neos} (registros)
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Sintaxe Estendida}
+\protect\hypertarget{sintaxe-estendida}{}
+\[\begin{array}{lcl}
+\mathit{prog}  &::=& \mathit{decl}^*\; s^* \\[4pt]
+\mathit{decl}  &::=& \mathbf{record}\; R\; \{\, \overline{f_i \mathbin{:} \tau_i}\,\} \\
+               &\mid& \mathbf{fn}\; f\,(\overline{x_i \mathbin{:} \tau_i}) \mathbin{:} \rho\; \{\, s^*\,\} \\[4pt]
+\rho           &::=& \mathbf{void} \mid \tau \\[4pt]
+\tau           &::=& \mathbf{int} \mid \mathbf{bool} \mid \mathbf{string} \mid R
+\end{array}\]
+\end{frame}
+
+\begin{frame}{Novos Comandos e Express\~{o}es}
+\protect\hypertarget{novos-comandos-e-expressuxf5es}{}
+\[\begin{array}{lcl}
+s &::=& \cdots \mid \mathbf{var}\; x \mathbin{:} \tau \mathbin{=} e \\
+  &\mid& x.f \mathbin{:=} e \mid \mathbf{return}\; e \mid \mathbf{return} \\
+  &\mid& f(e_1,\ldots,e_n) \\[4pt]
+e &::=& \cdots \mid e.f \mid \mathbf{new}\; R\,\{\,\overline{f_i \mathbin{=} e_i}\,\} \\
+  &\mid& f(e_1,\ldots,e_n)
+\end{array}\]
+\end{frame}
+
+\hypertarget{domuxednios-semuxe2nticos}{%
+\section{Domínios Sem\^{a}nticos}\label{domuxednios-semuxe2nticos}}
+
+\begin{frame}{Valores Estendidos}
+\protect\hypertarget{valores-estendidos}{}
+O domínio de valores cresce com registros e o valor unitário:
+
+\[v \;::=\; n \;\mid\; b \;\mid\; s \;\mid\;
+  \mathbf{rec}(R,\, \{f_1 \mapsto v_1, \ldots, f_n \mapsto v_n\})
+  \;\mid\; \mathbf{unit}\]
+
+\begin{itemize}
+\tightlist
+\item
+  Registros t\^{e}m \textbf{sem\^{a}ntica de valor}: toda atribui\c{c}\~{a}o e passagem
+  de par\^{a}metro copia o registro.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Ambiente de Fun\c{c}\~{o}es}
+\protect\hypertarget{ambiente-de-funuxe7uxf5es}{}
+Além de \(\sigma\), a sem\^{a}ntica usa um \textbf{ambiente de fun\c{c}\~{o}es}
+global:
+
+\[\Phi : \mathit{Name} \rightharpoonup (\overline{x_i},\; B)\]
+
+\begin{itemize}
+\tightlist
+\item
+  Construído uma vez a partir das declara\c{c}\~{o}es
+\item
+  Permanece \textbf{imutável} durante a execu\c{c}\~{a}o
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Resultado de Bloco}
+\protect\hypertarget{resultado-de-bloco}{}
+O comando \passthrough{\lstinline!return!} interrompe a execu\c{c}\~{a}o normal.
+Modelamos isso com:
+
+\[r \;::=\; \mathbf{normal} \;\mid\; {\uparrow}\, v\]
+
+\begin{itemize}
+\tightlist
+\item
+  \(\mathbf{normal}\): termina\c{c}\~{a}o sem retorno
+\item
+  \({\uparrow}\, v\): \passthrough{\lstinline!return!} executado, \(v\)
+  propagado ao chamador
+\end{itemize}
+
+As rela\c{c}\~{o}es de avalia\c{c}\~{a}o tornam-se:
+
+\[\sigma,\Phi \vdash s \Downarrow (\sigma', r) \qquad \sigma,\Phi \vdash B \Downarrow (\sigma', r)\]
+\end{frame}
+
+\hypertarget{semuxe2ntica-de-registros}{%
+\section{Sem\^{a}ntica de Registros}\label{semuxe2ntica-de-registros}}
+
+\begin{frame}{Constru\c{c}\~{a}o de Registro}
+\protect\hypertarget{construuxe7uxe3o-de-registro}{}
+\[\frac{\sigma,\Phi \vdash e_1 \Downarrow v_1 \quad \cdots}
+  {\sigma,\Phi \vdash \mathbf{new}\; R\,\{f_1\!=\!e_1,\ldots\}
+  \Downarrow \mathbf{rec}(R,\,\{f_1 \mapsto v_1,\ldots\})}
+\]
+\end{frame}
+
+\begin{frame}{Acesso a Campo}
+\protect\hypertarget{acesso-a-campo}{}
+\[\frac{\sigma,\Phi \vdash e \Downarrow \mathbf{rec}(R,\mathit{flds})
+  \quad f \in \mathrm{dom}(\mathit{flds})}
+  {\sigma,\Phi \vdash e.f \Downarrow \mathit{flds}(f)}
+\quad\text{(Field)}\]
+\end{frame}
+
+\begin{frame}{Atribui\c{c}\~{a}o de Campo}
+\protect\hypertarget{atribuiuxe7uxe3o-de-campo}{}
+\[\frac{\sigma(x) = \mathbf{rec}(R,\mathit{flds})
+  \quad \sigma,\Phi \vdash e \Downarrow v}
+  {\sigma,\Phi \vdash x.f \mathbin{:=} e
+    \Downarrow (\sigma[x \mapsto \mathbf{rec}(R,\,\mathit{flds}[f \mapsto v])],\;
+  \mathbf{normal})}
+\quad\text{(FieldAssign)}\]
+
+\begin{itemize}
+\tightlist
+\item
+  Atualiza apenas o campo \(f\); copia modificada vai para \(\sigma\).
+\end{itemize}
+\end{frame}
+
+\hypertarget{semuxe2ntica-de-funuxe7uxf5es}{%
+\section{Sem\^{a}ntica de Fun\c{c}\~{o}es}\label{semuxe2ntica-de-funuxe7uxf5es}}
+
+\begin{frame}{Propaga\c{c}\~{a}o de Retorno}
+\protect\hypertarget{propagauxe7uxe3o-de-retorno}{}
+\textbf{Bloco vazio:} \[\frac{}
+  {\sigma,\Phi \vdash \epsilon \Downarrow (\sigma,\; \mathbf{normal})}
+\quad\text{(BlkNil)}\]
+
+\textbf{Retorno antecipado:}
+\[\frac{\sigma,\Phi \vdash s \Downarrow (\sigma',\; {\uparrow}\,v)}
+  {\sigma,\Phi \vdash s\,;\,B \Downarrow (\sigma',\; {\uparrow}\,v)}
+\quad\text{(BlkRet)}\]
+\end{frame}
+
+\begin{frame}{Continua\c{c}\~{a}o Normal}
+\protect\hypertarget{continuauxe7uxe3o-normal}{}
+\[\frac{\sigma,\Phi \vdash s \Downarrow (\sigma',\; \mathbf{normal})
+  \quad \sigma',\Phi \vdash B \Downarrow r}
+  {\sigma,\Phi \vdash s\,;\,B \Downarrow r}
+\quad\text{(BlkCons)}\]
+\end{frame}
+
+\begin{frame}{Comandos de Retorno}
+\protect\hypertarget{comandos-de-retorno}{}
+\textbf{Retorno com valor:} \[\frac{\sigma,\Phi \vdash e \Downarrow v}
+  {\sigma,\Phi \vdash \mathbf{return}\; e \Downarrow (\sigma,\; {\uparrow}\,v)}
+\quad\text{(RetVal)}\]
+
+\textbf{Retorno void:} \[\frac{}
+  {\sigma,\Phi \vdash \mathbf{return} \Downarrow (\sigma,\; {\uparrow}\,\mathbf{unit})}
+\quad\text{(RetVoid)}\]
+\end{frame}
+
+\begin{frame}{Chamada como Express\~{a}o}
+\protect\hypertarget{chamada-como-expressuxe3o}{}
+\[\frac{\begin{array}{c}
+  \Phi(f) = (\overline{x_i},\; B)\\
+  \sigma,\Phi \vdash e_i \Downarrow v_i \;\;(\forall\, i)\\
+  [x_1 \mapsto v_1,\ldots,x_n \mapsto v_n],\Phi \vdash B
+  \Downarrow (\_,\; {\uparrow}\,v)
+  \end{array}}
+{\sigma,\Phi \vdash f(e_1,\ldots,e_n) \Downarrow v}
+\quad\text{(CallExpr)}\]
+
+\begin{itemize}
+\tightlist
+\item
+  Corpo executado em um \textbf{novo ambiente} com apenas os par\^{a}metros.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Chamada como Comando}
+\protect\hypertarget{chamada-como-comando}{}
+\[\frac{\begin{array}{c}
+  \Phi(f) = (\overline{x_i},\; B)\\
+  \sigma,\Phi \vdash e_i \Downarrow v_i \;\;(\forall\, i)\\
+  [x_1 \mapsto v_1,\ldots,x_n \mapsto v_n],\Phi \vdash B \Downarrow (\_,\; \_)
+\end{array}}
+{\sigma,\Phi \vdash f(e_1,\ldots,e_n) \Downarrow (\sigma,\; \mathbf{normal})}
+\quad\text{(CallStmt)}\]
+
+\begin{itemize}
+\tightlist
+\item
+  Ambiente de chamada devolvido \textbf{inalterado}.
+\end{itemize}
+\end{frame}
+
+\hypertarget{implementauxe7uxe3o-em-haskell-1}{%
+\section{Implementa\c{c}\~{a}o em
+Haskell}\label{implementauxe7uxe3o-em-haskell-1}}
+
+\begin{frame}[fragile]{Estado e Monada}
+\protect\hypertarget{estado-e-monada}{}
+\begin{lstlisting}[language=Haskell]
+data Value
+  = VInt Int | VBool Bool | VString String
+  | VRecord Name (Map Field Value)
+  | VUnit
+
+data InterpState = InterpState
+  { varEnv  :: Map Var Value    -- sigma
+  , funcEnv :: Map Name FuncDecl  -- Phi
+  }
+
+type InterpM a = StateT InterpState (ExceptT String IO) a
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Execu\c{c}\~{a}o de Bloco}
+\protect\hypertarget{execuuxe7uxe3o-de-bloco}{}
+\begin{lstlisting}[language=Haskell]
+execBlock :: [Stmt] -> InterpM (Maybe Value)
+execBlock []     = pure Nothing           -- BlkNil
+execBlock (s:ss) = do
+  r <- execStmt s
+  case r of
+    Just _  -> pure r                     -- BlkRet: propagate
+    Nothing -> execBlock ss               -- BlkCons: continue
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Cria\c{c}\~{a}o de Registro}
+\protect\hypertarget{criauxe7uxe3o-de-registro}{}
+\begin{lstlisting}[language=Haskell]
+evalExp (ENew rname initFields) = do
+  vals <- mapM (\(f, e) -> (f,) <$> evalExp e) initFields
+  pure (VRecord rname (Map.fromList vals))
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Acesso e Atribui\c{c}\~{a}o de Campo}
+\protect\hypertarget{acesso-e-atribuiuxe7uxe3o-de-campo}{}
+\begin{lstlisting}[language=Haskell]
+evalExp (EField e f) = do
+  v <- evalExp e
+  case v of
+    VRecord _ fields ->
+      case Map.lookup f fields of
+        Just val -> pure val
+        Nothing  -> throwError ("Record has no field: " ++ f)
+    _ -> throwError "Field access on non-record value"
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Atribui\c{c}\~{a}o de Campo}
+\protect\hypertarget{atribuiuxe7uxe3o-de-campo-1}{}
+\begin{lstlisting}[language=Haskell]
+execStmt (SFieldAssign v f e) = do
+  rval <- lookupVar v
+  newVal <- evalExp e
+  case rval of
+    VRecord name fields ->
+      let fields' = Map.insert f newVal fields
+      in  modify (\st -> st
+            { varEnv = Map.insert v (VRecord name fields') (varEnv st) })
+    _ -> throwError (v ++ " is not a record")
+  pure Nothing
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Retorno e Chamada de Fun\c{c}\~{a}o}
+\protect\hypertarget{retorno-e-chamada-de-funuxe7uxe3o}{}
+\begin{lstlisting}[language=Haskell]
+execStmt (SReturn Nothing)  = pure (Just VUnit)   -- RetVoid
+execStmt (SReturn (Just e)) = Just <$> evalExp e  -- RetVal
+
+callFunc :: Name -> [Value] -> InterpM Value
+callFunc fname argVals = do
+  fenv <- gets funcEnv
+  case Map.lookup fname fenv of
+    Nothing -> throwError ("Undefined function: " ++ fname)
+    Just (FuncDecl _ params _ body) -> do
+      let bindings = zip [v | Param v _ <- params] argVals
+      withFreshEnv bindings $ do
+        r <- execBlock body
+        pure (fromMaybe VUnit r)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Ambiente Fresco}
+\protect\hypertarget{ambiente-fresco}{}
+\begin{lstlisting}[language=Haskell]
+withFreshEnv :: [(Var, Value)] -> InterpM a -> InterpM a
+withFreshEnv bindings m = do
+  saved <- gets varEnv
+  modify (\st -> st { varEnv = Map.fromList bindings })
+  r <- m
+  modify (\st -> st { varEnv = saved })
+  pure r
+\end{lstlisting}
+
+\begin{itemize}
+\tightlist
+\item
+  Salva o ambiente corrente, inicializa apenas com os par\^{a}metros,
+  restaura ao terminar.
+\end{itemize}
+\end{frame}
+
+\hypertarget{conclusuxe3o}{%
+\section{Conclus\~{a}o}\label{conclusuxe3o}}
+
+\begin{frame}{Conclus\~{a}o}
+\protect\hypertarget{conclusuxe3o-1}{}
+\begin{itemize}
+\item
+  \textbf{Condicional}: regras (IfTrue) e (IfFalse) selecionam o ramo
+  pela condi\c{c}\~{a}o.
+\item
+  \textbf{While}: (WhileFalse) termina; (WhileTrue) executa o corpo e
+  recome\c{c}a.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Conclus\~{a}o}
+\protect\hypertarget{conclusuxe3o-2}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Registros}: \(\mathbf{rec}(R, \mathit{flds})\) com sem\^{a}ntica
+  de valor; regras (New), (Field), (FieldAssign).
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Conclus\~{a}o}
+\protect\hypertarget{conclusuxe3o-3}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Fun\c{c}\~{o}es}: resultado de bloco
+  \(r \in \{\mathbf{normal}, {\uparrow}\,v\}\) modela
+  \passthrough{\lstinline!return!}; (CallExpr) executa em ambiente
+  fresco.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Conclus\~{a}o}
+\protect\hypertarget{conclusuxe3o-4}{}
+\begin{itemize}
+\tightlist
+\item
+  A especifica\c{c}\~{a}o formal guia diretamente a implementa\c{c}\~{a}o em Haskell.
+\end{itemize}
+\end{frame}

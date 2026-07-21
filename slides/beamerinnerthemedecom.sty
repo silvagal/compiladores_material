@@ -1,0 +1,166 @@
+\mode<presentation>
+
+% Use alternative title page style.
+\DeclareOptionBeamer{alternativetitlepage}[true]{\def\beamer@decom@alternativetitlepage{#1}}
+
+% Logo to use in the alternative title page.
+\def\beamer@decom@titlepagelogo{}
+\DeclareOptionBeamer{titlepagelogo}{\def\beamer@decom@titlepagelogo{#1}}
+
+% Bullet shape.
+\DeclareOptionBeamer{bullet}{\def\beamer@decom@bullet{#1}}
+
+\ExecuteOptionsBeamer{alternativetitlepage=false,bullet=circle}
+\ProcessOptionsBeamer
+
+%font
+\setbeamerfont{institute}{family=\sffamily, size = \footnotesize}
+\setbeamerfont{title}{family=\sffamily, size = \Large}
+\setbeamerfont{subtitle}{family=\sffamily, size = \normalsize}
+\setbeamerfont{author}{family=\sffamily, size = \footnotesize}
+\setbeamerfont{date}{family=\sffamily, size = \footnotesize}
+
+% Colors.
+\setbeamercolor*{lineup}{parent=palette primary}
+\setbeamercolor*{linemid}{parent=palette secondary}
+\setbeamercolor*{linebottom}{parent=palette tertiary}
+\setbeamercolor*{title page header}{parent=palette quaternary}
+
+% Lengths.
+\newlength{\beamer@decom@lineup}
+\setlength{\beamer@decom@lineup}{.025\paperheight}
+
+\newlength{\beamer@decom@linemid}
+\setlength{\beamer@decom@linemid}{.015\paperheight}
+\newlength{\beamer@decom@linebottom}
+\setlength{\beamer@decom@linebottom}{.01\paperheight}
+
+% Margins.
+\newlength{\beamer@decom@normalmargin}
+\setlength{\beamer@decom@normalmargin}{.06\paperwidth}
+\setbeamersize{text margin left=\beamer@decom@normalmargin}
+\setbeamersize{text margin right=\beamer@decom@normalmargin}
+\setlength\leftmargini{.6\beamer@decom@normalmargin}
+\setlength\leftmarginii{.6\beamer@decom@normalmargin}
+\setlength\leftmarginiii{.6\beamer@decom@normalmargin}
+
+% Normal title page.
+\defbeamertemplate*{title page normal}{decom theme}[1][]
+{
+  \vbox{}
+  \vfill
+  \begin{centering}
+    \begin{beamercolorbox}[wd=\paperwidth,sep=8pt,center,#1]{title page header}
+      \usebeamerfont{title}\inserttitle\par%
+      \ifx\insertsubtitle\@empty%
+      \else%
+        \vskip0.25em%
+        {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+      \fi%
+    \end{beamercolorbox}%
+    \vskip1em\par
+    \begin{beamercolorbox}[sep=8pt,center,#1]{institute}
+      \usebeamerfont{institute}\insertinstitute
+    \end{beamercolorbox}
+    \begin{beamercolorbox}[sep=8pt,center,#1]{author}
+      \usebeamerfont{author}\insertauthor
+    \end{beamercolorbox}
+    \begin{beamercolorbox}[sep=8pt,center,#1]{date}
+      \usebeamerfont{date}\insertdate
+    \end{beamercolorbox}\vskip0.5em
+    {\usebeamercolor[fg]{titlegraphic}\inserttitlegraphic\par}
+  \end{centering}
+  \vfill
+}
+
+% Alternative title page, you should use this in a frame with the [plain]
+% option.
+\defbeamertemplate*{title page alternative}{decom theme}[1][]
+{
+  {\parskip0pt\offinterlineskip%
+  \hbox{\hskip-\Gm@lmargin\hbox{\vbox{%
+  \@tempdima=\textwidth\textwidth=\paperwidth\hsize=\textwidth\def\\{,}\vbox{}\vskip-1.5ex%
+    % Title.
+    \begin{beamercolorbox}[wd=\paperwidth,ht=.35\paperheight,center,#1]{title page header}
+    \hbox{%
+    \begin{beamercolorbox}[wd=.4\paperwidth,ht=\beamer@decom@lineup,dp=0pt]{lineup}%
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.9\paperwidth,ht=\beamer@decom@lineup,dp=0pt]{lineup}%
+    \end{beamercolorbox}%
+    }%
+    \vbox{}\vskip4ex%
+      \usebeamerfont{title} \inserttitle\par%
+      \ifx\insertsubtitle\@empty%
+      \else%
+        \vskip1em%
+        {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+      \fi%
+      \vspace{.1\paperheight}%
+    \end{beamercolorbox}%
+    \vbox{}\vskip-\beamer@decom@lineup%
+    \vbox{}\vskip-\beamer@decom@linemid%
+    % First line.
+    \hbox{%
+    }%
+    \vbox{}\vskip1.5ex%
+    % Second line.
+    \hbox{%
+    \begin{beamercolorbox}[wd=.1\paperwidth,ht=\beamer@decom@linemid,dp=0pt]{linemid}%
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.9\paperwidth,ht=\beamer@decom@linemid,dp=0pt]{linemid}%
+    \end{beamercolorbox}%
+    }%
+    % Third line.
+    \hbox{%
+    }%
+    \vskip0pt%
+  }}%
+  }}%
+  %
+          \begin{beamercolorbox}[sep=10pt,center,#1]{institute}
+            \usebeamerfont{institute}\textsc{\insertinstitute}
+          \end{beamercolorbox}
+          \vfill
+          \centering
+        \includegraphics[scale=0.20]{figures/LogoDecom.png}%
+         \vfill
+         \begin{beamercolorbox}[sep=10pt,center,#1]{author}
+          \usebeamerfont{author}\newline \newline \insertauthor \newline \newline
+           \end{beamercolorbox}
+          \vfill
+          {\usebeamercolor[fg]{titlegraphic}\inserttitlegraphic\par}
+}
+
+\defbeamertemplate*{title page}{decom}[1][]
+{
+  \def\beamer@decom@truetext{true}%
+  \ifx\beamer@decom@alternativetitlepage\beamer@decom@truetext%
+    \usebeamertemplate{title page alternative}%
+  \else%
+    \usebeamertemplate{title page normal}%
+  \fi%
+}
+
+% Items.
+\defbeamertemplate{itemize item}{squarealt}%
+{\tiny\raise.5ex\hbox{\donotcoloroutermaths$\blacksquare$}}
+\defbeamertemplate{itemize subitem}{squarealt}%
+{\tiny\raise.4ex\hbox{\donotcoloroutermaths$\square$}}
+\defbeamertemplate{itemize subsubitem}{squarealt}%
+{\tiny\raise.3ex\hbox{\donotcoloroutermaths$\blacksquare$}}
+
+\defbeamertemplate{itemize item}{circlealt}%
+{\small\raise.2ex\hbox{\donotcoloroutermaths$\bullet$}}
+\defbeamertemplate{itemize subitem}{circlealt}%
+{\small\raise.1ex\hbox{\donotcoloroutermaths$\circ$}}
+\defbeamertemplate{itemize subsubitem}{circlealt}%
+{\scriptsize\raise.1ex\hbox{\donotcoloroutermaths$\bullet$}}
+
+\def\circletext{circle}
+\ifx\beamer@decom@bullet\circletext
+  \setbeamertemplate{items}[circlealt]
+\else
+  \setbeamertemplate{items}[squarealt]
+\fi
+
+\mode<all>

@@ -1,0 +1,466 @@
+\hypertarget{objetivos}{%
+\section{Objetivos}\label{objetivos}}
+
+\begin{frame}{Objetivos}
+\protect\hypertarget{objetivos-1}{}
+\begin{itemize}
+\item
+  Mostrar a correspond\^{e}ncia direta entre regras de infer\^{e}ncia e equa\c{c}\~{o}es
+  de código Haskell.
+\item
+  Implementar verificadores de tipos para linguagens com crescente
+  complexidade: TExp, TLine, TWhile e TImp.
+\end{itemize}
+\end{frame}
+
+\hypertarget{introduuxe7uxe3o}{%
+\section{Introdu\c{c}\~{a}o}\label{introduuxe7uxe3o}}
+
+\begin{frame}{Introdu\c{c}\~{a}o}
+\protect\hypertarget{introduuxe7uxe3o-1}{}
+\begin{itemize}
+\tightlist
+\item
+  O sistema de tipos define \textbf{o que} é um programa bem tipado via
+  regras de infer\^{e}ncia
+\item
+  O \textbf{verificador de tipos} implementa essa especifica\c{c}\~{a}o como
+  código
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Introdu\c{c}\~{a}o}
+\protect\hypertarget{introduuxe7uxe3o-2}{}
+\begin{itemize}
+\tightlist
+\item
+  Correspond\^{e}ncia direta: cada regra de infer\^{e}ncia vira uma equa\c{c}\~{a}o
+  Haskell
+\item
+  A estrutura da m\^{o}nada de verifica\c{c}\~{a}o espelha os ambientes sem\^{a}nticos
+\end{itemize}
+\end{frame}
+
+\hypertarget{verificauxe7uxe3o-para-texp}{%
+\section{Verifica\c{c}\~{a}o para TExp}\label{verificauxe7uxe3o-para-texp}}
+
+\begin{frame}[fragile]{A Linguagem TExp}
+\protect\hypertarget{a-linguagem-texp}{}
+Tipos e termos:
+
+\begin{lstlisting}[language=Haskell]
+data Ty   = TBool | TNat
+
+data Term
+  = TTrue  | TFalse
+  | TIf Term Term Term
+  | TZero
+  | TSucc Term | TPred Term | TIsZero Term
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{A Linguagem TExp}
+\protect\hypertarget{a-linguagem-texp-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Dois tipos: \(\mathbf{Bool}\) e \(\mathbf{Nat}\)
+\item
+  \textbf{Sem variáveis} → sem contexto externo necessário
+\item
+  M\^{o}nada: \passthrough{\lstinline!TcM = ExceptT String Identity!}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Da Regra \`{a} Equa\c{c}\~{a}o}
+\protect\hypertarget{da-regra-uxe0-equauxe7uxe3o}{}
+Regra de infer\^{e}ncia:
+
+\[\frac{\vdash t_1 : \mathbf{Bool} \quad \vdash t_2 : T \quad \vdash t_3 : T}{\vdash \mathbf{if}\ t_1\ \mathbf{then}\ t_2\ \mathbf{else}\ t_3 : T} \quad\text{(T-If)}\]
+\end{frame}
+
+\begin{frame}[fragile]{Da Regra \`{a} Equa\c{c}\~{a}o}
+\protect\hypertarget{da-regra-uxe0-equauxe7uxe3o-1}{}
+Equa\c{c}\~{a}o Haskell:
+
+\begin{lstlisting}[language=Haskell]
+tcTerm (TIf t1 t2 t3) = do
+    ty1 <- tcTerm t1
+    unless (ty1 == TBool) $
+        throwError "condition must have type Bool"
+    ty2 <- tcTerm t2
+    ty3 <- tcTerm t3
+    unless (ty2 == ty3) $
+        throwError "both branches must have the same type"
+    pure ty2
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Typechecking}
+\protect\hypertarget{typechecking}{}
+\begin{lstlisting}[language=Haskell]
+tcTerm :: Term -> TcM Ty
+tcTerm TTrue  = pure TBool                  -- (T-True)
+tcTerm TFalse = pure TBool                  -- (T-False)
+tcTerm TZero  = pure TNat                   -- (T-Zero)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Typechecking}
+\protect\hypertarget{typechecking-1}{}
+\begin{lstlisting}[language=Haskell]
+tcTerm (TSucc t1) = do                      -- (T-Succ)
+    ty <- tcTerm t1
+    unless (ty == TNat) $ throwError "..."
+    pure TNat
+tcTerm (TIsZero t1) = do                    -- (T-IsZero)
+    ty <- tcTerm t1
+    unless (ty == TNat) $ throwError "..."
+    pure TBool
+-- ... TIf, TPred análogos
+\end{lstlisting}
+\end{frame}
+
+\hypertarget{verificauxe7uxe3o-para-tline}{%
+\section{Verifica\c{c}\~{a}o para TLine}\label{verificauxe7uxe3o-para-tline}}
+
+\begin{frame}[fragile]{A Linguagem TLine}
+\protect\hypertarget{a-linguagem-tline}{}
+\begin{lstlisting}[language=Haskell]
+data Ty = TInt | TBool | TString
+
+data Stmt
+  = SDecl   Var Ty Exp   -- var x : T = e ;
+  | SAssign Var Exp      -- x := e ;
+  | SRead   Exp Var      -- read prompt x ;
+  | SPrint  Exp          -- print e ;
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Linguagem TLine}
+\protect\hypertarget{linguagem-tline}{}
+\begin{itemize}
+\tightlist
+\item
+  Principal novidade: \textbf{variáveis} precisam de contexto
+\item
+  Contexto \(\Gamma : \mathit{Var} \rightharpoonup \mathit{Ty}\)
+\item
+  M\^{o}nada: \passthrough{\lstinline!StateT Ctx (ExceptT String Identity)!}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Linguagem TLine}
+\protect\hypertarget{linguagem-tline-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Regras para comandos: \(\Gamma \vdash s \dashv \Gamma'\)
+\end{itemize}
+
+\[\frac{\Gamma \vdash e : T}{\Gamma \vdash \mathbf{var}\ x : T = e \dashv \Gamma[x \mapsto T]} \quad\text{(T-Decl)}\]
+\end{frame}
+
+\begin{frame}{Linguagem TLine}
+\protect\hypertarget{linguagem-tline-2}{}
+\[\frac{x \in \mathrm{dom}(\Gamma) \quad \Gamma \vdash e : \Gamma(x)}{\Gamma \vdash x \mathbin{:=} e \dashv \Gamma} \quad\text{(T-Assign)}\]
+
+\begin{itemize}
+\tightlist
+\item
+  Declara\c{c}\~{a}o \textbf{estende} o contexto:
+  \(\Gamma' = \Gamma[x \mapsto T]\)
+\item
+  Atribui\c{c}\~{a}o \textbf{preserva} o contexto: \(\Gamma' = \Gamma\)
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Typechecking}
+\protect\hypertarget{typechecking-2}{}
+\begin{lstlisting}[language=Haskell]
+tcStmt :: Stmt -> TcM ()
+tcStmt (SDecl v t e) = do          -- (T-Decl)
+    t' <- tcExp e
+    unless (t == t') $ throwError "Type error"
+    addNewVar v t                   -- Gamma[x -> T]
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Typechecking}
+\protect\hypertarget{typechecking-3}{}
+\begin{lstlisting}[language=Haskell]
+tcStmt (SAssign v e) = do
+    t  <- lookupVar v
+    t' <- tcExp e
+    unless (t == t') $ throwError "Type error"
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Typechecking}
+\protect\hypertarget{typechecking-4}{}
+\begin{lstlisting}[language=Haskell]
+tcStmt (SRead e v) = do
+    t <- tcExp e
+    unless (t == TString) $ throwError "Type error"
+    t' <- lookupVar v
+    unless (t' == TInt) $ throwError "Type error"
+tcStmt (SPrint e) = tcExp e >> pure ()
+\end{lstlisting}
+\end{frame}
+
+\hypertarget{verificauxe7uxe3o-para-twhile}{%
+\section{Verifica\c{c}\~{a}o para TWhile}\label{verificauxe7uxe3o-para-twhile}}
+
+\begin{frame}[fragile]{Escopo}
+\protect\hypertarget{escopo}{}
+\begin{itemize}
+\tightlist
+\item
+  TWhile adiciona condicionais e repeti\c{c}\~{a}o com \textbf{escopo local}:
+\end{itemize}
+
+\begin{lstlisting}[language=Haskell]
+data Stmt
+  = -- ... tudo de TLine ...
+  | SIf    Exp Block Block
+  | SWhile Exp Block
+
+type Block = [Stmt]
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Escopo}
+\protect\hypertarget{escopo-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Variáveis declaradas dentro de
+  \passthrough{\lstinline!if!}/\passthrough{\lstinline!while!}
+  \textbf{n\~{a}o escapam} para fora
+\item
+  Regras formalizam isso: contexto de saída = contexto de entrada
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Escopo}
+\protect\hypertarget{escopo-2}{}
+\[\frac{\Gamma \vdash e : \mathbf{Bool} \quad \Gamma \vdash B_1 \dashv \Gamma_1 \quad \Gamma \vdash B_2 \dashv \Gamma_2}{\Gamma \vdash \mathbf{if}\ e\ \mathbf{then}\ B_1\ \mathbf{else}\ B_2 \dashv \Gamma} \quad\text{(T-If)}\]
+\end{frame}
+
+\begin{frame}{Escopo}
+\protect\hypertarget{escopo-3}{}
+\[\frac{\Gamma \vdash e : \mathbf{Bool} \quad \Gamma \vdash B \dashv \Gamma'}{\Gamma \vdash \mathbf{while}\ e\ \mathbf{do}\ B \dashv \Gamma} \quad\text{(T-While)}\]
+\end{frame}
+
+\begin{frame}[fragile]{Implementando Escopo}
+\protect\hypertarget{implementando-escopo}{}
+\begin{lstlisting}[language=Haskell]
+withLocalCtx :: TcM a -> TcM a
+withLocalCtx m = do
+    ctx <- get
+    r   <- m
+    put ctx
+    pure r
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Implementando Escopo}
+\protect\hypertarget{implementando-escopo-1}{}
+\begin{lstlisting}[language=Haskell]
+tcBlock :: [Stmt] -> TcM ()
+tcBlock ss = withLocalCtx (mapM_ tcStmt ss)
+
+tcStmt (SIf e b1 b2) = do
+    t <- tcExp e
+    unless (t == TBool) $ throwError "Type error"
+    tcBlock b1
+    tcBlock b2
+\end{lstlisting}
+\end{frame}
+
+\hypertarget{sistema-de-tipos-para-timp}{%
+\section{Sistema de Tipos para TImp}\label{sistema-de-tipos-para-timp}}
+
+\begin{frame}{Ambientes}
+\protect\hypertarget{ambientes}{}
+\begin{itemize}
+\tightlist
+\item
+  TImp estende TWhile com fun\c{c}\~{o}es e registros
+
+  \begin{itemize}
+  \item
+    \begin{description}
+    \tightlist
+    \item[\[\Delta\]]
+    ambiente de campos de registros
+    \end{description}
+  \item
+    \begin{description}
+    \tightlist
+    \item[\[\Phi\]]
+    ambiente de fun\c{c}\~{o}es
+    \end{description}
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Rela\c{c}\~{o}es}
+\protect\hypertarget{relauxe7uxf5es}{}
+\begin{itemize}
+\tightlist
+\item
+  Express\~{o}es: \(\Gamma;\Delta;\Phi \vdash e : \tau\)
+\item
+  Comandos:
+  \(\Gamma;\Delta;\Phi;\rho_\mathit{ret} \vdash s \dashv \Gamma'\)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Registros}
+\protect\hypertarget{registros}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Acesso a campo (T-Field):}
+\end{itemize}
+
+\[\frac{\Gamma;\Delta;\Phi \vdash e : R \quad \Delta(R)(f) = \tau}{\Gamma;\Delta;\Phi \vdash e.f : \tau}\]
+\end{frame}
+
+\begin{frame}{Registros}
+\protect\hypertarget{registros-1}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Constru\c{c}\~{a}o de registro (T-New):}
+\end{itemize}
+
+\[\frac{R \in \mathrm{dom}(\Delta) \quad \Delta(R) = \overline{(f_i:\tau_i)} \quad \Gamma;\Delta;\Phi \vdash e_i : \tau_i}{\Gamma;\Delta;\Phi \vdash \mathbf{new}\ R\{\overline{f_i=e_i}\} : R}\]
+\end{frame}
+
+\begin{frame}{Fun\c{c}\~{o}es}
+\protect\hypertarget{funuxe7uxf5es}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Chamada como express\~{a}o (T-CallExpr):}
+\end{itemize}
+
+\[\frac{\Phi(f) = ([\tau_1,\ldots,\tau_n],\;\tau) \quad \Gamma;\Delta;\Phi \vdash e_i : \tau_i}{\Gamma;\Delta;\Phi \vdash f(e_1,\ldots,e_n) : \tau}\]
+\end{frame}
+
+\begin{frame}{Fun\c{c}\~{o}es}
+\protect\hypertarget{funuxe7uxf5es-1}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Declara\c{c}\~{a}o de fun\c{c}\~{a}o (T-FuncDecl):}
+\end{itemize}
+
+\[\frac{[x_1\!\mapsto\!\tau_1,\ldots,x_n\!\mapsto\!\tau_n];\Delta;\Phi;\rho \vdash B \dashv \_}{\Delta;\Phi \vdash \mathbf{fn}\ f(\overline{x_i:\tau_i}):\rho\ \{B\}\ \checkmark}\]
+\end{frame}
+
+\hypertarget{verificauxe7uxe3o-para-timp}{%
+\section{Verifica\c{c}\~{a}o para TImp}\label{verificauxe7uxe3o-para-timp}}
+
+\begin{frame}[fragile]{A M\^{o}nada}
+\protect\hypertarget{a-muxf4nada}{}
+\begin{itemize}
+\tightlist
+\item
+  TImp adiciona fun\c{c}\~{o}es e registros --- Informa\c{c}\~{a}o \textbf{imutável} vai
+  em \passthrough{\lstinline!ReaderT!}:
+\end{itemize}
+
+\begin{lstlisting}[language=Haskell]
+data TcEnv = TcEnv
+  { recordEnv  :: Map Name [(Field, Ty)]  -- Delta
+  , funcEnv    :: Map Name ([Ty], RetTy)  -- Phi
+  , returnType :: Maybe RetTy             -- rho_ret
+  }
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{A M\^{o}nada}
+\protect\hypertarget{a-muxf4nada-1}{}
+\begin{lstlisting}[language=Haskell]
+type VarCtx = Map Var Ty
+
+type TcM a = ReaderT TcEnv
+               (StateT VarCtx
+                 (ExceptT String Identity)) a
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Registros}
+\protect\hypertarget{registros-2}{}
+\begin{lstlisting}[language=Haskell]
+tcExp (EField e f) = do
+  t <- tcExp e
+  case t of
+    TRecord rname -> lookupField rname f
+    _ -> throwError "Field access on non-record type"
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Fun\c{c}\~{o}es}
+\protect\hypertarget{funuxe7uxf5es-2}{}
+\begin{lstlisting}[language=Haskell]
+tcExp (ECall fname args) = do
+  fenv <- asks funcEnv
+  case Map.lookup fname fenv of
+    Nothing -> throwError ("Undefined function: " ++ fname)
+    Just (pts, rt) -> do
+      argTys <- mapM tcExp args
+      unless (argTys == pts) $ throwError "Argument type mismatch"
+      case rt of
+        RTVoid  -> throwError "Void function used as expression"
+        RTTy ty -> pure ty
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Fun\c{c}\~{a}o}
+\protect\hypertarget{funuxe7uxe3o}{}
+\begin{lstlisting}[language=Haskell]
+tcFuncDecl :: TcEnv -> FuncDecl -> Either String ()
+tcFuncDecl baseEnv (FuncDecl name params retTy body) = do
+  let paramPairs = [(v, t) | Param v t <- params]
+      initCtx    = Map.fromList paramPairs
+      env        = baseEnv { returnType = Just retTy }
+  case runIdentity (runExceptT
+         (execStateT (runReaderT (tcBlock body) env) initCtx)) of
+    Left err -> Left ("In function " ++ name ++ ": " ++ err)
+    Right _  -> Right ()
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Fun\c{c}\~{a}o}
+\protect\hypertarget{funuxe7uxe3o-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Contexto inicial = par\^{a}metros formais
+\item
+  \passthrough{\lstinline!returnType!} fixado via
+  \passthrough{\lstinline!local!} para verificar
+  \passthrough{\lstinline!return!}
+\item
+  Variáveis externas \`{a} fun\c{c}\~{a}o s\~{a}o \textbf{invisíveis}
+\end{itemize}
+\end{frame}
+
+\hypertarget{conclusuxe3o}{%
+\section{Conclus\~{a}o}\label{conclusuxe3o}}
+
+\begin{frame}{Conclus\~{a}o}
+\protect\hypertarget{conclusuxe3o-1}{}
+\begin{itemize}
+\tightlist
+\item
+  O verificador de tipos é uma \textbf{transcri\c{c}\~{a}o sistemática} do
+  sistema de tipos
+\item
+  Cada regra de infer\^{e}ncia corresponde a uma equa\c{c}\~{a}o Haskell
+\end{itemize}
+\end{frame}

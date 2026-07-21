@@ -1,6 +1,6 @@
 ---
-title: "Apresentação da disciplina"
-subtitle: "BCC328 – Construção de Compiladores I"
+title: Apresentação da disciplina
+subtitle: BCC328 – Construção de Compiladores I
 ---
 
 # Objetivos

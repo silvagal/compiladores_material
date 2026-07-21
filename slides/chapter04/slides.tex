@@ -1,0 +1,537 @@
+\hypertarget{objetivos}{%
+\section{Objetivos}\label{objetivos}}
+
+\begin{frame}{Objetivos}
+\protect\hypertarget{objetivos-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Apresenta\c{c}\~{a}o da linguagem do Alex e seu uso para especifica\c{c}\~{a}o de
+  analisadores léxicos em Haskell.
+\end{itemize}
+\end{frame}
+
+\hypertarget{motivauxe7uxe3o}{%
+\section{Motiva\c{c}\~{a}o}\label{motivauxe7uxe3o}}
+
+\begin{frame}{Motiva\c{c}\~{a}o}
+\protect\hypertarget{motivauxe7uxe3o-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Construir analisadores léxicos manualmente é trabalhoso e propenso a
+  erros
+\item
+  A teoria (ER → AFN → AFD) é sólida, mas implementar o pipeline é
+  repetitivo
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Motiva\c{c}\~{a}o}
+\protect\hypertarget{motivauxe7uxe3o-2}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Alex} automatiza esse processo para Haskell
+\item
+  Dado uma especifica\c{c}\~{a}o de tokens em ERs, Alex gera um analisador
+  léxico eficiente
+\item
+  Usado na prática: o próprio GHC usa Alex para sua análise léxica
+\end{itemize}
+\end{frame}
+
+\hypertarget{o-que-uxe9-o-alex}{%
+\section{O que é o Alex?}\label{o-que-uxe9-o-alex}}
+
+\begin{frame}[fragile]{O que é o Alex?}
+\protect\hypertarget{o-que-uxe9-o-alex-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Gerador de analisadores léxicos para \textbf{Haskell}
+\item
+  Análogo ao \passthrough{\lstinline!flex!} (C) e ao
+  \passthrough{\lstinline!JFlex!} (Java)
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{O que é o Alex?}
+\protect\hypertarget{o-que-uxe9-o-alex-2}{}
+\begin{itemize}
+\tightlist
+\item
+  Recebe um arquivo \passthrough{\lstinline!.x!} com especifica\c{c}\~{o}es de
+  tokens
+\item
+  Gera um módulo Haskell com o analisador léxico completo
+\item
+  Usa o algoritmo AFD para reconhecimento eficiente
+\end{itemize}
+\end{frame}
+
+\hypertarget{sessuxf5es-de-um-arquivo-.x}{%
+\section{Sess\~{o}es de um Arquivo .x}\label{sessuxf5es-de-um-arquivo-.x}}
+
+\begin{frame}[fragile]{Se\c{c}\~{o}es de um Arquivo
+\passthrough{\lstinline!.x!}}
+\protect\hypertarget{seuxe7uxf5es-de-um-arquivo-.x}{}
+\begin{lstlisting}
+{ cabe\c{c}alho Haskell }
+
+%wrapper "..."
+macros e configura\c{c}\~{o}es
+
+tokens :-
+  regras léxicas
+
+{ rodapé Haskell }
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Se\c{c}\~{o}es de um Arquivo \passthrough{\lstinline!.x!}}
+\protect\hypertarget{seuxe7uxf5es-de-um-arquivo-.x-1}{}
+\begin{enumerate}
+\tightlist
+\item
+  \textbf{Cabe\c{c}alho}: módulo e imports Haskell
+\item
+  \textbf{Diretivas}: wrapper e macros de ERs
+\item
+  \textbf{Regras}: padr\~{o}es mapeados a a\c{c}\~{o}es
+\item
+  \textbf{Rodapé}: fun\c{c}\~{o}es auxiliares
+\end{enumerate}
+\end{frame}
+
+\hypertarget{definindo-tokens}{%
+\section{Definindo Tokens}\label{definindo-tokens}}
+
+\begin{frame}[fragile]{Tipos de Tokens para Exp}
+\protect\hypertarget{tipos-de-tokens-para-exp}{}
+\begin{lstlisting}[language=Haskell]
+data Token = Token {
+      pos    :: (Int, Int)   -- (Linha, Coluna)
+    , lexeme :: Lexeme
+    } deriving (Eq, Show)
+
+data Lexeme
+  = TNumber Int | TLParen | TRParen
+  | TPlus | TTimes | TEOF
+  deriving (Eq, Show)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Tipos de Tokens para Exp}
+\protect\hypertarget{tipos-de-tokens-para-exp-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Mesma estrutura vista no capítulo de análise ad-hoc
+\item
+  A posi\c{c}\~{a}o \passthrough{\lstinline!(linha, coluna)!} é essencial para
+  mensagens de erro
+\item
+  \passthrough{\lstinline!TEOF!} marca o fim de entrada
+\end{itemize}
+\end{frame}
+
+\hypertarget{sintaxe-de-expressuxf5es-regulares-no-alex}{%
+\section{Sintaxe de Express\~{o}es Regulares no
+Alex}\label{sintaxe-de-expressuxf5es-regulares-no-alex}}
+
+\begin{frame}[fragile]{Classes de Caracteres}
+\protect\hypertarget{classes-de-caracteres}{}
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Padr\~{a}o & Significado \\
+\midrule\noalign{}
+\endhead
+\passthrough{\lstinline![0-9]!} & Qualquer dígito de 0 a 9 \\
+\passthrough{\lstinline![a-zA-Z]!} & Qualquer letra minúscula ou
+maiúscula \\
+\passthrough{\lstinline![\^\\"]!} & Qualquer coisa \textbf{exceto} aspas
+duplas \\
+\passthrough{\lstinline!$digit!} & Conjunto de caracteres definido pelo
+usuário \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}[fragile]{Operadores de Repeti\c{c}\~{a}o e Combina\c{c}\~{a}o}
+\protect\hypertarget{operadores-de-repetiuxe7uxe3o-e-combinauxe7uxe3o}{}
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Operador & Significado \\
+\midrule\noalign{}
+\endhead
+\passthrough{\lstinline!e*!} & Zero ou mais repeti\c{c}\~{o}es de
+\passthrough{\lstinline!e!} \\
+\passthrough{\lstinline!e+!} & Uma ou mais repeti\c{c}\~{o}es de
+\passthrough{\lstinline!e!} \\
+\passthrough{\lstinline!e?!} & Zero ou uma ocorr\^{e}ncia (opcional) \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}[fragile]{Operadores de Repeti\c{c}\~{a}o e Combina\c{c}\~{a}o}
+\protect\hypertarget{operadores-de-repetiuxe7uxe3o-e-combinauxe7uxe3o-1}{}
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Operador & Significado \\
+\midrule\noalign{}
+\endhead
+\passthrough{\lstinline!.!} & Qualquer caractere exceto
+\passthrough{\lstinline!\\n!} \\
+\passthrough{\lstinline!"str"!} & A string literal
+\passthrough{\lstinline!str!} exatamente \\
+\passthrough{\lstinline!e1 \\| e2!} & Alternativa:
+\passthrough{\lstinline!e1!} ou \passthrough{\lstinline!e2!} \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplos de Padr\~{o}es}
+\protect\hypertarget{exemplos-de-padruxf5es}{}
+\begin{lstlisting}
+$digit    = 0-9  -- classe: dígitos
+@number   = $digit+ -- macro: um ou mais dígitos
+@ident    = [a-zA-Z][a-zA-Z0-9_]*  -- identificador
+
+-- Hexadecimal ou octal:
+0(x[0-9a-fA-F]+ | o[0-7]+)
+\end{lstlisting}
+
+\begin{itemize}
+\tightlist
+\item
+  Macros com \passthrough{\lstinline!@!} tornam as regras mais legíveis
+\item
+  Conjuntos com \passthrough{\lstinline!$!} definem classes de
+  caracteres reutilizáveis
+\end{itemize}
+\end{frame}
+
+\hypertarget{estrutura-do-arquivo-alex}{%
+\section{Estrutura do Arquivo Alex}\label{estrutura-do-arquivo-alex}}
+
+\begin{frame}[fragile]{Cabe\c{c}alho e Macros}
+\protect\hypertarget{cabeuxe7alho-e-macros}{}
+\begin{lstlisting}[language=Haskell]
+{
+{-# OPTIONS_GHC -Wno-name-shadowing #-}
+module Exp.Frontend.Lexer.Alex.ExpLexer where
+
+import Control.Monad
+import Exp.Frontend.Lexer.Token
+}
+
+%wrapper "monadUserState"
+
+$digit = 0-9
+@number = $digit+
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Wrappers Disponíveis}
+\protect\hypertarget{wrappers-disponuxedveis}{}
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Wrapper & Características \\
+\midrule\noalign{}
+\endhead
+\passthrough{\lstinline!basic!} & Processa
+\passthrough{\lstinline!String!} de forma simples e pura \\
+\passthrough{\lstinline!posn!} & Adiciona informa\c{c}\~{a}o de linha e coluna
+automaticamente \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}[fragile]{Wrappers Disponíveis}
+\protect\hypertarget{wrappers-disponuxedveis-1}{}
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Wrapper & Características \\
+\midrule\noalign{}
+\endhead
+\passthrough{\lstinline!monad!} & Executa dentro de uma m\^{o}nada
+\passthrough{\lstinline!Alex!} \\
+\passthrough{\lstinline!monadUserState!} & M\^{o}nada com estado customizado
+pelo usuário \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}[fragile]{Wrappers Disponíveis}
+\protect\hypertarget{wrappers-disponuxedveis-2}{}
+\begin{itemize}
+\tightlist
+\item
+  A principal diferen\c{c}a: controle sobre o estado e os efeitos
+\item
+  \passthrough{\lstinline!monadUserState!} é o mais flexível e poderoso
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Regras Léxicas}
+\protect\hypertarget{regras-luxe9xicas}{}
+\begin{lstlisting}
+tokens :-
+    -- espa\c{c}os e comentários de linha
+    <0> $white+       ;
+    <0> "//" .*       ;
+    -- tokens significativos
+    <0> @number       { mkNumber }
+    <0> "("           { simpleToken TLParen }
+    <0> ")"           { simpleToken TRParen }
+    <0> "+"           { simpleToken TPlus }
+    <0> "*"           { simpleToken TTimes }
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Regras Léxicas}
+\protect\hypertarget{regras-luxe9xicas-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Regras sem a\c{c}\~{a}o (\passthrough{\lstinline!;!}) descartam o match
+  silenciosamente
+\item
+  \passthrough{\lstinline!mkNumber!} cria um token com o valor inteiro
+  do número
+\item
+  \passthrough{\lstinline!simpleToken!} cria um token sem valor
+  associado
+\end{itemize}
+\end{frame}
+
+\hypertarget{start-codes-e-comentuxe1rios-em-bloco}{%
+\section{Start Codes e Comentários em
+Bloco}\label{start-codes-e-comentuxe1rios-em-bloco}}
+
+\begin{frame}[fragile]{Comentários Aninhados}
+\protect\hypertarget{comentuxe1rios-aninhados}{}
+\begin{lstlisting}[language=C]
+/* comentário externo
+   /* comentário interno */
+   ainda no externo
+*/
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Comentários Aninhados}
+\protect\hypertarget{comentuxe1rios-aninhados-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Comentários em bloco podem ser \textbf{aninhados}
+\item
+  O analisador precisa contar os níveis de aninhamento
+\item
+  N\~{a}o é possível expressar isso com uma simples ER
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Solu\c{c}\~{a}o: Start Codes}
+\protect\hypertarget{soluuxe7uxe3o-start-codes}{}
+\begin{itemize}
+\tightlist
+\item
+  Start codes permitem ao analisador ter \textbf{múltiplos modos}
+\item
+  \passthrough{\lstinline!<0>!}: modo normal de análise
+\item
+  \passthrough{\lstinline!<state\_comment>!}: modo ``dentro de
+  comentário em bloco''
+\item
+  O analisador muda de modo conforme encontra
+  \passthrough{\lstinline!/*!} e \passthrough{\lstinline!*/!}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Regras com Start Codes}
+\protect\hypertarget{regras-com-start-codes}{}
+\begin{lstlisting}
+-- comentário em bloco:
+<0>             "/*"  { nestComment `andBegin` state_comment }
+<0>             "*/"  { \_ _ -> alexError "Unexpected close comment!" }
+<state_comment> "/*"  { nestComment }
+<state_comment> "*/"  { unnestComment }
+<state_comment> .     ;
+<state_comment> \n    ;
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Regras com Start Codes}
+\protect\hypertarget{regras-com-start-codes-1}{}
+\begin{itemize}
+\tightlist
+\item
+  \passthrough{\lstinline!andBegin state\_comment!}: muda para o modo de
+  comentário
+\item
+  Em \passthrough{\lstinline!state\_comment!}: ignora tudo exceto
+  \passthrough{\lstinline!/*!} e \passthrough{\lstinline!*/!}
+\item
+  \passthrough{\lstinline!*/!} sem \passthrough{\lstinline!/*!}
+  correspondente → erro imediato
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Def. do Estado}
+\protect\hypertarget{def.-do-estado}{}
+\begin{lstlisting}[language=Haskell]
+data AlexUserState = AlexUserState
+  { nestLevel :: Int   -- nível de aninhamento de comentários
+  }
+
+alexInitUserState :: AlexUserState
+alexInitUserState = AlexUserState { nestLevel = 0 }
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Def. do Estado}
+\protect\hypertarget{def.-do-estado-1}{}
+\begin{itemize}
+\tightlist
+\item
+  \passthrough{\lstinline!nestLevel = 0!}: fora de qualquer comentário
+\item
+  \passthrough{\lstinline!nestLevel = 1!}: dentro de
+  \passthrough{\lstinline!/* ... */!}
+\item
+  \passthrough{\lstinline!nestLevel = 2!}: dentro de
+  \passthrough{\lstinline!/* /* ... */ */!}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Fun\c{c}\~{o}es de Aninhamento}
+\protect\hypertarget{funuxe7uxf5es-de-aninhamento}{}
+\begin{itemize}
+\tightlist
+\item
+  Aumentando o aninhamento
+\end{itemize}
+
+\begin{lstlisting}[language=Haskell]
+nestComment :: AlexInput -> Int -> Alex Token
+nestComment _ _ = do
+    modify (\s -> s { nestLevel = nestLevel s + 1 })
+    alexMonadScan
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Fun\c{c}\~{o}es de Aninhamento}
+\protect\hypertarget{funuxe7uxf5es-de-aninhamento-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Diminuindo o aninhamento
+\end{itemize}
+
+\begin{lstlisting}[language=Haskell]
+unnestComment :: AlexInput -> Int -> Alex Token
+unnestComment _ _ = do
+    st <- get
+    let level = nestLevel st - 1
+    put st { nestLevel = level }
+    if level == 0
+      then alexSetStartCode 0 >> alexMonadScan
+      else alexMonadScan
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Manipula\c{c}\~{a}o do Estado}
+\protect\hypertarget{manipulauxe7uxe3o-do-estado}{}
+\begin{lstlisting}[language=Haskell]
+get    :: Alex AlexUserState
+put    :: AlexUserState -> Alex ()
+modify :: (AlexUserState -> AlexUserState) -> Alex ()
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Manipula\c{c}\~{a}o do Estado}
+\protect\hypertarget{manipulauxe7uxe3o-do-estado-1}{}
+\begin{itemize}
+\tightlist
+\item
+  \passthrough{\lstinline!get!}: l\^{e} o estado customizado atual
+\item
+  \passthrough{\lstinline!put!}: substitui o estado por um novo
+\item
+  \passthrough{\lstinline!modify!}: aplica uma fun\c{c}\~{a}o de transforma\c{c}\~{a}o
+  ao estado
+\item
+  Padr\~{a}o id\^{e}ntico \`{a} m\^{o}nada de estado de Haskell
+  (\passthrough{\lstinline!State!})
+\end{itemize}
+\end{frame}
+
+\hypertarget{gerauxe7uxe3o-e-uso}{%
+\section{Gera\c{c}\~{a}o e Uso}\label{gerauxe7uxe3o-e-uso}}
+
+\begin{frame}[fragile]{Como Gerar o Analisador}
+\protect\hypertarget{como-gerar-o-analisador}{}
+\begin{lstlisting}[language=bash]
+alex ExpLexer.x           # gera ExpLexer.hs
+alex -o ExpLexer.hs ExpLexer.x  # especifica o arquivo de saída
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Como Gerar o Analisador}
+\protect\hypertarget{como-gerar-o-analisador-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Com Cabal: automático se \passthrough{\lstinline!alex!} está em
+  \passthrough{\lstinline!build-tool-depends!}
+\item
+  O arquivo gerado é um módulo Haskell normal
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Interface do Analisador Gerado}
+\protect\hypertarget{interface-do-analisador-gerado}{}
+\begin{lstlisting}[language=Haskell]
+-- Executa o analisador sobre uma String
+runAlex :: String -> Alex a -> Either String a
+
+-- Obtém o próximo token
+alexMonadScan :: Alex Token
+
+-- Sinaliza um erro
+alexError :: String -> Alex a
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Usando o Analisador em Produ\c{c}\~{a}o}
+\protect\hypertarget{usando-o-analisador-em-produuxe7uxe3o}{}
+\begin{lstlisting}[language=Haskell]
+-- Obtém todos os tokens de uma String
+tokenize :: String -> Either String [Token]
+tokenize input = runAlex input loop
+  where
+    loop = do
+      tok <- alexMonadScan
+      case lexeme tok of
+        TEOF -> return []
+        _    -> (tok :) <$> loop
+\end{lstlisting}
+\end{frame}
+
+\hypertarget{conclusuxe3o}{%
+\section{Conclus\~{a}o}\label{conclusuxe3o}}
+
+\begin{frame}{Conclus\~{a}o}
+\protect\hypertarget{conclusuxe3o-1}{}
+\begin{itemize}
+\item
+  Nesta aula apresentamos o gerador Alex.
+\item
+  Cria\c{c}\~{a}o automática de analisadores léxicos eficientes a partir de
+  express\~{o}es regulares.
+\item
+  Próximas aulas: Análise sintática.
+\end{itemize}
+\end{frame}

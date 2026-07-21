@@ -1,0 +1,847 @@
+\hypertarget{objetivos}{%
+\section{Objetivos}\label{objetivos}}
+
+\begin{frame}{Objetivos}
+\protect\hypertarget{objetivos-1}{}
+\begin{itemize}
+\item
+  Apresentar sistemas de tipos como a especifica\c{c}\~{a}o da análise
+  sem\^{a}ntica.
+\item
+  Discutir propriedades importantes de sistemas de tipos.
+\end{itemize}
+\end{frame}
+
+\hypertarget{tipos-em-linguagens-de-programauxe7uxe3o}{%
+\section{Tipos em Linguagens de
+Programa\c{c}\~{a}o}\label{tipos-em-linguagens-de-programauxe7uxe3o}}
+
+\begin{frame}{O que é um Tipo?}
+\protect\hypertarget{o-que-uxe9-um-tipo}{}
+\begin{itemize}
+\tightlist
+\item
+  Um \textbf{tipo} classifica valores e define:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Quais opera\c{c}\~{o}es s\~{a}o aplicáveis
+  \item
+    Como os valores s\~{a}o representados na memória
+  \item
+    Que conjunto de valores o tipo compreende
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Sistema de Tipo}
+\protect\hypertarget{sistema-de-tipo}{}
+\begin{itemize}
+\tightlist
+\item
+  O \textbf{sistema de tipos} associa tipos a express\~{o}es e verifica a
+  coer\^{e}ncia dessas associa\c{c}\~{o}es
+\item
+  Erros de tipo: somar um booleano a um inteiro, aplicar
+  \passthrough{\lstinline!pred true!}
+\item
+  Express\~{o}es com erros de tipo s\~{a}o \textbf{sintaticamente válidas}, mas
+  \textbf{semanticamente sem significado}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Tipagem Estática}
+\protect\hypertarget{tipagem-estuxe1tica}{}
+\textbf{Tipagem estática} (\emph{static typing}): verifica\c{c}\~{a}o em
+\textbf{tempo de compila\~{c}\~{a}o}
+
+\begin{itemize}
+\tightlist
+\item
+  O compilador rejeita o programa se houver erro de tipo
+\item
+  Exemplos: Haskell, Java, C, Rust
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Tipagem Din\^{a}mica}
+\protect\hypertarget{tipagem-dinuxe2mica}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Tipagem din\^{a}mica} (\emph{dynamic typing}): verifica\c{c}\~{a}o em
+  \textbf{tempo de execu\c{c}\~{a}o}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Erros detectados apenas quando a opera\c{c}\~{a}o inválida é executada
+  \item
+    Exemplos: Python, JavaScript, Ruby, Lisp
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Tipagem Forte}
+\protect\hypertarget{tipagem-forte}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Tipagem forte} (\emph{strong typing}): n\~{a}o permite convers\~{o}es
+  implícitas entre tipos incompatíveis
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Opera\c{c}\~{o}es entre tipos diferentes resultam em erro
+  \item
+    Exemplos: Haskell, Python
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Tipagem Fraca}
+\protect\hypertarget{tipagem-fraca}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Tipagem fraca} (\emph{weak typing}): realiza convers\~{o}es
+  implícitas entre tipos
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Comportamentos frequentemente surpreendentes
+  \item
+    C: converte implicitamente entre inteiros e ponteiros
+  \item
+    JavaScript: \passthrough{\lstinline!1 + "1"!} resulta em
+    \passthrough{\lstinline!"11"!}
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Fraca vs Forte}
+\protect\hypertarget{fraca-vs-forte}{}
+\begin{itemize}
+\tightlist
+\item
+  Estas classifica\c{c}\~{o}es s\~{a}o \textbf{independentes}.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Python é dinamicamente tipado e fortemente tipado; C é estaticamente
+    tipado e fracamente tipado.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\hypertarget{a-linguagem-de-expressuxf5es-tipadas}{%
+\section{A Linguagem de Express\~{o}es
+Tipadas}\label{a-linguagem-de-expressuxf5es-tipadas}}
+
+\begin{frame}{Sintaxe}
+\protect\hypertarget{sintaxe}{}
+\[\begin{array}{lcll}
+t & ::= & \mathbf{true} \mid \mathbf{false} & \text{(booleanos)} \\
+  & \mid & \mathbf{if}\ t_1\ \mathbf{then}\ t_2\ \mathbf{else}\ t_3 & \text{(condicional)} \\
+  & \mid & \mathbf{0} & \text{(zero)} \\
+  & \mid & \mathbf{succ}\ t \mid \mathbf{pred}\ t & \text{(sucessor, predecessor)} \\
+  & \mid & \mathbf{iszero}\ t & \text{(teste de zero)}
+\end{array}\]
+\end{frame}
+
+\begin{frame}{Tipos}
+\protect\hypertarget{tipos}{}
+\textbf{Tipos:} \[T ::= \mathbf{Bool} \mid \mathbf{Nat}\]
+\end{frame}
+
+\begin{frame}{Valores}
+\protect\hypertarget{valores}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Valores} (termos que n\~{a}o podem ser reduzidos):
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \(nv\) s\~{a}o os \textbf{valores numéricos}: \(\mathbf{0}\),
+    \(\mathbf{succ}\ \mathbf{0}\),
+    \(\mathbf{succ}\ (\mathbf{succ}\ \mathbf{0})\), \ldots{}
+  \item
+    Valores booleanos: \(\mathbf{true}\) e \(\mathbf{false}\)
+  \end{itemize}
+\end{itemize}
+
+\[\begin{array}{lcl}
+v  & ::= & \mathbf{true} \mid \mathbf{false} \mid nv \\
+nv & ::= & \mathbf{0} \mid \mathbf{succ}\ nv
+\end{array}\]
+\end{frame}
+
+\hypertarget{o-sistema-de-tipos}{%
+\section{O Sistema de Tipos}\label{o-sistema-de-tipos}}
+
+\begin{frame}{Rela\c{c}\~{a}o de Tipagem}
+\protect\hypertarget{relauxe7uxe3o-de-tipagem}{}
+\begin{itemize}
+\tightlist
+\item
+  Nota\c{c}\~{a}o \(\vdash t : T\)
+
+  \begin{itemize}
+  \tightlist
+  \item
+    o termo \(t\) tem tipo \(T\).
+  \end{itemize}
+\item
+  A rela\c{c}\~{a}o é definida por regras de infer\^{e}ncia.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Booleanos}
+\protect\hypertarget{booleanos}{}
+\[
+\begin{array}{c}
+\frac{}{\vdash \mathbf{true} : \mathbf{Bool}} \quad\text{(T-True)}\\
+\frac{}{\vdash \mathbf{false} : \mathbf{Bool}} \quad\text{(T-False)}
+\end{array}
+\]
+\end{frame}
+
+\begin{frame}{Condicionais}
+\protect\hypertarget{condicionais}{}
+\[\frac{
+  \vdash t_1 : \mathbf{Bool} \quad
+  \vdash t_2 : T \quad
+  \vdash t_3 : T
+}{
+  \vdash \mathbf{if}\ t_1\ \mathbf{then}\ t_2\ \mathbf{else}\ t_3 : T
+} \quad\text{(T-If)}\]
+
+A regra (T-If) exige que os dois ramos tenham o \textbf{mesmo tipo}
+\(T\).
+\end{frame}
+
+\begin{frame}{Naturais}
+\protect\hypertarget{naturais}{}
+\[
+\begin{array}{c}
+   \frac{}{\vdash \mathbf{0} : \mathbf{Nat}} \quad\text{(T-Zero)}\\
+   \frac{\vdash t_1 : \mathbf{Nat}}{\vdash \mathbf{succ}\ t_1 : \mathbf{Nat}} \quad\text{(T-Succ)}\\
+\end{array}
+\]
+\end{frame}
+
+\begin{frame}{Naturais}
+\protect\hypertarget{naturais-1}{}
+\[
+\begin{array}{c}
+\frac{\vdash t_1 : \mathbf{Nat}}{\vdash \mathbf{pred}\ t_1 : \mathbf{Nat}} \quad\text{(T-Pred)}\\
+\frac{\vdash t_1 : \mathbf{Nat}}{\vdash \mathbf{iszero}\ t_1 : \mathbf{Bool}} \quad\text{(T-IsZero)}
+\end{array}\]
+\end{frame}
+
+\begin{frame}{Exemplo}
+\protect\hypertarget{exemplo}{}
+\(\vdash \mathbf{iszero}\ (\mathbf{succ}\ \mathbf{0}) : \mathbf{Bool}\)
+
+\[\dfrac{
+  \dfrac{
+    \dfrac{}{\vdash \mathbf{0} : \mathbf{Nat}}
+  }{\vdash \mathbf{succ}\ \mathbf{0} : \mathbf{Nat}}
+}{\vdash \mathbf{iszero}\ (\mathbf{succ}\ \mathbf{0}) : \mathbf{Bool}}\]
+\end{frame}
+
+\begin{frame}{Exemplo}
+\protect\hypertarget{exemplo-1}{}
+\begin{itemize}
+\tightlist
+\item
+  \(\mathbf{succ}\ \mathbf{true}\) \textbf{n\~{a}o é tipável}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    A regra (T-Succ) exige que o argumento tenha tipo \(\mathbf{Nat}\)
+  \item
+    Mas \(\mathbf{true}\) tem tipo \(\mathbf{Bool}\)
+  \item
+    N\~{a}o existe deriva\c{c}\~{a}o válida --- o tipo checker \textbf{rejeita} o
+    programa
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Exemplo}
+\protect\hypertarget{exemplo-2}{}
+\begin{itemize}
+\tightlist
+\item
+  Outros exemplos de termos n\~{a}o tipáveis:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \(\mathbf{pred}\ \mathbf{false}\): (T-Pred) exige \(\mathbf{Nat}\),
+    argumento é \(\mathbf{Bool}\)
+  \item
+    \(\mathbf{if}\ \mathbf{0}\ \mathbf{then}\ t_2\ \mathbf{else}\ t_3\):
+    (T-If) exige \(\mathbf{Bool}\) na condi\c{c}\~{a}o
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Unicidade de Tipos}
+\protect\hypertarget{unicidade-de-tipos}{}
+\begin{itemize}
+\item
+  \textbf{Lema (Unicidade):} Se \(\vdash t : T\) e \(\vdash t : T'\),
+  ent\~{a}o \(T = T'\).
+\item
+  A tipagem é \textbf{determinística}: o verificador sempre produz um
+  resultado único.
+\end{itemize}
+\end{frame}
+
+\hypertarget{semuxe2ntica-small-step}{%
+\section{Sem\^{a}ntica Small-Step}\label{semuxe2ntica-small-step}}
+
+\begin{frame}{Formas Presas}
+\protect\hypertarget{formas-presas}{}
+\begin{itemize}
+\tightlist
+\item
+  Os termos irredutíveis s\~{a}o \textbf{valores} \(v\) ou \textbf{formas
+  presas} (\emph{stuck terms}):
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Termos que n\~{a}o s\~{a}o valores e para os quais nenhuma regra se aplica
+  \item
+    Representam \textbf{erros em tempo de execu\c{c}\~{a}o}
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Formas Presas}
+\protect\hypertarget{formas-presas-1}{}
+\begin{itemize}
+\item
+  Exemplos de formas presas:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \(\mathbf{succ}\ \mathbf{true}\): \(\mathbf{true}\) n\~{a}o é \(nv\), e
+    nenhuma regra reduz isso
+  \item
+    \(\mathbf{pred}\ \mathbf{false}\): idem
+  \item
+    \(\mathbf{if}\ \mathbf{0}\ \mathbf{then}\ t_2\ \mathbf{else}\ t_3\):
+    \(\mathbf{0}\) é valor numérico, n\~{a}o booleano
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Formas Presas}
+\protect\hypertarget{formas-presas-2}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{O papel do sistema de tipos}: garantir que termos bem tipados
+  \textbf{nunca} se tornem formas presas.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Regras de Redu\c{c}\~{a}o}
+\protect\hypertarget{regras-de-reduuxe7uxe3o}{}
+\[\frac{t_1 \to t_1'}{\mathbf{if}\ t_1\ \mathbf{then}\ t_2\ \mathbf{else}\ t_3 \to \mathbf{if}\ t_1'\ \mathbf{then}\ t_2\ \mathbf{else}\ t_3}
+\quad\text{(E-If)}\]
+\end{frame}
+
+\begin{frame}{Regras de Redu\c{c}\~{a}o}
+\protect\hypertarget{regras-de-reduuxe7uxe3o-1}{}
+\[\frac{}{\mathbf{if}\ \mathbf{true}\ \mathbf{then}\ t_2\ \mathbf{else}\ t_3 \to t_2}
+\quad\text{(E-IfTrue)}\]
+\end{frame}
+
+\begin{frame}{Regras de Redu\c{c}\~{a}o}
+\protect\hypertarget{regras-de-reduuxe7uxe3o-2}{}
+\[\frac{}{\mathbf{if}\ \mathbf{false}\ \mathbf{then}\ t_2\ \mathbf{else}\ t_3 \to t_3}
+\quad\text{(E-IfFalse)}\]
+\end{frame}
+
+\begin{frame}{Regras de Redu\c{c}\~{a}o}
+\protect\hypertarget{regras-de-reduuxe7uxe3o-3}{}
+\[\frac{t_1 \to t_1'}{\mathbf{succ}\ t_1 \to \mathbf{succ}\ t_1'}
+\quad\text{(E-Succ)}\]
+\end{frame}
+
+\begin{frame}{Regras de Redu\c{c}\~{a}o}
+\protect\hypertarget{regras-de-reduuxe7uxe3o-4}{}
+\[
+\frac{t_1 \to t_1'}{\mathbf{pred}\ t_1 \to \mathbf{pred}\ t_1'}
+\quad\text{(E-Pred)}\]
+\end{frame}
+
+\begin{frame}{Regras de Redu\c{c}\~{a}o}
+\protect\hypertarget{regras-de-reduuxe7uxe3o-5}{}
+\[\frac{}{\mathbf{pred}\ \mathbf{0} \to \mathbf{0}}
+\quad\text{(E-PredZero)}
+\]
+\end{frame}
+
+\begin{frame}{Regras de Redu\c{c}\~{a}o}
+\protect\hypertarget{regras-de-reduuxe7uxe3o-6}{}
+\[
+\frac{}{\mathbf{pred}\ (\mathbf{succ}\ nv_1) \to nv_1}
+\quad\text{(E-PredSucc)}\]
+\end{frame}
+
+\begin{frame}{Regras de Redu\c{c}\~{a}o}
+\protect\hypertarget{regras-de-reduuxe7uxe3o-7}{}
+\[\frac{t_1 \to t_1'}{\mathbf{iszero}\ t_1 \to \mathbf{iszero}\ t_1'}
+\quad\text{(E-IsZero)}
+\]
+\end{frame}
+
+\begin{frame}{Regras de Redu\c{c}\~{a}o}
+\protect\hypertarget{regras-de-reduuxe7uxe3o-8}{}
+\[
+\frac{}{\mathbf{iszero}\ \mathbf{0} \to \mathbf{true}}
+\quad\text{(E-IsZeroZero)}\]
+\end{frame}
+
+\begin{frame}{Regras de Redu\c{c}\~{a}o}
+\protect\hypertarget{regras-de-reduuxe7uxe3o-9}{}
+\[\frac{}{\mathbf{iszero}\ (\mathbf{succ}\ nv_1) \to \mathbf{false}}
+\quad\text{(E-IsZeroSucc)}\]
+\end{frame}
+
+\begin{frame}{Exemplo}
+\protect\hypertarget{exemplo-3}{}
+\[\mathbf{if}\ (\mathbf{iszero}\ \mathbf{0})\ \mathbf{then}\ (\mathbf{succ}\ \mathbf{0})\ \mathbf{else}\ \mathbf{0}\]
+\end{frame}
+
+\begin{frame}{Exemplo}
+\protect\hypertarget{exemplo-4}{}
+\[\xrightarrow{\text{E-If, E-IsZeroZero}}
+\mathbf{if}\ \mathbf{true}\ \mathbf{then}\ (\mathbf{succ}\ \mathbf{0})\ \mathbf{else}\ \mathbf{0}\]
+\end{frame}
+
+\begin{frame}{Exemplo}
+\protect\hypertarget{exemplo-5}{}
+\[\xrightarrow{\text{E-IfTrue}}
+\mathbf{succ}\ \mathbf{0}\]
+\end{frame}
+
+\begin{frame}{Exemplo}
+\protect\hypertarget{exemplo-6}{}
+Outro exemplo:
+\(\mathbf{pred}\ (\mathbf{succ}\ (\mathbf{succ}\ \mathbf{0})) \xrightarrow{\text{E-PredSucc}} \mathbf{succ}\ \mathbf{0}\)
+\end{frame}
+
+\hypertarget{corretude-do-sistema-de-tipos}{%
+\section{Corretude do Sistema de
+Tipos}\label{corretude-do-sistema-de-tipos}}
+
+\begin{frame}{Type Soundness}
+\protect\hypertarget{type-soundness}{}
+\begin{quote}
+\textbf{Teorema (Type Soundness):} Se \(\vdash t : T\) e \(t \to^* t'\),
+ent\~{a}o \(t'\) é um valor ou existe \(t''\) tal que \(t' \to t''\).
+\end{quote}
+
+Em palavras: \textbf{programas bem tipados n\~{a}o ficam presos}.
+\end{frame}
+
+\begin{frame}{Type Soundness}
+\protect\hypertarget{type-soundness-1}{}
+A prova apoia-se em dois lemas fundamentais e independentes:
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Lema & Enunciado \\
+\midrule\noalign{}
+\endhead
+\textbf{Preserva\c{c}\~{a}o} & O tipo se mantém após cada passo de redu\c{c}\~{a}o \\
+\textbf{Progresso} & Um termo bem tipado é valor ou pode reduzir \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}{Lema de Preserva\c{c}\~{a}o}
+\protect\hypertarget{lema-de-preservauxe7uxe3o}{}
+\begin{quote}
+\textbf{Lema (Preservation):} Se \(\vdash t : T\) e \(t \to t'\), ent\~{a}o
+\(\vdash t' : T\).
+\end{quote}
+
+\textbf{Significado:} a tipagem é \textbf{invariante sob redu\c{c}\~{a}o} --- o
+tipo n\~{a}o se altera durante a execu\c{c}\~{a}o.
+\end{frame}
+
+\begin{frame}{Lema de Preserva\c{c}\~{a}o}
+\protect\hypertarget{lema-de-preservauxe7uxe3o-1}{}
+\textbf{Por que é importante?} Sem preserva\c{c}\~{a}o, um termo poderia come\c{c}ar
+bem tipado e, após redu\c{c}\~{o}es, tornar-se de tipo diferente --- invalidando
+qualquer garantia do verificador de tipos.
+\end{frame}
+
+\begin{frame}{Lema de Preserva\c{c}\~{a}o}
+\protect\hypertarget{lema-de-preservauxe7uxe3o-2}{}
+\textbf{Prova:} Por indu\c{c}\~{a}o na deriva\c{c}\~{a}o de \(t \to t'\), analisando
+cada regra de redu\c{c}\~{a}o.
+\end{frame}
+
+\begin{frame}{Alguns Casos}
+\protect\hypertarget{alguns-casos}{}
+\emph{Caso} (E-IfTrue):
+\(t = \mathbf{if}\ \mathbf{true}\ \mathbf{then}\ t_2\ \mathbf{else}\ t_3\),
+\(t' = t_2\).
+
+De (T-If): \(\vdash t_2 : T\) e \(\vdash t_3 : T\). Logo
+\(\vdash t_2 : T\). ✓
+\end{frame}
+
+\begin{frame}{Alguns Casos}
+\protect\hypertarget{alguns-casos-1}{}
+\emph{Caso} (E-If): \(t_1 \to t_1'\),
+\(t' = \mathbf{if}\ t_1'\ \mathbf{then}\ t_2\ \mathbf{else}\ t_3\).
+
+De (T-If): \(\vdash t_1 : \mathbf{Bool}\). Por hip. de indu\c{c}\~{a}o:
+\(\vdash t_1' : \mathbf{Bool}\). Aplicando (T-If): \(\vdash t' : T\). ✓
+\end{frame}
+
+\begin{frame}{Alguns Casos}
+\protect\hypertarget{alguns-casos-2}{}
+\emph{Caso} (E-Succ): \(t_1 \to t_1'\), \(t' = \mathbf{succ}\ t_1'\).
+
+De (T-Succ): \(\vdash t_1 : \mathbf{Nat}\). Por hip. de ind.:
+\(\vdash t_1' : \mathbf{Nat}\). Logo
+\(\vdash \mathbf{succ}\ t_1' : \mathbf{Nat}\). ✓
+\end{frame}
+
+\begin{frame}{Alguns Casos}
+\protect\hypertarget{alguns-casos-3}{}
+\emph{Caso} (E-IsZeroZero): \(t' = \mathbf{true}\). Por (T-True):
+\(\vdash \mathbf{true} : \mathbf{Bool}\); tipo de \(t\) via (T-IsZero) é
+\(\mathbf{Bool}\). ✓
+\end{frame}
+
+\begin{frame}{Lema de Progresso}
+\protect\hypertarget{lema-de-progresso}{}
+\begin{quote}
+\textbf{Lema (Progress):} Se \(\vdash t : T\), ent\~{a}o \(t\) é um valor ou
+existe \(t'\) tal que \(t \to t'\).
+\end{quote}
+
+\textbf{Significado:} termos bem tipados \textbf{nunca ficam presos} ---
+sempre progridem.
+\end{frame}
+
+\begin{frame}{Lema de Progresso}
+\protect\hypertarget{lema-de-progresso-1}{}
+\textbf{Por que é importante?} Sem progresso, o tipo seria preservado
+mas a execu\c{c}\~{a}o poderia travar. O progresso garante que nunca há um
+estado de erro irrecuperável.
+
+\textbf{Prova:} Por indu\c{c}\~{a}o estrutural na deriva\c{c}\~{a}o de \(\vdash t : T\).
+\end{frame}
+
+\begin{frame}{Alguns Casos}
+\protect\hypertarget{alguns-casos-4}{}
+\emph{Casos} (T-True), (T-False), (T-Zero): \(t\) já é valor. ✓
+\end{frame}
+
+\begin{frame}{Alguns Casos}
+\protect\hypertarget{alguns-casos-5}{}
+\emph{Caso} (T-If): \(\vdash t_1 : \mathbf{Bool}\). Por hip. de ind.
+sobre \(t_1\): ou \(t_1\) é valor, ou reduz.
+
+\begin{itemize}
+\tightlist
+\item
+  Se \(t_1 \to t_1'\): aplica-se (E-If). ✓
+\item
+  Se \(t_1\) é valor de tipo \(\mathbf{Bool}\): pelo lema de unicidade,
+  \(t_1\) n\~{a}o pode ser \(nv\) (tipo \(\mathbf{Nat}\)). Logo
+  \(t_1 \in \{\mathbf{true}, \mathbf{false}\}\).
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \(t_1 = \mathbf{true}\): aplica-se (E-IfTrue). ✓
+  \item
+    \(t_1 = \mathbf{false}\): aplica-se (E-IfFalse). ✓
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Alguns Casos}
+\protect\hypertarget{alguns-casos-6}{}
+\emph{Caso} (T-Succ): \(\vdash t_1 : \mathbf{Nat}\). Por hip. de ind.:
+ou \(t_1\) reduz, ou é valor.
+
+\begin{itemize}
+\tightlist
+\item
+  \(t_1 \to t_1'\): aplica-se (E-Succ). ✓
+\item
+  \(t_1\) é valor de tipo \(\mathbf{Nat}\): pela unicidade, \(t_1\) é
+  \(nv\). Logo \(\mathbf{succ}\ nv\) é valor numérico. ✓
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Alguns Casos}
+\protect\hypertarget{alguns-casos-7}{}
+\emph{Caso} (T-Pred): \(\vdash t_1 : \mathbf{Nat}\). Por hip. de ind.:
+ou \(t_1\) reduz, ou é \(nv\).
+
+\begin{itemize}
+\tightlist
+\item
+  \(t_1 \to t_1'\): aplica-se (E-Pred). ✓ \textbar{}
+  \(nv = \mathbf{0}\): (E-PredZero). ✓ \textbar{}
+  \(nv = \mathbf{succ}\ nv_1\): (E-PredSucc). ✓
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Corretude}
+\protect\hypertarget{corretude}{}
+\begin{quote}
+\textbf{Prova do Teorema (Type Soundness):} Seja \(\vdash t : T\) e
+\(t \to^* t'\).
+
+Por \textbf{preserva\c{c}\~{a}o} (aplicada repetidamente a cada passo da
+sequ\^{e}ncia \(t \to^* t'\)): \(\vdash t' : T\).
+
+Por \textbf{progresso}: \(t'\) é valor ou existe \(t''\) com
+\(t' \to t''\). ✓
+\end{quote}
+\end{frame}
+
+\hypertarget{sistema-de-tipos-para-tline}{%
+\section{Sistema de Tipos para
+TLine}\label{sistema-de-tipos-para-tline}}
+
+\begin{frame}{TLine: Contexto e Rela\c{c}\~{a}o de Tipagem}
+\protect\hypertarget{tline-contexto-e-relauxe7uxe3o-de-tipagem}{}
+\begin{itemize}
+\tightlist
+\item
+  TLine tem tr\^{e}s tipos (\(\mathbf{Int}\), \(\mathbf{Bool}\),
+  \(\mathbf{String}\)) e um \textbf{contexto de tipagem}:
+\end{itemize}
+
+\[\Gamma : \mathit{Var} \rightharpoonup \mathit{Ty}\]
+\end{frame}
+
+\begin{frame}{Regras de Tipos}
+\protect\hypertarget{regras-de-tipos}{}
+\begin{itemize}
+\tightlist
+\item
+  Regras para express\~{o}es: \(\Gamma \vdash e : T\)
+\end{itemize}
+
+\[\frac{}{\Gamma \vdash n : \mathbf{Int}} \quad\text{(T-Int)}\]
+\end{frame}
+
+\begin{frame}{Regras de Tipos}
+\protect\hypertarget{regras-de-tipos-1}{}
+\[
+\frac{x \in \mathrm{dom}(\Gamma)}{\Gamma \vdash x : \Gamma(x)} \quad\text{(T-Var)}\]
+\end{frame}
+
+\begin{frame}{Regras de Tipos}
+\protect\hypertarget{regras-de-tipos-2}{}
+\[\frac{\Gamma \vdash e_1 : \mathbf{Int} \quad \Gamma \vdash e_2 : \mathbf{Int}}{\Gamma \vdash e_1 \oplus e_2 : \mathbf{Int}} \quad\text{(T-ArithOp)}
+\]
+\end{frame}
+
+\begin{frame}{Regras de Tipos}
+\protect\hypertarget{regras-de-tipos-3}{}
+\[
+\frac{\Gamma \vdash e_1 : \mathbf{Int} \quad \Gamma \vdash e_2 : \mathbf{Int}}{\Gamma \vdash e_1 \otimes e_2 : \mathbf{Bool}} \quad\text{(T-CmpOp)}\]
+\end{frame}
+
+\begin{frame}{Regras de Tipos}
+\protect\hypertarget{regras-de-tipos-4}{}
+\begin{itemize}
+\tightlist
+\item
+  Regras para comandos: \(\Gamma \vdash s \dashv \Gamma'\)
+\end{itemize}
+
+\[\frac{\Gamma \vdash e : T}{\Gamma \vdash \mathbf{var}\ x : T = e \dashv \Gamma[x \mapsto T]} \quad\text{(T-Decl)}\]
+\end{frame}
+
+\begin{frame}{Regras de Tipos}
+\protect\hypertarget{regras-de-tipos-5}{}
+\[\frac{x \in \mathrm{dom}(\Gamma) \quad \Gamma \vdash e : \Gamma(x)}{\Gamma \vdash x \mathbin{:=} e \dashv \Gamma} \quad\text{(T-Assign)}\]
+\end{frame}
+
+\begin{frame}{Regras de Tipos}
+\protect\hypertarget{regras-de-tipos-6}{}
+\[\frac{\Gamma \vdash e_p : \mathbf{String} \quad x \in \mathrm{dom}(\Gamma) \quad \Gamma(x) = \mathbf{Int}}{\Gamma \vdash \mathbf{read}\ e_p\ x \dashv \Gamma} \quad\text{(T-Read)}\]
+\end{frame}
+
+\begin{frame}{Regras de Tipos}
+\protect\hypertarget{regras-de-tipos-7}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{T-Decl} é a única regra que \textbf{estende} o contexto:
+  \(\Gamma' = \Gamma[x \mapsto T]\)
+\item
+  As demais \textbf{preservam} o contexto: \(\Gamma' = \Gamma\)
+\end{itemize}
+\end{frame}
+
+\hypertarget{sistema-de-tipos-para-twhile}{%
+\section{Sistema de Tipos para
+TWhile}\label{sistema-de-tipos-para-twhile}}
+
+\begin{frame}[fragile]{Escopo}
+\protect\hypertarget{escopo}{}
+\begin{itemize}
+\tightlist
+\item
+  TWhile adiciona \passthrough{\lstinline!if!} e
+  \passthrough{\lstinline!while!} com \textbf{escopo léxico}: variáveis
+  declaradas dentro de um bloco n\~{a}o escapam.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Escopo}
+\protect\hypertarget{escopo-1}{}
+\textbf{Formaliza\c{c}\~{a}o}: o contexto de \textbf{saída} é sempre igual ao
+contexto de \textbf{entrada} \(\Gamma\):
+
+\[\frac{\Gamma \vdash e : \mathbf{Bool} \quad \Gamma \vdash B_1 \dashv \Gamma_1 \quad \Gamma \vdash B_2 \dashv \Gamma_2}{\Gamma \vdash \mathbf{if}\ e\ \mathbf{then}\ B_1\ \mathbf{else}\ B_2 \dashv \Gamma} \quad\text{(T-If)}\]
+\end{frame}
+
+\begin{frame}{Escopo}
+\protect\hypertarget{escopo-2}{}
+\[\frac{\Gamma \vdash e : \mathbf{Bool} \quad \Gamma \vdash B \dashv \Gamma'}{\Gamma \vdash \mathbf{while}\ e\ \mathbf{do}\ B \dashv \Gamma} \quad\text{(T-While)}\]
+
+\begin{itemize}
+\tightlist
+\item
+  Os contextos \(\Gamma_1\), \(\Gamma_2\) e \(\Gamma'\) s\~{a}o
+  \textbf{descartados}: variáveis locais aos blocos n\~{a}o s\~{a}o visíveis
+  fora deles.
+\end{itemize}
+\end{frame}
+
+\hypertarget{sistema-de-tipos-para-timp}{%
+\section{Sistema de Tipos para TImp}\label{sistema-de-tipos-para-timp}}
+
+\begin{frame}{Tipos e Ambientes}
+\protect\hypertarget{tipos-e-ambientes}{}
+\begin{itemize}
+\tightlist
+\item
+  TImp estende TWhile com fun\c{c}\~{o}es e registros
+\end{itemize}
+
+\[\tau \;::=\; \mathbf{Int} \mid \mathbf{Bool} \mid \mathbf{String} \mid R \qquad \rho \;::=\; \mathbf{void} \mid \tau\]
+\end{frame}
+
+\begin{frame}{Tipos e Ambientes}
+\protect\hypertarget{tipos-e-ambientes-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Rela\c{c}\~{a}o de tipagem: \(\Gamma;\Delta;\Phi \vdash e : \tau\) e
+  \(\Gamma;\Delta;\Phi;\rho_\mathit{ret} \vdash s \dashv \Gamma'\)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Regras para Registros}
+\protect\hypertarget{regras-para-registros}{}
+\textbf{Acesso a campo (T-Field):}
+\[\frac{\Gamma;\Delta;\Phi \vdash e : R \quad \Delta(R)(f) = \tau}{\Gamma;\Delta;\Phi \vdash e.f : \tau}\]
+\end{frame}
+
+\begin{frame}{Regras para Registros}
+\protect\hypertarget{regras-para-registros-1}{}
+\textbf{Constru\c{c}\~{a}o (T-New):}
+\[\frac{R \in \mathrm{dom}(\Delta) \quad \Delta(R) = \overline{(f_i:\tau_i)} \quad \Gamma;\Delta;\Phi \vdash e_i : \tau_i}{\Gamma;\Delta;\Phi \vdash \mathbf{new}\ R\{\overline{f_i=e_i}\} : R}\]
+\end{frame}
+
+\begin{frame}{Regras para Registros}
+\protect\hypertarget{regras-para-registros-2}{}
+\textbf{Atribui\c{c}\~{a}o de campo (T-FieldAssign):}
+\[\frac{\Gamma(x) = R \quad \Delta(R)(f) = \tau \quad \Gamma;\Delta;\Phi \vdash e : \tau}{\Gamma;\Delta;\Phi \vdash x.f := e \dashv \Gamma}\]
+\end{frame}
+
+\begin{frame}{Regras para Fun\c{c}\~{o}es}
+\protect\hypertarget{regras-para-funuxe7uxf5es}{}
+\textbf{Chamada como express\~{a}o (T-CallExpr):}
+\[\frac{\Phi(f) = ([\tau_1,\ldots,\tau_n],\;\tau) \quad \Gamma;\Delta;\Phi \vdash e_i : \tau_i}{\Gamma;\Delta;\Phi \vdash f(e_1,\ldots,e_n) : \tau}\]
+\end{frame}
+
+\begin{frame}{Regras para Fun\c{c}\~{o}es}
+\protect\hypertarget{regras-para-funuxe7uxf5es-1}{}
+\textbf{Retorno com valor (T-RetVal):}
+\[\frac{\rho_\mathit{ret} = \tau \quad \Gamma;\Delta;\Phi \vdash e : \tau}{\Gamma;\ldots;\rho_\mathit{ret} \vdash \mathbf{return}\ e \dashv \Gamma}\]
+\end{frame}
+
+\begin{frame}{Regras para Fun\c{c}\~{o}es}
+\protect\hypertarget{regras-para-funuxe7uxf5es-2}{}
+\textbf{Declara\c{c}\~{a}o de fun\c{c}\~{a}o (T-FuncDecl):}
+\[\frac{[x_1\!\mapsto\!\tau_1,\ldots,x_n\!\mapsto\!\tau_n];\Delta;\Phi;\rho \vdash B \dashv \_}{\Delta;\Phi \vdash \mathbf{fn}\ f(\overline{x_i:\tau_i}):\rho\ \{B\}\ \checkmark}\]
+\end{frame}
+
+\hypertarget{conclusuxe3o}{%
+\section{Conclus\~{a}o}\label{conclusuxe3o}}
+
+\begin{frame}{Conclus\~{a}o}
+\protect\hypertarget{conclusuxe3o-1}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Tipos} classificam valores e restringem opera\c{c}\~{o}es; tipagem
+  pode ser estática ou din\^{a}mica, forte ou fraca
+\item
+  O \textbf{sistema de tipos} \(\vdash t : T\) é definido por regras de
+  infer\^{e}ncia --- cada construtor tem exatamente uma regra (unicidade de
+  tipos)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Conclus\~{a}o}
+\protect\hypertarget{conclusuxe3o-2}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Formas presas}: termos sem valor e sem redu\c{c}\~{a}o possível ---
+  representam erros em tempo de execu\c{c}\~{a}o
+\item
+  \textbf{Type Soundness} = Preserva\c{c}\~{a}o + Progresso: programas bem
+  tipados nunca ficam presos
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Conclus\~{a}o}
+\protect\hypertarget{conclusuxe3o-3}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Preserva\c{c}\~{a}o}: prova que o tipo n\~{a}o muda durante a execu\c{c}\~{a}o
+  (indu\c{c}\~{a}o na redu\c{c}\~{a}o \(t \to t'\))
+\item
+  \textbf{Progresso}: prova que a execu\c{c}\~{a}o nunca trava (indu\c{c}\~{a}o na
+  tipagem \(\vdash t : T\))
+\item
+  Os dois lemas s\~{a}o \textbf{independentes} e \textbf{complementares} ---
+  cada um é necessário e insuficiente sozinho
+\end{itemize}
+\end{frame}

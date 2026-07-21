@@ -1,0 +1,500 @@
+\hypertarget{objetivos}{%
+\section{Objetivos}\label{objetivos}}
+
+\begin{frame}{Objetivos}
+\protect\hypertarget{objetivos-1}{}
+\begin{itemize}
+\item
+  Apresentar a import\^{a}ncia da análise léxica.
+\item
+  Apresentar a implementa\c{c}\~{a}o de um analisador léxico ad-hoc.
+\end{itemize}
+\end{frame}
+
+\hypertarget{anuxe1lise-luxe9xica}{%
+\section{Análise Léxica}\label{anuxe1lise-luxe9xica}}
+
+\begin{frame}{O Papel da Análise Léxica}
+\protect\hypertarget{o-papel-da-anuxe1lise-luxe9xica}{}
+\begin{itemize}
+\tightlist
+\item
+  Primeira fase do compilador
+\item
+  Recebe o código-fonte como \textbf{sequ\^{e}ncia de caracteres}
+\item
+  Agrupa os caracteres em \textbf{tokens} significativos
+\end{itemize}
+\end{frame}
+
+\begin{frame}{O Papel da Análise Léxica}
+\protect\hypertarget{o-papel-da-anuxe1lise-luxe9xica-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Remove espa\c{c}os em branco e comentários
+\item
+  Detecta erros léxicos precocemente (caracteres inválidos, etc.)
+\item
+  Funciona como a ``porta de entrada'' que organiza o texto bruto
+\end{itemize}
+\end{frame}
+
+\begin{frame}{O que é um Token?}
+\protect\hypertarget{o-que-uxe9-um-token}{}
+\begin{itemize}
+\tightlist
+\item
+  Um \textbf{token} é um componente indivisível da sintaxe de uma
+  linguagem
+\item
+  O conjunto de tokens pode ser entendido como o \textbf{alfabeto} da
+  linguagem
+\item
+  Exemplos de tokens: palavras reservadas, identificadores, números,
+  operadores
+\end{itemize}
+\end{frame}
+
+\begin{frame}{O que é um Token?}
+\protect\hypertarget{o-que-uxe9-um-token-1}{}
+\begin{itemize}
+\tightlist
+\item
+  O analisador léxico produz uma \textbf{lista de tokens} para o
+  analisador sintático
+\item
+  Cada token carrega sua \textbf{categoria} (lexema) e posi\c{c}\~{a}o no
+  código-fonte
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Estrutura de um Token}
+\protect\hypertarget{estrutura-de-um-token}{}
+\begin{lstlisting}[language=Haskell]
+type Line   = Int
+type Column = Int
+
+data Token = Token
+  { pos    :: (Line, Column)  -- posi\c{c}\~{a}o no código-fonte
+  , lexeme :: Lexeme          -- categoria do token
+  }
+\end{lstlisting}
+
+\begin{itemize}
+\tightlist
+\item
+  A posi\c{c}\~{a}o é essencial para \textbf{mensagens de erro} precisas
+\item
+  O lexema identifica a categoria do token
+\end{itemize}
+\end{frame}
+
+\hypertarget{a-linguagem-exp}{%
+\section{A Linguagem Exp}\label{a-linguagem-exp}}
+
+\begin{frame}{Gramática da Linguagem Exp}
+\protect\hypertarget{gramuxe1tica-da-linguagem-exp}{}
+\[E \to n \mid E + E \mid E * E \mid (E)\]
+
+\begin{itemize}
+\tightlist
+\item
+  \(n\): constante numérica inteira
+\item
+  \(+\): operador de adi\c{c}\~{a}o
+\item
+  \(*\): operador de multiplica\c{c}\~{a}o
+\item
+  \((\) e \()\): par\^{e}nteses para agrupamento
+\item
+  Linguagem simples: express\~{o}es aritméticas básicas
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Tokens da Linguagem Exp}
+\protect\hypertarget{tokens-da-linguagem-exp}{}
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Token & Construtor & Descri\c{c}\~{a}o \\
+\midrule\noalign{}
+\endhead
+\passthrough{\lstinline!n!} & \passthrough{\lstinline!TNumber Int!} &
+número inteiro (carrega o valor) \\
+\passthrough{\lstinline!+!} & \passthrough{\lstinline!TPlus!} & operador
+de adi\c{c}\~{a}o \\
+\passthrough{\lstinline!*!} & \passthrough{\lstinline!TTimes!} &
+operador de multiplica\c{c}\~{a}o \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}[fragile]{Tokens da Linguagem Exp}
+\protect\hypertarget{tokens-da-linguagem-exp-1}{}
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Token & Construtor & Descri\c{c}\~{a}o \\
+\midrule\noalign{}
+\endhead
+\passthrough{\lstinline!(!} & \passthrough{\lstinline!TLParen!} & abre
+par\^{e}nteses \\
+\passthrough{\lstinline!)!} & \passthrough{\lstinline!TRParen!} & fecha
+par\^{e}nteses \\
+EOF & \passthrough{\lstinline!TEOF!} & marcador de fim de entrada \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}[fragile]{Defini\c{c}\~{a}o do Tipo Lexeme}
+\protect\hypertarget{definiuxe7uxe3o-do-tipo-lexeme}{}
+\begin{lstlisting}[language=Haskell]
+data Lexeme
+  = TNumber Int   -- número com seu valor inteiro
+  | TLParen       -- (
+  | TRParen       -- )
+  | TPlus         -- +
+  | TTimes        -- *
+  | TEOF          -- fim de entrada
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Defini\c{c}\~{a}o do Tipo Lexeme}
+\protect\hypertarget{definiuxe7uxe3o-do-tipo-lexeme-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Cada construtor corresponde a uma categoria de token
+\item
+  \passthrough{\lstinline!TNumber!} carrega o valor inteiro do número
+\item
+  Os demais construtores apenas identificam o símbolo
+\end{itemize}
+\end{frame}
+
+\hypertarget{analisadores-luxe9xicos-ad-hoc}{%
+\section{Analisadores Léxicos
+Ad-Hoc}\label{analisadores-luxe9xicos-ad-hoc}}
+
+\begin{frame}{Analisadores Ad-Hoc}
+\protect\hypertarget{analisadores-ad-hoc}{}
+\begin{itemize}
+\tightlist
+\item
+  Implementa\c{c}\~{a}o \textbf{manual} e específica para uma linguagem
+\item
+  Processa caracteres sequencialmente com casamento de padr\~{o}es
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Analisadores Ad-Hoc}
+\protect\hypertarget{analisadores-ad-hoc-1}{}
+\begin{itemize}
+\tightlist
+\item
+  N\~{a}o usa geradores automáticos como o Alex
+\item
+  Adequado para linguagens \textbf{pequenas e simples}
+\item
+  Oferece controle total sobre as mensagens de erro
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Tipo do Analisador}
+\protect\hypertarget{tipo-do-analisador}{}
+\begin{lstlisting}[language=Haskell]
+-- Vers\~{a}o simples (sem tratamento de erros):
+lexer :: String -> [Token]
+
+-- Vers\~{a}o com tratamento de erros:
+lexer :: String -> Either String [Token]
+\end{lstlisting}
+
+\begin{itemize}
+\tightlist
+\item
+  \passthrough{\lstinline!Left msg!} indica um \textbf{erro léxico} com
+  mensagem \passthrough{\lstinline!msg!}
+\item
+  \passthrough{\lstinline!Right tokens!} indica \textbf{sucesso} com a
+  lista de tokens produzida
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{O Tipo Either}
+\protect\hypertarget{o-tipo-either}{}
+\begin{lstlisting}[language=Haskell]
+data Either a b = Left a | Right b
+\end{lstlisting}
+
+\begin{itemize}
+\tightlist
+\item
+  \passthrough{\lstinline!Left a!} representa falha/erro com valor do
+  tipo \passthrough{\lstinline!a!}
+\item
+  \passthrough{\lstinline!Right b!} representa sucesso com valor do tipo
+  \passthrough{\lstinline!b!}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Estado do Analisador}
+\protect\hypertarget{estado-do-analisador}{}
+\begin{lstlisting}[language=Haskell]
+type State = (Line, Column, String, [Token])
+--            ^      ^       ^        ^
+--           linha  coluna  dígitos  tokens
+--                          acum.    produzidos
+\end{lstlisting}
+
+\begin{itemize}
+\tightlist
+\item
+  \passthrough{\lstinline!Line!}, \passthrough{\lstinline!Column!}:
+  posi\c{c}\~{a}o atual no arquivo de entrada
+\item
+  \passthrough{\lstinline!String!}: dígitos consecutivos acumulados
+  (para montar números)
+\item
+  \passthrough{\lstinline![Token]!}: tokens reconhecidos até o momento
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Fun\c{c}\~{a}o de Transi\c{c}\~{a}o}
+\protect\hypertarget{funuxe7uxe3o-de-transiuxe7uxe3o}{}
+\begin{lstlisting}[language=Haskell]
+transition :: State -> Char -> Either String State
+transition state@(l, col, t, ts) c
+  | c == '\n'  = mkDigits state c   -- nova linha
+  | isSpace c  = mkDigits state c   -- espa\c{c}o
+  | c == '+'   = Right (l, col+1, "", mkToken state TPlus    : ts)
+  | c == '*'   = Right (l, col+1, "", mkToken state TTimes   : ts)
+  | c == '('   = Right (l, col+1, "", mkToken state TLParen  : ts)
+  | c == ')'   = Right (l, col+1, "", mkToken state TRParen  : ts)
+  | isDigit c  = Right (l, col+1, c:t, ts)  -- acumula dígito
+  | otherwise  = unexpectedCharError l col c
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Tratamento de Dígitos}
+\protect\hypertarget{tratamento-de-duxedgitos}{}
+\begin{lstlisting}[language=Haskell]
+mkDigits :: State -> Char -> Either String State
+mkDigits state@(l, col, s, ts) c
+  | null s      = -- nenhum dígito acumulado: só atualiza posi\c{c}\~{a}o
+      let l'   = if c == '\n' then l + 1 else l
+          col' = if isSpace c then col + 1 else col
+      in Right (l', col', s, ts)
+  | all isDigit s = -- dígitos válidos: cria token TNumber
+      let t    = Token (l,col) (TNumber (read $ reverse s))
+          l'   = if c == '\n' then l + 1 else l
+          col' = if c /= '\n' && isSpace c then col + 1 else col
+      in Right (l', col', "", t : ts)
+  | otherwise   = unexpectedCharError l col c
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{A Fun\c{c}\~{a}o \passthrough{\lstinline!lexer!}
+Completa}
+\protect\hypertarget{a-funuxe7uxe3o-lexer-completa}{}
+\begin{lstlisting}[language=Haskell]
+lexer :: String -> Either String [Token]
+lexer = finish . foldl step base
+  where
+    base          = Right (1, 1, "", [])
+    finish        = either Left (Right . extract)
+    step (Left e) _ = Left e
+    step (Right s) c = transition s c
+
+    extract (l, col, s, ts)
+      | null s    = reverse ts
+      | otherwise = let n = read (reverse s)
+                        t = Token (l, col - length s) (TNumber n)
+                    in reverse (t : ts)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Como \passthrough{\lstinline!foldl!} Funciona}
+\protect\hypertarget{como-foldl-funciona}{}
+\begin{lstlisting}[language=Haskell]
+foldl :: (b -> a -> b) -> b -> [a] -> b
+foldl _ v []     = v
+foldl f v (x:xs) = foldl f (f v x) xs
+\end{lstlisting}
+
+Exemplo: \passthrough{\lstinline!sum [1,2,3]!} com
+\passthrough{\lstinline!foldl (+) 0!}:
+
+\begin{lstlisting}
+foldl (+) 0 [1,2,3]
+= foldl (+) (0+1) [2,3]
+= foldl (+) (0+1+2) [3]
+= foldl (+) (0+1+2+3) []
+= 6
+\end{lstlisting}
+
+\begin{itemize}
+\tightlist
+\item
+  \passthrough{\lstinline!foldl!} percorre a lista \textbf{da esquerda
+  para a direita}
+\item
+  Acumula um resultado a cada passo
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo de Execu\c{c}\~{a}o}
+\protect\hypertarget{exemplo-de-execuuxe7uxe3o}{}
+Entrada: \passthrough{\lstinline!"2 + 3"!}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Char & Estado (linha, col, dígitos, tokens) \\
+\midrule\noalign{}
+\endhead
+\passthrough{\lstinline!2!} &
+\passthrough{\lstinline!(1, 2, "2", [])!} \\
+\passthrough{\lstinline!\_!} &
+\passthrough{\lstinline!(1, 3, "", [TNumber 2])!} \\
+\passthrough{\lstinline!+!} &
+\passthrough{\lstinline!(1, 4, "", [TPlus, TNumber 2])!} \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo de Execu\c{c}\~{a}o}
+\protect\hypertarget{exemplo-de-execuuxe7uxe3o-1}{}
+Entrada: \passthrough{\lstinline!"2 + 3"!}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Char & Estado (linha, col, dígitos, tokens) \\
+\midrule\noalign{}
+\endhead
+\passthrough{\lstinline!\_!} &
+\passthrough{\lstinline!(1, 5, "", [TPlus, TNumber 2])!} \\
+\passthrough{\lstinline!3!} &
+\passthrough{\lstinline!(1, 6, "3", [TPlus, TNumber 2])!} \\
+EOF & extrai →
+\passthrough{\lstinline![TNumber 2, TPlus, TNumber 3]!} \\
+\bottomrule\noalign{}
+\end{longtable}
+\end{frame}
+
+\hypertarget{vantagens-e-desvantagens}{%
+\section{Vantagens e Desvantagens}\label{vantagens-e-desvantagens}}
+
+\begin{frame}{Vantagens dos Analisadores Ad-Hoc}
+\protect\hypertarget{vantagens-dos-analisadores-ad-hoc}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Simples de implementar} para linguagens pequenas
+\item
+  \textbf{Controle total} sobre mensagens de erro
+\item
+  Sem depend\^{e}ncias externas (geradores de código)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Vantagens dos Analisadores Ad-Hoc}
+\protect\hypertarget{vantagens-dos-analisadores-ad-hoc-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Fácil de entender e depurar para casos simples
+\item
+  Pode ser altamente otimizado para o caso específico
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Desvantagens dos Analisadores Ad-Hoc}
+\protect\hypertarget{desvantagens-dos-analisadores-ad-hoc}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Difíceis de manter e extender}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Como adicionar identificadores?
+  \item
+    Como suportar comentários de linha (\passthrough{\lstinline!//!})? E
+    comentários em bloco (\passthrough{\lstinline!/* */!})?
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Desvantagens dos Analisadores Ad-Hoc}
+\protect\hypertarget{desvantagens-dos-analisadores-ad-hoc-1}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Ineficientes para estruturas léxicas complexas}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Cada nova funcionalidade exige modificar toda a estrutura do estado
+  \item
+    N\~{a}o há garantia de corre\c{c}\~{a}o: é fácil esquecer um caso
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Dificuldades}
+\protect\hypertarget{dificuldades}{}
+\begin{lstlisting}
+if (x > 0) ift = x + 1;
+\end{lstlisting}
+
+\begin{itemize}
+\tightlist
+\item
+  Como distinguir \passthrough{\lstinline!if!} (palavra reservada) de
+  \passthrough{\lstinline!ift!} (identificador)?
+\item
+  Como tratar palavras reservadas de forma eficiente?
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Dificuldades}
+\protect\hypertarget{dificuldades-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Para linguagens reais: dezenas de tokens, comentários aninhados, etc.
+\item
+  Solu\c{c}\~{a}o: \textbf{express\~{o}es regulares} + \textbf{aut\^{o}matos finitos}
+\end{itemize}
+\end{frame}
+
+\hypertarget{conclusuxe3o}{%
+\section{Conclus\~{a}o}\label{conclusuxe3o}}
+
+\begin{frame}[fragile]{Conclus\~{a}o}
+\protect\hypertarget{conclusuxe3o-1}{}
+\begin{itemize}
+\tightlist
+\item
+  Análise léxica transforma \textbf{texto bruto} em uma \textbf{lista de
+  tokens}
+\item
+  Cada token carrega categoria (lexema) e posi\c{c}\~{a}o no fonte
+\item
+  O tipo \passthrough{\lstinline!Either!} de Haskell permite tratamento
+  elegante de erros
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Conclus\~{a}o}
+\protect\hypertarget{conclusuxe3o-2}{}
+\begin{itemize}
+\tightlist
+\item
+  Analisadores ad-hoc funcionam para linguagens simples
+\item
+  As limita\c{c}\~{o}es motivam o uso de \textbf{express\~{o}es regulares e
+  aut\^{o}matos}
+\end{itemize}
+\end{frame}

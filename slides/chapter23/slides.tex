@@ -1,0 +1,372 @@
+\hypertarget{objetivos}{%
+\section{Objetivos}\label{objetivos}}
+
+\begin{frame}{Objetivos}
+\protect\hypertarget{objetivos-1}{}
+\begin{itemize}
+\item
+  Apresentar técnicas de teste sistemático de compiladores: gera\c{c}\~{a}o
+  aleatória de programas, testes diferenciais e testes metamórficos.
+\item
+  Discutir a verifica\c{c}\~{a}o formal de compiladores, com destaque para o
+  CompCert e a no\c{c}\~{a}o de preserva\c{c}\~{a}o sem\^{a}ntica.
+\item
+  Apresentar uma panor\^{a}mica de tópicos avan\c{c}ados de pesquisa: sistemas
+  de tipos expressivos, representa\c{c}\~{o}es intermediárias modernas e
+  infraestrutura de otimiza\c{c}\~{a}o.
+\end{itemize}
+\end{frame}
+
+\hypertarget{introduuxe7uxe3o}{%
+\section{Introdu\c{c}\~{a}o}\label{introduuxe7uxe3o}}
+
+\begin{frame}{Por que Pesquisar Compiladores?}
+\protect\hypertarget{por-que-pesquisar-compiladores}{}
+\begin{itemize}
+\tightlist
+\item
+  Todo programa de alto nível passa pelo compilador --- um bug pode
+  comprometer \textbf{todo o ecossistema}
+\item
+  \emph{Wrong-code bugs}: o compilador gera código errado sem avisar
+\item
+  GCC: \textgreater{} 15 milh\~{o}es de linhas; LLVM: \textgreater{} 20
+  milh\~{o}es de linhas
+\end{itemize}
+
+A pesquisa em compiladores vai além de ``construir compiladores
+corretos'':
+
+\begin{itemize}
+\tightlist
+\item
+  Como \textbf{testá-los} sistematicamente?
+\item
+  Como \textbf{prová-los formalmente} corretos?
+\item
+  Como \textbf{enriquecer as linguagens} com sistemas de tipos mais
+  expressivos?
+\item
+  Como \textbf{representar programas} de forma mais eficiente?
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Tópicos Deste Capítulo}
+\protect\hypertarget{tuxf3picos-deste-capuxedtulo}{}
+\begin{enumerate}
+\tightlist
+\item
+  \textbf{Teste de compiladores}: fuzzing, testes diferenciais,
+  metamórficos
+\item
+  \textbf{Verifica\c{c}\~{a}o formal}: CompCert, simula\c{c}\~{o}es, Alive
+\item
+  \textbf{Sistemas de tipos avan\c{c}ados}: tipos dependentes, lineares,
+  session types
+\item
+  \textbf{Representa\c{c}\~{o}es intermediárias}: SSA, VSDG
+\item
+  \textbf{Otimiza\c{c}\~{a}o}: inlining, vetoriza\c{c}\~{a}o, LLVM como infraestrutura
+\end{enumerate}
+\end{frame}
+
+\hypertarget{teste-de-compiladores}{%
+\section{Teste de Compiladores}\label{teste-de-compiladores}}
+
+\begin{frame}{Gera\c{c}\~{a}o Aleatória de Programas (Fuzzing)}
+\protect\hypertarget{gerauxe7uxe3o-aleatuxf3ria-de-programas-fuzzing}{}
+\textbf{CSmith} {[}Yang et al., 2011{]}:
+
+\begin{enumerate}
+\tightlist
+\item
+  Gera programas C aleatórios com sem\^{a}ntica bem definida
+\item
+  Compila com múltiplos compiladores e níveis de otimiza\c{c}\~{a}o
+\item
+  Compara saídas: discrep\^{a}ncias = bugs
+\end{enumerate}
+
+Este princípio chama-se \textbf{teste diferencial} (\emph{differential
+testing}):
+
+\begin{quote}
+``Dois compiladores corretos devem concordar, mesmo sem saber a resposta
+correta.''
+\end{quote}
+
+\textbf{Resultado}: centenas de bugs encontrados em GCC e LLVM.
+\end{frame}
+
+\begin{frame}{Teste Baseado em Propriedades}
+\protect\hypertarget{teste-baseado-em-propriedades}{}
+Popularizado pelo \textbf{QuickCheck} {[}Claessen \& Hughes, 2000{]}:
+
+\begin{itemize}
+\tightlist
+\item
+  Especifica \textbf{propriedades} que o compilador deve satisfazer
+\item
+  A ferramenta gera inputs aleatórios para \textbf{falsificá-las}
+\end{itemize}
+
+Exemplo de propriedade --- equival\^{e}ncia sem\^{a}ntica após otimiza\c{c}\~{a}o:
+
+\[\forall P\ \text{bem tipado}.\; \llbracket P \rrbracket = \llbracket \mathit{opt}(P) \rrbracket\]
+
+\textbf{Testes metamórficos} {[}Le et al., 2014{]}: aplica
+transforma\c{c}\~{o}es sem\^{a}nticas conhecidas ao programa-fonte:
+
+\begin{quote}
+``Se \(P'\) é obtido de \(P\) por substitui\c{c}\~{a}o de \(x + 0\) por \(x\),
+ent\~{a}o \(P\) e \(P'\) devem produzir o mesmo resultado compilados.''
+\end{quote}
+\end{frame}
+
+\hypertarget{verificauxe7uxe3o-formal-de-compiladores}{%
+\section{Verifica\c{c}\~{a}o Formal de
+Compiladores}\label{verificauxe7uxe3o-formal-de-compiladores}}
+
+\begin{frame}{Preserva\c{c}\~{a}o Sem\^{a}ntica}
+\protect\hypertarget{preservauxe7uxe3o-semuxe2ntica}{}
+Um compilador \(\mathcal{C}\) é \textbf{correto} se para todo programa
+\(P\) bem tipado:
+
+\[P \Downarrow v \implies \mathcal{C}(P) \Downarrow v\]
+
+A compila\~{c}\~{a}o \textbf{preserva o comportamento observável} do programa.
+\end{frame}
+
+\begin{frame}{CompCert}
+\protect\hypertarget{compcert}{}
+\textbf{CompCert} {[}Leroy, 2009{]}: o primeiro compilador de uso real
+com preserva\c{c}\~{a}o sem\^{a}ntica provada formalmente.
+
+\begin{itemize}
+\tightlist
+\item
+  Compila C para assembly x86, PowerPC e ARM
+\item
+  Cada passagem acompanhada de prova mec\^{a}nica no \textbf{Coq}
+\item
+  \textbf{Resultado}: estudo com CSmith descobriu \textbf{zero}
+  wrong-code bugs no CompCert, enquanto GCC e LLVM apresentaram dezenas
+\end{itemize}
+
+\textbf{Estrutura da prova}: cada passagem \(\mathcal{T}\) é acompanhada
+de uma rela\c{c}\~{a}o de \textbf{simula\c{c}\~{a}o}:
+
+\[\frac{e \to e' \quad \mathcal{T}(e) \to^* \mathcal{T}(e')}{e \to^* v \implies \mathcal{T}(e) \to^* v}\]
+\end{frame}
+
+\begin{frame}{Verifica\c{c}\~{a}o de Passagens Individuais}
+\protect\hypertarget{verificauxe7uxe3o-de-passagens-individuais}{}
+Nem sempre é necessário verificar o compilador inteiro:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Aloca\c{c}\~{a}o de registradores} {[}Rideau \& Leroy, 2010{]}:
+  verificada no Coq
+\item
+  \textbf{Compila\~{c}\~{a}o JIT} {[}Carbonneaux et al., 2014{]}: com garantias
+  de tempo real
+\item
+  \textbf{Alive} {[}Lopes et al., 2015{]}: verifica automaticamente
+  transforma\c{c}\~{o}es de peephole do LLVM via SMT solvers
+\end{itemize}
+\end{frame}
+
+\hypertarget{sistemas-de-tipos-avanuxe7ados}{%
+\section{Sistemas de Tipos
+Avan\c{c}ados}\label{sistemas-de-tipos-avanuxe7ados}}
+
+\begin{frame}{Tipos Dependentes}
+\protect\hypertarget{tipos-dependentes}{}
+Em sistemas de tipos comuns, tipos e valores habitam mundos separados.
+\textbf{Tipos dependentes} eliminam essa separa\c{c}\~{a}o:
+
+\[\mathsf{Vec} : \mathbb{N} \to \mathsf{Type} \to \mathsf{Type}\]
+
+\[\mathsf{append} : \mathsf{Vec}\ m\ A \to \mathsf{Vec}\ n\ A \to \mathsf{Vec}\ (m + n)\ A\]
+
+\begin{itemize}
+\tightlist
+\item
+  O compilador verifica \textbf{em compila\~{c}\~{a}o} que tamanhos s\~{a}o corretos
+\item
+  Acesso fora do intervalo é \textbf{impossível} de escrever
+\end{itemize}
+
+\textbf{Linguagens}: Agda, Idris, Coq, Lean 4
+
+\textbf{Desafio}: infer\^{e}ncia de tipos geralmente indecidível --- exige
+anota\c{c}\~{o}es explícitas.
+\end{frame}
+
+\begin{frame}[fragile]{Tipos Lineares}
+\protect\hypertarget{tipos-lineares}{}
+Um \textbf{tipo linear} garante que um recurso é usado \emph{exatamente
+uma vez}:
+
+\begin{lstlisting}
+open   : String → File
+read   : File   → (String, File)
+close  : File   → Unit
+\end{lstlisting}
+
+O compilador garante: - Todo arquivo aberto é fechado \textbf{exatamente
+uma vez} - Sem \emph{use after free}; sem \emph{double close}
+
+\textbf{Rust}: o sistema de \emph{ownership} e \emph{borrows} é uma
+forma de tipos lineares/afins integrada a linguagem de sistemas.
+
+\textbf{Base teórica}: Lógica Linear {[}Girard, 1987{]}; Linear Type
+Theory {[}Wadler, 1990{]}.
+\end{frame}
+
+\begin{frame}{Session Types}
+\protect\hypertarget{session-types}{}
+\textbf{Session types} tipam canais de comunica\c{c}\~{a}o:
+
+\[S = \mathsf{!Int}.\; \mathsf{!Int}.\; \mathsf{?Int}.\; \mathsf{end}\]
+
+``Envie um inteiro, envie outro, receba um inteiro, encerre.''
+
+O cliente tem o tipo \textbf{dual} \(\bar{S}\):
+
+\[\bar{S} = \mathsf{?Int}.\; \mathsf{?Int}.\; \mathsf{!Int}.\; \mathsf{end}\]
+
+O compilador garante aus\^{e}ncia de \textbf{deadlock} e erros de protocolo
+em tempo de compila\~{c}\~{a}o.
+\end{frame}
+
+\hypertarget{representauxe7uxf5es-intermediuxe1rias}{%
+\section{Representa\c{c}\~{o}es
+Intermediárias}\label{representauxe7uxf5es-intermediuxe1rias}}
+
+\begin{frame}[fragile]{Static Single Assignment (SSA)}
+\protect\hypertarget{static-single-assignment-ssa}{}
+Em SSA, \textbf{cada variável é atribuída exatamente uma vez}:
+
+\begin{lstlisting}[language=Python]
+# Antes da SSA:          # Após SSA:
+x = 0                    x0 = 0
+x = x + 1                x1 = x0 + 1
+if b: x = 5              if b: x2 = 5
+else: x = 10             else: x3 = 10
+z = x + y                x4 = phi(x2, x3)
+                         z0 = x4 + y0
+\end{lstlisting}
+
+A \textbf{fun\c{c}\~{a}o \(\phi\)} seleciona o valor correto no ponto de jun\c{c}\~{a}o.
+
+\textbf{Por que SSA facilita otimiza\c{c}\~{o}es?}
+
+\begin{itemize}
+\tightlist
+\item
+  Propaga\c{c}\~{a}o de constantes: trivial (uma defini\c{c}\~{a}o por variável)
+\item
+  Elimina\c{c}\~{a}o de código morto: variáveis sem uso s\~{a}o imediatamente
+  identificáveis
+\item
+  Aloca\c{c}\~{a}o de registradores: grafo de interfer\^{e}ncia calculado
+  eficientemente
+\end{itemize}
+
+SSA é a representa\c{c}\~{a}o central do \textbf{LLVM IR} e do \textbf{GCC
+GIMPLE}.
+\end{frame}
+
+\begin{frame}{Value State Dependence Graph (VSDG)}
+\protect\hypertarget{value-state-dependence-graph-vsdg}{}
+O \textbf{VSDG} {[}Johnson et al., 2004{]} representa o programa como um
+grafo de depend\^{e}ncias:
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Tipo de aresta & Significado \\
+\midrule\noalign{}
+\endhead
+\textbf{Valor} & Resultado de uma opera\c{c}\~{a}o é entrada de outra \\
+\textbf{Estado} & Uma opera\c{c}\~{a}o com efeito deve preceder outra \\
+\textbf{Controle} & Uma opera\c{c}\~{a}o só executa se condi\c{c}\~{a}o for
+satisfeita \\
+\bottomrule\noalign{}
+\end{longtable}
+
+\textbf{Vantagem}: CSE é \textbf{gratuita} --- express\~{o}es id\^{e}nticas s\~{a}o
+representadas pelo \textbf{mesmo nó}.
+
+Duas leituras independentes n\~{a}o t\^{e}m aresta entre si --- podem ser
+reordenadas livremente.
+\end{frame}
+
+\begin{frame}{LLVM como Infraestrutura de Pesquisa}
+\protect\hypertarget{llvm-como-infraestrutura-de-pesquisa}{}
+\textbf{LLVM} {[}Lattner \& Adve, 2004{]}: principal plataforma de
+pesquisa em compiladores hoje.
+
+\begin{itemize}
+\tightlist
+\item
+  IR bem definida, documentada e manipulável via API
+\item
+  Passes (\emph{opt}): pipeline de otimiza\c{c}\~{o}es composável
+\item
+  Clang (C/C++), Flang (Fortran), Kotlin/Native, Rust, Swift --- todos
+  usam LLVM
+\item
+  \textbf{TableGen}: gera\c{c}\~{a}o automática de sele\c{c}\~{a}o de instru\c{c}\~{o}es por
+  especifica\c{c}\~{a}o declarativa
+\end{itemize}
+
+Pesquisadores implementam passagens como plugins LLVM e avaliam em
+programas reais.
+\end{frame}
+
+\hypertarget{conclusuxe3o}{%
+\section{Conclus\~{a}o}\label{conclusuxe3o}}
+
+\begin{frame}{Sumário do Capítulo}
+\protect\hypertarget{sumuxe1rio-do-capuxedtulo}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Fuzzing + testes diferenciais}: CSmith encontrou centenas de
+  bugs sem oráculo explícito
+\item
+  \textbf{CompCert}: prova formal de preserva\c{c}\~{a}o sem\^{a}ntica --- zero
+  wrong-code bugs
+\item
+  \textbf{Tipos dependentes}: verifica\c{c}\~{a}o de propriedades quantitativas
+  em compila\~{c}\~{a}o
+\item
+  \textbf{Tipos lineares}: controle de recursos sem garbage collector
+  (Rust!)
+\item
+  \textbf{SSA}: uma defini\c{c}\~{a}o por variável facilita análise e otimiza\c{c}\~{a}o
+\item
+  \textbf{VSDG}: CSE gratuita; reordena\c{c}\~{a}o explícita por depend\^{e}ncias
+  reais
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Perspectivas Futuras}
+\protect\hypertarget{perspectivas-futuras}{}
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Compiladores para IA/ML}: compila\~{c}\~{a}o de grafos de tensores
+  (XLA, TVM, MLIR)
+\item
+  \textbf{Compiladores formalmente verificados}: extens\~{a}o do CompCert
+  para outras linguagens
+\item
+  \textbf{Compila\~{c}\~{a}o incremental}: apenas recompilar o que mudou
+\item
+  \textbf{Seguran\c{c}a por compila\~{c}\~{a}o}: \emph{information flow control},
+  isolamento de memória por tipo
+\end{itemize}
+\end{frame}
