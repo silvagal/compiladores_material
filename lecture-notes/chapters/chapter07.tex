@@ -1,0 +1,450 @@
+\chapter{Parsing expression grammars}
+
+\section{Introdução}
+
+No capítulo anterior, estudamos os combinadores de parsing como uma
+forma de implementar analisadores sintáticos descendentes recursivos.
+Neste capítulo, vamos estudar um formalismo que permite a definição
+de analisadores sintáticos diretamente, sem a necessidade de usar uma
+gramática livre de contexto. Esse formalismo são as \textbf{Parsing
+Expression Grammars} (PEGs), introduzidas por Bryan Ford em 2004.
+
+As PEGs compartilham com as gramáticas livres de contexto (GLCs) a
+ideia de descrever linguagens por meio de regras de reescrita, mas
+diferem em um ponto fundamental: enquanto as GLCs usam
+\textbf{escolha não-determinística} entre as alternativas de uma
+produção, as PEGs usam \textbf{escolha ordenada}. Em vez de tentar
+todas as alternativas em paralelo (como faz um autômato
+não-determinístico), uma PEG experimenta as alternativas em ordem e
+se compromete com a primeira que tiver sucesso. Essa semântica
+determinística elimina a ambiguidade presente em gramáticas e
+expressões regulares.
+
+O código discutido neste capítulo está disponível em
+\begin{flushleft}
+  \verb|PEG/Semantics/Simple.hs|.
+\end{flushleft}
+
+\section{Sintaxe e semântica de PEGs}
+
+Uma PEG é composta por um conjunto de \textbf{regras de parsing},
+cada uma associando um nome (não-terminal) a uma \textbf{expressão de
+parsing}. As expressões de parsing são construídas a partir dos
+seguintes operadores:
+
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{lll}
+    \toprule
+    Expressão & Nome & Descrição \\
+    \midrule
+    $\varepsilon$   & vazio              & Sempre tem sucesso sem
+    consumir entrada \\
+    $a$             & terminal           & Consome e casa com o símbolo $a$ \\
+    $A$             & não-terminal       & Invoca a regra de nome $A$ \\
+    $e_1\; e_2$     & sequência          & Tenta $e_1$ e depois $e_2$ \\
+    $e_1 / e_2$     & escolha ordenada   & Tenta $e_1$; se falhar,
+    tenta $e_2$ \\
+    $e^*$           & repetição          & Zero ou mais repetições de
+    $e$ (gulosa) \\
+    $e^+$           & repetição positiva & Uma ou mais repetições de $e$ \\
+    $e\,?$          & opcional           & Zero ou uma ocorrência de $e$ \\
+    $!e$            & predicado negativo & Sucesso se $e$ falhar; não
+    consome entrada \\
+    $\& e$          & predicado positivo & Sucesso se $e$ tiver
+    sucesso; não consome entrada \\
+    \bottomrule
+  \end{tabular}
+  \caption{Operadores de PEG}
+\end{table}
+
+Uma PEG é então um conjunto de regras da forma \(A \leftarrow e\), em
+que \(A\) é um não-terminal e \(e\) é uma expressão de parsing. Uma
+das regras é designada como \textbf{regra inicial}.
+
+Como exemplo, a seguinte PEG descreve a linguagem de expressões
+aritméticas com precedência e associatividade já embutidas na gramática:
+
+\[
+  \begin{array}{lcl}
+    E & \leftarrow & T\,(\texttt{+}\, T)^\star\\
+    T & \leftarrow & F\,(*\, F)^\star\\
+    F & \leftarrow & \texttt{(}\, E\, \texttt{)} \,/\, [0\text{-}9]^+
+  \end{array}
+\]
+
+Comparada à GLC equivalente, a PEG não precisa de produções
+recursivas à esquerda para expressar associatividade à esquerda: o
+operador \((\cdot)^*\) captura diretamente a ideia de ``zero ou mais
+ocorrências à direita'', que é processada iterativamente.
+
+A semântica de uma PEG é definida em termos de uma função de parsing
+que, dado uma expressão \(e\) e uma entrada \(s\), retorna ou um
+\textbf{sucesso} que consiste de um par formado com a parte da
+entrada consumida e o restante ainda não processado; ou uma \textbf{falha}.
+
+A diferença crucial em relação às GLCs está na semântica da
+\textbf{escolha ordenada} \(e_1 / e_2\):
+Tenta-se \(e_1\) sobre a entrada \(s\). Se \(e_1\) \textbf{tem
+sucesso}, o resultado é imediatamente retornado e \(e_2\) nunca é
+tentada. Se \(e_1\) \textbf{falha}, então \(e_2\) é executada sobre
+a entrada \(s\).
+
+\subsection{Predicados}
+
+Os predicados \(!e\) e \(\&\,e\) permitem analisar parte da entrada
+sem necessariamente consumir parte dela. Temos os seguintes
+operadores de predicado:
+
+\begin{itemize}
+  \item
+    \(!e\) (\textbf{predicado negativo}): tem sucesso se e somente se
+    \(e\) falha. Nenhuma entrada é consumida em nenhum caso.
+  \item
+    \(\&\,e\) (\textbf{predicado positivo}): tem sucesso se e somente
+    se \(e\) tem sucesso. Nenhuma entrada é consumida. É equivalente
+    a \(!(!e)\).
+\end{itemize}
+
+Os predicados são úteis para especificar restrições contextuais sem
+avançar na entrada. Por exemplo, para reconhecer uma palavra
+reservada como if sem aceitar um
+identificador como iff, podemos escrever:
+
+\[
+  \texttt{if}\, !\,[a\text{-}zA\text{-}Z0\text{-}9]
+\]
+
+Isso garante que \haskell|if| só é reconhecido quando
+não seguido de um caractere alfanumérico.
+
+\subsection{Repetição}
+
+O operador \(e^*\) é definido recursivamente como:
+
+\[
+  e^* \leftarrow e\, e^* \,/\\, \varepsilon
+\]
+
+Como a escolha é ordenada, a repetição é \textbf{gulosa}: o parser
+sempre tenta consumir mais uma ocorrência de \(e\) antes de aceitar o
+caso vazio. Isso garante que \(e^*\) sempre consumirá o maior prefixo
+possível que case com \(e\).
+
+Ao contrário das GLCs, não há ambiguidade em \(e^*\): o resultado é
+determinístico e único para qualquer entrada.
+
+\subsection{Terminação em PEGs}
+
+PEGs podem ser vistas como uma representação de analisadores
+descendentes recursivos e, portanto, possuem limitações similares. A
+terminação do processo de parsing de um PEG é garantido de terminar
+se a gramática atende as seguintes restrições:
+
+\begin{itemize}
+  \item
+    Não possui regras recursivas à esquerda, diretas ou indiretas;
+  \item
+    Toda ocorrência de repetição, \(e^*\) é tal que \(e\) não deve
+    ter sucesso sem consumir símbolos da entrada.
+\end{itemize}
+
+A primeira restrição é óbvia: pois faz com que analisadores
+descendentes entrem em loop. A segunda é necessária devido à
+semântica gulosa do operador de repetição: ele sempre tentará casar a
+expressão \(e\) antes de finalizar a repetição. Se \(e\) tiver
+sucesso sem consumir entrada, então \(e^*\) pode, a cada iteração,
+consumir um prefixo vazio da entrada, o que leva a não terminação.
+
+Dizemos que uma PEG é \textbf{bem formada} se ela atende as duas
+restrições mencionadas. Para PEGs bem formadas há uma garantia formal
+de que o processo de parsing sempre termina.
+
+\section{Implementação em Haskell}
+
+A implementação de PEGs em Haskell presente em
+\verb|PEG/Semantics/Simple.hs| segue diretamente a
+semântica apresentada. O ponto central é representar explicitamente
+se o parser consumiu ou não parte da entrada, pois isso determina
+quando a escolha ordenada pode retroceder.
+
+\subsection{O tipo Result}
+
+O resultado de um parser é representado pelo tipo:
+
+\begin{minted}{haskell}
+data Result d a
+  = Pure a           -- sucesso sem consumir entrada
+  | Commit d a       -- sucesso consumindo entrada; d: o resto da entrada
+  | Fail String Bool -- falha; Bool indica se houve consumo
+\end{minted}
+
+Os três construtores capturam os três casos possíveis:
+
+\begin{itemize}
+  \item\haskell{Pure a}: o parser teve sucesso sem
+    consumir nenhum símbolo. O resultado pode ser descartado e o
+    parser alternativo pode ser tentado sobre a mesma entrada.
+  \item\haskell{Commit d' a}: o parser teve sucesso e
+    consumiu parte da entrada; \haskell{d'} é o
+    restante. Falhas posteriores não causarão backtracking sobre este ponto.
+  \item\haskell{Fail s c}: o parser falhou; a
+    \haskell{String} \haskell{s}
+    descreve o erro e o \haskell{Bool}
+    \haskell{c} indica se houve consumo de entrada
+    antes da falha.
+\end{itemize}
+
+\subsection{O tipo PExp}
+
+Um parser PEG é um valor do tipo:
+
+\begin{minted}{haskell}
+newtype PExp d a
+  = PExp { runPExp :: d -> Result d a }
+\end{minted}
+
+\haskell{PExp d a} representa um parser que lê de uma
+entrada do tipo \haskell{d} (tipicamente \haskell{String})
+e produz um resultado do tipo \haskell{a}. O tipo
+\haskell{PExp} é uma instância de \haskell{Functor} que
+permite modificar o valor de resultado do parser.
+
+\subsection{Instâncias e combinadores}
+
+A instância de \haskell{Applicative} define a
+composição sequencial de dois parsers propagando o estado de consumo:
+
+\begin{minted}{haskell}
+instance Applicative (PExp d) where
+  pure a = PExp $ \ _ -> Pure a
+  PExp mf <*> PExp ma
+    = PExp $ \ d ->
+      case mf d of
+        Pure f      -> fmap f (ma d)
+        Fail s c    -> Fail s c
+        Commit d' f ->
+          case ma d' of
+            Pure a       -> Commit d' (f a)
+            Fail s _     -> Fail s True
+            Commit d'' a -> Commit d'' (f a)
+\end{minted}
+
+O caso \haskell{Commit d' f} é o mais importante: se
+o primeiro parser consumiu entrada, qualquer falha do segundo parser
+é marcada como \haskell{Fail s True}, que indica que o consumo
+ocorreu, sem possibilidade de retrocesso.
+
+A instância de \haskell{Alternative} implementa a
+semântica da \textbf{escolha}:
+
+\begin{minted}{haskell}
+instance Alternative (PExp d) where
+  PExp ma <|> PExp mb
+    = PExp $ \ d ->
+      case ma d of
+        Fail _ False -> mb d  -- falhou SEM consumir: tenta alternativa
+        x            -> x     -- sucesso OU falhou COM consumo: retorna
+  empty = PExp $ \ _ -> Fail "empty" False
+\end{minted}
+
+O padrão \haskell{Fail \_ False} é a chave: o segundo
+parser \haskell{mb} só é tentado se o primeiro falhou
+\textbf{sem consumir entrada} (\haskell{False}). Se o
+primeiro consumiu entrada e falhou (\haskell{Fail \_ True}),
+o erro é propagado imediatamente, sem retrocesso.
+
+\subsection{O combinador try}
+
+Para permitir retrocesso mesmo quando já houve consumo, a biblioteca
+oferece o combinador \haskell{try}:
+
+\begin{minted}{haskell}
+try :: PExp d a -> PExp d a
+try (PExp m)
+  = PExp $ \d ->
+      case m d of
+        Fail s _ -> Fail s False  -- sempre marca como "sem consumo"
+        x        -> x
+\end{minted}
+
+\haskell{try p} executa \haskell{p}
+normalmente. Se \haskell{p} falha, com ou sem
+consumo, \haskell{try} marca o resultado como
+\haskell{Fail s False}, sinalizando que nenhum
+consumo ocorreu para fins de retrocesso. Isso efetivamente
+``cancela'' qualquer consumo parcial de \haskell{p},
+permitindo que outras alternativas, caso existam, sejam tentadas.
+
+\subsection{A escolha ordenada}
+
+Combinando \haskell{try} e \haskell{<|>}, a biblioteca define
+o operador de escolha ordenada:
+
+\begin{minted}{haskell}
+infixl 3 </>
+
+(</>) :: PExp d a -> PExp d a -> PExp d a
+p </> q = try p <|> q
+\end{minted}
+
+\haskell{p </> q} tenta \haskell{p}
+com backtracking garantido: se \haskell{p} falha por
+qualquer razão, \haskell{q} é tentado sobre a entrada original.
+
+\subsection{O predicado not}
+
+O combinador \haskell{not} implementa o predicado
+negativo \(!e\):
+
+\begin{minted}{haskell}
+not :: PExp d a -> PExp d ()
+not (PExp m)
+  = PExp $ \d ->
+      case m d of
+        Fail{} -> Pure ()    -- e falhou: sucesso sem consumir
+        _      -> Fail "unexpected" False  -- e teve sucesso: falha
+\end{minted}
+
+\haskell{not p} tem sucesso se e somente se
+\haskell{p} falha, e nunca consome entrada. Sobre
+ele, \haskell{eof} é definido como:
+
+\begin{minted}{haskell}
+eof :: Stream d => PExp d ()
+eof = not anyChar
+\end{minted}
+
+\haskell{eof} tem sucesso quando não há mais entrada disponível.
+
+\subsection{Combinadores léxicos}
+
+A biblioteca oferece combinadores para reconhecimento de tokens comuns:
+
+\begin{minted}{haskell}
+satisfy :: Stream d => (Char -> Bool) -> PExp d Char
+satisfy p = try $ do
+  x <- anyChar
+  x <$ guard (p x)
+
+char :: Stream d => Char -> PExp d Char
+char c = satisfy (c ==)
+
+lexeme :: Stream d => PExp d a -> PExp d a
+lexeme m = m <* whiteSpace
+
+symbol :: Stream d => Char -> PExp d Char
+symbol c = lexeme (char c)
+
+digit :: Stream d => PExp d Int
+digit = f <$> satisfy isDigit
+  where f c = ord c - ord '0'
+\end{minted}
+
+O combinador \haskell{satisfy} usa
+\haskell{try} para garantir que, se o predicado falha
+(o caractere foi consumido por \haskell{anyChar} mas
+não satisfaz \haskell{p}), o parser retrocede e marca
+a falha como sem consumo. Isso é necessário para que
+\haskell{satisfy} se comporte corretamente como
+primitivo: uma falha em \haskell{satisfy} não deve
+comprometer a entrada.
+
+O combinador \haskell{lexeme} descarta espaços em
+branco após o item reconhecido, e \haskell{symbol c}
+combina o reconhecimento de um caractere específico com descarte de
+espaço, o mesmo padrão que vimos no Megaparsec.
+
+\section{Exemplo: parser de expressões}
+
+Para ilustrar o uso da biblioteca, vamos construir um parser de
+expressões aritméticas. A gramática PEG é:
+
+\[
+  \begin{array}{lcl}
+    E & \leftarrow & T\, (\texttt{+}\, T)^\star\\
+    T & \leftarrow & F\,(*\, F)^\star\\
+    F & \leftarrow & \texttt{(}\, E\, \texttt{)} \,/\, [0\text{-}9]^+
+  \end{array}
+\]
+
+Em Haskell, usando os combinadores da biblioteca:
+
+\begin{minted}{haskell}
+data Exp = Lit Int | Exp :+: Exp | Exp :*: Exp
+
+expP :: Stream d => PExp d Exp
+expP = foldl (:+:) <$> termP <*> many (symbol '+' *> termP)
+
+termP :: Stream d => PExp d Exp
+termP = foldl (:*:) <$> factP <*> many (symbol '*' *> factP)
+
+factP :: Stream d => PExp d Exp
+factP = between (symbol '(') (symbol ')') expP
+    </> Lit . foldl (\a b -> a * 10 + b) 0 <$> many1 digit
+\end{minted}
+
+A estrutura do parser segue diretamente a gramática PEG. Em
+\haskell{factP}, o operador
+\haskell{</>} garante que, se a tentativa de
+reconhecer uma expressão com parêntesis falhar, o parser retroceda e
+tente reconhecer um literal inteiro.
+
+Note que \haskell{expP} e
+\haskell{termP} usam \haskell{many}
+com \haskell{foldl} para construir a AST com
+associatividade à esquerda, sem precisar de recursão à esquerda nas
+regras. Isso é uma vantagem das PEGs sobre as GLCs: associatividade à
+esquerda é expressa naturalmente por repetição, sem introduzir
+recursão problemática para parsers descendentes.
+
+\section{PEGs e GLCs: principais diferenças}
+
+As PEGs e as GLCs são formalismos distintos para descrever
+linguagens. As principais diferenças práticas são:
+
+\textbf{Ambiguidade.} Toda PEG é, por definição, não-ambígua: a
+escolha ordenada garante que exista no máximo um resultado para
+qualquer entrada. As GLCs podem ser ambíguas, e resolver ambiguidades
+muitas vezes exige reformular a gramática ou usar anotações de
+precedência externas (como os mecanismos
+  \verb|%left|/\verb|%right| do yacc/bison).
+
+  \textbf{Recursão à esquerda.} GLCs admitem recursão à esquerda
+  naturalmente; por exemplo, \(E \to E + T\) é uma produção válida e
+  útil. Parsers PEG descendentes não suportam recursão à esquerda
+  direta, ela causaria um laço infinito. A solução é reescrever
+  usando repetição \((\cdot)^*\) ou usar técnicas especializadas de
+  eliminação de recursão à esquerda.
+
+  \textbf{Poder expressivo.} PEGs reconhecem linguagens que as GLCs não
+  conseguem (por exemplo, \(\{a^n b^n c^n \mid n \geq 0\}\), usando
+  predicados) e há conjectura de que algumas linguagens livres de
+  contexto não podem ser descritas por PEGs, embora isso não esteja
+  formalmente provado.
+
+  \textbf{Mensagens de erro.} A semântica de PEGs facilita a geração de
+  mensagens de erro precisas: quando o parser se compromete com uma
+  alternativa e depois falha, sabe exatamente onde e o que era esperado.
+
+  \section{Conclusão}
+
+  Este capítulo apresentou as Parsing Expression Grammars como um
+  formalismo para especificar analisadores sintáticos determinísticos.
+  As PEGs se distinguem das GLCs pela \textbf{escolha ordenada} \(/\),
+  que elimina a ambiguidade e corresponde diretamente ao
+  comportamento de parsers.
+
+  Apresentamos a implementação em Haskell da biblioteca
+  \verb|PEG.Semantics.Simple|, cujo tipo
+  \haskell{Result d a} representa explicitamente os
+  três estados possíveis de um parser: sucesso sem consumo
+  (\haskell{Pure}), sucesso com consumo
+  (\haskell{Commit}) e falha (\haskell{Fail}).
+
+  Os combinadores \haskell{<|>} (escolha sem
+  backtracking) e \haskell{</>} (escolha com
+  backtracking via \haskell{try}) dão ao programador
+  controle explícito sobre quando o parser pode recuar, tornando as
+  PEGs uma ferramenta poderosa tanto para especificação formal quanto
+  para implementação prática de analisadores sintáticos.
