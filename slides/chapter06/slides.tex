@@ -330,7 +330,7 @@ natural = foldl (\a b -> a*10 + b) 0 <$> many1 digit
 \section{Combinadores de Alto
 Nível}\label{combinadores-de-alto-nuxedvel}}
 
-\begin{frame}[fragile]{Repetiçãoo}
+\begin{frame}[fragile]{Repetição}
 \protect\hypertarget{repetiuxe7uxe3o}{}
 \begin{lstlisting}[language=Haskell]
 -- Um ou mais
@@ -339,7 +339,7 @@ many p = (:) <$> p <*> many p <|> pure []
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Repetiçãoo}
+\begin{frame}[fragile]{Repetição}
 \protect\hypertarget{repetiuxe7uxe3o-1}{}
 \begin{lstlisting}[language=Haskell]
 -- Um ou mais
@@ -383,7 +383,7 @@ listOf p s = list <$> p <*> many (pi22 <$> s <*> p)
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Repetiçãoo Gulosa}
+\begin{frame}[fragile]{Repetição Gulosa}
 \protect\hypertarget{repetiuxe7uxe3o-gulosa}{}
 \begin{lstlisting}[language=Haskell]
 determ :: Parser s b -> Parser s b
