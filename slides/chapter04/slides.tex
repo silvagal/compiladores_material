@@ -1,548 +1,548 @@
-\subtitle{\bf Aula 4 - Motivaç
+\subtitle{\bf Aula 4 - Motivação}
 \begin{frame}[t,plain]
-\titlepage
+    \titlepage
 \end{frame}
 
 \begin{frame}{Objetivos}
-\protect\hypertarget{objetivos-1}{}
-\begin{itemize}
 
-\item
-  Apresentação da linguagem do Alex e seu uso para especificação de
-  analisadores léxicos em Haskell.
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Apresentação da linguagem do Alex e seu uso para especificação de
+        analisadores léxicos em Haskell.
+    \end{itemize}
 \end{frame}
 
-\hypertarget{motivauxe7uxe3o}{%
+
 \section{Motivação}\label{motivauxe7uxe3o}}
 
 \begin{frame}{Motivação}
-\protect\hypertarget{motivauxe7uxe3o-1}{}
-\begin{itemize}
 
-\item
-  Construir analisadores léxicos manualmente é trabalhoso e propenso a
-  erros
-\item
-  A teoria (ER -> AFN -> AFD) é sólida, mas implementar o pipeline é
-  repetitivo
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Construir analisadores léxicos manualmente é trabalhoso e propenso a
+        erros
+        \item
+        A teoria (ER -> AFN -> AFD) é sólida, mas implementar o pipeline é
+        repetitivo
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Motivação}
-\protect\hypertarget{motivauxe7uxe3o-2}{}
-\begin{itemize}
 
-\item
-  \textbf{Alex} automatiza esse processo para Haskell
-\item
-  Dado uma especificação de tokens em ERs, Alex gera um analisador
-  léxico eficiente
-\item
-  Usado na prática: o próprio GHC usa Alex para sua análise léxica
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \textbf{Alex} automatiza esse processo para Haskell
+        \item
+        Dado uma especificação de tokens em ERs, Alex gera um analisador
+        léxico eficiente
+        \item
+        Usado na prática: o próprio GHC usa Alex para sua análise léxica
+    \end{itemize}
 \end{frame}
 
 
 
 \begin{frame}[fragile]{O que é o Alex?}
-\protect\hypertarget{o-que-uxe9-o-alex-1}{}
-\begin{itemize}
 
-\item
-  Gerador de analisadores léxicos para \textbf{Haskell}
-\item
-  Análogo ao \texttt{flex} (C) e ao
-  \texttt{JFlex} (Java)
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Gerador de analisadores léxicos para \textbf{Haskell}
+        \item
+        Análogo ao \texttt{flex} (C) e ao
+        \texttt{JFlex} (Java)
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{O que é o Alex?}
-\protect\hypertarget{o-que-uxe9-o-alex-2}{}
-\begin{itemize}
 
-\item
-  Recebe um arquivo \texttt{.x} com especificações de
-  tokens
-\item
-  Gera um módulo Haskell com o analisador léxico completo
-\item
-  Usa o algoritmo AFD para reconhecimento eficiente
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Recebe um arquivo \texttt{.x} com especificações de
+        tokens
+        \item
+        Gera um módulo Haskell com o analisador léxico completo
+        \item
+        Usa o algoritmo AFD para reconhecimento eficiente
+    \end{itemize}
 \end{frame}
 
-\hypertarget{sessuxf5es-de-um-arquivo-.x}{%
+
 \section{Sessões de um Arquivo .x}\label{sessuxf5es-de-um-arquivo-.x}}
 
 \begin{frame}[fragile]{Seções de um Arquivo
-\texttt{.x}}
-\protect\hypertarget{seuxe7uxf5es-de-um-arquivo-.x}{}
-\begin{lstlisting}
-{ cabeçalho Haskell }
+    \texttt{.x}}
 
-%wrapper "..."
-macros e configurações
+    \begin{lstlisting}
+        { cabeçalho Haskell }
 
-tokens :-
-  regras léxicas
+        %wrapper "..."
+        macros e configurações
 
-{ rodapé Haskell }
-\end{lstlisting}
+        tokens :-
+        regras léxicas
+
+        { rodapé Haskell }
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}{Seções de um Arquivo \texttt{.x}}
-\protect\hypertarget{seuxe7uxf5es-de-um-arquivo-.x-1}{}
-\begin{enumerate}
 
-\item
-  \textbf{Cabeçalho}: módulo e imports Haskell
-\item
-  \textbf{Diretivas}: wrapper e macros de ERs
-\item
-  \textbf{Regras}: padrões mapeados a ações
-\item
-  \textbf{Rodapé}: funções auxiliares
-\end{enumerate}
+    \begin{enumerate}
+
+        \item
+        \textbf{Cabeçalho}: módulo e imports Haskell
+        \item
+        \textbf{Diretivas}: wrapper e macros de ERs
+        \item
+        \textbf{Regras}: padrões mapeados a ações
+        \item
+        \textbf{Rodapé}: funções auxiliares
+    \end{enumerate}
 \end{frame}
 
-\hypertarget{definindo-tokens}{%
+
 \section{Definindo Tokens}\label{definindo-tokens}}
 
 \begin{frame}[fragile]{Tipos de Tokens para Exp}
-\protect\hypertarget{tipos-de-tokens-para-exp}{}
-\begin{lstlisting}[language=Haskell]
-data Token = Token {
-      pos    :: (Int, Int)   -- (Linha, Coluna)
-    , lexeme :: Lexeme
-    } deriving (Eq, Show)
 
-data Lexeme
-  = TNumber Int | TLParen | TRParen
-  | TPlus | TTimes | TEOF
-  deriving (Eq, Show)
-\end{lstlisting}
+    \begin{lstlisting}[language=Haskell]
+        data Token = Token {
+        pos    :: (Int, Int)   -- (Linha, Coluna)
+        , lexeme :: Lexeme
+        } deriving (Eq, Show)
+
+        data Lexeme
+        = TNumber Int | TLParen | TRParen
+        | TPlus | TTimes | TEOF
+        deriving (Eq, Show)
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Tipos de Tokens para Exp}
-\protect\hypertarget{tipos-de-tokens-para-exp-1}{}
-\begin{itemize}
 
-\item
-  Mesma estrutura vista no capítulo de análise ad-hoc
-\item
-  A posição \texttt{(linha, coluna)} é essencial para
-  mensagens de erro
-\item
-  \texttt{TEOF} marca o fim de entrada
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Mesma estrutura vista no capítulo de análise ad-hoc
+        \item
+        A posição \texttt{(linha, coluna)} é essencial para
+        mensagens de erro
+        \item
+        \texttt{TEOF} marca o fim de entrada
+    \end{itemize}
 \end{frame}
 
-\hypertarget{sintaxe-de-expressuxf5es-regulares-no-alex}{%
+
 \section{Sintaxe de Expressões Regulares no
 Alex}\label{sintaxe-de-expressuxf5es-regulares-no-alex}}
 
 \begin{frame}[fragile]{Classes de Caracteres}
-\protect\hypertarget{classes-de-caracteres}{}
-\begin{table}
-\begin{tabular}[]{@{}ll@{}}
-\toprule
-Padrão & Significado \\
-\midrule
 
-\texttt{[0-9]} & Qualquer dígito de 0 a 9 \\
-\texttt{[a-zA-Z]} & Qualquer letra minúscula ou
-maiúscula \\
-\texttt{[\^\\"]} & Qualquer coisa \textbf{exceto} aspas
-duplas \\
-\texttt{$digit} & Conjunto de caracteres definido pelo
-usuário \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}ll@{}}
+            \toprule
+            Padrão & Significado \\
+            \midrule
+
+            \texttt{[0-9]} & Qualquer dígito de 0 a 9 \\
+            \texttt{[a-zA-Z]} & Qualquer letra minúscula ou
+            maiúscula \\
+            \texttt{[\^\\"]} & Qualquer coisa \textbf{exceto} aspas
+            duplas \\
+            \texttt{$digit} & Conjunto de caracteres definido pelo
+            usuário \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Operadores de Repetição e Combinação}
-\protect\hypertarget{operadores-de-repetiuxe7uxe3o-e-combinauxe7uxe3o}{}
-\begin{table}
-\begin{tabular}[]{@{}ll@{}}
-\toprule
-Operador & Significado \\
-\midrule
 
-\texttt{e*} & Zero ou mais repetições de
-\texttt{e} \\
-\texttt{e+} & Uma ou mais repetições de
-\texttt{e} \\
-\texttt{e?} & Zero ou uma ocorrência (opcional) \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}ll@{}}
+            \toprule
+            Operador & Significado \\
+            \midrule
+
+            \texttt{e*} & Zero ou mais repetições de
+            \texttt{e} \\
+            \texttt{e+} & Uma ou mais repetições de
+            \texttt{e} \\
+            \texttt{e?} & Zero ou uma ocorrência (opcional) \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Operadores de Repetição e Combinação}
-\protect\hypertarget{operadores-de-repetiuxe7uxe3o-e-combinauxe7uxe3o-1}{}
-\begin{table}
-\begin{tabular}[]{@{}ll@{}}
-\toprule
-Operador & Significado \\
-\midrule
 
-\texttt{.} & Qualquer caractere exceto
-\texttt{\\n} \\
-\texttt{"str"} & A string literal
-\texttt{str} exatamente \\
-\texttt{e1 \\| e2} & Alternativa:
-\texttt{e1} ou \texttt{e2} \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}ll@{}}
+            \toprule
+            Operador & Significado \\
+            \midrule
+
+            \texttt{.} & Qualquer caractere exceto
+            \texttt{\\n} \\
+            \texttt{"str"} & A string literal
+            \texttt{str} exatamente \\
+            \texttt{e1 \\| e2} & Alternativa:
+            \texttt{e1} ou \texttt{e2} \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Exemplos de Padrões}
-\protect\hypertarget{exemplos-de-padruxf5es}{}
-\begin{lstlisting}
-$digit    = 0-9  -- classe: dígitos
-@number   = $digit+ -- macro: um ou mais dígitos
-@ident    = [a-zA-Z][a-zA-Z0-9_]*  -- identificador
 
--- Hexadecimal ou octal:
-0(x[0-9a-fA-F]+ | o[0-7]+)
-\end{lstlisting}
+    \begin{lstlisting}
+        $digit    = 0-9  -- classe: dígitos
+        @number   = $digit+ -- macro: um ou mais dígitos
+        @ident    = [a-zA-Z][a-zA-Z0-9_]*  -- identificador
 
-\begin{itemize}
+        -- Hexadecimal ou octal:
+        0(x[0-9a-fA-F]+ | o[0-7]+)
+    \end{lstlisting}
 
-\item
-  Macros com \texttt{@} tornam as regras mais legíveis
-\item
-  Conjuntos com \texttt{$} definem classes de
-  caracteres reutilizáveis
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Macros com \texttt{@} tornam as regras mais legíveis
+        \item
+        Conjuntos com \texttt{$} definem classes de
+        caracteres reutilizáveis
+    \end{itemize}
 \end{frame}
 
-\hypertarget{estrutura-do-arquivo-alex}{%
+
 \section{Estrutura do Arquivo Alex}\label{estrutura-do-arquivo-alex}}
 
 \begin{frame}[fragile]{Cabeçalho e Macros}
-\protect\hypertarget{cabeuxe7alho-e-macros}{}
-\begin{lstlisting}[language=Haskell]
-{
-{-# OPTIONS_GHC -Wno-name-shadowing #-}
-module Exp.Frontend.Lexer.Alex.ExpLexer where
 
-import Control.Monad
-import Exp.Frontend.Lexer.Token
-}
+    \begin{lstlisting}[language=Haskell]
+        {
+        {-# OPTIONS_GHC -Wno-name-shadowing #-}
+        module Exp.Frontend.Lexer.Alex.ExpLexer where
 
-%wrapper "monadUserState"
+        import Control.Monad
+        import Exp.Frontend.Lexer.Token
+        }
 
-$digit = 0-9
-@number = $digit+
-\end{lstlisting}
+        %wrapper "monadUserState"
+
+        $digit = 0-9
+        @number = $digit+
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Wrappers Disponíveis}
-\protect\hypertarget{wrappers-disponuxedveis}{}
-\begin{table}
-\begin{tabular}[]{@{}ll@{}}
-\toprule
-Wrapper & Características \\
-\midrule
 
-\texttt{basic} & Processa
-\texttt{String} de forma simples e pura \\
-\texttt{posn} & Adiciona informação de linha e coluna
-automaticamente \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}ll@{}}
+            \toprule
+            Wrapper & Características \\
+            \midrule
+
+            \texttt{basic} & Processa
+            \texttt{String} de forma simples e pura \\
+            \texttt{posn} & Adiciona informação de linha e coluna
+            automaticamente \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Wrappers Disponíveis}
-\protect\hypertarget{wrappers-disponuxedveis-1}{}
-\begin{table}
-\begin{tabular}[]{@{}ll@{}}
-\toprule
-Wrapper & Características \\
-\midrule
 
-\texttt{monad} & Executa dentro de uma mônada
-\texttt{Alex} \\
-\texttt{monadUserState} & Mônada com estado customizado
-pelo usuário \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}ll@{}}
+            \toprule
+            Wrapper & Características \\
+            \midrule
+
+            \texttt{monad} & Executa dentro de uma mônada
+            \texttt{Alex} \\
+            \texttt{monadUserState} & Mônada com estado customizado
+            pelo usuário \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Wrappers Disponíveis}
-\protect\hypertarget{wrappers-disponuxedveis-2}{}
-\begin{itemize}
 
-\item
-  A principal diferença: controle sobre o estado e os efeitos
-\item
-  \texttt{monadUserState} é o mais flexível e poderoso
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        A principal diferença: controle sobre o estado e os efeitos
+        \item
+        \texttt{monadUserState} é o mais flexível e poderoso
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Regras Léxicas}
-\protect\hypertarget{regras-luxe9xicas}{}
-\begin{lstlisting}
-tokens :-
-    -- espaços e comentários de linha
-    <0> $white+       ;
-    <0> "//" .*       ;
-    -- tokens significativos
-    <0> @number       { mkNumber }
-    <0> "("           { simpleToken TLParen }
-    <0> ")"           { simpleToken TRParen }
-    <0> "+"           { simpleToken TPlus }
-    <0> "*"           { simpleToken TTimes }
-\end{lstlisting}
+
+    \begin{lstlisting}
+        tokens :-
+        -- espaços e comentários de linha
+        <0> $white+       ;
+        <0> "//" .*       ;
+        -- tokens significativos
+        <0> @number       { mkNumber }
+        <0> "("           { simpleToken TLParen }
+        <0> ")"           { simpleToken TRParen }
+        <0> "+"           { simpleToken TPlus }
+        <0> "*"           { simpleToken TTimes }
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Regras Léxicas}
-\protect\hypertarget{regras-luxe9xicas-1}{}
-\begin{itemize}
 
-\item
-  Regras sem ação (\texttt{;}) descartam o match
-  silenciosamente
-\item
-  \texttt{mkNumber} cria um token com o valor inteiro
-  do número
-\item
-  \texttt{simpleToken} cria um token sem valor
-  associado
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Regras sem ação (\texttt{;}) descartam o match
+        silenciosamente
+        \item
+        \texttt{mkNumber} cria um token com o valor inteiro
+        do número
+        \item
+        \texttt{simpleToken} cria um token sem valor
+        associado
+    \end{itemize}
 \end{frame}
 
-\hypertarget{start-codes-e-comentuxe1rios-em-bloco}{%
+
 \section{Start Codes e Comentários em
 Bloco}\label{start-codes-e-comentuxe1rios-em-bloco}}
 
 \begin{frame}[fragile]{Comentários Aninhados}
-\protect\hypertarget{comentuxe1rios-aninhados}{}
-\begin{lstlisting}[language=C]
-/* comentário externo
-   /* comentário interno */
-   ainda no externo
-*/
-\end{lstlisting}
+
+    \begin{lstlisting}[language=C]
+        /* comentário externo
+        /* comentário interno */
+        ainda no externo
+        */
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}{Comentários Aninhados}
-\protect\hypertarget{comentuxe1rios-aninhados-1}{}
-\begin{itemize}
 
-\item
-  Comentários em bloco podem ser \textbf{aninhados}
-\item
-  O analisador precisa contar os níveis de aninhamento
-\item
-  Não é possível expressar isso com uma simples ER
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Comentários em bloco podem ser \textbf{aninhados}
+        \item
+        O analisador precisa contar os níveis de aninhamento
+        \item
+        Não é possível expressar isso com uma simples ER
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Solução: Start Codes}
-\protect\hypertarget{soluuxe7uxe3o-start-codes}{}
-\begin{itemize}
 
-\item
-  Start codes permitem ao analisador ter \textbf{múltiplos modos}
-\item
-  \texttt{<0>}: modo normal de análise
-\item
-  \texttt{<state\_comment>}: modo ``dentro de
-  comentário em bloco''
-\item
-  O analisador muda de modo conforme encontra
-  \texttt{/*} e \texttt{*/}
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Start codes permitem ao analisador ter \textbf{múltiplos modos}
+        \item
+        \texttt{<0>}: modo normal de análise
+        \item
+        \texttt{<state\_comment>}: modo ``dentro de
+        comentário em bloco''
+        \item
+        O analisador muda de modo conforme encontra
+        \texttt{/*} e \texttt{*/}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Regras com Start Codes}
-\protect\hypertarget{regras-com-start-codes}{}
-\begin{lstlisting}
--- comentário em bloco:
-<0>             "/*"  { nestComment `andBegin` state_comment }
-<0>             "*/"  { \_ _ -> alexError "Unexpected close comment!" }
-<state_comment> "/*"  { nestComment }
-<state_comment> "*/"  { unnestComment }
-<state_comment> .     ;
-<state_comment> \n    ;
-\end{lstlisting}
+
+    \begin{lstlisting}
+        -- comentário em bloco:
+        <0>             "/*"  { nestComment `andBegin` state_comment }
+        <0>             "*/"  { \_ _ -> alexError "Unexpected close comment!" }
+        <state_comment> "/*"  { nestComment }
+        <state_comment> "*/"  { unnestComment }
+        <state_comment> .     ;
+        <state_comment> \n    ;
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Regras com Start Codes}
-\protect\hypertarget{regras-com-start-codes-1}{}
-\begin{itemize}
 
-\item
-  \texttt{andBegin state\_comment}: muda para o modo de
-  comentário
-\item
-  Em \texttt{state\_comment}: ignora tudo exceto
-  \texttt{/*} e \texttt{*/}
-\item
-  \texttt{*/} sem \texttt{/*}
-  correspondente -> erro imediato
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \texttt{andBegin state\_comment}: muda para o modo de
+        comentário
+        \item
+        Em \texttt{state\_comment}: ignora tudo exceto
+        \texttt{/*} e \texttt{*/}
+        \item
+        \texttt{*/} sem \texttt{/*}
+        correspondente -> erro imediato
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Def. do Estado}
-\protect\hypertarget{def.-do-estado}{}
-\begin{lstlisting}[language=Haskell]
-data AlexUserState = AlexUserState
-  { nestLevel :: Int   -- nível de aninhamento de comentários
-  }
 
-alexInitUserState :: AlexUserState
-alexInitUserState = AlexUserState { nestLevel = 0 }
-\end{lstlisting}
+    \begin{lstlisting}[language=Haskell]
+        data AlexUserState = AlexUserState
+        { nestLevel :: Int   -- nível de aninhamento de comentários
+        }
+
+        alexInitUserState :: AlexUserState
+        alexInitUserState = AlexUserState { nestLevel = 0 }
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Def. do Estado}
-\protect\hypertarget{def.-do-estado-1}{}
-\begin{itemize}
 
-\item
-  \texttt{nestLevel = 0}: fora de qualquer comentário
-\item
-  \texttt{nestLevel = 1}: dentro de
-  \texttt{/* ... */}
-\item
-  \texttt{nestLevel = 2}: dentro de
-  \texttt{/* /* ... */ */}
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \texttt{nestLevel = 0}: fora de qualquer comentário
+        \item
+        \texttt{nestLevel = 1}: dentro de
+        \texttt{/* ... */}
+        \item
+        \texttt{nestLevel = 2}: dentro de
+        \texttt{/* /* ... */ */}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Funções de Aninhamento}
-\protect\hypertarget{funuxe7uxf5es-de-aninhamento}{}
-\begin{itemize}
 
-\item
-  Aumentando o aninhamento
-\end{itemize}
+    \begin{itemize}
 
-\begin{lstlisting}[language=Haskell]
-nestComment :: AlexInput -> Int -> Alex Token
-nestComment _ _ = do
-    modify (\s -> s { nestLevel = nestLevel s + 1 })
-    alexMonadScan
-\end{lstlisting}
+        \item
+        Aumentando o aninhamento
+    \end{itemize}
+
+    \begin{lstlisting}[language=Haskell]
+        nestComment :: AlexInput -> Int -> Alex Token
+        nestComment _ _ = do
+        modify (\s -> s { nestLevel = nestLevel s + 1 })
+        alexMonadScan
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Funções de Aninhamento}
-\protect\hypertarget{funuxe7uxf5es-de-aninhamento-1}{}
-\begin{itemize}
 
-\item
-  Diminuindo o aninhamento
-\end{itemize}
+    \begin{itemize}
 
-\begin{lstlisting}[language=Haskell]
-unnestComment :: AlexInput -> Int -> Alex Token
-unnestComment _ _ = do
-    st <- get
-    let level = nestLevel st - 1
-    put st { nestLevel = level }
-    if level == 0
-      then alexSetStartCode 0 >> alexMonadScan
-      else alexMonadScan
-\end{lstlisting}
+        \item
+        Diminuindo o aninhamento
+    \end{itemize}
+
+    \begin{lstlisting}[language=Haskell]
+        unnestComment :: AlexInput -> Int -> Alex Token
+        unnestComment _ _ = do
+        st <- get
+        let level = nestLevel st - 1
+        put st { nestLevel = level }
+        if level == 0
+        then alexSetStartCode 0 >> alexMonadScan
+        else alexMonadScan
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Manipulação do Estado}
-\protect\hypertarget{manipulauxe7uxe3o-do-estado}{}
-\begin{lstlisting}[language=Haskell]
-get    :: Alex AlexUserState
-put    :: AlexUserState -> Alex ()
-modify :: (AlexUserState -> AlexUserState) -> Alex ()
-\end{lstlisting}
+
+    \begin{lstlisting}[language=Haskell]
+        get    :: Alex AlexUserState
+        put    :: AlexUserState -> Alex ()
+        modify :: (AlexUserState -> AlexUserState) -> Alex ()
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Manipulação do Estado}
-\protect\hypertarget{manipulauxe7uxe3o-do-estado-1}{}
-\begin{itemize}
 
-\item
-  \texttt{get}: lê o estado customizado atual
-\item
-  \texttt{put}: substitui o estado por um novo
-\item
-  \texttt{modify}: aplica uma função de transformação
-  ao estado
-\item
-  Padrão idêntico à mônada de estado de Haskell
-  (\texttt{State})
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \texttt{get}: lê o estado customizado atual
+        \item
+        \texttt{put}: substitui o estado por um novo
+        \item
+        \texttt{modify}: aplica uma função de transformação
+        ao estado
+        \item
+        Padrão idêntico à mônada de estado de Haskell
+        (\texttt{State})
+    \end{itemize}
 \end{frame}
 
-\hypertarget{gerauxe7uxe3o-e-uso}{%
+
 \section{Geração e Uso}\label{gerauxe7uxe3o-e-uso}}
 
 \begin{frame}[fragile]{Como Gerar o Analisador}
-\protect\hypertarget{como-gerar-o-analisador}{}
-\begin{lstlisting}[language=bash]
-alex ExpLexer.x           # gera ExpLexer.hs
-alex -o ExpLexer.hs ExpLexer.x  # especifica o arquivo de saída
-\end{lstlisting}
+
+    \begin{lstlisting}[language=bash]
+        alex ExpLexer.x           # gera ExpLexer.hs
+        alex -o ExpLexer.hs ExpLexer.x  # especifica o arquivo de saída
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Como Gerar o Analisador}
-\protect\hypertarget{como-gerar-o-analisador-1}{}
-\begin{itemize}
 
-\item
-  Com Cabal: automático se \texttt{alex} está em
-  \texttt{build-tool-depends}
-\item
-  O arquivo gerado é um módulo Haskell normal
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Com Cabal: automático se \texttt{alex} está em
+        \texttt{build-tool-depends}
+        \item
+        O arquivo gerado é um módulo Haskell normal
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Interface do Analisador Gerado}
-\protect\hypertarget{interface-do-analisador-gerado}{}
-\begin{lstlisting}[language=Haskell]
--- Executa o analisador sobre uma String
-runAlex :: String -> Alex a -> Either String a
 
--- Obtém o próximo token
-alexMonadScan :: Alex Token
+    \begin{lstlisting}[language=Haskell]
+        -- Executa o analisador sobre uma String
+        runAlex :: String -> Alex a -> Either String a
 
--- Sinaliza um erro
-alexError :: String -> Alex a
-\end{lstlisting}
+        -- Obtém o próximo token
+        alexMonadScan :: Alex Token
+
+        -- Sinaliza um erro
+        alexError :: String -> Alex a
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Usando o Analisador em Produção}
-\protect\hypertarget{usando-o-analisador-em-produuxe7uxe3o}{}
-\begin{lstlisting}[language=Haskell]
--- Obtém todos os tokens de uma String
-tokenize :: String -> Either String [Token]
-tokenize input = runAlex input loop
-  where
-    loop = do
-      tok <- alexMonadScan
-      case lexeme tok of
+
+    \begin{lstlisting}[language=Haskell]
+        -- Obtém todos os tokens de uma String
+        tokenize :: String -> Either String [Token]
+        tokenize input = runAlex input loop
+        where
+        loop = do
+        tok <- alexMonadScan
+        case lexeme tok of
         TEOF -> return []
         _    -> (tok :) <$> loop
-\end{lstlisting}
+    \end{lstlisting}
 \end{frame}
 
-\hypertarget{conclusuxe3o}{%
+
 \section{Conclusão}\label{conclusuxe3o}}
 
 \begin{frame}{Conclusão}
-\protect\hypertarget{conclusuxe3o-1}{}
-\begin{itemize}
-\item
-  Nesta aula apresentamos o gerador Alex.
-\item
-  Criação automática de analisadores léxicos eficientes a partir de
-  expressões regulares.
-\item
-  Próximas aulas: Análise sintática.
-\end{itemize}
+
+    \begin{itemize}
+        \item
+        Nesta aula apresentamos o gerador Alex.
+        \item
+        Criação automática de analisadores léxicos eficientes a partir de
+        expressões regulares.
+        \item
+        Próximas aulas: Análise sintática.
+    \end{itemize}
 \end{frame}

@@ -1,650 +1,650 @@
-\subtitle{\bf Aula 7 - Motivaç
+\subtitle{\bf Aula 7 - Motivação}
 \begin{frame}[t,plain]
-\titlepage
+    \titlepage
 \end{frame}
 
 \begin{frame}{Objetivos}
-\protect\hypertarget{objetivos-1}{}
-\begin{itemize}
-\item
-  Apresentar o formalismo de PEGs para descrição de analisadores
-  sintáticos.
-\item
-  Apresentar o conceito de boa-formação e sua relação com a terminação
-  em PEG.
-\end{itemize}
+
+    \begin{itemize}
+        \item
+        Apresentar o formalismo de PEGs para descrição de analisadores
+        sintáticos.
+        \item
+        Apresentar o conceito de boa-formação e sua relação com a terminação
+        em PEG.
+    \end{itemize}
 \end{frame}
 
-\hypertarget{motivauxe7uxe3o}{%
+
 \section{Motivação}\label{motivauxe7uxe3o}}
 
 \begin{frame}{Motivação}
-\protect\hypertarget{motivauxe7uxe3o-1}{}
-\begin{itemize}
 
-\item
-  Combinadores de parsing são poderosos, mas GLCs podem ser ambíguas.
+    \begin{itemize}
 
-  \begin{itemize}
+        \item
+        Combinadores de parsing são poderosos, mas GLCs podem ser ambíguas.
 
-  \item
-    Como lidar com recursão à esquerda?
-  \end{itemize}
-\item
-  Algumas linguagens são difíceis de especificar sem ambiguidade.
-\end{itemize}
+        \begin{itemize}
+
+            \item
+            Como lidar com recursão à esquerda?
+        \end{itemize}
+        \item
+        Algumas linguagens são difíceis de especificar sem ambiguidade.
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Motivação}
-\protect\hypertarget{motivauxe7uxe3o-2}{}
-\begin{itemize}
 
-\item
-  \textbf{PEGs}: formalismo com escolha determinística
-\item
-  Sem ambiguidade por definição: único resultado para cada entrada
-\item
-  Correspondem diretamente a parsers descendentes recursivos
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \textbf{PEGs}: formalismo com escolha determinística
+        \item
+        Sem ambiguidade por definição: único resultado para cada entrada
+        \item
+        Correspondem diretamente a parsers descendentes recursivos
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{GLC vs.~PEG: Diferença Fundamental}
-\protect\hypertarget{glc-vs.-peg-diferenuxe7a-fundamental}{}
-\begin{table}
-\begin{tabular}[]{@{}lll@{}}
-\toprule
-Aspecto & GLC & PEG \\
-\midrule
 
-Escolha & Não-determinística & \textbf{Ordenada} \\
-Ambiguidade & Possível & Impossível \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}lll@{}}
+            \toprule
+            Aspecto & GLC & PEG \\
+            \midrule
+
+            Escolha & Não-determinística & \textbf{Ordenada} \\
+            Ambiguidade & Possível & Impossível \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 \end{frame}
 
 \begin{frame}{GLC vs.~PEG: Diferença Fundamental}
-\protect\hypertarget{glc-vs.-peg-diferenuxe7a-fundamental-1}{}
-\begin{table}
-\begin{tabular}[]{@{}lll@{}}
-\toprule
-Aspecto & GLC & PEG \\
-\midrule
 
-Recursão à esquerda & Suporta naturalmente & Não suporta (loop) \\
-Predicados lookahead & Não tem & Sim (\(!e\), \(\&e\)) \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}lll@{}}
+            \toprule
+            Aspecto & GLC & PEG \\
+            \midrule
+
+            Recursão à esquerda & Suporta naturalmente & Não suporta (loop) \\
+            Predicados lookahead & Não tem & Sim (\(!e\), \(\&e\)) \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 \end{frame}
 
 \begin{frame}{GLC vs.~PEG: Diferença Fundamental}
-\protect\hypertarget{glc-vs.-peg-diferenuxe7a-fundamental-2}{}
-\begin{table}
-\begin{tabular}[]{@{}lll@{}}
-\toprule
-Aspecto & GLC & PEG \\
-\midrule
 
-Poder expressivo & Linguagens livres de contexto & Não determ. \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}lll@{}}
+            \toprule
+            Aspecto & GLC & PEG \\
+            \midrule
+
+            Poder expressivo & Linguagens livres de contexto & Não determ. \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Escolha Não-Determinística vs.~Ordenada}
-\protect\hypertarget{escolha-nuxe3o-determinuxedstica-vs.-ordenada}{}
-\begin{itemize}
 
-\item
-  \textbf{GLC}: \(A \to \alpha \mid \beta\) --- tenta \(\alpha\)
-  \textbf{e} \(\beta\) em paralelo
-\item
-  \textbf{PEG}: \(A \leftarrow e_1 / e_2\) --- tenta \(e_1\); \textbf{só
-  se \(e_1\) falhar}, tenta \(e_2\)
-\item
-  A escolha ordenada \texttt{/} é determinística: no
-  máximo um resultado
-\item
-  Essa semântica elimina toda ambiguidade
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \textbf{GLC}: \(A \to \alpha \mid \beta\) --- tenta \(\alpha\)
+        \textbf{e} \(\beta\) em paralelo
+        \item
+        \textbf{PEG}: \(A \leftarrow e_1 / e_2\) --- tenta \(e_1\); \textbf{só
+        se \(e_1\) falhar}, tenta \(e_2\)
+        \item
+        A escolha ordenada \texttt{/} é determinística: no
+        máximo um resultado
+        \item
+        Essa semântica elimina toda ambiguidade
+    \end{itemize}
 \end{frame}
 
 
 
 \begin{frame}{Operadores de PEG}
-\protect\hypertarget{operadores-de-peg-1}{}
-\begin{table}
-\begin{tabular}[]{@{}lll@{}}
-\toprule
-Expressão & Nome & Semântica \\
-\midrule
 
-\(\varepsilon\) & vazio & Sempre tem sucesso sem consumir \\
-\(a\) & terminal & Consome e casa com símbolo \(a\) \\
-\(A\) & não-terminal & Invoca a regra de nome \(A\) \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}lll@{}}
+            \toprule
+            Expressão & Nome & Semântica \\
+            \midrule
+
+            \(\varepsilon\) & vazio & Sempre tem sucesso sem consumir \\
+            \(a\) & terminal & Consome e casa com símbolo \(a\) \\
+            \(A\) & não-terminal & Invoca a regra de nome \(A\) \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 \end{frame}
 
 \begin{frame}{Operadores de PEG}
-\protect\hypertarget{operadores-de-peg-2}{}
-\begin{table}
-\begin{tabular}[]{@{}lll@{}}
-\toprule
-Expressão & Nome & Semântica \\
-\midrule
 
-\(e_1\; e_2\) & sequência & \(e_1\) depois \(e_2\) sobre o restante \\
-\(e_1 / e_2\) & escolha ordenada & Tenta \(e_1\); se falhar, tenta
-\(e_2\) \\
-\(e^*\) & repetição gulosa & Zero ou mais ocorrências de \(e\) \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}lll@{}}
+            \toprule
+            Expressão & Nome & Semântica \\
+            \midrule
+
+            \(e_1\; e_2\) & sequência & \(e_1\) depois \(e_2\) sobre o restante \\
+            \(e_1 / e_2\) & escolha ordenada & Tenta \(e_1\); se falhar, tenta
+            \(e_2\) \\
+            \(e^*\) & repetição gulosa & Zero ou mais ocorrências de \(e\) \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 \end{frame}
 
 \begin{frame}{Operadores de PEG}
-\protect\hypertarget{operadores-de-peg-3}{}
-\begin{table}
-\begin{tabular}[]{@{}lll@{}}
-\toprule
-Expressão & Nome & Semântica \\
-\midrule
 
-\(e^+\) & repetição positiva & Uma ou mais ocorrências de \(e\) \\
-\(e\;?\) & opcional & Zero ou uma ocorrência de \(e\) \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}lll@{}}
+            \toprule
+            Expressão & Nome & Semântica \\
+            \midrule
+
+            \(e^+\) & repetição positiva & Uma ou mais ocorrências de \(e\) \\
+            \(e\;?\) & opcional & Zero ou uma ocorrência de \(e\) \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 \end{frame}
 
 \begin{frame}{Operadores de PEG}
-\protect\hypertarget{operadores-de-peg-4}{}
-\begin{table}
-\begin{tabular}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1364}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2727}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.5909}}@{}}
-\toprule
-\begin{minipage}[b]{\linewidth}\raggedright
-Expressão
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Nome
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Semântica
-\end{minipage} \\
-\midrule
 
-\(!e\) & predicado negativo & Sucesso se \(e\) falha; não consome \\
-\(\&e\) & predicado positivo & Sucesso se \(e\) tem sucesso; não
-consome \\
-\bottomrule
+    \begin{table}
+        \begin{tabular}[]{@{}
+            >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1364}}
+            >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2727}}
+            >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.5909}}@{}}
+            \toprule
+            \begin{minipage}[b]{\linewidth}\raggedright
+                Expressão
+            \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+            Nome
+        \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+        Semântica
+    \end{minipage} \\
+    \midrule
+
+    \(!e\) & predicado negativo & Sucesso se \(e\) falha; não consome \\
+    \(\&e\) & predicado positivo & Sucesso se \(e\) tem sucesso; não
+    consome \\
+    \bottomrule
 \end{tabular}
 \end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Escolha Ordenada}
-\protect\hypertarget{escolha-ordenada}{}
-\begin{lstlisting}
-Se e1 tem SUCESSO:
-  -> Retorna o resultado de e1 imediatamente
-  -> e2 NUNCA é tentada
 
-Se e1 FALHA:
-  -> e2 é tentada sobre a MESMA entrada original
-  -> Retorna o resultado de e2 (sucesso ou falha)
-\end{lstlisting}
+    \begin{lstlisting}
+        Se e1 tem SUCESSO:
+        -> Retorna o resultado de e1 imediatamente
+        -> e2 NUNCA é tentada
 
-\begin{itemize}
+        Se e1 FALHA:
+        -> e2 é tentada sobre a MESMA entrada original
+        -> Retorna o resultado de e2 (sucesso ou falha)
+    \end{lstlisting}
 
-\item
-  Elimina ambiguidade: o primeiro match sempre vence
-\item
-  Diferença crucial em relação à GLC
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Elimina ambiguidade: o primeiro match sempre vence
+        \item
+        Diferença crucial em relação à GLC
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Predicados: Lookahead sem Consumo}
-\protect\hypertarget{predicados-lookahead-sem-consumo}{}
-\begin{itemize}
 
-\item
-  \(!e\) (\textbf{predicado negativo}): tem sucesso se e somente se
-  \(e\) falha; não consome entrada
-\item
-  \(\&e\) (\textbf{predicado positivo}): tem sucesso se e somente se
-  \(e\) tem sucesso; não consome entrada
-\item
-  Equivalência: \(\&e \equiv !(! e)\)
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \(!e\) (\textbf{predicado negativo}): tem sucesso se e somente se
+        \(e\) falha; não consome entrada
+        \item
+        \(\&e\) (\textbf{predicado positivo}): tem sucesso se e somente se
+        \(e\) tem sucesso; não consome entrada
+        \item
+        Equivalência: \(\&e \equiv !(! e)\)
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo}
-\protect\hypertarget{exemplo}{}
-Exemplo --- reconhece \texttt{if} sem aceitar
-\texttt{iff}:
 
-\[\texttt{if}\; ![\text{a-zA-Z0-9}]\]
+    Exemplo --- reconhece \texttt{if} sem aceitar
+    \texttt{iff}:
 
-\begin{itemize}
+    \[\texttt{if}\; ![\text{a-zA-Z0-9}]\]
 
-\item
-  Casa \texttt{if} (com espaço) mas não
-  \texttt{iff}
-\item
-  O predicado verifica sem consumir o caractere seguinte
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Casa \texttt{if} (com espaço) mas não
+        \texttt{iff}
+        \item
+        O predicado verifica sem consumir o caractere seguinte
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Repetição Gulosa}
-\protect\hypertarget{repetiuxe7uxe3o-gulosa}{}
-A repetição em PEGs é definida como:
 
-\[e^* \leftarrow e\; e^* \;/\; \varepsilon\]
+    A repetição em PEGs é definida como:
+
+    \[e^* \leftarrow e\; e^* \;/\; \varepsilon\]
 \end{frame}
 
 \begin{frame}{Repetição Gulosa}
-\protect\hypertarget{repetiuxe7uxe3o-gulosa-1}{}
-\begin{itemize}
 
-\item
-  A escolha é ordenada: \textbf{sempre tenta mais uma ocorrência} antes
-  de aceitar vazio
-\item
-  Resultado: \(e^*\) é sempre \textbf{guloso} --- consume o máximo
-  possível
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        A escolha é ordenada: \textbf{sempre tenta mais uma ocorrência} antes
+        de aceitar vazio
+        \item
+        Resultado: \(e^*\) é sempre \textbf{guloso} --- consume o máximo
+        possível
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Repetição Gulosa}
-\protect\hypertarget{repetiuxe7uxe3o-gulosa-2}{}
-\begin{itemize}
 
-\item
-  Contraste com GLCs: a repetição não é determinística
-\item
-  Garante que \(e^*\) sempre devolve o maior prefixo possível
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Contraste com GLCs: a repetição não é determinística
+        \item
+        Garante que \(e^*\) sempre devolve o maior prefixo possível
+    \end{itemize}
 \end{frame}
 
-\hypertarget{exemplos}{%
+
 \section{Exemplos}\label{exemplos}}
 
 \begin{frame}{Exemplo}
-\protect\hypertarget{exemplo-1}{}
-\begin{itemize}
 
-\item
-  A linguagem \(\{a^nb^nc^n\,|\,n\geq 0\}\) não é uma LLC.
+    \begin{itemize}
 
-  \begin{itemize}
+        \item
+        A linguagem \(\{a^nb^nc^n\,|\,n\geq 0\}\) não é uma LLC.
 
-  \item
-    Demonstração usando lema do bombeamento.
-  \end{itemize}
-\item
-  Porém, é possível construir uma PEG que a aceita.
-\end{itemize}
+        \begin{itemize}
+
+            \item
+            Demonstração usando lema do bombeamento.
+        \end{itemize}
+        \item
+        Porém, é possível construir uma PEG que a aceita.
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Exemplo}
-\protect\hypertarget{exemplo-2}{}
-\begin{itemize}
 
-\item
-  Chave: uso de predicados positivos para permitir um lookahead
-  arbitrário.
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Chave: uso de predicados positivos para permitir um lookahead
+        arbitrário.
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Exemplo}
-\protect\hypertarget{exemplo-3}{}
-\[
-\begin{array}{lcl}
-   A & \leftarrow & a A b\,/\,\epsilon\\
-   B & \leftarrow & b B c\,/\,\epsilon\\
-\end{array}
-\]
 
-\begin{itemize}
+    \[
+    \begin{array}{lcl}
+        A & \leftarrow & a A b\,/\,\epsilon\\
+        B & \leftarrow & b B c\,/\,\epsilon\\
+    \end{array}
+    \]
 
-\item
-  Expressão inicial: \(\& A a^*B\,/\,!.\)
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Expressão inicial: \(\& A a^*B\,/\,!.\)
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Exemplo}
-\protect\hypertarget{exemplo-4}{}
-\begin{itemize}
 
-\item
-  PEG para expressões
-\end{itemize}
+    \begin{itemize}
 
-\[\begin{array}{lcl}
-E &\leftarrow& T\; (\texttt{+}\; T)^* \\
-T &\leftarrow& F\; (*\; F)^* \\
-F &\leftarrow& \texttt{(}\; E\; \texttt{)} \;/\; [0\text{-}9]^+
+        \item
+        PEG para expressões
+    \end{itemize}
+
+    \[\begin{array}{lcl}
+    E &\leftarrow& T\; (\texttt{+}\; T)^* \\
+    T &\leftarrow& F\; (*\; F)^* \\
+    F &\leftarrow& \texttt{(}\; E\; \texttt{)} \;/\; [0\text{-}9]^+
 \end{array}\]
 \end{frame}
 
 \begin{frame}{Exemplo}
-\protect\hypertarget{exemplo-5}{}
-\begin{itemize}
 
-\item
-  Associatividade à esquerda expressa por \textbf{repetição}, não
-  recursão
-\item
-  Sem recursão à esquerda (problema de parsers descendentes)
-\item
-  A GLC equivalente precisaria de recursão à esquerda ou transformação
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Associatividade à esquerda expressa por \textbf{repetição}, não
+        recursão
+        \item
+        Sem recursão à esquerda (problema de parsers descendentes)
+        \item
+        A GLC equivalente precisaria de recursão à esquerda ou transformação
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Comparação}
-\protect\hypertarget{comparauxe7uxe3o}{}
-GLC com precedência: \[E \to E + T \mid T \qquad T \to T * F \mid F\]
+
+    GLC com precedência: \[E \to E + T \mid T \qquad T \to T * F \mid F\]
 \end{frame}
 
 \begin{frame}{Comparação}
-\protect\hypertarget{comparauxe7uxe3o-1}{}
-PEG equivalente:
-\[E \leftarrow T\; (\texttt{+}\; T)^* \qquad T \leftarrow F\; (*\; F)^*\]
 
-\begin{itemize}
+    PEG equivalente:
+    \[E \leftarrow T\; (\texttt{+}\; T)^* \qquad T \leftarrow F\; (*\; F)^*\]
 
-\item
-  PEG é mais direta: não precisa de recursão à esquerda
-\item
-  O operador \((\cdot)^*\) captura a repetição iterativamente
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        PEG é mais direta: não precisa de recursão à esquerda
+        \item
+        O operador \((\cdot)^*\) captura a repetição iterativamente
+    \end{itemize}
 \end{frame}
 
-\hypertarget{terminauxe7uxe3o-e-boa-formauxe7uxe3o}{%
+
 \section{Terminação e
 Boa-Formação}\label{terminauxe7uxe3o-e-boa-formauxe7uxe3o}}
 
 \begin{frame}{Terminação}
-\protect\hypertarget{terminauxe7uxe3o}{}
-Uma PEG é \textbf{bem formada} (e portanto termina) se:
 
-\begin{enumerate}
+    Uma PEG é \textbf{bem formada} (e portanto termina) se:
 
-\item
-  \textbf{Não há recursão à esquerda} direta ou indireta
-\item
-  \textbf{Toda repetição \(e^*\) é tal que \(e\) consume ao menos um
-  símbolo} (não pode ter sucesso sem consumir entrada)
-\end{enumerate}
+    \begin{enumerate}
+
+        \item
+        \textbf{Não há recursão à esquerda} direta ou indireta
+        \item
+        \textbf{Toda repetição \(e^*\) é tal que \(e\) consume ao menos um
+        símbolo} (não pode ter sucesso sem consumir entrada)
+    \end{enumerate}
 \end{frame}
 
 \begin{frame}{Terminação}
-\protect\hypertarget{terminauxe7uxe3o-1}{}
-\begin{itemize}
 
-\item
-  Condição 1: recursão à esquerda causaria loop infinito em parsers
-  descendentes
-\item
-  Condição 2: se \(e\) pode ter sucesso sem consumir, \(e^*\) repetiria
-  indefinidamente
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Condição 1: recursão à esquerda causaria loop infinito em parsers
+        descendentes
+        \item
+        Condição 2: se \(e\) pode ter sucesso sem consumir, \(e^*\) repetiria
+        indefinidamente
+    \end{itemize}
 \end{frame}
 
-\hypertarget{implementauxe7uxe3o-em-haskell}{%
+
 \section{Implementação em
 Haskell}\label{implementauxe7uxe3o-em-haskell}}
 
 \begin{frame}[fragile]{O Tipo \texttt{Result}}
-\protect\hypertarget{o-tipo-result}{}
-\begin{lstlisting}[language=Haskell]
-data Result d a
-  = Pure a           -- sucesso sem consumir entrada
-  | Commit d a       -- sucesso consumindo entrada (d = resto)
-  | Fail String Bool -- falha (Bool: houve consumo?)
-\end{lstlisting}
+
+    \begin{lstlisting}[language=Haskell]
+        data Result d a
+        = Pure a           -- sucesso sem consumir entrada
+        | Commit d a       -- sucesso consumindo entrada (d = resto)
+        | Fail String Bool -- falha (Bool: houve consumo?)
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{O Tipo \texttt{Result}}
-\protect\hypertarget{o-tipo-result-1}{}
-\begin{itemize}
 
-\item
-  \texttt{Pure}: sucesso sem consumo -> pode tentar
-  alternativa
-\item
-  \texttt{Commit}: sucesso com consumo -> sem retrocesso
-  possível
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \texttt{Pure}: sucesso sem consumo -> pode tentar
+        alternativa
+        \item
+        \texttt{Commit}: sucesso com consumo -> sem retrocesso
+        possível
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{O Tipo \texttt{Result}}
-\protect\hypertarget{o-tipo-result-2}{}
-\begin{itemize}
 
-\item
-  \texttt{Fail \_ False}: falha sem consumo -> pode
-  tentar alternativa
-\item
-  \texttt{Fail \_ True}: falha \textbf{com consumo} ->
-  \textbf{sem} retrocesso
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \texttt{Fail \_ False}: falha sem consumo -> pode
+        tentar alternativa
+        \item
+        \texttt{Fail \_ True}: falha \textbf{com consumo} ->
+        \textbf{sem} retrocesso
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{O Tipo \texttt{PExp}}
-\protect\hypertarget{o-tipo-pexp}{}
-\begin{lstlisting}[language=Haskell]
-newtype PExp d a = PExp { runPExp :: d -> Result d a }
-\end{lstlisting}
 
-\begin{itemize}
+    \begin{lstlisting}[language=Haskell]
+        newtype PExp d a = PExp { runPExp :: d -> Result d a }
+    \end{lstlisting}
 
-\item
-  \texttt{d}: tipo da entrada (tipicamente
-  \texttt{String})
-\item
-  \texttt{a}: tipo do resultado
-\item
-  Instância de \texttt{Functor},
-  \texttt{Applicative},
-  \texttt{Alternative}, \texttt{Monad}
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \texttt{d}: tipo da entrada (tipicamente
+        \texttt{String})
+        \item
+        \texttt{a}: tipo do resultado
+        \item
+        Instância de \texttt{Functor},
+        \texttt{Applicative},
+        \texttt{Alternative}, \texttt{Monad}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Sequência}
-\protect\hypertarget{sequuxeancia}{}
-\begin{lstlisting}[language=Haskell]
-instance Applicative (PExp d) where
-  pure a = PExp $ \_ -> Pure a
-  PExp mf <*> PExp ma = PExp $ \d ->
-    case mf d of
-      Pure f      -> fmap f (ma d)
-      Fail s c    -> Fail s c
-      Commit d' f ->
+
+    \begin{lstlisting}[language=Haskell]
+        instance Applicative (PExp d) where
+        pure a = PExp $ \_ -> Pure a
+        PExp mf <*> PExp ma = PExp $ \d ->
+        case mf d of
+        Pure f      -> fmap f (ma d)
+        Fail s c    -> Fail s c
+        Commit d' f ->
         case ma d' of
-          Pure a       -> Commit d' (f a)
-          Fail s _     -> Fail s True  -- já consumiu!
-          Commit d'' a -> Commit d'' (f a)
-\end{lstlisting}
+        Pure a       -> Commit d' (f a)
+        Fail s _     -> Fail s True  -- já consumiu!
+        Commit d'' a -> Commit d'' (f a)
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Escolha}
-\protect\hypertarget{escolha}{}
-\begin{lstlisting}[language=Haskell]
-instance Alternative (PExp d) where
-  PExp ma <|> PExp mb = PExp $ \d ->
-    case ma d of
-      Fail _ False -> mb d  -- falhou SEM consumir: tenta alternativa
-      x            -> x     -- sucesso OU falhou COM consumo: retorna
-  empty = PExp $ \_ -> Fail "empty" False
-\end{lstlisting}
+
+    \begin{lstlisting}[language=Haskell]
+        instance Alternative (PExp d) where
+        PExp ma <|> PExp mb = PExp $ \d ->
+        case ma d of
+        Fail _ False -> mb d  -- falhou SEM consumir: tenta alternativa
+        x            -> x     -- sucesso OU falhou COM consumo: retorna
+        empty = PExp $ \_ -> Fail "empty" False
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{O Combinador \texttt{try}}
-\protect\hypertarget{o-combinador-try}{}
-\begin{lstlisting}[language=Haskell]
-try :: PExp d a -> PExp d a
-try (PExp m) = PExp $ \d ->
-  case m d of
-    Fail s _ -> Fail s False  -- converte qualquer falha em "sem consumo"
-    x        -> x
-\end{lstlisting}
+
+    \begin{lstlisting}[language=Haskell]
+        try :: PExp d a -> PExp d a
+        try (PExp m) = PExp $ \d ->
+        case m d of
+        Fail s _ -> Fail s False  -- converte qualquer falha em "sem consumo"
+        x        -> x
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{O Combinador \texttt{try}}
-\protect\hypertarget{o-combinador-try-1}{}
-\begin{itemize}
 
-\item
-  \texttt{try p} executa \texttt{p}
-  normalmente
-\item
-  Em caso de falha, \textbf{cancela} o consumo para fins de backtracking
-\item
-  Permite retroceder mesmo que \texttt{p} tenha
-  consumido parte da entrada
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \texttt{try p} executa \texttt{p}
+        normalmente
+        \item
+        Em caso de falha, \textbf{cancela} o consumo para fins de backtracking
+        \item
+        Permite retroceder mesmo que \texttt{p} tenha
+        consumido parte da entrada
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Escolha Ordenada}
-\protect\hypertarget{escolha-ordenada-1}{}
-\begin{lstlisting}[language=Haskell]
-infixl 3 </>
-(</>) :: PExp d a -> PExp d a -> PExp d a
-p </> q = try p <|> q
-\end{lstlisting}
+
+    \begin{lstlisting}[language=Haskell]
+        infixl 3 </>
+        (</>) :: PExp d a -> PExp d a -> PExp d a
+        p </> q = try p <|> q
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Escolha Ordenada}
-\protect\hypertarget{escolha-ordenada-2}{}
-\begin{itemize}
 
-\item
-  \texttt{p </> q}: tenta \texttt{p}
-  com backtracking garantido
-\item
-  Se \texttt{p} falha por qualquer razão,
-  \texttt{q} é tentado sobre a entrada original
-\item
-  Implementa diretamente a semântica de PEGs
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \texttt{p </> q}: tenta \texttt{p}
+        com backtracking garantido
+        \item
+        Se \texttt{p} falha por qualquer razão,
+        \texttt{q} é tentado sobre a entrada original
+        \item
+        Implementa diretamente a semântica de PEGs
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{O Predicado Negativo
-\texttt{not}}
-\protect\hypertarget{o-predicado-negativo-not}{}
-\begin{lstlisting}[language=Haskell]
-not :: PExp d a -> PExp d ()
-not (PExp m) = PExp $ \d ->
-  case m d of
-    Fail{} -> Pure ()            -- e falhou: sucesso sem consumir
-    _      -> Fail "unexpected" False  -- e teve sucesso: falha
-\end{lstlisting}
+    \texttt{not}}
+
+    \begin{lstlisting}[language=Haskell]
+        not :: PExp d a -> PExp d ()
+        not (PExp m) = PExp $ \d ->
+        case m d of
+        Fail{} -> Pure ()            -- e falhou: sucesso sem consumir
+        _      -> Fail "unexpected" False  -- e teve sucesso: falha
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo}
-\protect\hypertarget{exemplo-6}{}
-\begin{lstlisting}[language=Haskell]
-eof :: Stream d => PExp d ()
-eof = not anyChar  -- sucesso apenas no fim da entrada
-\end{lstlisting}
+
+    \begin{lstlisting}[language=Haskell]
+        eof :: Stream d => PExp d ()
+        eof = not anyChar  -- sucesso apenas no fim da entrada
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Combinadores Léxicos}
-\protect\hypertarget{combinadores-luxe9xicos}{}
-\begin{lstlisting}[language=Haskell]
-satisfy :: Stream d => (Char -> Bool) -> PExp d Char
-satisfy p = try $ do
-  x <- anyChar
-  x <$ guard (p x)
-\end{lstlisting}
+
+    \begin{lstlisting}[language=Haskell]
+        satisfy :: Stream d => (Char -> Bool) -> PExp d Char
+        satisfy p = try $ do
+        x <- anyChar
+        x <$ guard (p x)
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Combinadores Léxicos}
-\protect\hypertarget{combinadores-luxe9xicos-1}{}
-\begin{lstlisting}[language=Haskell]
-lexeme :: Stream d => PExp d a -> PExp d a
-lexeme m = m <* whiteSpace
-\end{lstlisting}
+
+    \begin{lstlisting}[language=Haskell]
+        lexeme :: Stream d => PExp d a -> PExp d a
+        lexeme m = m <* whiteSpace
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Combinadores léxicos}
-\protect\hypertarget{combinadores-luxe9xicos-2}{}
-\begin{lstlisting}[language=Haskell]
-symbol :: Stream d => Char -> PExp d Char
-symbol c = lexeme (char c)
-\end{lstlisting}
+
+    \begin{lstlisting}[language=Haskell]
+        symbol :: Stream d => Char -> PExp d Char
+        symbol c = lexeme (char c)
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Parser de Expressões}
-\protect\hypertarget{parser-de-expressuxf5es}{}
-\begin{lstlisting}[language=Haskell]
-data Exp = Lit Int | Exp :+: Exp | Exp :*: Exp
 
-expP :: Stream d => PExp d Exp
-expP = foldl (:+:) <$> termP <*> many (symbol '+' *> termP)
-\end{lstlisting}
+    \begin{lstlisting}[language=Haskell]
+        data Exp = Lit Int | Exp :+: Exp | Exp :*: Exp
+
+        expP :: Stream d => PExp d Exp
+        expP = foldl (:+:) <$> termP <*> many (symbol '+' *> termP)
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Parser de Expressões}
-\protect\hypertarget{parser-de-expressuxf5es-1}{}
-\begin{lstlisting}[language=Haskell]
-termP :: Stream d => PExp d Exp
-termP = foldl (:*:) <$> factP <*> many (symbol '*' *> factP)
-\end{lstlisting}
+
+    \begin{lstlisting}[language=Haskell]
+        termP :: Stream d => PExp d Exp
+        termP = foldl (:*:) <$> factP <*> many (symbol '*' *> factP)
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Parser de Expressões}
-\protect\hypertarget{parser-de-expressuxf5es-2}{}
-\begin{lstlisting}[language=Haskell]
-factP :: Stream d => PExp d Exp
-factP = between (symbol '(') (symbol ')') expP
-    </> Lit . foldl (\a b -> a*10+b) 0 <$> many1 digit
-\end{lstlisting}
+
+    \begin{lstlisting}[language=Haskell]
+        factP :: Stream d => PExp d Exp
+        factP = between (symbol '(') (symbol ')') expP
+        </> Lit . foldl (\a b -> a*10+b) 0 <$> many1 digit
+    \end{lstlisting}
 \end{frame}
 
-\hypertarget{conclusuxe3o}{%
+
 \section{Conclusão}\label{conclusuxe3o}}
 
 \begin{frame}{Conclusão}
-\protect\hypertarget{conclusuxe3o-1}{}
-\begin{itemize}
 
-\item
-  PEGs usam \textbf{escolha ordenada} \(e_1 / e_2\) em vez de
-  não-determinística
-\item
-  São \textbf{não-ambíguas por definição}: o primeiro match sempre vence
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        PEGs usam \textbf{escolha ordenada} \(e_1 / e_2\) em vez de
+        não-determinística
+        \item
+        São \textbf{não-ambíguas por definição}: o primeiro match sempre vence
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Conclusão}
-\protect\hypertarget{conclusuxe3o-2}{}
-\begin{itemize}
 
-\item
-  \textbf{Predicados} \(!e\) e \(\&e\) permitem lookahead de tamanho
-  arbitrário
-\item
-  A \textbf{repetição} \(e^*\) é gulosa por natureza da escolha ordenada
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \textbf{Predicados} \(!e\) e \(\&e\) permitem lookahead de tamanho
+        arbitrário
+        \item
+        A \textbf{repetição} \(e^*\) é gulosa por natureza da escolha ordenada
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Conclusão}
-\protect\hypertarget{conclusuxe3o-3}{}
-\begin{itemize}
 
-\item
-  PEGs bem formadas terminam sempre (sem recursão à esquerda, sem ciclos
-  vazios)
-\item
-  Implementação: o tipo \texttt{Result} distingue falha
-  com e sem consumo
-\item
-  \texttt{try} e \texttt{</>}
-  implementam backtracking explícito
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        PEGs bem formadas terminam sempre (sem recursão à esquerda, sem ciclos
+        vazios)
+        \item
+        Implementação: o tipo \texttt{Result} distingue falha
+        com e sem consumo
+        \item
+        \texttt{try} e \texttt{</>}
+        implementam backtracking explícito
+    \end{itemize}
 \end{frame}

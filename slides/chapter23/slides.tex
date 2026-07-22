@@ -1,375 +1,375 @@
 \subtitle{\bf Aula 23 - Introdução}
 \begin{frame}[t,plain]
-\titlepage
+    \titlepage
 \end{frame}
 
 \begin{frame}{Objetivos}
-\protect\hypertarget{objetivos-1}{}
-\begin{itemize}
-\item
-  Apresentar técnicas de teste sistemático de compiladores: geração
-  aleatória de programas, testes diferenciais e testes metamórficos.
-\item
-  Discutir a verificação formal de compiladores, com destaque para o
-  CompCert e a noção de preservação semântica.
-\item
-  Apresentar uma panorâmica de tópicos avançados de pesquisa: sistemas
-  de tipos expressivos, representações intermediárias modernas e
-  infraestrutura de otimização.
-\end{itemize}
+
+    \begin{itemize}
+        \item
+        Apresentar técnicas de teste sistemático de compiladores: geração
+        aleatória de programas, testes diferenciais e testes metamórficos.
+        \item
+        Discutir a verificação formal de compiladores, com destaque para o
+        CompCert e a noção de preservação semântica.
+        \item
+        Apresentar uma panorâmica de tópicos avançados de pesquisa: sistemas
+        de tipos expressivos, representações intermediárias modernas e
+        infraestrutura de otimização.
+    \end{itemize}
 \end{frame}
 
-\hypertarget{introduuxe7uxe3o}{%
+
 \section{Introdução}\label{introduuxe7uxe3o}}
 
 \begin{frame}{Por que Pesquisar Compiladores?}
-\protect\hypertarget{por-que-pesquisar-compiladores}{}
-\begin{itemize}
 
-\item
-  Todo programa de alto nível passa pelo compilador --- um bug pode
-  comprometer \textbf{todo o ecossistema}
-\item
-  \emph{Wrong-code bugs}: o compilador gera código errado sem avisar
-\item
-  GCC: \textgreater{} 15 milhões de linhas; LLVM: \textgreater{} 20
-  milhões de linhas
-\end{itemize}
+    \begin{itemize}
 
-A pesquisa em compiladores vai além de ``construir compiladores
-corretos'':
+        \item
+        Todo programa de alto nível passa pelo compilador --- um bug pode
+        comprometer \textbf{todo o ecossistema}
+        \item
+        \emph{Wrong-code bugs}: o compilador gera código errado sem avisar
+        \item
+        GCC: \textgreater{} 15 milhões de linhas; LLVM: \textgreater{} 20
+        milhões de linhas
+    \end{itemize}
 
-\begin{itemize}
+    A pesquisa em compiladores vai além de ``construir compiladores
+    corretos'':
 
-\item
-  Como \textbf{testá-los} sistematicamente?
-\item
-  Como \textbf{prová-los formalmente} corretos?
-\item
-  Como \textbf{enriquecer as linguagens} com sistemas de tipos mais
-  expressivos?
-\item
-  Como \textbf{representar programas} de forma mais eficiente?
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Como \textbf{testá-los} sistematicamente?
+        \item
+        Como \textbf{prová-los formalmente} corretos?
+        \item
+        Como \textbf{enriquecer as linguagens} com sistemas de tipos mais
+        expressivos?
+        \item
+        Como \textbf{representar programas} de forma mais eficiente?
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Tópicos Deste Capítulo}
-\protect\hypertarget{tuxf3picos-deste-capuxedtulo}{}
-\begin{enumerate}
 
-\item
-  \textbf{Teste de compiladores}: fuzzing, testes diferenciais,
-  metamórficos
-\item
-  \textbf{Verificação formal}: CompCert, simulações, Alive
-\item
-  \textbf{Sistemas de tipos avançados}: tipos dependentes, lineares,
-  session types
-\item
-  \textbf{Representações intermediárias}: SSA, VSDG
-\item
-  \textbf{Otimização}: inlining, vetorização, LLVM como infraestrutura
-\end{enumerate}
+    \begin{enumerate}
+
+        \item
+        \textbf{Teste de compiladores}: fuzzing, testes diferenciais,
+        metamórficos
+        \item
+        \textbf{Verificação formal}: CompCert, simulações, Alive
+        \item
+        \textbf{Sistemas de tipos avançados}: tipos dependentes, lineares,
+        session types
+        \item
+        \textbf{Representações intermediárias}: SSA, VSDG
+        \item
+        \textbf{Otimização}: inlining, vetorização, LLVM como infraestrutura
+    \end{enumerate}
 \end{frame}
 
 
 
 \begin{frame}{Geração Aleatória de Programas (Fuzzing)}
-\protect\hypertarget{gerauxe7uxe3o-aleatuxf3ria-de-programas-fuzzing}{}
-\textbf{CSmith} {[}Yang et al., 2011{]}:
 
-\begin{enumerate}
+    \textbf{CSmith} {[}Yang et al., 2011{]}:
 
-\item
-  Gera programas C aleatórios com semântica bem definida
-\item
-  Compila com múltiplos compiladores e níveis de otimização
-\item
-  Compara saídas: discrepâncias = bugs
-\end{enumerate}
+    \begin{enumerate}
 
-Este princípio chama-se \textbf{teste diferencial} (\emph{differential
-testing}):
+        \item
+        Gera programas C aleatórios com semântica bem definida
+        \item
+        Compila com múltiplos compiladores e níveis de otimização
+        \item
+        Compara saídas: discrepâncias = bugs
+    \end{enumerate}
 
-\begin{quote}
-``Dois compiladores corretos devem concordar, mesmo sem saber a resposta
-correta.''
-\end{quote}
+    Este princípio chama-se \textbf{teste diferencial} (\emph{differential
+    testing}):
 
-\textbf{Resultado}: centenas de bugs encontrados em GCC e LLVM.
+    \begin{quote}
+        ``Dois compiladores corretos devem concordar, mesmo sem saber a resposta
+        correta.''
+    \end{quote}
+
+    \textbf{Resultado}: centenas de bugs encontrados em GCC e LLVM.
 \end{frame}
 
 \begin{frame}{Teste Baseado em Propriedades}
-\protect\hypertarget{teste-baseado-em-propriedades}{}
-Popularizado pelo \textbf{QuickCheck} {[}Claessen \& Hughes, 2000{]}:
 
-\begin{itemize}
+    Popularizado pelo \textbf{QuickCheck} {[}Claessen \& Hughes, 2000{]}:
 
-\item
-  Especifica \textbf{propriedades} que o compilador deve satisfazer
-\item
-  A ferramenta gera inputs aleatórios para \textbf{falsificá-las}
-\end{itemize}
+    \begin{itemize}
 
-Exemplo de propriedade --- equivalência semântica após otimização:
+        \item
+        Especifica \textbf{propriedades} que o compilador deve satisfazer
+        \item
+        A ferramenta gera inputs aleatórios para \textbf{falsificá-las}
+    \end{itemize}
 
-\[\forall P\ \text{bem tipado}.\; \llbracket P \rrbracket = \llbracket \mathit{opt}(P) \rrbracket\]
+    Exemplo de propriedade --- equivalência semântica após otimização:
 
-\textbf{Testes metamórficos} {[}Le et al., 2014{]}: aplica
-transformações semânticas conhecidas ao programa-fonte:
+    \[\forall P\ \text{bem tipado}.\; \llbracket P \rrbracket = \llbracket \mathit{opt}(P) \rrbracket\]
 
-\begin{quote}
-``Se \(P'\) é obtido de \(P\) por substituição de \(x + 0\) por \(x\),
-então \(P\) e \(P'\) devem produzir o mesmo resultado compilados.''
-\end{quote}
+    \textbf{Testes metamórficos} {[}Le et al., 2014{]}: aplica
+    transformações semânticas conhecidas ao programa-fonte:
+
+    \begin{quote}
+        ``Se \(P'\) é obtido de \(P\) por substituição de \(x + 0\) por \(x\),
+        então \(P\) e \(P'\) devem produzir o mesmo resultado compilados.''
+    \end{quote}
 \end{frame}
 
-\hypertarget{verificauxe7uxe3o-formal-de-compiladores}{%
+
 \section{Verificação Formal de
 Compiladores}\label{verificauxe7uxe3o-formal-de-compiladores}}
 
 \begin{frame}{Preservação Semântica}
-\protect\hypertarget{preservauxe7uxe3o-semuxe2ntica}{}
-Um compilador \(\mathcal{C}\) é \textbf{correto} se para todo programa
-\(P\) bem tipado:
 
-\[P \Downarrow v \implies \mathcal{C}(P) \Downarrow v\]
+    Um compilador \(\mathcal{C}\) é \textbf{correto} se para todo programa
+    \(P\) bem tipado:
 
-A compila\~{c}ão \textbf{preserva o comportamento observável} do programa.
+    \[P \Downarrow v \implies \mathcal{C}(P) \Downarrow v\]
+
+    A compilação \textbf{preserva o comportamento observável} do programa.
 \end{frame}
 
 \begin{frame}{CompCert}
-\protect\hypertarget{compcert}{}
-\textbf{CompCert} {[}Leroy, 2009{]}: o primeiro compilador de uso real
-com preservação semântica provada formalmente.
 
-\begin{itemize}
+    \textbf{CompCert} {[}Leroy, 2009{]}: o primeiro compilador de uso real
+    com preservação semântica provada formalmente.
 
-\item
-  Compila C para assembly x86, PowerPC e ARM
-\item
-  Cada passagem acompanhada de prova mecânica no \textbf{Coq}
-\item
-  \textbf{Resultado}: estudo com CSmith descobriu \textbf{zero}
-  wrong-code bugs no CompCert, enquanto GCC e LLVM apresentaram dezenas
-\end{itemize}
+    \begin{itemize}
 
-\textbf{Estrutura da prova}: cada passagem \(\mathcal{T}\) é acompanhada
-de uma relação de \textbf{simulação}:
+        \item
+        Compila C para assembly x86, PowerPC e ARM
+        \item
+        Cada passagem acompanhada de prova mecânica no \textbf{Coq}
+        \item
+        \textbf{Resultado}: estudo com CSmith descobriu \textbf{zero}
+        wrong-code bugs no CompCert, enquanto GCC e LLVM apresentaram dezenas
+    \end{itemize}
 
-\[\frac{e \to e' \quad \mathcal{T}(e) \to^* \mathcal{T}(e')}{e \to^* v \implies \mathcal{T}(e) \to^* v}\]
+    \textbf{Estrutura da prova}: cada passagem \(\mathcal{T}\) é acompanhada
+    de uma relação de \textbf{simulação}:
+
+    \[\frac{e \to e' \quad \mathcal{T}(e) \to^* \mathcal{T}(e')}{e \to^* v \implies \mathcal{T}(e) \to^* v}\]
 \end{frame}
 
 \begin{frame}{Verificação de Passagens Individuais}
-\protect\hypertarget{verificauxe7uxe3o-de-passagens-individuais}{}
-Nem sempre é necessário verificar o compilador inteiro:
 
-\begin{itemize}
+    Nem sempre é necessário verificar o compilador inteiro:
 
-\item
-  \textbf{Alocação de registradores} {[}Rideau \& Leroy, 2010{]}:
-  verificada no Coq
-\item
-  \textbf{Compila\~{c}ão JIT} {[}Carbonneaux et al., 2014{]}: com garantias
-  de tempo real
-\item
-  \textbf{Alive} {[}Lopes et al., 2015{]}: verifica automaticamente
-  transformações de peephole do LLVM via SMT solvers
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \textbf{Alocação de registradores} {[}Rideau \& Leroy, 2010{]}:
+        verificada no Coq
+        \item
+        \textbf{Compilação JIT} {[}Carbonneaux et al., 2014{]}: com garantias
+        de tempo real
+        \item
+        \textbf{Alive} {[}Lopes et al., 2015{]}: verifica automaticamente
+        transformações de peephole do LLVM via SMT solvers
+    \end{itemize}
 \end{frame}
 
-\hypertarget{sistemas-de-tipos-avanuxe7ados}{%
+
 \section{Sistemas de Tipos
 Avançados}\label{sistemas-de-tipos-avanuxe7ados}}
 
 \begin{frame}{Tipos Dependentes}
-\protect\hypertarget{tipos-dependentes}{}
-Em sistemas de tipos comuns, tipos e valores habitam mundos separados.
-\textbf{Tipos dependentes} eliminam essa separação:
 
-\[\mathsf{Vec} : \mathbb{N} \to \mathsf{Type} \to \mathsf{Type}\]
+    Em sistemas de tipos comuns, tipos e valores habitam mundos separados.
+    \textbf{Tipos dependentes} eliminam essa separação:
 
-\[\mathsf{append} : \mathsf{Vec}\ m\ A \to \mathsf{Vec}\ n\ A \to \mathsf{Vec}\ (m + n)\ A\]
+    \[\mathsf{Vec} : \mathbb{N} \to \mathsf{Type} \to \mathsf{Type}\]
 
-\begin{itemize}
+    \[\mathsf{append} : \mathsf{Vec}\ m\ A \to \mathsf{Vec}\ n\ A \to \mathsf{Vec}\ (m + n)\ A\]
 
-\item
-  O compilador verifica \textbf{em compila\~{c}ão} que tamanhos são corretos
-\item
-  Acesso fora do intervalo é \textbf{impossível} de escrever
-\end{itemize}
+    \begin{itemize}
 
-\textbf{Linguagens}: Agda, Idris, Coq, Lean 4
+        \item
+        O compilador verifica \textbf{em compilação} que tamanhos são corretos
+        \item
+        Acesso fora do intervalo é \textbf{impossível} de escrever
+    \end{itemize}
 
-\textbf{Desafio}: inferência de tipos geralmente indecidível --- exige
-anotações explícitas.
+    \textbf{Linguagens}: Agda, Idris, Coq, Lean 4
+
+    \textbf{Desafio}: inferência de tipos geralmente indecidível --- exige
+    anotações explícitas.
 \end{frame}
 
 \begin{frame}[fragile]{Tipos Lineares}
-\protect\hypertarget{tipos-lineares}{}
-Um \textbf{tipo linear} garante que um recurso é usado \emph{exatamente
-uma vez}:
 
-\begin{lstlisting}
-open   : String -> File
-read   : File   -> (String, File)
-close  : File   -> Unit
-\end{lstlisting}
+    Um \textbf{tipo linear} garante que um recurso é usado \emph{exatamente
+    uma vez}:
 
-O compilador garante: - Todo arquivo aberto é fechado \textbf{exatamente
-uma vez} - Sem \emph{use after free}; sem \emph{double close}
+    \begin{lstlisting}
+        open   : String -> File
+        read   : File   -> (String, File)
+        close  : File   -> Unit
+    \end{lstlisting}
 
-\textbf{Rust}: o sistema de \emph{ownership} e \emph{borrows} é uma
-forma de tipos lineares/afins integrada a linguagem de sistemas.
+    O compilador garante: - Todo arquivo aberto é fechado \textbf{exatamente
+    uma vez} - Sem \emph{use after free}; sem \emph{double close}
 
-\textbf{Base teórica}: Lógica Linear {[}Girard, 1987{]}; Linear Type
-Theory {[}Wadler, 1990{]}.
+    \textbf{Rust}: o sistema de \emph{ownership} e \emph{borrows} é uma
+    forma de tipos lineares/afins integrada a linguagem de sistemas.
+
+    \textbf{Base teórica}: Lógica Linear {[}Girard, 1987{]}; Linear Type
+    Theory {[}Wadler, 1990{]}.
 \end{frame}
 
 \begin{frame}{Session Types}
-\protect\hypertarget{session-types}{}
-\textbf{Session types} tipam canais de comunicação:
 
-\[S = \mathsf{!Int}.\; \mathsf{!Int}.\; \mathsf{?Int}.\; \mathsf{end}\]
+    \textbf{Session types} tipam canais de comunicação:
 
-``Envie um inteiro, envie outro, receba um inteiro, encerre.''
+    \[S = \mathsf{!Int}.\; \mathsf{!Int}.\; \mathsf{?Int}.\; \mathsf{end}\]
 
-O cliente tem o tipo \textbf{dual} \(\bar{S}\):
+    ``Envie um inteiro, envie outro, receba um inteiro, encerre.''
 
-\[\bar{S} = \mathsf{?Int}.\; \mathsf{?Int}.\; \mathsf{!Int}.\; \mathsf{end}\]
+    O cliente tem o tipo \textbf{dual} \(\bar{S}\):
 
-O compilador garante ausência de \textbf{deadlock} e erros de protocolo
-em tempo de compila\~{c}ão.
+    \[\bar{S} = \mathsf{?Int}.\; \mathsf{?Int}.\; \mathsf{!Int}.\; \mathsf{end}\]
+
+    O compilador garante ausência de \textbf{deadlock} e erros de protocolo
+    em tempo de compilação.
 \end{frame}
 
-\hypertarget{representauxe7uxf5es-intermediuxe1rias}{%
+
 \section{Representações
 Intermediárias}\label{representauxe7uxf5es-intermediuxe1rias}}
 
 \begin{frame}[fragile]{Static Single Assignment (SSA)}
-\protect\hypertarget{static-single-assignment-ssa}{}
-Em SSA, \textbf{cada variável é atribuída exatamente uma vez}:
 
-\begin{lstlisting}[language=Python]
-# Antes da SSA:          # Apos SSA:
-x = 0                    x0 = 0
-x = x + 1                x1 = x0 + 1
-if b: x = 5              if b: x2 = 5
-else: x = 10             else: x3 = 10
-z = x + y                x4 = phi(x2, x3)
-                         z0 = x4 + y0
-\end{lstlisting}
+    Em SSA, \textbf{cada variável é atribuída exatamente uma vez}:
 
-A \textbf{função \(\phi\)} seleciona o valor correto no ponto de junção.
+    \begin{lstlisting}[language=Python]
+        # Antes da SSA:          # Apos SSA:
+        x = 0                    x0 = 0
+        x = x + 1                x1 = x0 + 1
+        if b: x = 5              if b: x2 = 5
+        else: x = 10             else: x3 = 10
+        z = x + y                x4 = phi(x2, x3)
+        z0 = x4 + y0
+    \end{lstlisting}
 
-\textbf{Por que SSA facilita otimizações?}
+    A \textbf{função \(\phi\)} seleciona o valor correto no ponto de junção.
 
-\begin{itemize}
+    \textbf{Por que SSA facilita otimizações?}
 
-\item
-  Propagação de constantes: trivial (uma definição por variável)
-\item
-  Eliminação de código morto: variáveis sem uso são imediatamente
-  identificáveis
-\item
-  Alocação de registradores: grafo de interferência calculado
-  eficientemente
-\end{itemize}
+    \begin{itemize}
 
-SSA é a representação central do \textbf{LLVM IR} e do \textbf{GCC
-GIMPLE}.
+        \item
+        Propagação de constantes: trivial (uma definição por variável)
+        \item
+        Eliminação de código morto: variáveis sem uso são imediatamente
+        identificáveis
+        \item
+        Alocação de registradores: grafo de interferência calculado
+        eficientemente
+    \end{itemize}
+
+    SSA é a representação central do \textbf{LLVM IR} e do \textbf{GCC
+    GIMPLE}.
 \end{frame}
 
 \begin{frame}{Value State Dependence Graph (VSDG)}
-\protect\hypertarget{value-state-dependence-graph-vsdg}{}
-O \textbf{VSDG} {[}Johnson et al., 2004{]} representa o programa como um
-grafo de dependências:
 
-\begin{table}
-\begin{tabular}[]{@{}ll@{}}
-\toprule
-Tipo de aresta & Significado \\
-\midrule
+    O \textbf{VSDG} {[}Johnson et al., 2004{]} representa o programa como um
+    grafo de dependências:
 
-\textbf{Valor} & Resultado de uma operação é entrada de outra \\
-\textbf{Estado} & Uma operação com efeito deve preceder outra \\
-\textbf{Controle} & Uma operação só executa se condição for
-satisfeita \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}ll@{}}
+            \toprule
+            Tipo de aresta & Significado \\
+            \midrule
 
-\textbf{Vantagem}: CSE é \textbf{gratuita} --- expressões idênticas são
-representadas pelo \textbf{mesmo nó}.
+            \textbf{Valor} & Resultado de uma operação é entrada de outra \\
+            \textbf{Estado} & Uma operação com efeito deve preceder outra \\
+            \textbf{Controle} & Uma operação só executa se condição for
+            satisfeita \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 
-Duas leituras independentes não têm aresta entre si --- podem ser
-reordenadas livremente.
+    \textbf{Vantagem}: CSE é \textbf{gratuita} --- expressões idênticas são
+    representadas pelo \textbf{mesmo nó}.
+
+    Duas leituras independentes não têm aresta entre si --- podem ser
+    reordenadas livremente.
 \end{frame}
 
 \begin{frame}{LLVM como Infraestrutura de Pesquisa}
-\protect\hypertarget{llvm-como-infraestrutura-de-pesquisa}{}
-\textbf{LLVM} {[}Lattner \& Adve, 2004{]}: principal plataforma de
-pesquisa em compiladores hoje.
 
-\begin{itemize}
+    \textbf{LLVM} {[}Lattner \& Adve, 2004{]}: principal plataforma de
+    pesquisa em compiladores hoje.
 
-\item
-  IR bem definida, documentada e manipulável via API
-\item
-  Passes (\emph{opt}): pipeline de otimizações composável
-\item
-  Clang (C/C++), Flang (Fortran), Kotlin/Native, Rust, Swift --- todos
-  usam LLVM
-\item
-  \textbf{TableGen}: geração automática de seleção de instruções por
-  especificação declarativa
-\end{itemize}
+    \begin{itemize}
 
-Pesquisadores implementam passagens como plugins LLVM e avaliam em
-programas reais.
+        \item
+        IR bem definida, documentada e manipulável via API
+        \item
+        Passes (\emph{opt}): pipeline de otimizações composável
+        \item
+        Clang (C/C++), Flang (Fortran), Kotlin/Native, Rust, Swift --- todos
+        usam LLVM
+        \item
+        \textbf{TableGen}: geração automática de seleção de instruções por
+        especificação declarativa
+    \end{itemize}
+
+    Pesquisadores implementam passagens como plugins LLVM e avaliam em
+    programas reais.
 \end{frame}
 
-\hypertarget{conclusuxe3o}{%
+
 \section{Conclusão}\label{conclusuxe3o}}
 
 \begin{frame}{Sumário do Capítulo}
-\protect\hypertarget{sumuxe1rio-do-capuxedtulo}{}
-\begin{itemize}
 
-\item
-  \textbf{Fuzzing + testes diferenciais}: CSmith encontrou centenas de
-  bugs sem oráculo explícito
-\item
-  \textbf{CompCert}: prova formal de preservação semântica --- zero
-  wrong-code bugs
-\item
-  \textbf{Tipos dependentes}: verificação de propriedades quantitativas
-  em compila\~{c}ão
-\item
-  \textbf{Tipos lineares}: controle de recursos sem garbage collector
-  (Rust!)
-\item
-  \textbf{SSA}: uma definição por variável facilita análise e otimização
-\item
-  \textbf{VSDG}: CSE gratuita; reordenação explícita por dependências
-  reais
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \textbf{Fuzzing + testes diferenciais}: CSmith encontrou centenas de
+        bugs sem oráculo explícito
+        \item
+        \textbf{CompCert}: prova formal de preservação semântica --- zero
+        wrong-code bugs
+        \item
+        \textbf{Tipos dependentes}: verificação de propriedades quantitativas
+        em compilação
+        \item
+        \textbf{Tipos lineares}: controle de recursos sem garbage collector
+        (Rust!)
+        \item
+        \textbf{SSA}: uma definição por variável facilita análise e otimização
+        \item
+        \textbf{VSDG}: CSE gratuita; reordenação explícita por dependências
+        reais
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Perspectivas Futuras}
-\protect\hypertarget{perspectivas-futuras}{}
-\begin{itemize}
 
-\item
-  \textbf{Compiladores para IA/ML}: compila\~{c}ão de grafos de tensores
-  (XLA, TVM, MLIR)
-\item
-  \textbf{Compiladores formalmente verificados}: extensão do CompCert
-  para outras linguagens
-\item
-  \textbf{Compila\~{c}ão incremental}: apenas recompilar o que mudou
-\item
-  \textbf{Segurança por compila\~{c}ão}: \emph{information flow control},
-  isolamento de memória por tipo
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \textbf{Compiladores para IA/ML}: compilação de grafos de tensores
+        (XLA, TVM, MLIR)
+        \item
+        \textbf{Compiladores formalmente verificados}: extensão do CompCert
+        para outras linguagens
+        \item
+        \textbf{Compilação incremental}: apenas recompilar o que mudou
+        \item
+        \textbf{Segurança por compilação}: \emph{information flow control},
+        isolamento de memória por tipo
+    \end{itemize}
 \end{frame}

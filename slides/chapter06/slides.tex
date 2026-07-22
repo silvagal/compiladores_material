@@ -1,691 +1,691 @@
 \subtitle{\bf Aula 6 - Análise Descendente}
 \begin{frame}[t,plain]
-\titlepage
+    \titlepage
 \end{frame}
 
 \begin{frame}{Objetivos}
-\protect\hypertarget{objetivos-1}{}
-\begin{itemize}
-\item
-  Apresentar a técnica de análise sintática descendente recursiva.
-\item
-  Mostrar como combinadores de parsing implementam essa estratégia em
-  Haskell.
-\end{itemize}
+
+    \begin{itemize}
+        \item
+        Apresentar a técnica de análise sintática descendente recursiva.
+        \item
+        Mostrar como combinadores de parsing implementam essa estratégia em
+        Haskell.
+    \end{itemize}
 \end{frame}
 
 
 
 \begin{frame}{Análise Descendente Recursiva}
-\protect\hypertarget{anuxe1lise-descendente-recursiva}{}
-\begin{itemize}
 
-\item
-  Técnica para construir analisadores sintáticos como um
-  \textbf{conjunto de funções}
-\item
-  Uma função por não-terminal da gramática
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Técnica para construir analisadores sintáticos como um
+        \textbf{conjunto de funções}
+        \item
+        Uma função por não-terminal da gramática
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Análise Descendente Recursiva}
-\protect\hypertarget{anuxe1lise-descendente-recursiva-1}{}
-\begin{itemize}
 
-\item
-  A chamada de funções reflete a estrutura das produções
-\item
-  Em Haskell: abordagem elegante com \textbf{combinadores de parsing}
-\item
-  Um parser é tratado como um \textbf{valor de primeira classe}
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        A chamada de funções reflete a estrutura das produções
+        \item
+        Em Haskell: abordagem elegante com \textbf{combinadores de parsing}
+        \item
+        Um parser é tratado como um \textbf{valor de primeira classe}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{O Tipo \texttt{Parser}}
-\protect\hypertarget{o-tipo-parser}{}
-\begin{lstlisting}[language=Haskell]
-newtype Parser s a =
-  Parser { runParser :: [s] -> [(a, [s])] }
-\end{lstlisting}
 
-\begin{itemize}
+    \begin{lstlisting}[language=Haskell]
+        newtype Parser s a =
+        Parser { runParser :: [s] -> [(a, [s])] }
+    \end{lstlisting}
 
-\item
-  \texttt{s}: tipo dos símbolos de entrada (ex.:
-  \texttt{Char}, \texttt{Token})
-\item
-  \texttt{a}: tipo do resultado (ex.:
-  \texttt{Exp}, \texttt{[Token]})
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \texttt{s}: tipo dos símbolos de entrada (ex.:
+        \texttt{Char}, \texttt{Token})
+        \item
+        \texttt{a}: tipo do resultado (ex.:
+        \texttt{Exp}, \texttt{[Token]})
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{O Tipo \texttt{Parser}}
-\protect\hypertarget{o-tipo-parser-1}{}
-\begin{itemize}
 
-\item
-  Retorna \textbf{lista de pares} (resultado, entrada restante)
-\item
-  Lista vazia \texttt{[]} significa \textbf{falha}
-\item
-  Lista com vários elementos significa \textbf{ambiguidade}
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Retorna \textbf{lista de pares} (resultado, entrada restante)
+        \item
+        Lista vazia \texttt{[]} significa \textbf{falha}
+        \item
+        Lista com vários elementos significa \textbf{ambiguidade}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Resultados}
-\protect\hypertarget{resultados}{}
-\begin{itemize}
 
-\item
-  Sucesso sem não determinismo.
+    \begin{itemize}
 
-  \begin{itemize}
+        \item
+        Sucesso sem não determinismo.
 
-  \item
-    Apenas um resultado.
-  \end{itemize}
-\end{itemize}
+        \begin{itemize}
 
-\begin{lstlisting}[language=Haskell]
-runParser (symbol 'a') "abc"
--- -> [('a', "bc")]    -- sucesso: consome 'a', resta "bc"
-\end{lstlisting}
+            \item
+            Apenas um resultado.
+        \end{itemize}
+    \end{itemize}
+
+    \begin{lstlisting}[language=Haskell]
+        runParser (symbol 'a') "abc"
+        -- -> [('a', "bc")]    -- sucesso: consome 'a', resta "bc"
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Resultados}
-\protect\hypertarget{resultados-1}{}
-\begin{itemize}
 
-\item
-  Falha: Lista vazia de resultados
-\end{itemize}
+    \begin{itemize}
 
-\begin{lstlisting}[language=Haskell]
-runParser (symbol 'x') "abc"
--- -> []               -- falha: 'a' ≠ 'x'
-\end{lstlisting}
+        \item
+        Falha: Lista vazia de resultados
+    \end{itemize}
+
+    \begin{lstlisting}[language=Haskell]
+        runParser (symbol 'x') "abc"
+        -- -> []               -- falha: 'a' ≠ 'x'
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Resultados}
-\protect\hypertarget{resultados-2}{}
-\begin{itemize}
 
-\item
-  Mais de um resultado: não determinismo
+    \begin{itemize}
 
-  \begin{itemize}
+        \item
+        Mais de um resultado: não determinismo
 
-  \item
-    Pode resultar em backtracking.
-  \end{itemize}
-\end{itemize}
+        \begin{itemize}
 
-\begin{lstlisting}[language=Haskell]
-runParser (item <|> item) "abc"
--- -> [('a', "bc"), ('a', "bc")]
-\end{lstlisting}
+            \item
+            Pode resultar em backtracking.
+        \end{itemize}
+    \end{itemize}
+
+    \begin{lstlisting}[language=Haskell]
+        runParser (item <|> item) "abc"
+        -- -> [('a', "bc"), ('a', "bc")]
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}{Resultados}
-\protect\hypertarget{resultados-3}{}
-\begin{itemize}
 
-\item
-  Parsers determinísticos retornam no máximo um par
-\item
-  A lista permite parsers \textbf{não-determinísticos} de forma elegante
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Parsers determinísticos retornam no máximo um par
+        \item
+        A lista permite parsers \textbf{não-determinísticos} de forma elegante
+    \end{itemize}
 \end{frame}
 
-\hypertarget{instuxe2ncias-de-classes-de-tipos}{%
+
 \section{Instâncias de Classes de
 Tipos}\label{instuxe2ncias-de-classes-de-tipos}}
 
 \begin{frame}[fragile]{Functor}
-\protect\hypertarget{functor}{}
-\begin{itemize}
 
-\item
-  Um parser é um \texttt{Functor}
+    \begin{itemize}
 
-  \begin{itemize}
+        \item
+        Um parser é um \texttt{Functor}
 
-  \item
-    Responsável por executar ações.
-  \item
-    Ex. Construir AST.
-  \end{itemize}
-\end{itemize}
+        \begin{itemize}
 
-\begin{lstlisting}[language=Haskell]
-instance Functor (Parser s) where
-  fmap f p = Parser (\s ->
-    [(f x, s') | (x, s') <- runParser p s])
-\end{lstlisting}
+            \item
+            Responsável por executar ações.
+            \item
+            Ex. Construir AST.
+        \end{itemize}
+    \end{itemize}
+
+    \begin{lstlisting}[language=Haskell]
+        instance Functor (Parser s) where
+        fmap f p = Parser (\s ->
+        [(f x, s') | (x, s') <- runParser p s])
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Functor}
-\protect\hypertarget{functor-1}{}
-\begin{itemize}
 
-\item
-  Transforma o resultado sem modificar o que é consumido
-\item
-  Exemplo: \texttt{EInt <$> naturalParser} aplica
-  \texttt{EInt} ao resultado
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Transforma o resultado sem modificar o que é consumido
+        \item
+        Exemplo: \texttt{EInt <$> naturalParser} aplica
+        \texttt{EInt} ao resultado
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Applicative}
-\protect\hypertarget{applicative}{}
-\begin{itemize}
 
-\item
-  Concatenação (sequência) de parsers.
-\end{itemize}
+    \begin{itemize}
 
-\begin{lstlisting}[language=Haskell]
-instance Applicative (Parser s) where
-  pure a    = Parser (\ts -> [(a, ts)])
-  p1 <*> p2 = Parser (\s ->
-    [(f x, s2) | (f, s1) <- runParser p1 s
-               , (x, s2) <- runParser p2 s1])
-\end{lstlisting}
+        \item
+        Concatenação (sequência) de parsers.
+    \end{itemize}
+
+    \begin{lstlisting}[language=Haskell]
+        instance Applicative (Parser s) where
+        pure a    = Parser (\ts -> [(a, ts)])
+        p1 <*> p2 = Parser (\s ->
+        [(f x, s2) | (f, s1) <- runParser p1 s
+        , (x, s2) <- runParser p2 s1])
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Applicative}
-\protect\hypertarget{applicative-1}{}
-\begin{itemize}
 
-\item
-  \texttt{pure a}: sempre tem sucesso sem consumir
-  entrada
-\item
-  \texttt{p1 <*> p2}: executa
-  \texttt{p1} e depois \texttt{p2} com
-  a entrada restante
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \texttt{pure a}: sempre tem sucesso sem consumir
+        entrada
+        \item
+        \texttt{p1 <*> p2}: executa
+        \texttt{p1} e depois \texttt{p2} com
+        a entrada restante
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Alternative}
-\protect\hypertarget{alternative}{}
-\begin{itemize}
 
-\item
-  Escolha entre dois parsers.
-\end{itemize}
+    \begin{itemize}
 
-\begin{lstlisting}[language=Haskell]
-instance Alternative (Parser t) where
-  empty     = Parser (\_ -> [])
-  p1 <|> p2 = Parser (\s ->
-    runParser p1 s ++ runParser p2 s)
-\end{lstlisting}
+        \item
+        Escolha entre dois parsers.
+    \end{itemize}
+
+    \begin{lstlisting}[language=Haskell]
+        instance Alternative (Parser t) where
+        empty     = Parser (\_ -> [])
+        p1 <|> p2 = Parser (\s ->
+        runParser p1 s ++ runParser p2 s)
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Alternative}
-\protect\hypertarget{alternative-1}{}
-\begin{itemize}
 
-\item
-  \texttt{empty}: sempre falha
-\item
-  \texttt{p1 <|> p2}: tenta ambas as alternativas
-  (concatena resultados)
-\item
-  Devido à avaliação lazy, \texttt{p2} só é avaliado se
-  \texttt{p1} falhar
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \texttt{empty}: sempre falha
+        \item
+        \texttt{p1 <|> p2}: tenta ambas as alternativas
+        (concatena resultados)
+        \item
+        Devido à avaliação lazy, \texttt{p2} só é avaliado se
+        \texttt{p1} falhar
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Monad}
-\protect\hypertarget{monad}{}
-\begin{itemize}
 
-\item
-  Permite a definição de parsers que dependem do resultado de um parser
-  anterior.
-\end{itemize}
+    \begin{itemize}
 
-\begin{lstlisting}[language=Haskell]
-instance Monad (Parser t) where
-  return = pure
-  p >>= f = Parser (\ts -> concat
-    [ runParser (f a) cs'
-    | (a, cs') <- runParser p ts ])
-\end{lstlisting}
+        \item
+        Permite a definição de parsers que dependem do resultado de um parser
+        anterior.
+    \end{itemize}
+
+    \begin{lstlisting}[language=Haskell]
+        instance Monad (Parser t) where
+        return = pure
+        p >>= f = Parser (\ts -> concat
+        [ runParser (f a) cs'
+        | (a, cs') <- runParser p ts ])
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Monad}
-\protect\hypertarget{monad-1}{}
-\begin{itemize}
 
-\item
-  Permite que o segundo parser \textbf{dependa do resultado} do primeiro
-\item
-  Habilita notação \texttt{do} para parsers mais
-  legíveis
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Permite que o segundo parser \textbf{dependa do resultado} do primeiro
+        \item
+        Habilita notação \texttt{do} para parsers mais
+        legíveis
+    \end{itemize}
 \end{frame}
 
-\hypertarget{combinadores-primitivos}{%
+
 \section{Combinadores Primitivos}\label{combinadores-primitivos}}
 
 \begin{frame}[fragile]{Combinador \texttt{item}}
-\protect\hypertarget{combinador-item}{}
-\begin{lstlisting}[language=Haskell]
--- Consome um símbolo qualquer
-item :: Parser t t
-item = Parser (\ts -> case ts of
-  []     -> []
-  (c:cs) -> [(c, cs)])
-\end{lstlisting}
+
+    \begin{lstlisting}[language=Haskell]
+        -- Consome um símbolo qualquer
+        item :: Parser t t
+        item = Parser (\ts -> case ts of
+        []     -> []
+        (c:cs) -> [(c, cs)])
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Combinador \texttt{sat}}
-\protect\hypertarget{combinador-sat}{}
-\begin{lstlisting}[language=Haskell]
--- Consome um símbolo se satisfaz o predicado
-sat :: (t -> Bool) -> Parser t t
-sat p = do
-  t <- item
-  if p t then return t else mzero
-\end{lstlisting}
+
+    \begin{lstlisting}[language=Haskell]
+        -- Consome um símbolo se satisfaz o predicado
+        sat :: (t -> Bool) -> Parser t t
+        sat p = do
+        t <- item
+        if p t then return t else mzero
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Combinador \texttt{symbol}}
-\protect\hypertarget{combinador-symbol}{}
-\begin{lstlisting}[language=Haskell]
-symbol :: Eq s => s -> Parser s s
-symbol c = sat (c ==)
-\end{lstlisting}
+
+    \begin{lstlisting}[language=Haskell]
+        symbol :: Eq s => s -> Parser s s
+        symbol c = sat (c ==)
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Combinador \texttt{token}}
-\protect\hypertarget{combinador-token}{}
-\begin{lstlisting}[language=Haskell]
-token :: Eq s => [s] -> Parser s [s]
-token = mapM symbol
-\end{lstlisting}
+
+    \begin{lstlisting}[language=Haskell]
+        token :: Eq s => [s] -> Parser s [s]
+        token = mapM symbol
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Combinador \texttt{digit}}
-\protect\hypertarget{combinador-digit}{}
-\begin{lstlisting}[language=Haskell]
-digit :: Parser Char Int
-digit = f <$> sat isDigit
-  where f c = ord c - ord '0'
-\end{lstlisting}
+
+    \begin{lstlisting}[language=Haskell]
+        digit :: Parser Char Int
+        digit = f <$> sat isDigit
+        where f c = ord c - ord '0'
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Combinador \texttt{natural}}
-\protect\hypertarget{combinador-natural}{}
-\begin{lstlisting}[language=Haskell]
-natural :: Parser Char Int
-natural = foldl (\a b -> a*10 + b) 0 <$> many1 digit
-\end{lstlisting}
+
+    \begin{lstlisting}[language=Haskell]
+        natural :: Parser Char Int
+        natural = foldl (\a b -> a*10 + b) 0 <$> many1 digit
+    \end{lstlisting}
 \end{frame}
 
-\hypertarget{combinadores-de-alto-nuxedvel}{%
+
 \section{Combinadores de Alto
 Nível}\label{combinadores-de-alto-nuxedvel}}
 
 \begin{frame}[fragile]{Repetição}
-\protect\hypertarget{repetiuxe7uxe3o}{}
-\begin{lstlisting}[language=Haskell]
--- Um ou mais
-many :: Parser s a -> Parser s [a]
-many p = (:) <$> p <*> many p <|> pure []
-\end{lstlisting}
+
+    \begin{lstlisting}[language=Haskell]
+        -- Um ou mais
+        many :: Parser s a -> Parser s [a]
+        many p = (:) <$> p <*> many p <|> pure []
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Repetição}
-\protect\hypertarget{repetiuxe7uxe3o-1}{}
-\begin{lstlisting}[language=Haskell]
--- Um ou mais
-many1 :: Parser s a -> Parser s [a]
-many1 p = (:) <$> p <*> many p
-\end{lstlisting}
+
+    \begin{lstlisting}[language=Haskell]
+        -- Um ou mais
+        many1 :: Parser s a -> Parser s [a]
+        many1 p = (:) <$> p <*> many p
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Opção}
-\protect\hypertarget{opuxe7uxe3o}{}
-\begin{lstlisting}
--- Zero ou um
-option :: Parser s a -> a -> Parser s a
-option p v = p <|> succeed v
-\end{lstlisting}
+
+    \begin{lstlisting}
+        -- Zero ou um
+        option :: Parser s a -> a -> Parser s a
+        option p v = p <|> succeed v
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Delimitadores}
-\protect\hypertarget{delimitadores}{}
-\begin{lstlisting}[language=Haskell]
--- Reconhece p entre dois delimitadores
-pack :: Parser s a -> Parser s b -> Parser s c -> Parser s b
-pack p r q = pi32 <$> p <*> r <*> q
-\end{lstlisting}
+
+    \begin{lstlisting}[language=Haskell]
+        -- Reconhece p entre dois delimitadores
+        pack :: Parser s a -> Parser s b -> Parser s c -> Parser s b
+        pack p r q = pi32 <$> p <*> r <*> q
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Delimitadores}
-\protect\hypertarget{delimitadores-1}{}
-\begin{lstlisting}[language=Haskell]
--- Expressão entre parênteses:
-parens p = pack (symbol '(') p (symbol ')')
-\end{lstlisting}
+
+    \begin{lstlisting}[language=Haskell]
+        -- Expressão entre parênteses:
+        parens p = pack (symbol '(') p (symbol ')')
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Separadores}
-\protect\hypertarget{separadores}{}
-\begin{lstlisting}[language=Haskell]
--- Lista separada por delimitador
-listOf :: Parser s a -> Parser s b -> Parser s [a]
-listOf p s = list <$> p <*> many (pi22 <$> s <*> p)
-\end{lstlisting}
+
+    \begin{lstlisting}[language=Haskell]
+        -- Lista separada por delimitador
+        listOf :: Parser s a -> Parser s b -> Parser s [a]
+        listOf p s = list <$> p <*> many (pi22 <$> s <*> p)
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Repetição Gulosa}
-\protect\hypertarget{repetiuxe7uxe3o-gulosa}{}
-\begin{lstlisting}[language=Haskell]
-determ :: Parser s b -> Parser s b
-determ p = Parser (\ts -> case runParser p ts of
-  []    -> []
-  (x:_) -> [x])
 
-greedy  :: Parser s b -> Parser s [b]
-greedy  = determ . many
-\end{lstlisting}
+    \begin{lstlisting}[language=Haskell]
+        determ :: Parser s b -> Parser s b
+        determ p = Parser (\ts -> case runParser p ts of
+        []    -> []
+        (x:_) -> [x])
+
+        greedy  :: Parser s b -> Parser s [b]
+        greedy  = determ . many
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Operadores}
-\protect\hypertarget{operadores}{}
-\begin{itemize}
-\item
-  Para gramáticas da forma \(E \to E \oplus T \mid T\):
-\item
-  \texttt{chainl}: associatividade \textbf{à esquerda}
-  --- \texttt{1+2+3} ->
-  \texttt{(1+2)+3}
-\end{itemize}
 
-\begin{lstlisting}[language=Haskell]
-chainl :: Parser s a -> Parser s (a -> a -> a) -> Parser s a
-chainl pe po = h <$> pe <*> many (j <$> po <*> pe)
-  where j op x = (`op` x)
+    \begin{itemize}
+        \item
+        Para gramáticas da forma \(E \to E \oplus T \mid T\):
+        \item
+        \texttt{chainl}: associatividade \textbf{à esquerda}
+        --- \texttt{1+2+3} ->
+        \texttt{(1+2)+3}
+    \end{itemize}
+
+    \begin{lstlisting}[language=Haskell]
+        chainl :: Parser s a -> Parser s (a -> a -> a) -> Parser s a
+        chainl pe po = h <$> pe <*> many (j <$> po <*> pe)
+        where j op x = (`op` x)
         h x fs = foldl (flip ($)) x fs
-\end{lstlisting}
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Operadores}
-\protect\hypertarget{operadores-1}{}
-\begin{itemize}
-\item
-  Para gramáticas da forma \(E \to T \oplus E \mid T\):
-\item
-  \texttt{chainr}: associatividade \textbf{à direita}
-  --- \texttt{1+2+3} ->
-  \texttt{1+(2+3)}
-\end{itemize}
 
-\begin{lstlisting}[language=Haskell]
-chainr :: Parser s a -> Parser s (a -> a -> a) -> Parser s a
-chainr pe po = h <$> many (j <$> pe <*> po) <*> pe
-  where j x op = (x `op`)
+    \begin{itemize}
+        \item
+        Para gramáticas da forma \(E \to T \oplus E \mid T\):
+        \item
+        \texttt{chainr}: associatividade \textbf{à direita}
+        --- \texttt{1+2+3} ->
+        \texttt{1+(2+3)}
+    \end{itemize}
+
+    \begin{lstlisting}[language=Haskell]
+        chainr :: Parser s a -> Parser s (a -> a -> a) -> Parser s a
+        chainr pe po = h <$> many (j <$> pe <*> po) <*> pe
+        where j x op = (x `op`)
         h fs x = foldr ($) x fs
-\end{lstlisting}
+    \end{lstlisting}
 \end{frame}
 
-\hypertarget{parser-de-expressuxf5es}{%
+
 \section{Parser de Expressões}\label{parser-de-expressuxf5es}}
 
 \begin{frame}[fragile]{Gramática e Tokens}
-\protect\hypertarget{gramuxe1tica-e-tokens}{}
-\begin{lstlisting}[language=Haskell]
-data Token = Id String | Number Int | Add | Mult
-           | LParen | RParen deriving (Eq, Show)
 
-data Expr = Var String | Lit Int
-          | Expr :+: Expr | Expr :*: Expr
-\end{lstlisting}
+    \begin{lstlisting}[language=Haskell]
+        data Token = Id String | Number Int | Add | Mult
+        | LParen | RParen deriving (Eq, Show)
+
+        data Expr = Var String | Lit Int
+        | Expr :+: Expr | Expr :*: Expr
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{O Combinador \texttt{gen}}
-\protect\hypertarget{o-combinador-gen}{}
-\begin{lstlisting}[language=Haskell]
-type Op s a = (s, a -> a -> a)
 
-gen :: Eq s => [Op s a] -> Parser s a -> Parser s a
-gen ops p = chainl p (choice (map f ops))
-  where f (s, c) = const c <$> symbol s
-\end{lstlisting}
+    \begin{lstlisting}[language=Haskell]
+        type Op s a = (s, a -> a -> a)
 
-\begin{itemize}
+        gen :: Eq s => [Op s a] -> Parser s a -> Parser s a
+        gen ops p = chainl p (choice (map f ops))
+        where f (s, c) = const c <$> symbol s
+    \end{lstlisting}
 
-\item
-  \texttt{gen ops p} reconhece expressões com
-  operadores de \texttt{ops} e operandos de
-  \texttt{p}
-\item
-  Associatividade à esquerda via \texttt{chainl}
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \texttt{gen ops p} reconhece expressões com
+        operadores de \texttt{ops} e operandos de
+        \texttt{p}
+        \item
+        Associatividade à esquerda via \texttt{chainl}
+    \end{itemize}
 \end{frame}
 
-\hypertarget{parser-de-expressuxf5es-1}{%
+
 \section{Parser de Expressões}\label{parser-de-expressuxf5es-1}}
 
 \begin{frame}[fragile]{Parser de Expressões}
-\protect\hypertarget{parser-de-expressuxf5es-2}{}
-\begin{itemize}
 
-\item
-  \(E \to E + T \,|\, T\)
-\end{itemize}
+    \begin{itemize}
 
-\begin{lstlisting}[language=Haskell]
-exprParser :: Parser Token Expr
-exprParser = addtable `gen` termParser
-  where addtable = [(Add, (:+:))]
-\end{lstlisting}
+        \item
+        \(E \to E + T \,|\, T\)
+    \end{itemize}
+
+    \begin{lstlisting}[language=Haskell]
+        exprParser :: Parser Token Expr
+        exprParser = addtable `gen` termParser
+        where addtable = [(Add, (:+:))]
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Parser de Expressões}
-\protect\hypertarget{parser-de-expressuxf5es-3}{}
-\begin{itemize}
 
-\item
-  \(T \to T * F \,|\, F\)
-\end{itemize}
+    \begin{itemize}
 
-\begin{lstlisting}[language=Haskell]
-termParser :: Parser Token Expr
-termParser = multable `gen` factParser
-  where multable = [(Mult, (:*:))]
-\end{lstlisting}
+        \item
+        \(T \to T * F \,|\, F\)
+    \end{itemize}
+
+    \begin{lstlisting}[language=Haskell]
+        termParser :: Parser Token Expr
+        termParser = multable `gen` factParser
+        where multable = [(Mult, (:*:))]
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Parser de Expressões}
-\protect\hypertarget{parser-de-expressuxf5es-4}{}
-\begin{lstlisting}[language=Haskell]
-factParser :: Parser Token Expr
-factParser = numParser <|> varParser
-          <|> pack (symbol LParen)
-                   exprParser
-                   (symbol RParen)
-\end{lstlisting}
+
+    \begin{lstlisting}[language=Haskell]
+        factParser :: Parser Token Expr
+        factParser = numParser <|> varParser
+        <|> pack (symbol LParen)
+        exprParser
+        (symbol RParen)
+    \end{lstlisting}
 \end{frame}
 
-\hypertarget{megaparsec}{%
+
 \section{Megaparsec}\label{megaparsec}}
 
 \begin{frame}{Por que Megaparsec?}
-\protect\hypertarget{por-que-megaparsec}{}
-\begin{itemize}
 
-\item
-  A biblioteca didática é para ensino; \textbf{Megaparsec} é para
-  produção
-\item
-  Mensagens de erro detalhadas: linha, coluna, contexto, o que era
-  esperado
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        A biblioteca didática é para ensino; \textbf{Megaparsec} é para
+        produção
+        \item
+        Mensagens de erro detalhadas: linha, coluna, contexto, o que era
+        esperado
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Por que Megaparsec?}
-\protect\hypertarget{por-que-megaparsec-1}{}
-\begin{itemize}
 
-\item
-  Melhor desempenho com \emph{committed choice}
-\item
-  Combinador \texttt{makeExprParser} para hierarquias
-  de precedência
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Melhor desempenho com \emph{committed choice}
+        \item
+        Combinador \texttt{makeExprParser} para hierarquias
+        de precedência
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{O Tipo Parser no Megaparsec}
-\protect\hypertarget{o-tipo-parser-no-megaparsec}{}
-\begin{lstlisting}[language=Haskell]
-type Parser a = Parsec Void String a
--- Parsec tipo-de-erro tipo-de-entrada tipo-de-resultado
-\end{lstlisting}
 
-\begin{itemize}
+    \begin{lstlisting}[language=Haskell]
+        type Parser a = Parsec Void String a
+        -- Parsec tipo-de-erro tipo-de-entrada tipo-de-resultado
+    \end{lstlisting}
 
-\item
-  \texttt{Void}: sem tipo de erro customizado (usa os
-  padrões da biblioteca)
-\item
-  \texttt{String}: entrada como lista de caracteres
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \texttt{Void}: sem tipo de erro customizado (usa os
+        padrões da biblioteca)
+        \item
+        \texttt{String}: entrada como lista de caracteres
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Tratamento de Espaços}
-\protect\hypertarget{tratamento-de-espauxe7os}{}
-\begin{itemize}
 
-\item
-  Remover espaços e lidar com comentários
-\end{itemize}
+    \begin{itemize}
 
-\begin{lstlisting}[language=Haskell]
-sc :: Parser ()
-sc = L.space space1 lineCmnt blockCmnt
-  where lineCmnt  = L.skipLineComment "//"
+        \item
+        Remover espaços e lidar com comentários
+    \end{itemize}
+
+    \begin{lstlisting}[language=Haskell]
+        sc :: Parser ()
+        sc = L.space space1 lineCmnt blockCmnt
+        where lineCmnt  = L.skipLineComment "//"
         blockCmnt = L.skipBlockComment "/*" "*/"
-\end{lstlisting}
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Tokens}
-\protect\hypertarget{tokens}{}
-\begin{lstlisting}
-lexeme :: Parser a -> Parser a
-lexeme = L.lexeme sc  -- consome espaço após o token
 
-symbol :: String -> Parser String
-symbol = L.symbol sc
+    \begin{lstlisting}
+        lexeme :: Parser a -> Parser a
+        lexeme = L.lexeme sc  -- consome espaço após o token
 
-parens :: Parser a -> Parser a
-parens = between (symbol "(") (symbol ")")
-\end{lstlisting}
+        symbol :: String -> Parser String
+        symbol = L.symbol sc
+
+        parens :: Parser a -> Parser a
+        parens = between (symbol "(") (symbol ")")
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Operadores com
-\texttt{makeExprParser}}
-\protect\hypertarget{operadores-com-makeexprparser}{}
-\begin{lstlisting}[language=Haskell]
-opTable :: [[Operator Parser Exp]]
-opTable
-  = [ [ infixL (:*:) "*" ]   -- maior precedência
-    , [ infixL (:+:) "+" ]   -- menor precedência
-    ]
-  where infixL op sym = InfixL $ op <$ symbol sym
-\end{lstlisting}
+    \texttt{makeExprParser}}
+
+    \begin{lstlisting}[language=Haskell]
+        opTable :: [[Operator Parser Exp]]
+        opTable
+        = [ [ infixL (:*:) "*" ]   -- maior precedência
+        , [ infixL (:+:) "+" ]   -- menor precedência
+        ]
+        where infixL op sym = InfixL $ op <$ symbol sym
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Operadores}
-\protect\hypertarget{operadores-2}{}
-\begin{itemize}
 
-\item
-  Lista externa: do \textbf{maior} para o \textbf{menor} nível de
-  precedência
-\item
-  Lista interna: operadores de mesma precedência
-\item
-  \texttt{InfixL}: associatividade à esquerda;
-  \texttt{InfixR}: à direita
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Lista externa: do \textbf{maior} para o \textbf{menor} nível de
+        precedência
+        \item
+        Lista interna: operadores de mesma precedência
+        \item
+        \texttt{InfixL}: associatividade à esquerda;
+        \texttt{InfixR}: à direita
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Parser com
-\texttt{makeExprParser}}
-\protect\hypertarget{parser-com-makeexprparser}{}
-\begin{lstlisting}[language=Haskell]
-termP :: Parser Exp
-termP = parens expP <|> EInt <$> int
+    \texttt{makeExprParser}}
 
-expP :: Parser Exp
-expP = makeExprParser termP opTable
-\end{lstlisting}
+    \begin{lstlisting}[language=Haskell]
+        termP :: Parser Exp
+        termP = parens expP <|> EInt <$> int
+
+        expP :: Parser Exp
+        expP = makeExprParser termP opTable
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Parser com
-\texttt{makeExprParser}}
-\protect\hypertarget{parser-com-makeexprparser-1}{}
-\begin{itemize}
+    \texttt{makeExprParser}}
 
-\item
-  \texttt{makeExprParser} constrói automaticamente toda
-  a hierarquia de precedências
-\item
-  Sem necessidade de codificar manualmente cada nível como função
-  separada
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \texttt{makeExprParser} constrói automaticamente toda
+        a hierarquia de precedências
+        \item
+        Sem necessidade de codificar manualmente cada nível como função
+        separada
+    \end{itemize}
 \end{frame}
 
-\hypertarget{conclusuxe3o}{%
+
 \section{Conclusão}\label{conclusuxe3o}}
 
 \begin{frame}[fragile]{Conclusão}
-\protect\hypertarget{conclusuxe3o-1}{}
-\begin{itemize}
 
-\item
-  \textbf{Combinadores de parsing} tratam parsers como valores de
-  primeira classe
-\item
-  O tipo \texttt{Parser s a} retorna lista de pares
-  (resultado, entrada restante)
-\item
-  Instâncias de \texttt{Functor},
-  \texttt{Applicative},
-  \texttt{Alternative}, \texttt{Monad}
-  dão expressividade
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \textbf{Combinadores de parsing} tratam parsers como valores de
+        primeira classe
+        \item
+        O tipo \texttt{Parser s a} retorna lista de pares
+        (resultado, entrada restante)
+        \item
+        Instâncias de \texttt{Functor},
+        \texttt{Applicative},
+        \texttt{Alternative}, \texttt{Monad}
+        dão expressividade
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Conclusão}
-\protect\hypertarget{conclusuxe3o-2}{}
-\begin{itemize}
 
-\item
-  Primitivos: \texttt{item},
-  \texttt{sat}, \texttt{symbol};
-  combinadores: \texttt{many},
-  \texttt{option}, \texttt{pack},
-  \texttt{chainl}
-\item
-  O combinador \texttt{gen} +
-  \texttt{chainl} resolve associatividade sem
-  transformar a gramática
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Primitivos: \texttt{item},
+        \texttt{sat}, \texttt{symbol};
+        combinadores: \texttt{many},
+        \texttt{option}, \texttt{pack},
+        \texttt{chainl}
+        \item
+        O combinador \texttt{gen} +
+        \texttt{chainl} resolve associatividade sem
+        transformar a gramática
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Conclusão}
-\protect\hypertarget{conclusuxe3o-3}{}
-\begin{itemize}
 
-\item
-  \textbf{Megaparsec}: mesmos princípios, porém com uma implementação
-  eficiente.
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \textbf{Megaparsec}: mesmos princípios, porém com uma implementação
+        eficiente.
+    \end{itemize}
 \end{frame}

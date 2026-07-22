@@ -1,629 +1,629 @@
 \subtitle{\bf Aula 5 - Introdução}
 \begin{frame}[t,plain]
-\titlepage
+    \titlepage
 \end{frame}
 
 \begin{frame}{Objetivos}
-\protect\hypertarget{objetivos-1}{}
-\begin{itemize}
-\item
-  Motivar o uso de gramáticas livres de contexto para especificação da
-  estrutura sintática de linguagens.
-\item
-  Revisar alguns conceitos sobre linguagens livres de contexto.
-\item
-  Apresentar problemas comuns na modelagem de sintaxe usando gramáticas.
-\end{itemize}
+
+    \begin{itemize}
+        \item
+        Motivar o uso de gramáticas livres de contexto para especificação da
+        estrutura sintática de linguagens.
+        \item
+        Revisar alguns conceitos sobre linguagens livres de contexto.
+        \item
+        Apresentar problemas comuns na modelagem de sintaxe usando gramáticas.
+    \end{itemize}
 \end{frame}
 
-\hypertarget{introduuxe7uxe3o}{%
+
 \section{Introdução}\label{introduuxe7uxe3o}}
 
 \begin{frame}{O Papel da Análise Sintática}
-\protect\hypertarget{o-papel-da-anuxe1lise-sintuxe1tica}{}
-\begin{itemize}
 
-\item
-  Apos a análise léxica, o programa é uma \textbf{lista de tokens}
-\item
-  A análise sintática verifica se os tokens formam uma \textbf{estrutura
-  válida}
-\item
-  Produz uma \textbf{Árvore Sintática Abstrata (AST)}
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Apos a análise léxica, o programa é uma \textbf{lista de tokens}
+        \item
+        A análise sintática verifica se os tokens formam uma \textbf{estrutura
+        válida}
+        \item
+        Produz uma \textbf{Árvore Sintática Abstrata (AST)}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{O Papel da Análise Sintática}
-\protect\hypertarget{o-papel-da-anuxe1lise-sintuxe1tica-1}{}
-\begin{itemize}
 
-\item
-  Não verifica tipos, declarações de variáveis, etc. (papel da análise
-  semântica)
-\item
-  A AST é usada pelas fases seguintes do compilador
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Não verifica tipos, declarações de variáveis, etc. (papel da análise
+        semântica)
+        \item
+        A AST é usada pelas fases seguintes do compilador
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Por que não ERs?}
-\protect\hypertarget{por-que-nuxe3o-ers}{}
-\begin{itemize}
 
-\item
-  Parênteses balanceados requerem \textbf{contar} indefinidamente
-\item
-  Autômatos finitos têm um número \textbf{fixo} de estados
-\item
-  Impossível contar número ilimitado de parênteses abertos com AFD
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Parênteses balanceados requerem \textbf{contar} indefinidamente
+        \item
+        Autômatos finitos têm um número \textbf{fixo} de estados
+        \item
+        Impossível contar número ilimitado de parênteses abertos com AFD
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Por que não ERs?}
-\protect\hypertarget{por-que-nuxe3o-ers-1}{}
-\begin{itemize}
 
-\item
-  Lema do Bombeamento: \(\{a^n b^n \mid n \geq 0\}\) não é regular
-\item
-  \textbf{Solução}: Gramáticas Livres de Contexto (GLCs)
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Lema do Bombeamento: \(\{a^n b^n \mid n \geq 0\}\) não é regular
+        \item
+        \textbf{Solução}: Gramáticas Livres de Contexto (GLCs)
+    \end{itemize}
 \end{frame}
 
 
 
 \begin{frame}{Definição Formal}
-\protect\hypertarget{definiuxe7uxe3o-formal}{}
-Uma GLC \(G = (V, \Sigma, R, P)\):
 
-\begin{itemize}
+    Uma GLC \(G = (V, \Sigma, R, P)\):
 
-\item
-  \(V\): conjunto de \textbf{não-terminais} (variáveis sintáticas)
-\item
-  \(\Sigma\): conjunto de \textbf{terminais} (tokens)
-\item
-  \(R\): conjunto de \textbf{produções} da forma \(A \to \alpha\)
-\item
-  \(P \in V\): \textbf{símbolo inicial}
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \(V\): conjunto de \textbf{não-terminais} (variáveis sintáticas)
+        \item
+        \(\Sigma\): conjunto de \textbf{terminais} (tokens)
+        \item
+        \(R\): conjunto de \textbf{produções} da forma \(A \to \alpha\)
+        \item
+        \(P \in V\): \textbf{símbolo inicial}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Exemplo: Linguagem Exp}
-\protect\hypertarget{exemplo-linguagem-exp}{}
-\[E \to n \mid E + E \mid E * E \mid (E)\]
 
-\begin{itemize}
+    \[E \to n \mid E + E \mid E * E \mid (E)\]
 
-\item
-  \(\Sigma = \{+, *, (, ), n\}\) são os tokens da linguagem
-\item
-  \(V = \{E\}\) é o único não-terminal
-\item
-  Derivamos strings aplicando produções repetidamente
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \(\Sigma = \{+, *, (, ), n\}\) são os tokens da linguagem
+        \item
+        \(V = \{E\}\) é o único não-terminal
+        \item
+        Derivamos strings aplicando produções repetidamente
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Derivações}
-\protect\hypertarget{derivauxe7uxf5es}{}
-\begin{itemize}
 
-\item
-  Uma string pertence a \(L(G)\) se existe uma \textbf{derivação} a
-  partir do símbolo inicial:
-\end{itemize}
+    \begin{itemize}
 
-\[
-\begin{array}{l}
-   E \Rightarrow E+E \Rightarrow \\
-  (E)+E \Rightarrow (E+E)+E \Rightarrow \\
-  (1+E)+E \Rightarrow (1+4)+E \Rightarrow\\
-  (1+4)+2
-\end{array}
-\]
+        \item
+        Uma string pertence a \(L(G)\) se existe uma \textbf{derivação} a
+        partir do símbolo inicial:
+    \end{itemize}
+
+    \[
+    \begin{array}{l}
+        E \Rightarrow E+E \Rightarrow \\
+        (E)+E \Rightarrow (E+E)+E \Rightarrow \\
+        (1+E)+E \Rightarrow (1+4)+E \Rightarrow\\
+        (1+4)+2
+    \end{array}
+    \]
 \end{frame}
 
 \begin{frame}{Derivações}
-\protect\hypertarget{derivauxe7uxf5es-1}{}
-\begin{itemize}
 
-\item
-  Cada passo aplica uma produção:
+    \begin{itemize}
 
-  \begin{itemize}
+        \item
+        Cada passo aplica uma produção:
 
-  \item
-    Forma sentencial atual: \(\alpha A \beta\)
-  \item
-    Regra \(A \to \gamma\)
-  \item
-    Resultado: \(\alpha A \beta \to \alpha \gamma \beta\)
-  \end{itemize}
-\end{itemize}
+        \begin{itemize}
+
+            \item
+            Forma sentencial atual: \(\alpha A \beta\)
+            \item
+            Regra \(A \to \gamma\)
+            \item
+            Resultado: \(\alpha A \beta \to \alpha \gamma \beta\)
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Derivações}
-\protect\hypertarget{derivauxe7uxf5es-2}{}
-\begin{itemize}
 
-\item
-  \textbf{Derivação mais à esquerda}: expande o não-terminal mais à
-  esquerda
-\item
-  \textbf{Derivação mais à direita}: expande o mais à direita
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \textbf{Derivação mais à esquerda}: expande o não-terminal mais à
+        esquerda
+        \item
+        \textbf{Derivação mais à direita}: expande o mais à direita
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo}
-\protect\hypertarget{exemplo}{}
-\begin{itemize}
 
-\item
-  Derivação Mais à Esquerda de \texttt{(1+4)+2}
-\end{itemize}
+    \begin{itemize}
 
-\[\begin{array}{lc}
-E     & \Rightarrow \\
-E + E & \Rightarrow \\
-(E) + E & \Rightarrow \\
-(E + E) + E & \Rightarrow \\
-(1 + E) + E & \Rightarrow \\
-(1 + 4) + E & \Rightarrow \\
-(1 + 4) + 2
+        \item
+        Derivação Mais à Esquerda de \texttt{(1+4)+2}
+    \end{itemize}
+
+    \[\begin{array}{lc}
+    E     & \Rightarrow \\
+    E + E & \Rightarrow \\
+    (E) + E & \Rightarrow \\
+    (E + E) + E & \Rightarrow \\
+    (1 + E) + E & \Rightarrow \\
+    (1 + 4) + E & \Rightarrow \\
+    (1 + 4) + 2
 \end{array}\]
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo}
-\protect\hypertarget{exemplo-1}{}
-\begin{itemize}
 
-\item
-  Derivação Mais à Direita de \texttt{(1+4)+2}
-\end{itemize}
+    \begin{itemize}
 
-\[\begin{array}{lc}
-E     & \Rightarrow \\
-E + E & \Rightarrow \\
-E + 2 & \Rightarrow \\
-(E) + 2 & \Rightarrow \\
-(E + E) + 2 & \Rightarrow \\
-(E + 4) + 2 & \Rightarrow \\
-(1 + 4) + 2
+        \item
+        Derivação Mais à Direita de \texttt{(1+4)+2}
+    \end{itemize}
+
+    \[\begin{array}{lc}
+    E     & \Rightarrow \\
+    E + E & \Rightarrow \\
+    E + 2 & \Rightarrow \\
+    (E) + 2 & \Rightarrow \\
+    (E + E) + 2 & \Rightarrow \\
+    (E + 4) + 2 & \Rightarrow \\
+    (1 + 4) + 2
 \end{array}\]
 
 Ambas as derivações correspondem à mesma árvore sintática.
 \end{frame}
 
-\hypertarget{ambiguidade}{%
+
 \section{Ambiguidade}\label{ambiguidade}}
 
 \begin{frame}[fragile]{Ambiguidade}
-\protect\hypertarget{ambiguidade-1}{}
-\begin{itemize}
 
-\item
-  Uma gramática é \textbf{ambígua} se alguma string tem \textbf{mais de
-  uma árvore sintática}
-\item
-  A gramática \(E \to n \mid E+E \mid E*E \mid (E)\) é ambígua!
-\item
-  Para \texttt{2 + 3 * 4}:
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Uma gramática é \textbf{ambígua} se alguma string tem \textbf{mais de
+        uma árvore sintática}
+        \item
+        A gramática \(E \to n \mid E+E \mid E*E \mid (E)\) é ambígua!
+        \item
+        Para \texttt{2 + 3 * 4}:
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Duas Árvores}
-\protect\hypertarget{duas-uxe1rvores}{}
-\begin{itemize}
 
-\item
-  Árvore 1: raiz é \(E+E\) -> calcula \((2+3)*4 = 20\) (errado!)
-\item
-  Árvore 2: raiz é \(E*E\) -> calcula \(2+(3*4) = 14\) (correto)
-\item
-  Ambiguidade causa resultados diferentes dependendo da interpretação
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Árvore 1: raiz é \(E+E\) -> calcula \((2+3)*4 = 20\) (errado!)
+        \item
+        Árvore 2: raiz é \(E*E\) -> calcula \(2+(3*4) = 14\) (correto)
+        \item
+        Ambiguidade causa resultados diferentes dependendo da interpretação
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Solução}
-\protect\hypertarget{soluuxe7uxe3o}{}
-\begin{itemize}
 
-\item
-  Hierarquia de Precedência
-\end{itemize}
+    \begin{itemize}
 
-\[\begin{array}{lcl}
-E &\to& E + T \mid T \\
-T &\to& T * F \mid F \\
-F &\to& n \mid (E)
+        \item
+        Hierarquia de Precedência
+    \end{itemize}
+
+    \[\begin{array}{lcl}
+    E &\to& E + T \mid T \\
+    T &\to& T * F \mid F \\
+    F &\to& n \mid (E)
 \end{array}\]
 \end{frame}
 
 \begin{frame}{Solução}
-\protect\hypertarget{soluuxe7uxe3o-1}{}
-\begin{itemize}
 
-\item
-  \(E\) (Expressão): somas
-\item
-  \(T\) (Termo): produtos
-\item
-  \(F\) (Fator): átomos e expressões parentesadas
-\item
-  Multiplicação tem \textbf{maior precedência} que adição
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \(E\) (Expressão): somas
+        \item
+        \(T\) (Termo): produtos
+        \item
+        \(F\) (Fator): átomos e expressões parentesadas
+        \item
+        Multiplicação tem \textbf{maior precedência} que adição
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Precedência}
-\protect\hypertarget{preceduxeancia}{}
-\begin{itemize}
 
-\item
-  Expressão de precedência \(i+1\)
+    \begin{itemize}
 
-  \begin{itemize}
+        \item
+        Expressão de precedência \(i+1\)
 
-  \item
-    Associatividade à direita
-  \end{itemize}
-\end{itemize}
+        \begin{itemize}
 
-\[
-E_{i + 1} \to E_i \otimes E_{i + 1}
-\]
+            \item
+            Associatividade à direita
+        \end{itemize}
+    \end{itemize}
+
+    \[
+    E_{i + 1} \to E_i \otimes E_{i + 1}
+    \]
 \end{frame}
 
 \begin{frame}{Precedência}
-\protect\hypertarget{preceduxeancia-1}{}
-\begin{itemize}
 
-\item
-  Expressão de precedência \(i+1\)
+    \begin{itemize}
 
-  \begin{itemize}
+        \item
+        Expressão de precedência \(i+1\)
 
-  \item
-    Associatividade à esquerda
-  \end{itemize}
-\end{itemize}
+        \begin{itemize}
 
-\[
-E_{i + 1} \to E_{i + 1} \otimes E_i
-\]
+            \item
+            Associatividade à esquerda
+        \end{itemize}
+    \end{itemize}
+
+    \[
+    E_{i + 1} \to E_{i + 1} \otimes E_i
+    \]
 \end{frame}
 
 \begin{frame}{Precedência}
-\protect\hypertarget{preceduxeancia-2}{}
-\begin{itemize}
 
-\item
-  A produção \(E \to E+T\) impede que soma apareça \textbf{dentro} de um
-  produto sem parênteses
-\item
-  A associatividade à esquerda vem da recursão à esquerda: \(E \to E+T\)
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        A produção \(E \to E+T\) impede que soma apareça \textbf{dentro} de um
+        produto sem parênteses
+        \item
+        A associatividade à esquerda vem da recursão à esquerda: \(E \to E+T\)
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Precedência}
-\protect\hypertarget{preceduxeancia-3}{}
-\begin{itemize}
 
-\item
-  Para recursão à direita: \(E \to T+E\)
-\item
-  A gramática agora tem \textbf{uma única árvore} para cada string
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Para recursão à direita: \(E \to T+E\)
+        \item
+        A gramática agora tem \textbf{uma única árvore} para cada string
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{O Problema do Else}
-\protect\hypertarget{o-problema-do-else}{}
-\[\begin{array}{lcl}
-S &\to& \mathbf{if}\; E\; \mathbf{then}\; S \\
-  &\mid& \mathbf{if}\; E\; \mathbf{then}\; S\; \mathbf{else}\; S \\
-  &\mid& \mathbf{other}
+
+    \[\begin{array}{lcl}
+    S &\to& \mathbf{if}\; E\; \mathbf{then}\; S \\
+    &\mid& \mathbf{if}\; E\; \mathbf{then}\; S\; \mathbf{else}\; S \\
+    &\mid& \mathbf{other}
 \end{array}\]
 \end{frame}
 
 \begin{frame}[fragile]{O Problema do Else}
-\protect\hypertarget{o-problema-do-else-1}{}
-Para \texttt{if E1 then if E2 then S1 else S2}:
 
-\begin{itemize}
+    Para \texttt{if E1 then if E2 then S1 else S2}:
 
-\item
-  O \texttt{else} pertence ao primeiro
-  \texttt{if} ou ao segundo?
-\item
-  \textbf{Regra convencional}: \texttt{else} liga ao
-  \texttt{if} mais próximo
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        O \texttt{else} pertence ao primeiro
+        \texttt{if} ou ao segundo?
+        \item
+        \textbf{Regra convencional}: \texttt{else} liga ao
+        \texttt{if} mais próximo
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Solução do Else}
-\protect\hypertarget{soluuxe7uxe3o-do-else}{}
-\begin{itemize}
 
-\item
-  Introduzindo não-terminais para instruções correspondentes e
-  não-correspondentes:
-\end{itemize}
+    \begin{itemize}
 
-\[\begin{array}{lcl}
-M &\to& \mathbf{if}\; E\; \mathbf{then}\; M\; \mathbf{else}\; M \mid \mathbf{other}\\
-U &\to& \mathbf{if}\; E\; \mathbf{then}\; S \\
-  &\mid& \mathbf{if}\; E\; \mathbf{then}\; M\; \mathbf{else}\; U
+        \item
+        Introduzindo não-terminais para instruções correspondentes e
+        não-correspondentes:
+    \end{itemize}
+
+    \[\begin{array}{lcl}
+    M &\to& \mathbf{if}\; E\; \mathbf{then}\; M\; \mathbf{else}\; M \mid \mathbf{other}\\
+    U &\to& \mathbf{if}\; E\; \mathbf{then}\; S \\
+    &\mid& \mathbf{if}\; E\; \mathbf{then}\; M\; \mathbf{else}\; U
 \end{array}\]
 \end{frame}
 
-\hypertarget{transformauxe7uxf5es-de-gramuxe1tica}{%
+
 \section{Transformações de
 Gramática}\label{transformauxe7uxf5es-de-gramuxe1tica}}
 
 \begin{frame}{Remoção de Recursão à Esquerda}
-\protect\hypertarget{remouxe7uxe3o-de-recursuxe3o-uxe0-esquerda}{}
-\begin{itemize}
 
-\item
-  Parsers descendentes entram em \textbf{loop infinito} com recursão à
-  esquerda:
-\end{itemize}
+    \begin{itemize}
 
-\[A \to A\,\alpha_1 \mid \cdots \mid A\,\alpha_m \mid \beta_1 \mid \cdots \mid \beta_n\]
+        \item
+        Parsers descendentes entram em \textbf{loop infinito} com recursão à
+        esquerda:
+    \end{itemize}
+
+    \[A \to A\,\alpha_1 \mid \cdots \mid A\,\alpha_m \mid \beta_1 \mid \cdots \mid \beta_n\]
 \end{frame}
 
 \begin{frame}{Remoção de Recursão à Esquerda}
-\protect\hypertarget{remouxe7uxe3o-de-recursuxe3o-uxe0-esquerda-1}{}
-\begin{itemize}
 
-\item
-  Transformação --- introduz novo não-terminal \(A'\):
-\end{itemize}
+    \begin{itemize}
 
-\[\begin{array}{lcl}
-A  &\to& \beta_1\;A' \mid \beta_2\;A' \mid \cdots \mid \beta_n\;A' \\
-A' &\to& \alpha_1\;A' \mid \alpha_2\;A' \mid \cdots \mid \alpha_m\;A' \mid \lambda
+        \item
+        Transformação --- introduz novo não-terminal \(A'\):
+    \end{itemize}
+
+    \[\begin{array}{lcl}
+    A  &\to& \beta_1\;A' \mid \beta_2\;A' \mid \cdots \mid \beta_n\;A' \\
+    A' &\to& \alpha_1\;A' \mid \alpha_2\;A' \mid \cdots \mid \alpha_m\;A' \mid \lambda
 \end{array}\]
 \end{frame}
 
 \begin{frame}{Exemplo}
-\protect\hypertarget{exemplo-2}{}
-\begin{itemize}
 
-\item
-  Gramática original (recursão à esquerda):
-\end{itemize}
+    \begin{itemize}
 
-\[\begin{array}{lcl}
-E &\to& E + T \mid T \\
-T &\to& T * F \mid F
+        \item
+        Gramática original (recursão à esquerda):
+    \end{itemize}
+
+    \[\begin{array}{lcl}
+    E &\to& E + T \mid T \\
+    T &\to& T * F \mid F
 \end{array}\]
 \end{frame}
 
 \begin{frame}{Exemplo}
-\protect\hypertarget{exemplo-3}{}
-\begin{itemize}
 
-\item
-  Apos transformação:
-\end{itemize}
+    \begin{itemize}
 
-\[\begin{array}{lcl}
-E  &\to& T\;E' \\
-E' &\to& +\;T\;E' \mid \lambda \\
-T  &\to& F\;T' \\
-T' &\to& *\;F\;T' \mid \lambda \\
-F  &\to& n \mid (\;E\;)
+        \item
+        Apos transformação:
+    \end{itemize}
+
+    \[\begin{array}{lcl}
+    E  &\to& T\;E' \\
+    E' &\to& +\;T\;E' \mid \lambda \\
+    T  &\to& F\;T' \\
+    T' &\to& *\;F\;T' \mid \lambda \\
+    F  &\to& n \mid (\;E\;)
 \end{array}\]
 \end{frame}
 
 \begin{frame}{Recursão Indireta à Esquerda}
-\protect\hypertarget{recursuxe3o-indireta-uxe0-esquerda}{}
-\begin{itemize}
 
-\item
-  Também é possível ter recursão à esquerda \textbf{indireta}:
-\end{itemize}
+    \begin{itemize}
 
-\[\begin{array}{lcl}
-A &\to& B\,a \\
-B &\to& A\,b \mid c
+        \item
+        Também é possível ter recursão à esquerda \textbf{indireta}:
+    \end{itemize}
+
+    \[\begin{array}{lcl}
+    A &\to& B\,a \\
+    B &\to& A\,b \mid c
 \end{array}\]
 \end{frame}
 
 \begin{frame}{Recursão Indireta à Esquerda}
-\protect\hypertarget{recursuxe3o-indireta-uxe0-esquerda-1}{}
-\begin{itemize}
-\item
-  Porque \(A \Rightarrow B\,a \Rightarrow A\,b\,a\) --- recursão
-  indireta.
-\item
-  Algoritmo geral: ordenar os não-terminais e eliminar sistematicamente
-  as produções \(A_i \to A_j\,\alpha\) para \(j < i\).
-\end{itemize}
+
+    \begin{itemize}
+        \item
+        Porque \(A \Rightarrow B\,a \Rightarrow A\,b\,a\) --- recursão
+        indireta.
+        \item
+        Algoritmo geral: ordenar os não-terminais e eliminar sistematicamente
+        as produções \(A_i \to A_j\,\alpha\) para \(j < i\).
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Fatoração à Esquerda}
-\protect\hypertarget{fatorauxe7uxe3o-uxe0-esquerda}{}
-\begin{itemize}
 
-\item
-  Quando duas produções compartilham um prefixo, o parser não sabe qual
-  escolher com 1 token de lookahead:
-\end{itemize}
+    \begin{itemize}
 
-\[S \to \mathbf{if}\; E\; \mathbf{then}\; S\; \mathbf{else}\; S \mid \mathbf{if}\; E\; \mathbf{then}\; S\]
+        \item
+        Quando duas produções compartilham um prefixo, o parser não sabe qual
+        escolher com 1 token de lookahead:
+    \end{itemize}
+
+    \[S \to \mathbf{if}\; E\; \mathbf{then}\; S\; \mathbf{else}\; S \mid \mathbf{if}\; E\; \mathbf{then}\; S\]
 \end{frame}
 
 \begin{frame}{Fatoração à Esquerda}
-\protect\hypertarget{fatorauxe7uxe3o-uxe0-esquerda-1}{}
-\begin{itemize}
 
-\item
-  Fatorando o prefixo comum \(\mathbf{if}\; E\; \mathbf{then}\; S\):
-\end{itemize}
+    \begin{itemize}
 
-\[\begin{array}{lcl}
-S  &\to& \mathbf{if}\; E\; \mathbf{then}\; S\; S' \\
-S' &\to& \mathbf{else}\; S \mid \lambda
+        \item
+        Fatorando o prefixo comum \(\mathbf{if}\; E\; \mathbf{then}\; S\):
+    \end{itemize}
+
+    \[\begin{array}{lcl}
+    S  &\to& \mathbf{if}\; E\; \mathbf{then}\; S\; S' \\
+    S' &\to& \mathbf{else}\; S \mid \lambda
 \end{array}\]
 \end{frame}
 
 \begin{frame}{Padrão Geral de Fatoração}
-\protect\hypertarget{padruxe3o-geral-de-fatorauxe7uxe3o}{}
-Dado:
 
-\[A \to \alpha\,\beta_1 \mid \alpha\,\beta_2 \mid \cdots \mid \alpha\,\beta_k \mid \gamma_1 \mid \cdots\]
+    Dado:
+
+    \[A \to \alpha\,\beta_1 \mid \alpha\,\beta_2 \mid \cdots \mid \alpha\,\beta_k \mid \gamma_1 \mid \cdots\]
 \end{frame}
 
 \begin{frame}{Padrão Geral de Fatoração}
-\protect\hypertarget{padruxe3o-geral-de-fatorauxe7uxe3o-1}{}
-\begin{itemize}
 
-\item
-  Apos fatoração:
-\end{itemize}
+    \begin{itemize}
 
-\[\begin{array}{lcl}
-A  &\to& \alpha\;A' \mid \gamma_1 \mid \cdots \\
-A' &\to& \beta_1 \mid \beta_2 \mid \cdots \mid \beta_k
+        \item
+        Apos fatoração:
+    \end{itemize}
+
+    \[\begin{array}{lcl}
+    A  &\to& \alpha\;A' \mid \gamma_1 \mid \cdots \\
+    A' &\to& \beta_1 \mid \beta_2 \mid \cdots \mid \beta_k
 \end{array}\]
 
 \begin{itemize}
 
-\item
-  O analisador consome \(\alpha\) e depois decide com base no próximo
-  token
+    \item
+    O analisador consome \(\alpha\) e depois decide com base no próximo
+    token
 \end{itemize}
 \end{frame}
 
-\hypertarget{uxe1rvores-sintuxe1ticas-abstratas}{%
+
 \section{Árvores Sintáticas
 Abstratas}\label{uxe1rvores-sintuxe1ticas-abstratas}}
 
 \begin{frame}{AST vs.~Árvore de Derivação}
-\protect\hypertarget{ast-vs.-uxe1rvore-de-derivauxe7uxe3o}{}
-\begin{itemize}
 
-\item
-  \textbf{Árvore de derivação}: descreve os passos da derivação, inclui
-  todos os nós
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \textbf{Árvore de derivação}: descreve os passos da derivação, inclui
+        todos os nós
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{AST vs.~Árvore de Derivação}
-\protect\hypertarget{ast-vs.-uxe1rvore-de-derivauxe7uxe3o-1}{}
-\begin{itemize}
 
-\item
-  \textbf{AST}: apenas as construções relevantes para fases seguintes
+    \begin{itemize}
 
-  \begin{itemize}
+        \item
+        \textbf{AST}: apenas as construções relevantes para fases seguintes
 
-  \item
-    Sem parênteses (já capturados pela estrutura da árvore)
-  \item
-    Sem não-terminais auxiliares (\(E'\), \(T'\), etc.)
-  \end{itemize}
-\end{itemize}
+        \begin{itemize}
+
+            \item
+            Sem parênteses (já capturados pela estrutura da árvore)
+            \item
+            Sem não-terminais auxiliares (\(E'\), \(T'\), etc.)
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Exemplo de AST para \texttt{(1+4)*2}}
-\protect\hypertarget{exemplo-de-ast-para-142}{}
-\includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter05/imgs/tree.png}
 
-\begin{itemize}
+    \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter05/imgs/tree.png}
 
-\item
-  Parênteses determinam a estrutura mas não aparecem na AST
-\item
-  Nós internos: operadores; folhas: literais inteiros
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Parênteses determinam a estrutura mas não aparecem na AST
+        \item
+        Nós internos: operadores; folhas: literais inteiros
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Tipo Haskell para a AST}
-\protect\hypertarget{tipo-haskell-para-a-ast}{}
-\begin{lstlisting}[language=Haskell]
-data Exp
-  = EInt Int        -- literal inteiro
-  | Exp :+: Exp     -- adição
-  | Exp :*: Exp     -- multiplicação
-\end{lstlisting}
 
-\begin{itemize}
+    \begin{lstlisting}[language=Haskell]
+        data Exp
+        = EInt Int        -- literal inteiro
+        | Exp :+: Exp     -- adição
+        | Exp :*: Exp     -- multiplicação
+    \end{lstlisting}
 
-\item
-  Um construtor por construção da linguagem relevante
-\item
-  Construtores infixos refletem a natureza binária dos operadores
-\item
-  Em Haskell, é conveniente usar \textbf{tipos algébricos} para ASTs
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Um construtor por construção da linguagem relevante
+        \item
+        Construtores infixos refletem a natureza binária dos operadores
+        \item
+        Em Haskell, é conveniente usar \textbf{tipos algébricos} para ASTs
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Outros Desafios na Análise Sintática}
-\protect\hypertarget{outros-desafios-na-anuxe1lise-sintuxe1tica}{}
-\begin{itemize}
 
-\item
-  \textbf{Indentação significativa} (Python, Haskell): o lexer insere
-  tokens de indentação/desindentação.
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \textbf{Indentação significativa} (Python, Haskell): o lexer insere
+        tokens de indentação/desindentação.
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Outros Desafios na Análise Sintática}
-\protect\hypertarget{outros-desafios-na-anuxe1lise-sintuxe1tica-1}{}
-\begin{itemize}
 
-\item
-  \textbf{Identificadores dependentes de contexto} (C++):
-  \texttt{HashTable<K,V> x;} pode ser ambíguo
+    \begin{itemize}
 
-  \begin{itemize}
+        \item
+        \textbf{Identificadores dependentes de contexto} (C++):
+        \texttt{HashTable<K,V> x;} pode ser ambíguo
 
-  \item
-    Depende se \texttt{HashTable} é um tipo ou uma
-    variável
-  \item
-    Requer feedback do analisador semântico para o léxico
-  \end{itemize}
-\end{itemize}
+        \begin{itemize}
+
+            \item
+            Depende se \texttt{HashTable} é um tipo ou uma
+            variável
+            \item
+            Requer feedback do analisador semântico para o léxico
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
-\hypertarget{conclusuxe3o}{%
+
 \section{Conclusão}\label{conclusuxe3o}}
 
 \begin{frame}{Conclusão}
-\protect\hypertarget{conclusuxe3o-1}{}
-\begin{itemize}
 
-\item
-  \textbf{GLCs} permitem especificar estruturas recursivas que ERs não
-  conseguem
-\item
-  \textbf{Derivações} mostram como strings são geradas pela gramática
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \textbf{GLCs} permitem especificar estruturas recursivas que ERs não
+        conseguem
+        \item
+        \textbf{Derivações} mostram como strings são geradas pela gramática
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Conclusão}
-\protect\hypertarget{conclusuxe3o-2}{}
-\begin{itemize}
 
-\item
-  \textbf{Ambiguidade} é resolvida com hierarquias de precedência e
-  associatividade
-\item
-  \textbf{Remoção de recursão à esquerda}: prepara a gramática para
-  parsers descendentes.
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \textbf{Ambiguidade} é resolvida com hierarquias de precedência e
+        associatividade
+        \item
+        \textbf{Remoção de recursão à esquerda}: prepara a gramática para
+        parsers descendentes.
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Conclusão}
-\protect\hypertarget{conclusuxe3o-3}{}
-\begin{itemize}
 
-\item
-  \textbf{Fatoração à esquerda}: elimina ambiguidades de escolha com 1
-  lookahead
-\item
-  \textbf{ASTs}: representação compacta do programa para fases seguintes
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \textbf{Fatoração à esquerda}: elimina ambiguidades de escolha com 1
+        lookahead
+        \item
+        \textbf{ASTs}: representação compacta do programa para fases seguintes
+    \end{itemize}
 \end{frame}

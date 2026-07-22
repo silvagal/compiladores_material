@@ -1,501 +1,501 @@
-\subtitle{\bf Aula 10 - Motivaç
+\subtitle{\bf Aula 10 - Motivação}
 \begin{frame}[t,plain]
-\titlepage
+    \titlepage
 \end{frame}
 
 \begin{frame}{Objetivos}
-\protect\hypertarget{objetivos-1}{}
-\begin{itemize}
-\item
-  Apresentar a motivação para os algoritmos LR(1) e LALR.
-\item
-  Apresentar o algoritmo LR(1).
-\item
-  Apresentar o algoritmo LALR como uma otimização de LR(1).
-\end{itemize}
+
+    \begin{itemize}
+        \item
+        Apresentar a motivação para os algoritmos LR(1) e LALR.
+        \item
+        Apresentar o algoritmo LR(1).
+        \item
+        Apresentar o algoritmo LALR como uma otimização de LR(1).
+    \end{itemize}
 \end{frame}
 
-\hypertarget{motivauxe7uxe3o-aluxe9m-do-slr}{%
+
 \section{Motivação: Além do SLR}\label{motivauxe7uxe3o-aluxe9m-do-slr}}
 
 \begin{frame}{Limitações}
-\protect\hypertarget{limitauxe7uxf5es}{}
-\begin{itemize}
 
-\item
-  \textbf{LR(0)}: insere reduce em todos os terminais
+    \begin{itemize}
 
-  \begin{itemize}
+        \item
+        \textbf{LR(0)}: insere reduce em todos os terminais
 
-  \item
-    Muitos conflitos
-  \end{itemize}
-\item
-  \textbf{SLR}: usa o follow(A)
+        \begin{itemize}
 
-  \begin{itemize}
+            \item
+            Muitos conflitos
+        \end{itemize}
+        \item
+        \textbf{SLR}: usa o follow(A)
 
-  \item
-    Ainda impreciso
-  \end{itemize}
-\end{itemize}
+        \begin{itemize}
+
+            \item
+            Ainda impreciso
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Limitações}
-\protect\hypertarget{limitauxe7uxf5es-1}{}
-\textbf{Exemplo problemático} com recursão à direita:
 
-\[\begin{array}{lcl}
-E &\to& T + E \mid T \\
-T &\to& n \mid (E)
+    \textbf{Exemplo problemático} com recursão à direita:
+
+    \[\begin{array}{lcl}
+    E &\to& T + E \mid T \\
+    T &\to& n \mid (E)
 \end{array}\]
 \end{frame}
 
 \begin{frame}{Limitações}
-\protect\hypertarget{limitauxe7uxf5es-2}{}
-Estado após reconhecer \(T\) no estado inicial:
 
-\[\begin{array}{l}
-E \to T . + E \\
-E \to T .
+    Estado após reconhecer \(T\) no estado inicial:
+
+    \[\begin{array}{l}
+    E \to T . + E \\
+    E \to T .
 \end{array}\]
 \end{frame}
 
 \begin{frame}[fragile]{O Conflito Shift-Reduce}
-\protect\hypertarget{o-conflito-shift-reduce}{}
-\begin{itemize}
 
-\item
-  Item \(E \to T .\) está completo
+    \begin{itemize}
 
-  \begin{itemize}
+        \item
+        Item \(E \to T .\) está completo
 
-  \item
-    LR(0) insere reduce \(E \to T\) em \textbf{todos} os terminais.
-  \end{itemize}
-\item
-  Item \(E \to T . + E\) exige \textbf{shift} em
-  \texttt{+}
+        \begin{itemize}
 
-  \begin{itemize}
+            \item
+            LR(0) insere reduce \(E \to T\) em \textbf{todos} os terminais.
+        \end{itemize}
+        \item
+        Item \(E \to T . + E\) exige \textbf{shift} em
+        \texttt{+}
 
-  \item
-    Resultado: \textbf{conflito shift-reduce} em
-    \texttt{+}
-  \end{itemize}
-\end{itemize}
+        \begin{itemize}
+
+            \item
+            Resultado: \textbf{conflito shift-reduce} em
+            \texttt{+}
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{O Conflito Shift-Reduce}
-\protect\hypertarget{o-conflito-shift-reduce-1}{}
-\begin{itemize}
 
-\item
-  A raiz do problema
+    \begin{itemize}
 
-  \begin{itemize}
+        \item
+        A raiz do problema
 
-  \item
-    Quando o próximo token é \texttt{+}, ainda pode vir
-    \(+E\), então \ldots{}
-  \item
-    \textbf{Não} devemos reduzir.
-  \item
-    Quando é \texttt{$} ou \texttt{)},
-    devemos reduzir.
-  \end{itemize}
-\end{itemize}
+        \begin{itemize}
+
+            \item
+            Quando o próximo token é \texttt{+}, ainda pode vir
+            \(+E\), então \ldots{}
+            \item
+            \textbf{Não} devemos reduzir.
+            \item
+            Quando é \texttt{$} ou \texttt{)},
+            devemos reduzir.
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{O Conflito de Shift-Reduce}
-\protect\hypertarget{o-conflito-de-shift-reduce}{}
-\begin{itemize}
 
-\item
-  Para tomar essa decisão, precisamos analisar o próximo token de
-  entrada.
+    \begin{itemize}
 
-  \begin{itemize}
+        \item
+        Para tomar essa decisão, precisamos analisar o próximo token de
+        entrada.
 
-  \item
-    Lookahead.
-  \end{itemize}
-\item
-  Um único token de lookahead local resolve o conflito
+        \begin{itemize}
 
-  \begin{itemize}
+            \item
+            Lookahead.
+        \end{itemize}
+        \item
+        Um único token de lookahead local resolve o conflito
 
-  \item
-    Essa é a ideia do \textbf{LR(1)}.
-  \end{itemize}
-\end{itemize}
+        \begin{itemize}
+
+            \item
+            Essa é a ideia do \textbf{LR(1)}.
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
 
 
 \begin{frame}{Itens LR(1)}
-\protect\hypertarget{itens-lr1}{}
-Um item LR(1) \([A \to \beta . \gamma, a]\) carrega:
 
-\begin{itemize}
+    Um item LR(1) \([A \to \beta . \gamma, a]\) carrega:
 
-\item
-  \(A \to \beta\gamma\): produção sendo reconhecida
-\item
-  \(.\) (ponto): o que já foi analisado
-\item
-  \(a\): \textbf{lookahead} --- terminal que pode aparecer
-  \textbf{imediatamente após} \(A\) neste contexto específico
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \(A \to \beta\gamma\): produção sendo reconhecida
+        \item
+        \(.\) (ponto): o que já foi analisado
+        \item
+        \(a\): \textbf{lookahead} --- terminal que pode aparecer
+        \textbf{imediatamente após} \(A\) neste contexto específico
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Redução}
-\protect\hypertarget{reduuxe7uxe3o}{}
-\begin{itemize}
 
-\item
-  Quando o item está completo (\(\gamma = \lambda\)):
+    \begin{itemize}
 
-  \begin{itemize}
+        \item
+        Quando o item está completo (\(\gamma = \lambda\)):
 
-  \item
-    reduzir \(A \to \beta\) \textbf{somente} na coluna \(a\).
-  \end{itemize}
-\end{itemize}
+        \begin{itemize}
+
+            \item
+            reduzir \(A \to \beta\) \textbf{somente} na coluna \(a\).
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Redução}
-\protect\hypertarget{reduuxe7uxe3o-1}{}
-\begin{itemize}
 
-\item
-  Lookahead é \textbf{calculado localmente} para cada item, não
-  globalmente como no SLR.
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Lookahead é \textbf{calculado localmente} para cada item, não
+        globalmente como no SLR.
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Fechamento LR(1)}
-\protect\hypertarget{fechamento-lr1}{}
-\begin{itemize}
 
-\item
-  Para item \([A \to \alpha . B \beta, a]\), adicionar
-  \([B \to . \gamma, b]\) para toda produção \(B \to \gamma\) e todo
-  \(b \in \mathrm{FIRST}(\beta\, a)\).
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Para item \([A \to \alpha . B \beta, a]\), adicionar
+        \([B \to . \gamma, b]\) para toda produção \(B \to \gamma\) e todo
+        \(b \in \mathrm{FIRST}(\beta\, a)\).
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Fechamento LR(1)}
-\protect\hypertarget{fechamento-lr1-1}{}
-\begin{itemize}
 
-\item
-  Se \(\beta\) não é anulável: \(b \in \mathrm{FIRST}(\beta)\)
-\item
-  Se \(\beta\) é anulável ou vazio: \(b\) inclui também o lookahead
-  \(a\)
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Se \(\beta\) não é anulável: \(b \in \mathrm{FIRST}(\beta)\)
+        \item
+        Se \(\beta\) é anulável ou vazio: \(b\) inclui também o lookahead
+        \(a\)
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Construção dos Estados LR(1)}
-\protect\hypertarget{construuxe7uxe3o-dos-estados-lr1}{}
-\begin{itemize}
-\item
-  Estado inicial: fechamento de \(\{[S' \to . S, \$]\}\)
-\item
-  O lookahead é transferido \textbf{sem alteração} --- Ele depende do
-  contexto em que o item foi criado.
-\end{itemize}
+
+    \begin{itemize}
+        \item
+        Estado inicial: fechamento de \(\{[S' \to . S, \$]\}\)
+        \item
+        O lookahead é transferido \textbf{sem alteração} --- Ele depende do
+        contexto em que o item foi criado.
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Tabela LR(1)}
-\protect\hypertarget{tabela-lr1}{}
-\begin{itemize}
 
-\item
-  \textbf{Shift}: \([A \to \alpha . a \beta, b]\) com \(a\) terminal ->
-  \texttt{action[I, a] = Shift j}
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \textbf{Shift}: \([A \to \alpha . a \beta, b]\) com \(a\) terminal ->
+        \texttt{action[I, a] = Shift j}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Tabela LR(1)}
-\protect\hypertarget{tabela-lr1-1}{}
-\begin{itemize}
 
-\item
-  \textbf{Reduce}: \([A \to \alpha ., a]\) completo ->
-  \texttt{action[I, a] = Reduce(A -> α)} \textbf{apenas
-  na coluna \(a\)}
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \textbf{Reduce}: \([A \to \alpha ., a]\) completo ->
+        \texttt{action[I, a] = Reduce(A -> α)} \textbf{apenas
+        na coluna \(a\)}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Tabela LR(1)}
-\protect\hypertarget{tabela-lr1-2}{}
-\begin{itemize}
 
-\item
-  \textbf{Accept}: \([S' \to S ., \$]\) ->
-  \texttt{action[I, $] = Accept}
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \textbf{Accept}: \([S' \to S ., \$]\) ->
+        \texttt{action[I, $] = Accept}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Tabela LR(1)}
-\protect\hypertarget{tabela-lr1-3}{}
-\begin{itemize}
 
-\item
-  Cada reduce aparece \textbf{apenas na coluna do lookahead do item} ---
-  não em todas.
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Cada reduce aparece \textbf{apenas na coluna do lookahead do item} ---
+        não em todas.
+    \end{itemize}
 \end{frame}
 
-\hypertarget{exemplo}{%
+
 \section{Exemplo}\label{exemplo}}
 
 \begin{frame}{Gramática}
-\protect\hypertarget{gramuxe1tica}{}
-\[\begin{array}{lcl}
-E &\to& E + T \mid T \\
-T &\to& T * F \mid F \\
-F &\to& (E) \mid n
+
+    \[\begin{array}{lcl}
+    E &\to& E + T \mid T \\
+    T &\to& T * F \mid F \\
+    F &\to& (E) \mid n
 \end{array}\]
 \end{frame}
 
 \begin{frame}{Estado 0}
-\protect\hypertarget{estado-0}{}
-\begin{itemize}
 
-\item
-  Fechamento de \(\{[S' \to . E, \$]\}\):
-\end{itemize}
+    \begin{itemize}
 
-\[\begin{array}{ll}
-S' \to . E & \$ \\
-E \to . E + T & \$, + \\
-E \to . T & \$, + \\
-T \to . T * F & \$, +, * \\
-T \to . F & \$, +, * \\
-F \to . (E) & \$, +, *, ) \\
-F \to . n & \$, +, *, )
+        \item
+        Fechamento de \(\{[S' \to . E, \$]\}\):
+    \end{itemize}
+
+    \[\begin{array}{ll}
+    S' \to . E & \$ \\
+    E \to . E + T & \$, + \\
+    E \to . T & \$, + \\
+    T \to . T * F & \$, +, * \\
+    T \to . F & \$, +, * \\
+    F \to . (E) & \$, +, *, ) \\
+    F \to . n & \$, +, *, )
 \end{array}\]
 \end{frame}
 
 \begin{frame}{Estado 1}
-\protect\hypertarget{estado-1}{}
---- \(\text{goto}(I_0, E)\):
 
-\[\begin{array}{ll}
-S' \to E . & \$ \\
-E \to E . + T & \$, +
+    --- \(\text{goto}(I_0, E)\):
+
+    \[\begin{array}{ll}
+    S' \to E . & \$ \\
+    E \to E . + T & \$, +
 \end{array}\]
 \end{frame}
 
 \begin{frame}{Estado 2}
-\protect\hypertarget{estado-2}{}
---- \(\text{goto}(I_0, T)\):
 
-\[\begin{array}{ll}
-E \to T . & \$, + \\
-T \to T . * F & \$, +, *
+    --- \(\text{goto}(I_0, T)\):
+
+    \[\begin{array}{ll}
+    E \to T . & \$, + \\
+    T \to T . * F & \$, +, *
 \end{array}\]
 \end{frame}
 
 \begin{frame}{Estado 3}
-\protect\hypertarget{estado-3}{}
---- \(\text{goto}(I_0, F)\):
 
-\[\begin{array}{ll}
-T \to F . & \$, +, *
+    --- \(\text{goto}(I_0, F)\):
+
+    \[\begin{array}{ll}
+    T \to F . & \$, +, *
 \end{array}\]
 \end{frame}
 
 \begin{frame}{Tabela LR(1)}
-\protect\hypertarget{tabela-lr1-4}{}
-\begin{table}
-\begin{tabular}[]{@{}llllllllll@{}}
-\toprule
-Estado & \(n\) & \(+\) & \(*\) & \((\) & \()\) & \(\$\) & \(E\) & \(T\)
-& \(F\) \\
-\midrule
 
-0 & s5 & & & s4 & & & 1 & 2 & 3 \\
-1 & & s6 & & & & acc & & & \\
-2 & & r E->T & s7 & & & r E->T & & & \\
-3 & & r T->F & r T->F & & & r T->F & & & \\
-4 & s5 & & & s4 & & & 8 & 9 & 3 \\
-5 & & r F->n & r F->n & & r F->n & r F->n & & & \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}llllllllll@{}}
+            \toprule
+            Estado & \(n\) & \(+\) & \(*\) & \((\) & \()\) & \(\$\) & \(E\) & \(T\)
+            & \(F\) \\
+            \midrule
+
+            0 & s5 & & & s4 & & & 1 & 2 & 3 \\
+            1 & & s6 & & & & acc & & & \\
+            2 & & r E->T & s7 & & & r E->T & & & \\
+            3 & & r T->F & r T->F & & & r T->F & & & \\
+            4 & s5 & & & s4 & & & 8 & 9 & 3 \\
+            5 & & r F->n & r F->n & & r F->n & r F->n & & & \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 \end{frame}
 
 \begin{frame}{Tabela LR(1)}
-\protect\hypertarget{tabela-lr1-5}{}
-Cada ação de reduce aparece \textbf{apenas nas colunas do lookahead do
-item} --- não em todas.
+
+    Cada ação de reduce aparece \textbf{apenas nas colunas do lookahead do
+    item} --- não em todas.
 \end{frame}
 
-\hypertarget{o-algoritmo-lalr1}{%
+
 \section{O Algoritmo LALR(1)}\label{o-algoritmo-lalr1}}
 
 \begin{frame}{Motivação}
-\protect\hypertarget{motivauxe7uxe3o}{}
-\begin{itemize}
 
-\item
-  LR(1) gera estados distintos para o mesmo conjunto de itens LR(0)
-  quando os lookaheads diferem.
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        LR(1) gera estados distintos para o mesmo conjunto de itens LR(0)
+        quando os lookaheads diferem.
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Motivação}
-\protect\hypertarget{motivauxe7uxe3o-1}{}
-\begin{itemize}
 
-\item
-  \textbf{Exemplo:} os estados 3 e 10 da gramática de expressões têm o
-  mesmo núcleo \(T \to F .\):
+    \begin{itemize}
 
-  \begin{itemize}
+        \item
+        \textbf{Exemplo:} os estados 3 e 10 da gramática de expressões têm o
+        mesmo núcleo \(T \to F .\):
 
-  \item
-    Estado 3 (fora de parênteses): lookaheads \(\{\$, +, *\}\)
-  \item
-    Estado 10 (dentro de parênteses): lookaheads \(\{\$, +, *, )\}\)
-  \end{itemize}
-\end{itemize}
+        \begin{itemize}
+
+            \item
+            Estado 3 (fora de parênteses): lookaheads \(\{\$, +, *\}\)
+            \item
+            Estado 10 (dentro de parênteses): lookaheads \(\{\$, +, *, )\}\)
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Motivação}
-\protect\hypertarget{motivauxe7uxe3o-2}{}
-\begin{itemize}
 
-\item
-  Para gramáticas reais, o número de estados LR(1) pode ser uma
-  \textbf{ordem de grandeza maior} que LR(0).
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Para gramáticas reais, o número de estados LR(1) pode ser uma
+        \textbf{ordem de grandeza maior} que LR(0).
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{A Ideia LALR}
-\protect\hypertarget{a-ideia-lalr}{}
-\begin{itemize}
 
-\item
-  \textbf{Observação}: dois estados com o mesmo \textbf{núcleo} têm a
-  mesma estrutura de shifts e gotos.
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \textbf{Observação}: dois estados com o mesmo \textbf{núcleo} têm a
+        mesma estrutura de shifts e gotos.
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{A Ideia LALR}
-\protect\hypertarget{a-ideia-lalr-1}{}
-\begin{itemize}
-\item
-  \textbf{Solução}: fundir todos os estados LR(1) com o mesmo núcleo,
-  \textbf{unindo} seus lookaheads.
-\item
-  \textbf{Resultado}: \(|\text{estados LALR}| = |\text{estados LR(0)}|\)
-  mas lookaheads mais precisos que SLR.
-\end{itemize}
+
+    \begin{itemize}
+        \item
+        \textbf{Solução}: fundir todos os estados LR(1) com o mesmo núcleo,
+        \textbf{unindo} seus lookaheads.
+        \item
+        \textbf{Resultado}: \(|\text{estados LALR}| = |\text{estados LR(0)}|\)
+        mas lookaheads mais precisos que SLR.
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Algoritmo LALR}
-\protect\hypertarget{algoritmo-lalr}{}
-\begin{itemize}
 
-\item
-  Dois passos:
-\end{itemize}
+    \begin{itemize}
 
-\begin{enumerate}
+        \item
+        Dois passos:
+    \end{itemize}
 
-\item
-  Construir todos os estados LR(1)
-\item
-  Fundir estados com o mesmo núcleo, realizando a união de seus
-  lookaheads.
-\end{enumerate}
+    \begin{enumerate}
+
+        \item
+        Construir todos os estados LR(1)
+        \item
+        Fundir estados com o mesmo núcleo, realizando a união de seus
+        lookaheads.
+    \end{enumerate}
 \end{frame}
 
 \begin{frame}{Problemas}
-\protect\hypertarget{problemas}{}
-\begin{itemize}
-\item
-  A fusão pode introduzir conflitos \textbf{reduce-reduce}:
-\item
-  Se dois estados tinham lookaheads disjuntos, a união pode fazer dois
-  itens completos reivindicar a mesma coluna.
-\end{itemize}
+
+    \begin{itemize}
+        \item
+        A fusão pode introduzir conflitos \textbf{reduce-reduce}:
+        \item
+        Se dois estados tinham lookaheads disjuntos, a união pode fazer dois
+        itens completos reivindicar a mesma coluna.
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Problemas}
-\protect\hypertarget{problemas-1}{}
-\begin{itemize}
 
-\item
-  Quando isso ocorre: gramática é LR(1) mas \textbf{não LALR(1)}
-\item
-  Conflitos \textbf{shift-reduce} nunca são introduzidos pela fusão
-  (shifts dependem do núcleo, não do lookahead)
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Quando isso ocorre: gramática é LR(1) mas \textbf{não LALR(1)}
+        \item
+        Conflitos \textbf{shift-reduce} nunca são introduzidos pela fusão
+        (shifts dependem do núcleo, não do lookahead)
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Problemas}
-\protect\hypertarget{problemas-2}{}
-\begin{itemize}
 
-\item
-  Na prática: a imensa maioria das gramáticas de linguagens de
-  programação é LALR(1).
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Na prática: a imensa maioria das gramáticas de linguagens de
+        programação é LALR(1).
+    \end{itemize}
 \end{frame}
 
-\hypertarget{exemplo-tabela-lalr1}{%
+
 \section{Exemplo: Tabela LALR(1)}\label{exemplo-tabela-lalr1}}
 
 \begin{frame}{Identificação dos Pares com o Mesmo Núcleo}
-\protect\hypertarget{identificauxe7uxe3o-dos-pares-com-o-mesmo-nuxfacleo}{}
-\begin{table}
-\begin{tabular}[]{@{}lll@{}}
-\toprule
-Núcleo & Estados LR(1) & Lookaheads unidos \\
-\midrule
 
-\(T \to F .\) & 3 e 10 & \(\{\$, +, *, )\}\) \\
-\(E \to E + . T\), \ldots{} & 6 e 14 & \(\{\$, +, )\}\) \\
-\(T \to T * . F\), \ldots{} & 7 e 15 & \(\{\$, +, *, )\}\) \\
-\(E \to E + T .\), \(T \to T . * F\) & 11 e 16 & \(\{\$, +, )\}\) \\
-\(T \to T * F .\) & 12 e 17 & \(\{\$, +, *, )\}\) \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}lll@{}}
+            \toprule
+            Núcleo & Estados LR(1) & Lookaheads unidos \\
+            \midrule
 
-Denominamos: \textbf{A} = 3+10, \textbf{B} = 6+14, \textbf{C} = 7+15,
-\textbf{D} = 11+16, \textbf{E} = 12+17.
+            \(T \to F .\) & 3 e 10 & \(\{\$, +, *, )\}\) \\
+            \(E \to E + . T\), \ldots{} & 6 e 14 & \(\{\$, +, )\}\) \\
+            \(T \to T * . F\), \ldots{} & 7 e 15 & \(\{\$, +, *, )\}\) \\
+            \(E \to E + T .\), \(T \to T . * F\) & 11 e 16 & \(\{\$, +, )\}\) \\
+            \(T \to T * F .\) & 12 e 17 & \(\{\$, +, *, )\}\) \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+
+    Denominamos: \textbf{A} = 3+10, \textbf{B} = 6+14, \textbf{C} = 7+15,
+    \textbf{D} = 11+16, \textbf{E} = 12+17.
 \end{frame}
 
 \begin{frame}{Tabela LALR(1) para Expressões}
-\protect\hypertarget{tabela-lalr1-para-expressuxf5es}{}
-\begin{table}
-\begin{tabular}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1224}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0612}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1429}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1429}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0612}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1429}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1429}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0612}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0612}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0612}}@{}}
-\toprule
-\begin{minipage}[b]{\linewidth}\raggedright
-Estado
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\(n\)
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\(+\)
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\(*\)
+
+    \begin{table}
+        \begin{tabular}[]{@{}
+            >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1224}}
+            >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0612}}
+            >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1429}}
+            >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1429}}
+            >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0612}}
+            >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1429}}
+            >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1429}}
+            >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0612}}
+            >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0612}}
+            >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0612}}@{}}
+            \toprule
+            \begin{minipage}[b]{\linewidth}\raggedright
+                Estado
+            \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+            \(n\)
+        \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+        \(+\)
+    \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+    \(*\)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 \((\)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
@@ -527,15 +527,15 @@ E & & r T->T*F & r T->T*F & & r T->T*F & r T->T*F & & & \\
 \end{table}
 \end{frame}
 
-\hypertarget{conclusuxe3o}{%
+
 \section{Conclusão}\label{conclusuxe3o}}
 
 \begin{frame}{Conclusão}
-\protect\hypertarget{conclusuxe3o-1}{}
-\begin{itemize}
-\item
-  Neste capítulo apresentamos os algoritmos LR(1) e LALR.
-\item
-  O gerador de analisadores sintáticos Happy utiliza o algoritmo LALR.
-\end{itemize}
+
+    \begin{itemize}
+        \item
+        Neste capítulo apresentamos os algoritmos LR(1) e LALR.
+        \item
+        O gerador de analisadores sintáticos Happy utiliza o algoritmo LALR.
+    \end{itemize}
 \end{frame}

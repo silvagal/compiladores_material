@@ -1,689 +1,689 @@
-\subtitle{\bf Aula 9 - Motivaç
+\subtitle{\bf Aula 9 - Motivação}
 \begin{frame}[t,plain]
-\titlepage
+    \titlepage
 \end{frame}
 
 \begin{frame}{Objetivos}
-\protect\hypertarget{objetivos-1}{}
-\begin{itemize}
-\item
-  Apresentar a estratégia de análise bottom-up
-\item
-  Apresentar 3 algoritmos: Earley, LR(0) e SLR.
-\end{itemize}
+
+    \begin{itemize}
+        \item
+        Apresentar a estratégia de análise bottom-up
+        \item
+        Apresentar 3 algoritmos: Earley, LR(0) e SLR.
+    \end{itemize}
 \end{frame}
 
-\hypertarget{motivauxe7uxe3o}{%
+
 \section{Motivação}\label{motivauxe7uxe3o}}
 
 \begin{frame}{Limitações: Top-Down}
-\protect\hypertarget{limitauxe7uxf5es-top-down}{}
-\begin{itemize}
 
-\item
-  Analisadores \textbf{LL} exigem transformações na gramática
+    \begin{itemize}
 
-  \begin{itemize}
+        \item
+        Analisadores \textbf{LL} exigem transformações na gramática
 
-  \item
-    Remoção de recursão à esquerda
-  \item
-    Fatoração à esquerda
-  \end{itemize}
-\end{itemize}
+        \begin{itemize}
+
+            \item
+            Remoção de recursão à esquerda
+            \item
+            Fatoração à esquerda
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Limitações: Top-Down}
-\protect\hypertarget{limitauxe7uxf5es-top-down-1}{}
-\begin{itemize}
 
-\item
-  Decisão com apenas \textbf{1 token de lookahead}
-\item
-  Algumas gramáticas são inerentemente não-LL(1)
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Decisão com apenas \textbf{1 token de lookahead}
+        \item
+        Algumas gramáticas são inerentemente não-LL(1)
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{A Ideia Bottom-Up}
-\protect\hypertarget{a-ideia-bottom-up}{}
-\begin{itemize}
 
-\item
-  Analisadores \textbf{bottom-up} lêem um prefixo maior antes de decidir
-\item
-  Suportam \textbf{recursão à esquerda} naturalmente
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Analisadores \textbf{bottom-up} lêem um prefixo maior antes de decidir
+        \item
+        Suportam \textbf{recursão à esquerda} naturalmente
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{A Ideia Bottom-Up}
-\protect\hypertarget{a-ideia-bottom-up-1}{}
-\begin{itemize}
 
-\item
-  Constroem uma \textbf{derivação mais à direita invertida}
-\item
-  Cada redução constrói um pedaço da árvore sintática
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Constroem uma \textbf{derivação mais à direita invertida}
+        \item
+        Cada redução constrói um pedaço da árvore sintática
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Der. à Direita Invert.}
-\protect\hypertarget{der.-uxe0-direita-invert.}{}
-Gramática de exemplo (não-LL(1)):
 
-\[\begin{array}{lcl}
-S &\to& S + E \mid E \\
-E &\to& (S) \mid n
+    Gramática de exemplo (não-LL(1)):
+
+    \[\begin{array}{lcl}
+    S &\to& S + E \mid E \\
+    E &\to& (S) \mid n
 \end{array}\]
 \end{frame}
 
 \begin{frame}[fragile]{Der. à Direita Invert.}
-\protect\hypertarget{der.-uxe0-direita-invert.-1}{}
-Analisando \texttt{(1) + 2}:
 
-\begin{lstlisting}
-S'  =>  S  =>  S+E  =>  S+2  =>  E+2  ->  (S)+2  =>  (E)+2  =>  (1)+2
-\end{lstlisting}
+    Analisando \texttt{(1) + 2}:
 
-O analisador constrói essa derivação de baixo para cima, da direita para
-a esquerda.
+    \begin{lstlisting}
+        S'  =>  S  =>  S+E  =>  S+2  =>  E+2  ->  (S)+2  =>  (E)+2  =>  (1)+2
+    \end{lstlisting}
+
+    O analisador constrói essa derivação de baixo para cima, da direita para
+    a esquerda.
 \end{frame}
 
 
 
 \begin{frame}{A Ideia Central}
-\protect\hypertarget{a-ideia-central}{}
-\begin{itemize}
 
-\item
-  Simula \textbf{todas as análises possíveis} em paralelo
-\item
-  Em vez de se comprometer com uma produção, prevê todas
-\item
-  Usa \textbf{compartilhamento de trabalho} para eficiência polinomial
-\item
-  Processa cada posição de entrada \(j\) mantendo um conjunto \(I_j\) de
-  \textbf{itens}
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Simula \textbf{todas as análises possíveis} em paralelo
+        \item
+        Em vez de se comprometer com uma produção, prevê todas
+        \item
+        Usa \textbf{compartilhamento de trabalho} para eficiência polinomial
+        \item
+        Processa cada posição de entrada \(j\) mantendo um conjunto \(I_j\) de
+        \textbf{itens}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Itens Earley}
-\protect\hypertarget{itens-earley}{}
-Um item Earley \([A \to \beta . \gamma, k]\) representa:
 
-\begin{itemize}
+    Um item Earley \([A \to \beta . \gamma, k]\) representa:
 
-\item
-  \(A \to \beta\gamma\): produção sendo usada
-\item
-  \(.\) (ponto): posição atual no reconhecimento
-\item
-  \(k\): posição na entrada onde o reconhecimento de \(A\) começou
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \(A \to \beta\gamma\): produção sendo usada
+        \item
+        \(.\) (ponto): posição atual no reconhecimento
+        \item
+        \(k\): posição na entrada onde o reconhecimento de \(A\) começou
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Exemplos}
-\protect\hypertarget{exemplos}{}
-\begin{itemize}
 
-\item
-  \([E \to . (S), 0]\): começamos a reconhecer \(E \to (S)\) na posição
-  0, nada visto ainda
-\item
-  \([E \to ( S . ), 0]\): vimos \texttt{(S}, esperamos
-  \texttt{)}
-\item
-  \([E \to (S) ., 0]\): \(E\) completamente reconhecida a partir da
-  posição 0
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \([E \to . (S), 0]\): começamos a reconhecer \(E \to (S)\) na posição
+        0, nada visto ainda
+        \item
+        \([E \to ( S . ), 0]\): vimos \texttt{(S}, esperamos
+        \texttt{)}
+        \item
+        \([E \to (S) ., 0]\): \(E\) completamente reconhecida a partir da
+        posição 0
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Algoritmo de Earley}
-\protect\hypertarget{algoritmo-de-earley-1}{}
-\textbf{Inicialização:} \(I_0 = \{[S' \to . S, 0]\}\)
+
+    \textbf{Inicialização:} \(I_0 = \{[S' \to . S, 0]\}\)
 \end{frame}
 
 \begin{frame}{Algoritmo de Earley}
-\protect\hypertarget{algoritmo-de-earley-2}{}
-\begin{enumerate}
 
-\item
-  \textbf{Predição}: se \([A \to \alpha . B \beta, k] \in I_j\) e
-  \(B \to \gamma\) é uma produção, adiciona \([B \to . \gamma, j]\) a
-  \(I_j\)
-\end{enumerate}
+    \begin{enumerate}
+
+        \item
+        \textbf{Predição}: se \([A \to \alpha . B \beta, k] \in I_j\) e
+        \(B \to \gamma\) é uma produção, adiciona \([B \to . \gamma, j]\) a
+        \(I_j\)
+    \end{enumerate}
 \end{frame}
 
 \begin{frame}{Algoritmo de Earley}
-\protect\hypertarget{algoritmo-de-earley-3}{}
-\begin{enumerate}
-\setcounter{enumi}{1}
 
-\item
-  \textbf{Verificar (scan)}: se \([A \to \alpha . a \beta, k] \in I_j\)
-  e o token atual é \(a\), adiciona \([A \to \alpha\, a . \beta, k]\) a
-  \(I_{j+1}\)
-\end{enumerate}
+    \begin{enumerate}
+        \setcounter{enumi}{1}
+
+        \item
+        \textbf{Verificar (scan)}: se \([A \to \alpha . a \beta, k] \in I_j\)
+        e o token atual é \(a\), adiciona \([A \to \alpha\, a . \beta, k]\) a
+        \(I_{j+1}\)
+    \end{enumerate}
 \end{frame}
 
 \begin{frame}{Algoritmo de Earley}
-\protect\hypertarget{algoritmo-de-earley-4}{}
-\begin{enumerate}
-\setcounter{enumi}{2}
 
-\item
-  \textbf{Completar}: se \([B \to \gamma ., k] \in I_j\), para cada
-  \([A \to \alpha . B \beta, l] \in I_k\), adiciona
-  \([A \to \alpha\, B . \beta, l]\) a \(I_j\)
-\end{enumerate}
+    \begin{enumerate}
+        \setcounter{enumi}{2}
+
+        \item
+        \textbf{Completar}: se \([B \to \gamma ., k] \in I_j\), para cada
+        \([A \to \alpha . B \beta, l] \in I_k\), adiciona
+        \([A \to \alpha\, B . \beta, l]\) a \(I_j\)
+    \end{enumerate}
 \end{frame}
 
 \begin{frame}{Algoritmo de Earley}
-\protect\hypertarget{algoritmo-de-earley-5}{}
-\textbf{Aceita:} se \([S' \to S ., 0] \in I_n\)
+
+    \textbf{Aceita:} se \([S' \to S ., 0] \in I_n\)
 \end{frame}
 
 \begin{frame}{Exemplo: Análise de \texttt{(1) + 2}}
-\protect\hypertarget{exemplo-anuxe1lise-de-1-2}{}
-Gramática: \(S \to S+E \mid E\) e \(E \to (S) \mid n\)
 
-\begin{table}
-\begin{tabular}[]{@{}llll@{}}
-\toprule
-Conjunto & Item & Pos & Motivo \\
-\midrule
+    Gramática: \(S \to S+E \mid E\) e \(E \to (S) \mid n\)
 
-\(I_0\) & \(S' \to . S\) & 0 & inicial \\
-& \(S \to . S+E\) & 0 & prever \(S\) \\
-& \(S \to . E\) & 0 & prever \(S\) \\
-& \(E \to . n\) & 0 & prever \(E\) \\
-& \(E \to . (S)\) & 0 & prever \(E\) \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}llll@{}}
+            \toprule
+            Conjunto & Item & Pos & Motivo \\
+            \midrule
+
+            \(I_0\) & \(S' \to . S\) & 0 & inicial \\
+            & \(S \to . S+E\) & 0 & prever \(S\) \\
+            & \(S \to . E\) & 0 & prever \(S\) \\
+            & \(E \to . n\) & 0 & prever \(E\) \\
+            & \(E \to . (S)\) & 0 & prever \(E\) \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo: Análise de
-\texttt{(1) + 2}}
-\protect\hypertarget{exemplo-anuxe1lise-de-1-2-1}{}
-Gramática: \(S \to S+E \mid E\) e \(E \to (S) \mid n\)
+    \texttt{(1) + 2}}
 
-\begin{table}
-\begin{tabular}[]{@{}llll@{}}
-\toprule
-Conjunto & Item & Pos & Motivo \\
-\midrule
+    Gramática: \(S \to S+E \mid E\) e \(E \to (S) \mid n\)
 
-\(I_1\) & \(E \to ( . S )\) & 0 & consumir
-\texttt{(} \\
-& \(S \to . S+E\) & 1 & prever \(S\) \\
-& \(S \to . E\) & 1 & prever \(S\) \\
-& \(E \to . n\) & 1 & prever \(E\) \\
-& \(E \to . (S)\) & 1 & prever \(E\) \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}llll@{}}
+            \toprule
+            Conjunto & Item & Pos & Motivo \\
+            \midrule
+
+            \(I_1\) & \(E \to ( . S )\) & 0 & consumir
+            \texttt{(} \\
+            & \(S \to . S+E\) & 1 & prever \(S\) \\
+            & \(S \to . E\) & 1 & prever \(S\) \\
+            & \(E \to . n\) & 1 & prever \(E\) \\
+            & \(E \to . (S)\) & 1 & prever \(E\) \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo: Análise de
-\texttt{(1) + 2} (continuação)}
-\protect\hypertarget{exemplo-anuxe1lise-de-1-2-continuauxe7uxe3o}{}
-\begin{table}
-\begin{tabular}[]{@{}llll@{}}
-\toprule
-Conjunto & Item & Pos & Motivo \\
-\midrule
+    \texttt{(1) + 2} (continuação)}
 
-\(I_2\) & \(E \to n .\) & 1 & consumir \texttt{1} \\
-& \(S \to E .\) & 1 & completar \(E\) \\
-& \(E \to (S . )\) & 0 & completar \(S\) \\
-& \(S \to S . +E\) & 1 & completar \(S\) \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}llll@{}}
+            \toprule
+            Conjunto & Item & Pos & Motivo \\
+            \midrule
+
+            \(I_2\) & \(E \to n .\) & 1 & consumir \texttt{1} \\
+            & \(S \to E .\) & 1 & completar \(E\) \\
+            & \(E \to (S . )\) & 0 & completar \(S\) \\
+            & \(S \to S . +E\) & 1 & completar \(S\) \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo: Análise de
-\texttt{(1) + 2} (continuação)}
-\protect\hypertarget{exemplo-anuxe1lise-de-1-2-continuauxe7uxe3o-1}{}
-\begin{table}
-\begin{tabular}[]{@{}llll@{}}
-\toprule
-Conjunto & Item & Pos & Motivo \\
-\midrule
+    \texttt{(1) + 2} (continuação)}
 
-\(I_3\) & \(E \to (S) .\) & 0 & consumir \texttt{)} \\
-& \(S \to E .\) & 0 & completar \(E\) \\
-& \(S' \to S .\) & 0 & completar \(S\) \\
-& \(S \to S . +E\) & 0 & completar \(S\) \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}llll@{}}
+            \toprule
+            Conjunto & Item & Pos & Motivo \\
+            \midrule
+
+            \(I_3\) & \(E \to (S) .\) & 0 & consumir \texttt{)} \\
+            & \(S \to E .\) & 0 & completar \(E\) \\
+            & \(S' \to S .\) & 0 & completar \(S\) \\
+            & \(S \to S . +E\) & 0 & completar \(S\) \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo: Análise de
-\texttt{(1) + 2} (continuação)}
-\protect\hypertarget{exemplo-anuxe1lise-de-1-2-continuauxe7uxe3o-2}{}
-\begin{table}
-\begin{tabular}[]{@{}llll@{}}
-\toprule
-Conjunto & Item & Pos & Motivo \\
-\midrule
+    \texttt{(1) + 2} (continuação)}
 
-\(I_4\) & \(S \to S+ . E\) & 0 & consumir \texttt{+} \\
-& \(E \to . n\) & 4 & prever \(E\) \\
-\(I_5\) & \(E \to n .\) & 4 & consumir \texttt{2} \\
-& \(S \to S+E .\) & 0 & completar \(E\) \\
-& \(S' \to S .\) & 0 & completar \(S\): \textbf{sucesso!} \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}llll@{}}
+            \toprule
+            Conjunto & Item & Pos & Motivo \\
+            \midrule
+
+            \(I_4\) & \(S \to S+ . E\) & 0 & consumir \texttt{+} \\
+            & \(E \to . n\) & 4 & prever \(E\) \\
+            \(I_5\) & \(E \to n .\) & 4 & consumir \texttt{2} \\
+            & \(S \to S+E .\) & 0 & completar \(E\) \\
+            & \(S' \to S .\) & 0 & completar \(S\): \textbf{sucesso!} \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 \end{frame}
 
 \begin{frame}{Visualização do Algoritmo de Earley}
-\protect\hypertarget{visualizauxe7uxe3o-do-algoritmo-de-earley}{}
-\includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter09/imgs/earley-threads.png}
+
+    \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter09/imgs/earley-threads.png}
 \end{frame}
 
 \begin{frame}{Complexidade}
-\protect\hypertarget{complexidade}{}
-\begin{itemize}
 
-\item
-  \textbf{Pior caso geral}: \(O(n^3)\) --- inclui gramáticas ambíguas
-\item
-  \textbf{Gramáticas não-ambíguas}: \(O(n^2)\) no pior caso
-\item
-  \textbf{Gramáticas LL/LR}: \(O(n)\) quando implementado cuidadosamente
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \textbf{Pior caso geral}: \(O(n^3)\) --- inclui gramáticas ambíguas
+        \item
+        \textbf{Gramáticas não-ambíguas}: \(O(n^2)\) no pior caso
+        \item
+        \textbf{Gramáticas LL/LR}: \(O(n)\) quando implementado cuidadosamente
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Vantagens}
-\protect\hypertarget{vantagens}{}
-\begin{itemize}
 
-\item
-  Analisa \textbf{qualquer GLC}, incluindo ambíguas
-\item
-  Sem necessidade de transformar a gramática
-\item
-  Otimização de Aycock-Horspool: apenas 50\% mais lento que LALR
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Analisa \textbf{qualquer GLC}, incluindo ambíguas
+        \item
+        Sem necessidade de transformar a gramática
+        \item
+        Otimização de Aycock-Horspool: apenas 50\% mais lento que LALR
+    \end{itemize}
 \end{frame}
 
-\hypertarget{analisadores-lr-shift-reduce}{%
+
 \section{Analisadores LR:
 Shift-Reduce}\label{analisadores-lr-shift-reduce}}
 
 \begin{frame}{A Ideia Shift-Reduce}
-\protect\hypertarget{a-ideia-shift-reduce}{}
-LR pode ser visto como uma \textbf{otimização do Earley}:
 
-\begin{itemize}
+    LR pode ser visto como uma \textbf{otimização do Earley}:
 
-\item
-  As previsões são \textbf{pré-computadas} como estados de um autômato
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        As previsões são \textbf{pré-computadas} como estados de um autômato
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{A Ideia Shift-Reduce}
-\protect\hypertarget{a-ideia-shift-reduce-1}{}
-\begin{itemize}
 
-\item
-  Estado do analisador: uma \textbf{pilha de estados}
-\item
-  Duas ações: \textbf{shift} (consumir token) e \textbf{reduce} (aplicar
-  produção)
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Estado do analisador: uma \textbf{pilha de estados}
+        \item
+        Duas ações: \textbf{shift} (consumir token) e \textbf{reduce} (aplicar
+        produção)
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{A Ideia Shift-Reduce}
-\protect\hypertarget{a-ideia-shift-reduce-2}{}
-Em qualquer ponto:
-\(\underbrace{\alpha}_{\text{pilha}} \cdot \underbrace{\beta}_{\text{entrada}}\)
-é uma forma sentencial direita
+
+    Em qualquer ponto:
+    \(\underbrace{\alpha}_{\text{pilha}} \cdot \underbrace{\beta}_{\text{entrada}}\)
+    é uma forma sentencial direita
 \end{frame}
 
 \begin{frame}[fragile]{Trace Shift-Reduce para
-\texttt{(1)+2}}
-\protect\hypertarget{trace-shift-reduce-para-12}{}
-\begin{table}
-\begin{tabular}[]{@{}lll@{}}
-\toprule
-Pilha & Entrada & Ação \\
-\midrule
+    \texttt{(1)+2}}
 
-& \texttt{(1)+2} & shift \\
-\texttt{(} & \texttt{1)+2} & shift \\
-\texttt{(1} & \texttt{)+2} & reduce
-\(E \to n\) \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}lll@{}}
+            \toprule
+            Pilha & Entrada & Ação \\
+            \midrule
+
+            & \texttt{(1)+2} & shift \\
+            \texttt{(} & \texttt{1)+2} & shift \\
+            \texttt{(1} & \texttt{)+2} & reduce
+            \(E \to n\) \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Trace Shift-Reduce para
-\texttt{(1)+2}}
-\protect\hypertarget{trace-shift-reduce-para-12-1}{}
-\begin{table}
-\begin{tabular}[]{@{}lll@{}}
-\toprule
-Pilha & Entrada & Ação \\
-\midrule
+    \texttt{(1)+2}}
 
-\texttt{(1} & \texttt{)+2} & reduce
-\(E \to n\) \\
-\texttt{(E} & \texttt{)+2} & reduce
-\(S \to E\) \\
-\texttt{(S} & \texttt{)+2} & shift \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}lll@{}}
+            \toprule
+            Pilha & Entrada & Ação \\
+            \midrule
+
+            \texttt{(1} & \texttt{)+2} & reduce
+            \(E \to n\) \\
+            \texttt{(E} & \texttt{)+2} & reduce
+            \(S \to E\) \\
+            \texttt{(S} & \texttt{)+2} & shift \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Trace Shift-Reduce para
-\texttt{(1)+2}}
-\protect\hypertarget{trace-shift-reduce-para-12-2}{}
-\begin{table}
-\begin{tabular}[]{@{}lll@{}}
-\toprule
-Pilha & Entrada & Ação \\
-\midrule
+    \texttt{(1)+2}}
 
-\texttt{E} & \texttt{+2} & reduce
-\(S \to E\) \\
-\texttt{S} & \texttt{+2} & shift \\
-\texttt{S+} & \texttt{2} & shift \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}lll@{}}
+            \toprule
+            Pilha & Entrada & Ação \\
+            \midrule
+
+            \texttt{E} & \texttt{+2} & reduce
+            \(S \to E\) \\
+            \texttt{S} & \texttt{+2} & shift \\
+            \texttt{S+} & \texttt{2} & shift \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Trace Shift-Reduce para
-\texttt{(1)+2}}
-\protect\hypertarget{trace-shift-reduce-para-12-3}{}
-\begin{table}
-\begin{tabular}[]{@{}lll@{}}
-\toprule
-Pilha & Entrada & Ação \\
-\midrule
+    \texttt{(1)+2}}
 
-\texttt{S+2} & \texttt{$} & reduce
-\(E \to n\) \\
-\texttt{S+E} & \texttt{$} & reduce
-\(S \to S+E\) \\
-\texttt{S} & \texttt{$} &
-\textbf{aceitar} \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}lll@{}}
+            \toprule
+            Pilha & Entrada & Ação \\
+            \midrule
+
+            \texttt{S+2} & \texttt{$} & reduce
+            \(E \to n\) \\
+            \texttt{S+E} & \texttt{$} & reduce
+            \(S \to S+E\) \\
+            \texttt{S} & \texttt{$} &
+            \textbf{aceitar} \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 \end{frame}
 
 \begin{frame}{Decisão: Quando Shift ou Reduce?}
-\protect\hypertarget{decisuxe3o-quando-shift-ou-reduce}{}
-\begin{itemize}
 
-\item
-  O analisador precisa decidir quando olha o topo da pilha e o próximo
-  token.
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        O analisador precisa decidir quando olha o topo da pilha e o próximo
+        token.
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Decisão: Quando Shift ou Reduce?}
-\protect\hypertarget{decisuxe3o-quando-shift-ou-reduce-1}{}
-\begin{itemize}
 
-\item
-  Para isso, usamos um \textbf{autômato LR(0)} cujos estados são
-  conjuntos de itens
+    \begin{itemize}
 
-  \begin{itemize}
+        \item
+        Para isso, usamos um \textbf{autômato LR(0)} cujos estados são
+        conjuntos de itens
 
-  \item
-    Os estados capturam exatamente o que já foi reconhecido
-  \item
-    A tabela de ações mapeia (estado, token) -> shift ou reduce
-  \end{itemize}
-\end{itemize}
+        \begin{itemize}
+
+            \item
+            Os estados capturam exatamente o que já foi reconhecido
+            \item
+            A tabela de ações mapeia (estado, token) -> shift ou reduce
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
-\hypertarget{lr0-itens-e-autuxf4mato}{%
+
 \section{LR(0): Itens e Autômato}\label{lr0-itens-e-autuxf4mato}}
 
 \begin{frame}{Itens LR(0)}
-\protect\hypertarget{itens-lr0}{}
-Um item LR(0) \(A \to \alpha . \beta\) (sem lookahead):
 
-\begin{itemize}
+    Um item LR(0) \(A \to \alpha . \beta\) (sem lookahead):
 
-\item
-  \(\alpha\): já reconhecido (no topo da pilha)
-\item
-  \(\beta\): o que ainda é esperado
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \(\alpha\): já reconhecido (no topo da pilha)
+        \item
+        \(\beta\): o que ainda é esperado
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Estados LR(0)}
-\protect\hypertarget{estados-lr0}{}
-Um \textbf{estado LR(0)} é um conjunto fechado de itens.
 
-\begin{lstlisting}[language=Haskell]
-data Item = Item
-  { itemLHS    :: String    -- A: não-terminal
-  , itemBefore :: [Symbol]  -- α: antes do ponto
-  , itemAfter  :: [Symbol]  -- β: depois do ponto
-  }
+    Um \textbf{estado LR(0)} é um conjunto fechado de itens.
+
+    \begin{lstlisting}[language=Haskell]
+        data Item = Item
+        { itemLHS    :: String    -- A: não-terminal
+        , itemBefore :: [Symbol]  -- α: antes do ponto
+        , itemAfter  :: [Symbol]  -- β: depois do ponto
+        }
 
 
-type State = Set Item
-\end{lstlisting}
+        type State = Set Item
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Fechamento (Closure)}
-\protect\hypertarget{fechamento-closure}{}
-Para cada item \([A \to \alpha . B \beta]\) com não-terminal \(B\) após
-o ponto, adicionar todos \([B \to . \gamma]\):
 
-\begin{lstlisting}[language=Haskell]
-closure :: Grammar -> State -> State
-closure g = fixedPoint step
-  where
-    step current = Set.union current $ Set.fromList
+    Para cada item \([A \to \alpha . B \beta]\) com não-terminal \(B\) após
+    o ponto, adicionar todos \([B \to . \gamma]\):
+
+    \begin{lstlisting}[language=Haskell]
+        closure :: Grammar -> State -> State
+        closure g = fixedPoint step
+        where
+        step current = Set.union current $ Set.fromList
         [ Item b [] prod
         | item <- Set.toList current
         , NonTerminal b <- take 1 (itemAfter item)
         , prod <- fromMaybe [] (Map.lookup b g)
         ]
-\end{lstlisting}
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Função Goto}
-\protect\hypertarget{funuxe7uxe3o-goto}{}
-Avança o ponto ao consumir o símbolo \(X\) e fecha o resultado:
 
-\begin{lstlisting}[language=Haskell]
-goto :: Grammar -> State -> Symbol -> State
-goto g items sym = closure g $ Set.fromList
-    [ Item lhs (before ++ [sym]) rest
-    | Item lhs before (s:rest) <- Set.toList items
-    , s == sym
-    ]
-\end{lstlisting}
+    Avança o ponto ao consumir o símbolo \(X\) e fecha o resultado:
+
+    \begin{lstlisting}[language=Haskell]
+        goto :: Grammar -> State -> Symbol -> State
+        goto g items sym = closure g $ Set.fromList
+        [ Item lhs (before ++ [sym]) rest
+        | Item lhs before (s:rest) <- Set.toList items
+        , s == sym
+        ]
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}{O Autômato LR(0)}
-\protect\hypertarget{o-autuxf4mato-lr0}{}
-\begin{itemize}
 
-\item
-  Resolução na lousa.
-\end{itemize}
+    \begin{itemize}
 
-\includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter09/imgs/lr0.png}
+        \item
+        Resolução na lousa.
+    \end{itemize}
+
+    \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter09/imgs/lr0.png}
 \end{frame}
 
 \begin{frame}[fragile]{Regras de Preenchimento LR(0)}
-\protect\hypertarget{regras-de-preenchimento-lr0}{}
-\begin{itemize}
 
-\item
-  \textbf{Shift}: para terminal \(t\) após o ponto em item do estado
-  \(i\):
+    \begin{itemize}
 
-  \begin{itemize}
+        \item
+        \textbf{Shift}: para terminal \(t\) após o ponto em item do estado
+        \(i\):
 
-  \item
-    \texttt{action[i, t] = Shift j} onde \(j\) = índice
-    de \texttt{goto(i, t)}
-  \end{itemize}
-\end{itemize}
+        \begin{itemize}
+
+            \item
+            \texttt{action[i, t] = Shift j} onde \(j\) = índice
+            de \texttt{goto(i, t)}
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Regras de Preenchimento LR(0)}
-\protect\hypertarget{regras-de-preenchimento-lr0-1}{}
-\begin{itemize}
 
-\item
-  \textbf{Reduce (LR0)}: para item completo \(A \to \alpha .\) no estado
-  \(i\):
+    \begin{itemize}
 
-  \begin{itemize}
+        \item
+        \textbf{Reduce (LR0)}: para item completo \(A \to \alpha .\) no estado
+        \(i\):
 
-  \item
-    \texttt{action[i, t] = Reduce(A -> α)} para
-    \textbf{todos} os terminais \(t\)
-  \item
-    LR(0) ignora completamente o lookahead nas reduções!
-  \end{itemize}
-\end{itemize}
+        \begin{itemize}
+
+            \item
+            \texttt{action[i, t] = Reduce(A -> α)} para
+            \textbf{todos} os terminais \(t\)
+            \item
+            LR(0) ignora completamente o lookahead nas reduções!
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Regras de Preenchimento LR(0)}
-\protect\hypertarget{regras-de-preenchimento-lr0-2}{}
-\begin{itemize}
 
-\item
-  \textbf{Accept}: quando o item completo é \(S' \to S .\):
+    \begin{itemize}
 
-  \begin{itemize}
+        \item
+        \textbf{Accept}: quando o item completo é \(S' \to S .\):
 
-  \item
-    \texttt{action[i, $] = Accept}
-  \end{itemize}
-\end{itemize}
+        \begin{itemize}
+
+            \item
+            \texttt{action[i, $] = Accept}
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
-\hypertarget{slr-simple-lr}{%
+
 \section{SLR: Simple LR}\label{slr-simple-lr}}
 
 \begin{frame}{O Problema do LR(0)}
-\protect\hypertarget{o-problema-do-lr0}{}
-LR(0) ignora o lookahead -> gera muitos conflitos shift-reduce
 
-\textbf{Exemplo:} gramática com recursão à direita
+    LR(0) ignora o lookahead -> gera muitos conflitos shift-reduce
 
-\[E \to T + E \mid T \quad T \to n \mid (E)\]
+    \textbf{Exemplo:} gramática com recursão à direita
+
+    \[E \to T + E \mid T \quad T \to n \mid (E)\]
 \end{frame}
 
 \begin{frame}[fragile]{O Problema do LR(0)}
-\protect\hypertarget{o-problema-do-lr0-1}{}
-\begin{itemize}
-\item
-  Estado com \(E \to T .\) e \(E \to T . + E\):
-\item
-  Item completo \(E \to T .\) -> LR(0) insere reduce em \textbf{todos} os
-  terminais, inclusive \texttt{+}
-\item
-  Item \(E \to T . + E\) -> exige shift em \texttt{+}
-\item
-  \textbf{Conflito!}
-\end{itemize}
+
+    \begin{itemize}
+        \item
+        Estado com \(E \to T .\) e \(E \to T . + E\):
+        \item
+        Item completo \(E \to T .\) -> LR(0) insere reduce em \textbf{todos} os
+        terminais, inclusive \texttt{+}
+        \item
+        Item \(E \to T . + E\) -> exige shift em \texttt{+}
+        \item
+        \textbf{Conflito!}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{A Solução SLR}
-\protect\hypertarget{a-soluuxe7uxe3o-slr}{}
-\textbf{Ideia}: reduzir \(A \to \alpha\) faz sentido apenas quando o
-próximo token pode seguir \(A\) na gramática
 
-\[\text{reduce apenas em } t \in \mathrm{FOLLOW}(A)\]
+    \textbf{Ideia}: reduzir \(A \to \alpha\) faz sentido apenas quando o
+    próximo token pode seguir \(A\) na gramática
+
+    \[\text{reduce apenas em } t \in \mathrm{FOLLOW}(A)\]
 \end{frame}
 
 \begin{frame}[fragile]{A Solução SLR}
-\protect\hypertarget{a-soluuxe7uxe3o-slr-1}{}
-Para \(E \to T .\) com \(\mathrm{FOLLOW}(E) = \{\$, )\}\):
 
-\begin{itemize}
+    Para \(E \to T .\) com \(\mathrm{FOLLOW}(E) = \{\$, )\}\):
 
-\item
-  LR(0): insere reduce em todos os terminais (inclusive
-  \texttt{+})
-\item
-  SLR: insere reduce apenas em \texttt{$} e
-  \texttt{)} --- sem conflito com shift em
-  \texttt{+}!
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        LR(0): insere reduce em todos os terminais (inclusive
+        \texttt{+})
+        \item
+        SLR: insere reduce apenas em \texttt{$} e
+        \texttt{)} --- sem conflito com shift em
+        \texttt{+}!
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Exemplo SLR}
-\protect\hypertarget{exemplo-slr}{}
-\[\begin{array}{lcl}
-E &\to& E + T \mid T \\
-T &\to& T * F \mid F \\
-F &\to& (E) \mid n
+
+    \[\begin{array}{lcl}
+    E &\to& E + T \mid T \\
+    T &\to& T * F \mid F \\
+    F &\to& (E) \mid n
 \end{array}\]
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo SLR}
-\protect\hypertarget{exemplo-slr-1}{}
-Estado com \(E \to T.\) e \(T \to T . * F\):
 
-\begin{itemize}
+    Estado com \(E \to T.\) e \(T \to T . * F\):
 
-\item
-  LR(0): conflito shift-reduce em \texttt{*} (reduce
-  \(E \to T\) e shift de \texttt{*})
-\item
-  SLR: \(* \notin \mathrm{FOLLOW}(E) = \{+, ), \$\}\)
+    \begin{itemize}
 
-  \begin{itemize}
+        \item
+        LR(0): conflito shift-reduce em \texttt{*} (reduce
+        \(E \to T\) e shift de \texttt{*})
+        \item
+        SLR: \(* \notin \mathrm{FOLLOW}(E) = \{+, ), \$\}\)
 
-  \item
-    \texttt{action[estado, *]} recebe apenas Shift ---
-    \textbf{sem conflito!}
-  \end{itemize}
-\end{itemize}
+        \begin{itemize}
+
+            \item
+            \texttt{action[estado, *]} recebe apenas Shift ---
+            \textbf{sem conflito!}
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
-\hypertarget{conclusuxe3o}{%
+
 \section{Conclusão}\label{conclusuxe3o}}
 
 \begin{frame}{Conclusão}
-\protect\hypertarget{conclusuxe3o-1}{}
-\begin{itemize}
 
-\item
-  \textbf{Análise bottom-up} é mais expressiva que top-down
+    \begin{itemize}
 
-  \begin{itemize}
+        \item
+        \textbf{Análise bottom-up} é mais expressiva que top-down
 
-  \item
-    Suporta recursão à esquerda
-  \item
-    Decisão após prefixo maior
-  \end{itemize}
-\end{itemize}
+        \begin{itemize}
+
+            \item
+            Suporta recursão à esquerda
+            \item
+            Decisão após prefixo maior
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Conclusão}
-\protect\hypertarget{conclusuxe3o-2}{}
-\begin{itemize}
 
-\item
-  \textbf{Earley}: analisa qualquer GLC, \(O(n^3)\) no pior caso
-\item
-  \textbf{LR(0)}: autômato de estados × itens, tabela de ações/goto
-\item
-  \textbf{SLR}: melhora LR(0) restringindo reduces a
-  \(\mathrm{FOLLOW}(A)\)
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \textbf{Earley}: analisa qualquer GLC, \(O(n^3)\) no pior caso
+        \item
+        \textbf{LR(0)}: autômato de estados × itens, tabela de ações/goto
+        \item
+        \textbf{SLR}: melhora LR(0) restringindo reduces a
+        \(\mathrm{FOLLOW}(A)\)
+    \end{itemize}
 \end{frame}

@@ -1,404 +1,404 @@
 \subtitle{\bf Aula 8 - O Algoritmo LL(1)}
 \begin{frame}[t,plain]
-\titlepage
+    \titlepage
 \end{frame}
 
 \begin{frame}{Objetivos}
-\protect\hypertarget{objetivos-1}{}
-\begin{itemize}
-\item
-  Apresentar os conceitos de conjuntos first e follow.
-\item
-  Apresentar o algoritmo LL(1): primeiro baseado em tabela.
-\end{itemize}
+
+    \begin{itemize}
+        \item
+        Apresentar os conceitos de conjuntos first e follow.
+        \item
+        Apresentar o algoritmo LL(1): primeiro baseado em tabela.
+    \end{itemize}
 \end{frame}
 
 
 
 \begin{frame}{O Nome LL(1)}
-\protect\hypertarget{o-nome-ll1}{}
-\begin{itemize}
 
-\item
-  \textbf{L} (primeiro): lê a entrada da \textbf{esquerda para a
-  direita} (\emph{Left-to-right})
-\item
-  \textbf{L} (segundo): produz uma \textbf{derivação mais à esquerda}
-  (\emph{Leftmost derivation})
-\item
-  \textbf{1}: usa apenas \textbf{1 símbolo de lookahead} para decidir
-  qual produção aplicar
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        \textbf{L} (primeiro): lê a entrada da \textbf{esquerda para a
+        direita} (\emph{Left-to-right})
+        \item
+        \textbf{L} (segundo): produz uma \textbf{derivação mais à esquerda}
+        (\emph{Leftmost derivation})
+        \item
+        \textbf{1}: usa apenas \textbf{1 símbolo de lookahead} para decidir
+        qual produção aplicar
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{A Ideia Central}
-\protect\hypertarget{a-ideia-central}{}
-\begin{itemize}
 
-\item
-  Substitui a \textbf{recursão} por um \textbf{algoritmo dirigido por
-  tabela}
-\item
-  Tabela de parsing \(M[A, a]\): dado não-terminal \(A\) e token \(a\),
-  qual produção aplicar?
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Substitui a \textbf{recursão} por um \textbf{algoritmo dirigido por
+        tabela}
+        \item
+        Tabela de parsing \(M[A, a]\): dado não-terminal \(A\) e token \(a\),
+        qual produção aplicar?
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{A Ideia Central}
-\protect\hypertarget{a-ideia-central-1}{}
-\begin{itemize}
 
-\item
-  O analisador mantém uma \textbf{pilha} de símbolos (o que ainda falta
-  reconhecer)
-\item
-  Cada passo: consulta \(M[\text{topo da pilha}, \text{token atual}]\)
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        O analisador mantém uma \textbf{pilha} de símbolos (o que ainda falta
+        reconhecer)
+        \item
+        Cada passo: consulta \(M[\text{topo da pilha}, \text{token atual}]\)
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{O Algoritmo LL(1)}
-\protect\hypertarget{o-algoritmo-ll1-1}{}
-\textbf{Inicialização}: pilha \(\leftarrow [S, \$]\), onde \(S\) é o
-símbolo inicial
 
-\textbf{Repita}:
+    \textbf{Inicialização}: pilha \(\leftarrow [S, \$]\), onde \(S\) é o
+    símbolo inicial
 
-\begin{itemize}
+    \textbf{Repita}:
 
-\item
-  Seja \(X\) o topo da pilha e \(a\) o token corrente
-\item
-  Se \(X = \$\) e \(a = \$\): \textbf{aceitar}
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Seja \(X\) o topo da pilha e \(a\) o token corrente
+        \item
+        Se \(X = \$\) e \(a = \$\): \textbf{aceitar}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{O Algoritmo LL(1)}
-\protect\hypertarget{o-algoritmo-ll1-2}{}
-\begin{itemize}
 
-\item
-  Se \(X\) é terminal \(t\): se \(t = a\), desempilha e avança; senão
-  \textbf{erro}
-\item
-  Se \(X\) é não-terminal \(A\): consulta \(M[A, a]\)
+    \begin{itemize}
 
-  \begin{itemize}
+        \item
+        Se \(X\) é terminal \(t\): se \(t = a\), desempilha e avança; senão
+        \textbf{erro}
+        \item
+        Se \(X\) é não-terminal \(A\): consulta \(M[A, a]\)
 
-  \item
-    Se \(M[A, a] = A \to \alpha\): substitui \(A\) na pilha por
-    \(\alpha\) (da direita para esquerda)
-  \item
-    Se \(M[A, a] = vazio\) erro: \textbf{erro sintático}
-  \end{itemize}
-\end{itemize}
+        \begin{itemize}
+
+            \item
+            Se \(M[A, a] = A \to \alpha\): substitui \(A\) na pilha por
+            \(\alpha\) (da direita para esquerda)
+            \item
+            Se \(M[A, a] = vazio\) erro: \textbf{erro sintático}
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
-\hypertarget{exemplo-anuxe1lise-de-n-n}{%
+
 \section{\texorpdfstring{Exemplo: Análise de
 \texttt{n\ +\ n}}{Exemplo: Análise de n + n}}\label{exemplo-anuxe1lise-de-n-n}}
 
 \begin{frame}{Gramática de Expressões (LL(1))}
-\protect\hypertarget{gramuxe1tica-de-expressuxf5es-ll1}{}
-\[\begin{array}{lcl}
-E  &\to& T\; E' \\
-E' &\to& +\; T\; E' \mid \lambda \\
-T  &\to& F\; T' \\
-T' &\to& *\; F\; T' \mid \lambda \\
-F  &\to& (\; E\; ) \mid \mathbf{n}
+
+    \[\begin{array}{lcl}
+    E  &\to& T\; E' \\
+    E' &\to& +\; T\; E' \mid \lambda \\
+    T  &\to& F\; T' \\
+    T' &\to& *\; F\; T' \mid \lambda \\
+    F  &\to& (\; E\; ) \mid \mathbf{n}
 \end{array}\]
 \end{frame}
 
 \begin{frame}{Trace Completo da Análise de
-\texttt{n + n}}
-\protect\hypertarget{trace-completo-da-anuxe1lise-de-n-n}{}
-\begin{table}
-\begin{tabular}[]{@{}lll@{}}
-\toprule
-Pilha & Entrada & Ação \\
-\midrule
+    \texttt{n + n}}
 
-\(E\;\$\) & \(n\;+\;n\;\$\) & \(M[E,n]\): aplicar \(E \to T\;E'\) \\
-\(T\;E'\;\$\) & \(n\;+\;n\;\$\) & \(M[T,n]\): aplicar \(T \to F\;T'\) \\
-\(F\;T'\;E'\;\$\) & \(n\;+\;n\;\$\) & \(M[F,n]\): aplicar \(F \to n\) \\
-\bottomrule
+    \begin{table}
+        \begin{tabular}[]{@{}lll@{}}
+            \toprule
+            Pilha & Entrada & Ação \\
+            \midrule
+
+            \(E\;\$\) & \(n\;+\;n\;\$\) & \(M[E,n]\): aplicar \(E \to T\;E'\) \\
+            \(T\;E'\;\$\) & \(n\;+\;n\;\$\) & \(M[T,n]\): aplicar \(T \to F\;T'\) \\
+            \(F\;T'\;E'\;\$\) & \(n\;+\;n\;\$\) & \(M[F,n]\): aplicar \(F \to n\) \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Trace Completo da Análise de
+    \texttt{n + n}}
+
+    \begin{table}
+        \begin{tabular}[]{@{}
+            >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2344}}
+            >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2031}}
+            >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.5625}}@{}}
+            \toprule
+            \begin{minipage}[b]{\linewidth}\raggedright
+                Pilha
+            \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+            Entrada
+        \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+        Ação
+    \end{minipage} \\
+    \midrule
+
+    \(n\;T'\;E'\;\$\) & \(n\;+\;n\;\$\) & Casar: consumir \(n\) \\
+    \(T'\;E'\;\$\) & \(+\;n\;\$\) & \(M[T',+]\): aplicar
+    \(T' \to \lambda\) \\
+    \(E'\;\$\) & \(+\;n\;\$\) & \(M[E',+]\): aplicar \(E' \to +\;T\;E'\) \\
+    \bottomrule
 \end{tabular}
 \end{table}
 \end{frame}
 
 \begin{frame}{Trace Completo da Análise de
-\texttt{n + n}}
-\protect\hypertarget{trace-completo-da-anuxe1lise-de-n-n-1}{}
-\begin{table}
-\begin{tabular}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2344}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2031}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.5625}}@{}}
-\toprule
-\begin{minipage}[b]{\linewidth}\raggedright
-Pilha
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Entrada
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Ação
-\end{minipage} \\
-\midrule
+    \texttt{n + n}}
 
-\(n\;T'\;E'\;\$\) & \(n\;+\;n\;\$\) & Casar: consumir \(n\) \\
-\(T'\;E'\;\$\) & \(+\;n\;\$\) & \(M[T',+]\): aplicar
-\(T' \to \lambda\) \\
-\(E'\;\$\) & \(+\;n\;\$\) & \(M[E',+]\): aplicar \(E' \to +\;T\;E'\) \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}lll@{}}
+            \toprule
+            Pilha & Entrada & Ação \\
+            \midrule
+
+            \(+\;T\;E'\;\$\) & \(+\;n\;\$\) & Casar: consumir \(+\) \\
+            \(T\;E'\;\$\) & \(n\;\$\) & \(M[T,n]\): aplicar \(T \to F\;T'\) \\
+            \(F\;T'\;E'\;\$\) & \(n\;\$\) & \(M[F,n]\): aplicar \(F \to n\) \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 \end{frame}
 
 \begin{frame}{Trace Completo da Análise de
-\texttt{n + n}}
-\protect\hypertarget{trace-completo-da-anuxe1lise-de-n-n-2}{}
-\begin{table}
-\begin{tabular}[]{@{}lll@{}}
-\toprule
-Pilha & Entrada & Ação \\
-\midrule
+    \texttt{n + n}}
 
-\(+\;T\;E'\;\$\) & \(+\;n\;\$\) & Casar: consumir \(+\) \\
-\(T\;E'\;\$\) & \(n\;\$\) & \(M[T,n]\): aplicar \(T \to F\;T'\) \\
-\(F\;T'\;E'\;\$\) & \(n\;\$\) & \(M[F,n]\): aplicar \(F \to n\) \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}lll@{}}
+            \toprule
+            Pilha & Entrada & Ação \\
+            \midrule
+
+            \(n\;T'\;E'\;\$\) & \(n\;\$\) & Casar: consumir \(n\) \\
+            \(T'\;E'\;\$\) & \(\$\) & \(M[T',\$]\): aplicar \(T' \to \lambda\) \\
+            \(E'\;\$\) & \(\$\) & \(M[E',\$]\): aplicar \(E' \to \lambda\) \\
+            \(\$\) & \(\$\) & \textbf{Aceitar} \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 \end{frame}
 
-\begin{frame}{Trace Completo da Análise de
-\texttt{n + n}}
-\protect\hypertarget{trace-completo-da-anuxe1lise-de-n-n-3}{}
-\begin{table}
-\begin{tabular}[]{@{}lll@{}}
-\toprule
-Pilha & Entrada & Ação \\
-\midrule
 
-\(n\;T'\;E'\;\$\) & \(n\;\$\) & Casar: consumir \(n\) \\
-\(T'\;E'\;\$\) & \(\$\) & \(M[T',\$]\): aplicar \(T' \to \lambda\) \\
-\(E'\;\$\) & \(\$\) & \(M[E',\$]\): aplicar \(E' \to \lambda\) \\
-\(\$\) & \(\$\) & \textbf{Aceitar} \\
-\bottomrule
-\end{tabular}
-\end{table}
-\end{frame}
-
-\hypertarget{construuxe7uxe3o-da-tabela-ll1}{%
 \section{Construção da Tabela
 LL(1)}\label{construuxe7uxe3o-da-tabela-ll1}}
 
 \begin{frame}{Conceito: Anulável}
-\protect\hypertarget{conceito-anuluxe1vel}{}
-Um não-terminal \(A\) é \textbf{anulável} se
-\(A \Rightarrow^* \lambda\).
 
-Uma sequência \(X_1\, X_2\, \cdots\, X_n\) é anulável se \textbf{todos}
-os \(X_i\) são anuláveis.
+    Um não-terminal \(A\) é \textbf{anulável} se
+    \(A \Rightarrow^* \lambda\).
+
+    Uma sequência \(X_1\, X_2\, \cdots\, X_n\) é anulável se \textbf{todos}
+    os \(X_i\) são anuláveis.
 \end{frame}
 
 \begin{frame}{Conceito: Anulável}
-\protect\hypertarget{conceito-anuluxe1vel-1}{}
-Casos base:
 
-\begin{itemize}
-
-\item
-  Todo terminal não é anulável
-\item
-  \(A\) anulável se tem produção \(A \to \lambda\)
-\item
-  Calculado iterativamente até ponto fixo
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Conjunto FIRST}
-\protect\hypertarget{conjunto-first}{}
-\[\mathrm{FIRST}(\alpha) = \{a \in \Sigma \mid \alpha \Rightarrow^* a\,\beta\}\]
-
-Incluir \(\lambda\) em \(\mathrm{FIRST}(\alpha)\) se \(\alpha\) é
-anulável.
-\end{frame}
-
-\begin{frame}{Conjunto FIRST}
-\protect\hypertarget{conjunto-first-1}{}
-\textbf{Regras para \(\mathrm{FIRST}(X_1\, X_2\, \cdots\, X_n)\):}
-
-\begin{enumerate}
-
-\item
-  Sequência vazia: \(\mathrm{FIRST}(\lambda) = \{\lambda\}\)
-\item
-  \(X_1\) é terminal \(a\): \(\mathrm{FIRST}(X_1\cdots) = \{a\}\)
-\item
-  \(X_1\) é não-terminal:
-
-  \begin{itemize}
-
-  \item
-    Incluir \(\mathrm{FIRST}(X_1) \setminus \{\lambda\}\)
-  \item
-    Se \(\lambda \in \mathrm{FIRST}(X_1)\): incluir também
-    \(\mathrm{FIRST}(X_2\cdots X_n)\)
-  \end{itemize}
-\end{enumerate}
-\end{frame}
-
-\begin{frame}{Conjunto FOLLOW}
-\protect\hypertarget{conjunto-follow}{}
-\[\mathrm{FOLLOW}(A) = \{a \in \Sigma \cup \{\$\} \mid S \Rightarrow^* \alpha\,A\,a\,\beta\}\]
-\end{frame}
-
-\begin{frame}{Conjunto FOLLOW}
-\protect\hypertarget{conjunto-follow-1}{}
-\textbf{Regras:}
-
-\begin{enumerate}
-
-\item
-  \(\$ \in \mathrm{FOLLOW}(S)\) (símbolo inicial)
-\item
-  Para cada produção \(B \to \alpha\,A\,\beta\):
-
-  \begin{itemize}
-
-  \item
-    Adicionar \(\mathrm{FIRST}(\beta) \setminus \{\lambda\}\) a
-    \(\mathrm{FOLLOW}(A)\)
-  \item
-    Se \(\lambda \in \mathrm{FIRST}(\beta)\): adicionar
-    \(\mathrm{FOLLOW}(B)\) a \(\mathrm{FOLLOW}(A)\)
-  \end{itemize}
-\end{enumerate}
-
-Calculado iterativamente até ponto fixo.
-\end{frame}
-
-\begin{frame}{Construção da Tabela}
-\protect\hypertarget{construuxe7uxe3o-da-tabela}{}
-Para cada produção \(A \to \alpha\):
-
-\begin{enumerate}
-
-\item
-  Para cada \(a \in \mathrm{FIRST}(\alpha) \setminus \{\lambda\}\):
-
-  \begin{itemize}
-
-  \item
-    Definir \(M[A, a] = A \to \alpha\)
-  \end{itemize}
-\end{enumerate}
-\end{frame}
-
-\begin{frame}{Construção da Tabela}
-\protect\hypertarget{construuxe7uxe3o-da-tabela-1}{}
-\begin{enumerate}
-\setcounter{enumi}{1}
-
-\item
-  Se \(\lambda \in \mathrm{FIRST}(\alpha)\):
-
-  \begin{itemize}
-
-  \item
-    Para cada \(b \in \mathrm{FOLLOW}(A)\):
+    Casos base:
 
     \begin{itemize}
 
-    \item
-      Definir \(M[A, b] = A \to \alpha\)
+        \item
+        Todo terminal não é anulável
+        \item
+        \(A\) anulável se tem produção \(A \to \lambda\)
+        \item
+        Calculado iterativamente até ponto fixo
     \end{itemize}
-  \end{itemize}
-\end{enumerate}
+\end{frame}
 
-Entradas não preenchidas indicam \textbf{erro}.
+\begin{frame}{Conjunto FIRST}
+
+    \[\mathrm{FIRST}(\alpha) = \{a \in \Sigma \mid \alpha \Rightarrow^* a\,\beta\}\]
+
+    Incluir \(\lambda\) em \(\mathrm{FIRST}(\alpha)\) se \(\alpha\) é
+    anulável.
+\end{frame}
+
+\begin{frame}{Conjunto FIRST}
+
+    \textbf{Regras para \(\mathrm{FIRST}(X_1\, X_2\, \cdots\, X_n)\):}
+
+    \begin{enumerate}
+
+        \item
+        Sequência vazia: \(\mathrm{FIRST}(\lambda) = \{\lambda\}\)
+        \item
+        \(X_1\) é terminal \(a\): \(\mathrm{FIRST}(X_1\cdots) = \{a\}\)
+        \item
+        \(X_1\) é não-terminal:
+
+        \begin{itemize}
+
+            \item
+            Incluir \(\mathrm{FIRST}(X_1) \setminus \{\lambda\}\)
+            \item
+            Se \(\lambda \in \mathrm{FIRST}(X_1)\): incluir também
+            \(\mathrm{FIRST}(X_2\cdots X_n)\)
+        \end{itemize}
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Conjunto FOLLOW}
+
+    \[\mathrm{FOLLOW}(A) = \{a \in \Sigma \cup \{\$\} \mid S \Rightarrow^* \alpha\,A\,a\,\beta\}\]
+\end{frame}
+
+\begin{frame}{Conjunto FOLLOW}
+
+    \textbf{Regras:}
+
+    \begin{enumerate}
+
+        \item
+        \(\$ \in \mathrm{FOLLOW}(S)\) (símbolo inicial)
+        \item
+        Para cada produção \(B \to \alpha\,A\,\beta\):
+
+        \begin{itemize}
+
+            \item
+            Adicionar \(\mathrm{FIRST}(\beta) \setminus \{\lambda\}\) a
+            \(\mathrm{FOLLOW}(A)\)
+            \item
+            Se \(\lambda \in \mathrm{FIRST}(\beta)\): adicionar
+            \(\mathrm{FOLLOW}(B)\) a \(\mathrm{FOLLOW}(A)\)
+        \end{itemize}
+    \end{enumerate}
+
+    Calculado iterativamente até ponto fixo.
 \end{frame}
 
 \begin{frame}{Construção da Tabela}
-\protect\hypertarget{construuxe7uxe3o-da-tabela-2}{}
-\textbf{Conflito} = uma entrada recebe mais de uma produção
 
-\begin{itemize}
+    Para cada produção \(A \to \alpha\):
 
-\item
-  gramática não é LL(1)!
-\end{itemize}
+    \begin{enumerate}
+
+        \item
+        Para cada \(a \in \mathrm{FIRST}(\alpha) \setminus \{\lambda\}\):
+
+        \begin{itemize}
+
+            \item
+            Definir \(M[A, a] = A \to \alpha\)
+        \end{itemize}
+    \end{enumerate}
 \end{frame}
 
-\hypertarget{exemplo-completo-tabela-ll1}{%
+\begin{frame}{Construção da Tabela}
+
+    \begin{enumerate}
+        \setcounter{enumi}{1}
+
+        \item
+        Se \(\lambda \in \mathrm{FIRST}(\alpha)\):
+
+        \begin{itemize}
+
+            \item
+            Para cada \(b \in \mathrm{FOLLOW}(A)\):
+
+            \begin{itemize}
+
+                \item
+                Definir \(M[A, b] = A \to \alpha\)
+            \end{itemize}
+        \end{itemize}
+    \end{enumerate}
+
+    Entradas não preenchidas indicam \textbf{erro}.
+\end{frame}
+
+\begin{frame}{Construção da Tabela}
+
+    \textbf{Conflito} = uma entrada recebe mais de uma produção
+
+    \begin{itemize}
+
+        \item
+        gramática não é LL(1)!
+    \end{itemize}
+\end{frame}
+
+
 \section{Exemplo Completo: Tabela
 LL(1)}\label{exemplo-completo-tabela-ll1}}
 
 \begin{frame}{Gramática de Expressões (LL(1))}
-\protect\hypertarget{gramuxe1tica-de-expressuxf5es-ll1-1}{}
-\[\begin{array}{lcl}
-E  &\to& T\; E' \\
-E' &\to& +\; T\; E' \mid \lambda \\
-T  &\to& F\; T' \\
-T' &\to& *\; F\; T' \mid \lambda \\
-F  &\to& (\; E\; ) \mid \mathbf{n}
+
+    \[\begin{array}{lcl}
+    E  &\to& T\; E' \\
+    E' &\to& +\; T\; E' \mid \lambda \\
+    T  &\to& F\; T' \\
+    T' &\to& *\; F\; T' \mid \lambda \\
+    F  &\to& (\; E\; ) \mid \mathbf{n}
 \end{array}\]
 \end{frame}
 
 \begin{frame}{Conjuntos FIRST}
-\protect\hypertarget{conjuntos-first}{}
-\begin{table}
-\begin{tabular}[]{@{}ll@{}}
-\toprule
-Não-terminal & FIRST \\
-\midrule
 
-\(E\) & \(\{(, n\}\) \\
-\(E'\) & \(\{+, \lambda\}\) \\
-\(T\) & \(\{(, n\}\) \\
-\(T'\) & \(\{*, \lambda\}\) \\
-\(F\) & \(\{(, n\}\) \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}ll@{}}
+            \toprule
+            Não-terminal & FIRST \\
+            \midrule
+
+            \(E\) & \(\{(, n\}\) \\
+            \(E'\) & \(\{+, \lambda\}\) \\
+            \(T\) & \(\{(, n\}\) \\
+            \(T'\) & \(\{*, \lambda\}\) \\
+            \(F\) & \(\{(, n\}\) \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 \end{frame}
 
 \begin{frame}{Conjuntos FOLLOW}
-\protect\hypertarget{conjuntos-follow}{}
-\begin{table}
-\begin{tabular}[]{@{}ll@{}}
-\toprule
-Não-terminal & FOLLOW \\
-\midrule
 
-\(E\) & \(\{\$, )\}\) \\
-\(E'\) & \(\{\$, )\}\) \\
-\(T\) & \(\{+, \$, )\}\) \\
-\(T'\) & \(\{+, \$, )\}\) \\
-\(F\) & \(\{*, +, \$, )\}\) \\
-\bottomrule
-\end{tabular}
-\end{table}
+    \begin{table}
+        \begin{tabular}[]{@{}ll@{}}
+            \toprule
+            Não-terminal & FOLLOW \\
+            \midrule
+
+            \(E\) & \(\{\$, )\}\) \\
+            \(E'\) & \(\{\$, )\}\) \\
+            \(T\) & \(\{+, \$, )\}\) \\
+            \(T'\) & \(\{+, \$, )\}\) \\
+            \(F\) & \(\{*, +, \$, )\}\) \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
 \end{frame}
 
 \begin{frame}{Tabela de Parsing LL(1)}
-\protect\hypertarget{tabela-de-parsing-ll1}{}
-\begin{table}
-\begin{tabular}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.0690}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1207}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1724}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1724}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1552}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1552}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1552}}@{}}
-\toprule
-\begin{minipage}[b]{\linewidth}\raggedright
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\(n\)
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\(+\)
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\(*\)
+
+    \begin{table}
+        \begin{tabular}[]{@{}
+            >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.0690}}
+            >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1207}}
+            >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1724}}
+            >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1724}}
+            >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1552}}
+            >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1552}}
+            >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1552}}@{}}
+            \toprule
+            \begin{minipage}[b]{\linewidth}\raggedright
+            \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+            \(n\)
+        \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+        \(+\)
+    \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+    \(*\)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 \((\)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
@@ -421,171 +421,171 @@ Não-terminal & FOLLOW \\
 Cada entrada tem no máximo uma produção --- a gramática é LL(1).
 \end{frame}
 
-\hypertarget{conflitos-na-tabela-ll1}{%
+
 \section{Conflitos na Tabela LL(1)}\label{conflitos-na-tabela-ll1}}
 
 \begin{frame}[fragile]{Conflito FIRST/FIRST}
-\protect\hypertarget{conflito-firstfirst}{}
-Quando duas alternativas de um mesmo não-terminal começam com o mesmo
-terminal:
 
-\begin{lstlisting}
-S -> if E then S else S
-  | if E then S
-  | other
-\end{lstlisting}
+    Quando duas alternativas de um mesmo não-terminal começam com o mesmo
+    terminal:
+
+    \begin{lstlisting}
+        S -> if E then S else S
+        | if E then S
+        | other
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}{Conflito FIRST/FIRST}
-\protect\hypertarget{conflito-firstfirst-1}{}
-\(\mathrm{FIRST}(\mathbf{if}\;E\;\mathbf{then}\;S\;\mathbf{else}\;S) = \{\mathbf{if}\}\)
-\(\mathrm{FIRST}(\mathbf{if}\;E\;\mathbf{then}\;S) = \{\mathbf{if}\}\)
 
-\(M[S, \mathbf{if}]\) recebe \textbf{duas produções}: \textbf{conflito
-FIRST/FIRST}!
+    \(\mathrm{FIRST}(\mathbf{if}\;E\;\mathbf{then}\;S\;\mathbf{else}\;S) = \{\mathbf{if}\}\)
+    \(\mathrm{FIRST}(\mathbf{if}\;E\;\mathbf{then}\;S) = \{\mathbf{if}\}\)
+
+    \(M[S, \mathbf{if}]\) recebe \textbf{duas produções}: \textbf{conflito
+    FIRST/FIRST}!
 \end{frame}
 
 \begin{frame}[fragile]{Conflito FIRST/FOLLOW}
-\protect\hypertarget{conflito-firstfollow}{}
-Quando uma produção pode derivar \(\lambda\) e os conjuntos FIRST e
-FOLLOW não são disjuntos:
 
-\begin{lstlisting}
-S -> A a
-A -> a | λ
-\end{lstlisting}
+    Quando uma produção pode derivar \(\lambda\) e os conjuntos FIRST e
+    FOLLOW não são disjuntos:
+
+    \begin{lstlisting}
+        S -> A a
+        A -> a | λ
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}{Conflito FIRST/FOLLOW}
-\protect\hypertarget{conflito-firstfollow-1}{}
-\begin{itemize}
 
-\item
-  \(\mathrm{FIRST}(A) = \{a, \lambda\}\)
-\item
-  \(\mathrm{FOLLOW}(A) = \{a\}\)
-\end{itemize}
+    \begin{itemize}
 
-Para \(M[A, a]\): tanto \(A \to a\) (pois \(a \in \mathrm{FIRST}(A)\))
-quanto \(A \to \lambda\) (pois \(a \in \mathrm{FOLLOW}(A)\)):
-\textbf{conflito FIRST/FOLLOW}!
+        \item
+        \(\mathrm{FIRST}(A) = \{a, \lambda\}\)
+        \item
+        \(\mathrm{FOLLOW}(A) = \{a\}\)
+    \end{itemize}
+
+    Para \(M[A, a]\): tanto \(A \to a\) (pois \(a \in \mathrm{FIRST}(A)\))
+    quanto \(A \to \lambda\) (pois \(a \in \mathrm{FOLLOW}(A)\)):
+    \textbf{conflito FIRST/FOLLOW}!
 \end{frame}
 
-\hypertarget{implementauxe7uxe3o-em-haskell}{%
+
 \section{Implementação em
 Haskell}\label{implementauxe7uxe3o-em-haskell}}
 
 \begin{frame}[fragile]{Tipos Principais}
-\protect\hypertarget{tipos-principais}{}
-\begin{lstlisting}[language=Haskell]
-data Symbol = Terminal String | NonTerminal String
 
-type Production = [Symbol]
-type Grammar    = Map String [Production]
+    \begin{lstlisting}[language=Haskell]
+        data Symbol = Terminal String | NonTerminal String
 
-type ParseTable = Map (String, String) ParseAction
+        type Production = [Symbol]
+        type Grammar    = Map String [Production]
 
-data ParseAction
-  = Derive Production
-  | Accept
-  | Error
-\end{lstlisting}
+        type ParseTable = Map (String, String) ParseAction
+
+        data ParseAction
+        = Derive Production
+        | Accept
+        | Error
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Cálculo de FIRST por Ponto Fixo}
-\protect\hypertarget{cuxe1lculo-de-first-por-ponto-fixo}{}
-\begin{lstlisting}[language=Haskell]
-computeFirstSets :: Grammar -> FirstSet
-computeFirstSets g = fixedPoint step initial
-  where
-    initial = Map.fromList [(nt, []) | nt <- nonTerminals g]
-    step cur = Map.mapWithKey update cur
-      where
+
+    \begin{lstlisting}[language=Haskell]
+        computeFirstSets :: Grammar -> FirstSet
+        computeFirstSets g = fixedPoint step initial
+        where
+        initial = Map.fromList [(nt, []) | nt <- nonTerminals g]
+        step cur = Map.mapWithKey update cur
+        where
         update nt _ = unions $ map (firstForSequence g cur)
-                                   (fromMaybe [] (Map.lookup nt g))
-\end{lstlisting}
+        (fromMaybe [] (Map.lookup nt g))
+    \end{lstlisting}
 
-\begin{itemize}
+    \begin{itemize}
 
-\item
-  \texttt{fixedPoint step initial}: aplica
-  \texttt{step} repetidamente até convergência
-\item
-  Cada iteração pode expandir os conjuntos FIRST
-\end{itemize}
+        \item
+        \texttt{fixedPoint step initial}: aplica
+        \texttt{step} repetidamente até convergência
+        \item
+        Cada iteração pode expandir os conjuntos FIRST
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{\texttt{firstForSequence}:
-Implementação das Regras}
-\protect\hypertarget{firstforsequence-implementauxe7uxe3o-das-regras}{}
-\begin{lstlisting}[language=Haskell]
-firstForSequence :: Grammar -> FirstSet -> [Symbol] -> [String]
-firstForSequence _ _ [] = ["λ"]
-firstForSequence g fs (sym:syms)
-    | isTerminal sym =
+    Implementação das Regras}
+
+    \begin{lstlisting}[language=Haskell]
+        firstForSequence :: Grammar -> FirstSet -> [Symbol] -> [String]
+        firstForSequence _ _ [] = ["λ"]
+        firstForSequence g fs (sym:syms)
+        | isTerminal sym =
         if isLambda sym
         then firstForSequence g fs syms
         else [symbolString sym]
-    | otherwise =
+        | otherwise =
         let nt         = symbolString sym
-            firstOfSym = fromMaybe [] (Map.lookup nt fs)
-            withoutLam = firstOfSym \\ ["λ"]
+        firstOfSym = fromMaybe [] (Map.lookup nt fs)
+        withoutLam = firstOfSym \\ ["λ"]
         in if "λ" `elem` firstOfSym
-           then withoutLam `union` firstForSequence g fs syms
-           else withoutLam
-\end{lstlisting}
+        then withoutLam `union` firstForSequence g fs syms
+        else withoutLam
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{O Parser LL(1)}
-\protect\hypertarget{o-parser-ll1}{}
-\begin{lstlisting}[language=Haskell]
-parse :: Grammar -> ParseTable -> [String] -> ParseResult
-parse grammar table tokens = go initialStack (tokens ++ ["$"]) []
-  where
-    startSym     = head (nonTerminals grammar)
-    initialStack = [NonTerminal startSym, Terminal "$"]
-\end{lstlisting}
+
+    \begin{lstlisting}[language=Haskell]
+        parse :: Grammar -> ParseTable -> [String] -> ParseResult
+        parse grammar table tokens = go initialStack (tokens ++ ["$"]) []
+        where
+        startSym     = head (nonTerminals grammar)
+        initialStack = [NonTerminal startSym, Terminal "$"]
+    \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Parser LL(1)}
-\protect\hypertarget{parser-ll1}{}
-\begin{lstlisting}[language=Haskell]
-go (Terminal "$" : _) ("$" : _) acc = ParseOk (reverse acc)
 
-go (Terminal t : stack') (a : inp') acc
-    | t == a    = go stack' inp' acc
-    | otherwise = ParseError ("expected '" ++ t ++ "'")
+    \begin{lstlisting}[language=Haskell]
+        go (Terminal "$" : _) ("$" : _) acc = ParseOk (reverse acc)
 
-go (NonTerminal nt : stack') inp@(a : _) acc =
-    case Map.lookup (nt, a) table of
+        go (Terminal t : stack') (a : inp') acc
+        | t == a    = go stack' inp' acc
+        | otherwise = ParseError ("expected '" ++ t ++ "'")
+
+        go (NonTerminal nt : stack') inp@(a : _) acc =
+        case Map.lookup (nt, a) table of
         Just (Derive prod) ->
-            go (filter (not . isLambda) prod ++ stack') inp (prod : acc)
+        go (filter (not . isLambda) prod ++ stack') inp (prod : acc)
         _ -> ParseError ("no rule for (" ++ nt ++ ", " ++ a ++ ")")
-\end{lstlisting}
+    \end{lstlisting}
 \end{frame}
 
-\hypertarget{conclusuxe3o}{%
+
 \section{Conclusão}\label{conclusuxe3o}}
 
 \begin{frame}{Conclusão}
-\protect\hypertarget{conclusuxe3o-1}{}
-\begin{itemize}
-\item
-  Apresentamos os conceitos de FIRST, FOLLOW e anulável.
-\item
-  Apresentamos a construção da tabela LL(1) e seu algoritmo de parsing.
-\end{itemize}
+
+    \begin{itemize}
+        \item
+        Apresentamos os conceitos de FIRST, FOLLOW e anulável.
+        \item
+        Apresentamos a construção da tabela LL(1) e seu algoritmo de parsing.
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Conclusão}
-\protect\hypertarget{conclusuxe3o-2}{}
-\begin{itemize}
 
-\item
-  Não suporta \textbf{recursão à esquerda} (requer transformação)
-\item
-  Exige \textbf{fatoração à esquerda} (prefixos comuns causam conflitos)
-\item
-  Algumas gramáticas são inerentemente não-LL(1)
-\end{itemize}
+    \begin{itemize}
+
+        \item
+        Não suporta \textbf{recursão à esquerda} (requer transformação)
+        \item
+        Exige \textbf{fatoração à esquerda} (prefixos comuns causam conflitos)
+        \item
+        Algumas gramáticas são inerentemente não-LL(1)
+    \end{itemize}
 \end{frame}
