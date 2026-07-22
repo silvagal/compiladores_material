@@ -7,9 +7,9 @@
 \protect\hypertarget{objetivos-1}{}
 \begin{itemize}
 \item
-  Apresentar a import\^{a}ncia da análise léxica.
+  Apresentar a importância da análise léxica.
 \item
-  Apresentar a implementa\c{c}\~{a}o de um analisador léxico ad-hoc.
+  Apresentar a implementação de um analisador léxico ad-hoc.
 \end{itemize}
 \end{frame}
 
@@ -22,7 +22,7 @@
 \item
   Primeira fase do compilador
 \item
-  Recebe o código-fonte como \textbf{sequ\^{e}ncia de caracteres}
+  Recebe o código-fonte como \textbf{sequência de caracteres}
 \item
   Agrupa os caracteres em \textbf{tokens} significativos
 \end{itemize}
@@ -33,7 +33,7 @@
 \begin{itemize}
 
 \item
-  Remove espa\c{c}os em branco e comentários
+  Remove espaços em branco e comentários
 \item
   Detecta erros léxicos precocemente (caracteres inválidos, etc.)
 \item
@@ -65,7 +65,7 @@
   O analisador léxico produz uma \textbf{lista de tokens} para o
   analisador sintático
 \item
-  Cada token carrega sua \textbf{categoria} (lexema) e posi\c{c}\~{a}o no
+  Cada token carrega sua \textbf{categoria} (lexema) e posição no
   código-fonte
 \end{itemize}
 \end{frame}
@@ -77,7 +77,7 @@ type Line   = Int
 type Column = Int
 
 data Token = Token
-  { pos    :: (Line, Column)  -- posi\c{c}\~{a}o no código-fonte
+  { pos    :: (Line, Column)  -- posição no código-fonte
   , lexeme :: Lexeme          -- categoria do token
   }
 \end{lstlisting}
@@ -85,7 +85,7 @@ data Token = Token
 \begin{itemize}
 
 \item
-  A posi\c{c}\~{a}o é essencial para \textbf{mensagens de erro} precisas
+  A posição é essencial para \textbf{mensagens de erro} precisas
 \item
   O lexema identifica a categoria do token
 \end{itemize}
@@ -103,13 +103,13 @@ data Token = Token
 \item
   \(n\): constante numérica inteira
 \item
-  \(+\): operador de adi\c{c}\~{a}o
+  \(+\): operador de adição
 \item
-  \(*\): operador de multiplica\c{c}\~{a}o
+  \(*\): operador de multiplicação
 \item
-  \((\) e \()\): par\^{e}nteses para agrupamento
+  \((\) e \()\): parênteses para agrupamento
 \item
-  Linguagem simples: express\~{o}es aritméticas básicas
+  Linguagem simples: expressões aritméticas básicas
 \end{itemize}
 \end{frame}
 
@@ -118,15 +118,15 @@ data Token = Token
 \begin{table}
 \begin{tabular}[]{@{}lll@{}}
 \toprule
-Token & Construtor & Descri\c{c}\~{a}o \\
+Token & Construtor & Descrição \\
 \midrule
 
 \texttt{n} & \texttt{TNumber Int} &
 número inteiro (carrega o valor) \\
 \texttt{+} & \texttt{TPlus} & operador
-de adi\c{c}\~{a}o \\
+de adição \\
 \texttt{*} & \texttt{TTimes} &
-operador de multiplica\c{c}\~{a}o \\
+operador de multiplicação \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -137,20 +137,20 @@ operador de multiplica\c{c}\~{a}o \\
 \begin{table}
 \begin{tabular}[]{@{}lll@{}}
 \toprule
-Token & Construtor & Descri\c{c}\~{a}o \\
+Token & Construtor & Descrição \\
 \midrule
 
 \texttt{(} & \texttt{TLParen} & abre
-par\^{e}nteses \\
+parênteses \\
 \texttt{)} & \texttt{TRParen} & fecha
-par\^{e}nteses \\
+parênteses \\
 EOF & \texttt{TEOF} & marcador de fim de entrada \\
 \bottomrule
 \end{tabular}
 \end{table}
 \end{frame}
 
-\begin{frame}[fragile]{Defini\c{c}\~{a}o do Tipo Lexeme}
+\begin{frame}[fragile]{Definição do Tipo Lexeme}
 \protect\hypertarget{definiuxe7uxe3o-do-tipo-lexeme}{}
 \begin{lstlisting}[language=Haskell]
 data Lexeme
@@ -163,7 +163,7 @@ data Lexeme
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Defini\c{c}\~{a}o do Tipo Lexeme}
+\begin{frame}[fragile]{Definição do Tipo Lexeme}
 \protect\hypertarget{definiuxe7uxe3o-do-tipo-lexeme-1}{}
 \begin{itemize}
 
@@ -185,9 +185,9 @@ Ad-Hoc}\label{analisadores-luxe9xicos-ad-hoc}}
 \begin{itemize}
 
 \item
-  Implementa\c{c}\~{a}o \textbf{manual} e específica para uma linguagem
+  Implementação \textbf{manual} e específica para uma linguagem
 \item
-  Processa caracteres sequencialmente com casamento de padr\~{o}es
+  Processa caracteres sequencialmente com casamento de padrões
 \end{itemize}
 \end{frame}
 
@@ -196,7 +196,7 @@ Ad-Hoc}\label{analisadores-luxe9xicos-ad-hoc}}
 \begin{itemize}
 
 \item
-  N\~{a}o usa geradores automáticos como o Alex
+  Não usa geradores automáticos como o Alex
 \item
   Adequado para linguagens \textbf{pequenas e simples}
 \item
@@ -207,10 +207,10 @@ Ad-Hoc}\label{analisadores-luxe9xicos-ad-hoc}}
 \begin{frame}[fragile]{Tipo do Analisador}
 \protect\hypertarget{tipo-do-analisador}{}
 \begin{lstlisting}[language=Haskell]
--- Vers\~{a}o simples (sem tratamento de erros):
+-- Versão simples (sem tratamento de erros):
 lexer :: String -> [Token]
 
--- Vers\~{a}o com tratamento de erros:
+-- Versão com tratamento de erros:
 lexer :: String -> Either String [Token]
 \end{lstlisting}
 
@@ -255,7 +255,7 @@ type State = (Line, Column, String, [Token])
 
 \item
   \texttt{Line}, \texttt{Column}:
-  posi\c{c}\~{a}o atual no arquivo de entrada
+  posição atual no arquivo de entrada
 \item
   \texttt{String}: dígitos consecutivos acumulados
   (para montar números)
@@ -264,13 +264,13 @@ type State = (Line, Column, String, [Token])
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Fun\c{c}\~{a}o de Transi\c{c}\~{a}o}
+\begin{frame}[fragile]{Função de Transição}
 \protect\hypertarget{funuxe7uxe3o-de-transiuxe7uxe3o}{}
 \begin{lstlisting}[language=Haskell]
 transition :: State -> Char -> Either String State
 transition state@(l, col, t, ts) c
   | c == '\n'  = mkDigits state c   -- nova linha
-  | isSpace c  = mkDigits state c   -- espa\c{c}o
+  | isSpace c  = mkDigits state c   -- espaço
   | c == '+'   = Right (l, col+1, "", mkToken state TPlus    : ts)
   | c == '*'   = Right (l, col+1, "", mkToken state TTimes   : ts)
   | c == '('   = Right (l, col+1, "", mkToken state TLParen  : ts)
@@ -285,7 +285,7 @@ transition state@(l, col, t, ts) c
 \begin{lstlisting}[language=Haskell]
 mkDigits :: State -> Char -> Either String State
 mkDigits state@(l, col, s, ts) c
-  | null s      = -- nenhum dígito acumulado: só atualiza posi\c{c}\~{a}o
+  | null s      = -- nenhum dígito acumulado: só atualiza posição
       let l'   = if c == '\n' then l + 1 else l
           col' = if isSpace c then col + 1 else col
       in Right (l', col', s, ts)
@@ -298,7 +298,7 @@ mkDigits state@(l, col, s, ts) c
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{A Fun\c{c}\~{a}o \texttt{lexer}
+\begin{frame}[fragile]{A Função \texttt{lexer}
 Completa}
 \protect\hypertarget{a-funuxe7uxe3o-lexer-completa}{}
 \begin{lstlisting}[language=Haskell]
@@ -347,7 +347,7 @@ foldl (+) 0 [1,2,3]
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Exemplo de Execu\c{c}\~{a}o}
+\begin{frame}[fragile]{Exemplo de Execução}
 \protect\hypertarget{exemplo-de-execuuxe7uxe3o}{}
 Entrada: \texttt{"2 + 3"}
 
@@ -368,7 +368,7 @@ Char & Estado (linha, col, dígitos, tokens) \\
 \end{table}
 \end{frame}
 
-\begin{frame}[fragile]{Exemplo de Execu\c{c}\~{a}o}
+\begin{frame}[fragile]{Exemplo de Execução}
 \protect\hypertarget{exemplo-de-execuuxe7uxe3o-1}{}
 Entrada: \texttt{"2 + 3"}
 
@@ -382,7 +382,7 @@ Char & Estado (linha, col, dígitos, tokens) \\
 \texttt{(1, 5, "", [TPlus, TNumber 2])} \\
 \texttt{3} &
 \texttt{(1, 6, "3", [TPlus, TNumber 2])} \\
-EOF & extrai →
+EOF & extrai ->
 \texttt{[TNumber 2, TPlus, TNumber 3]} \\
 \bottomrule
 \end{tabular}
@@ -401,7 +401,7 @@ EOF & extrai →
 \item
   \textbf{Controle total} sobre mensagens de erro
 \item
-  Sem depend\^{e}ncias externas (geradores de código)
+  Sem dependências externas (geradores de código)
 \end{itemize}
 \end{frame}
 
@@ -446,7 +446,7 @@ EOF & extrai →
   \item
     Cada nova funcionalidade exige modificar toda a estrutura do estado
   \item
-    N\~{a}o há garantia de corre\c{c}\~{a}o: é fácil esquecer um caso
+    Não há garantia de correção: é fácil esquecer um caso
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -474,14 +474,14 @@ if (x > 0) ift = x + 1;
 \item
   Para linguagens reais: dezenas de tokens, comentários aninhados, etc.
 \item
-  Solu\c{c}\~{a}o: \textbf{express\~{o}es regulares} + \textbf{aut\^{o}matos finitos}
+  Solução: \textbf{expressões regulares} + \textbf{autômatos finitos}
 \end{itemize}
 \end{frame}
 
 \hypertarget{conclusuxe3o}{%
-\section{Conclus\~{a}o}\label{conclusuxe3o}}
+\section{Conclusão}\label{conclusuxe3o}}
 
-\begin{frame}[fragile]{Conclus\~{a}o}
+\begin{frame}[fragile]{Conclusão}
 \protect\hypertarget{conclusuxe3o-1}{}
 \begin{itemize}
 
@@ -489,21 +489,21 @@ if (x > 0) ift = x + 1;
   Análise léxica transforma \textbf{texto bruto} em uma \textbf{lista de
   tokens}
 \item
-  Cada token carrega categoria (lexema) e posi\c{c}\~{a}o no fonte
+  Cada token carrega categoria (lexema) e posição no fonte
 \item
   O tipo \texttt{Either} de Haskell permite tratamento
   elegante de erros
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-2}{}
 \begin{itemize}
 
 \item
   Analisadores ad-hoc funcionam para linguagens simples
 \item
-  As limita\c{c}\~{o}es motivam o uso de \textbf{express\~{o}es regulares e
-  aut\^{o}matos}
+  As limitações motivam o uso de \textbf{expressões regulares e
+  autômatos}
 \end{itemize}
 \end{frame}

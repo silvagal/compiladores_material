@@ -1,4 +1,4 @@
-\subtitle{\bf Aula 21 - Introdu\c{c}\~{a}o}
+\subtitle{\bf Aula 21 - Introduçãoo}
 \begin{frame}[t,plain]
 \titlepage
 \end{frame}
@@ -7,27 +7,27 @@
 \protect\hypertarget{objetivos-1}{}
 \begin{itemize}
 \item
-  Distinguir verifica\c{c}\~{a}o de tipos de infer\^{e}ncia de tipos e apresentar a
+  Distinguir verificação de tipos de inferência de tipos e apresentar a
   linguagem MiniML.
 \item
-  Apresentar a abordagem de gera\c{c}\~{a}o e resolu\c{c}\~{a}o de restri\c{c}\~{o}es para
-  infer\^{e}ncia de tipos, incluindo o algoritmo de unifica\c{c}\~{a}o de Robinson e
-  a generaliza\c{c}\~{a}o de Milner.
+  Apresentar a abordagem de geração e resolução de restrições para
+  inferência de tipos, incluindo o algoritmo de unificação de Robinson e
+  a generalização de Milner.
 \item
-  Apresentar a elimina\c{c}\~{a}o de tipos como ponte entre o inferidor e o
-  backend do compilador, e o pipeline completo MiniML → Lambda → TImp.
+  Apresentar a eliminação de tipos como ponte entre o inferidor e o
+  backend do compilador, e o pipeline completo MiniML -> Lambda -> TImp.
 \end{itemize}
 \end{frame}
 
 \hypertarget{introduuxe7uxe3o}{%
-\section{Introdu\c{c}\~{a}o}\label{introduuxe7uxe3o}}
+\section{Introduçãoo}\label{introduuxe7uxe3o}}
 
-\begin{frame}{Verifica\c{c}\~{a}o vs.~Infer\^{e}ncia}
+\begin{frame}{Verificação vs.~Inferência}
 \protect\hypertarget{verificauxe7uxe3o-vs.-inferuxeancia}{}
-\textbf{Verifica\c{c}\~{a}o de tipos}: dado um programa \textbf{com anota\c{c}\~{o}es},
+\textbf{Verificação de tipos}: dado um programa \textbf{com anotações},
 decide se é bem tipado.
 
-\textbf{Infer\^{e}ncia de tipos}: dado um programa \textbf{sem anota\c{c}\~{o}es},
+\textbf{Inferência de tipos}: dado um programa \textbf{sem anotações},
 encontra os tipos mais gerais --- ou reporta que nenhum existe.
 
 Regra (T-Abs) no STLC:
@@ -37,9 +37,9 @@ Regra (T-Abs) no STLC:
 \begin{itemize}
 
 \item
-  Verifica\c{c}\~{a}o: \(T_1\) é fornecido pelo programador
+  Verificação: \(T_1\) é fornecido pelo programador
 \item
-  Infer\^{e}ncia: \(T_1\) deve ser \textbf{descoberto} a partir do uso de
+  Inferência: \(T_1\) deve ser \textbf{descoberto} a partir do uso de
   \(x\) no corpo
 \end{itemize}
 \end{frame}
@@ -49,15 +49,15 @@ Regra (T-Abs) no STLC:
 \begin{lstlisting}
 e ::= x              -- variável
     | ℓ              -- literal (int ou bool)
-    | e₁ e₂          -- aplica\c{c}\~{a}o
-    | λx. e          -- abstra\c{c}\~{a}o sem anota\c{c}\~{a}o
-    | let x = e₁ in e₂  -- defini\c{c}\~{a}o polimórfica
+    | e₁ e₂          -- aplicação
+    | λx. e          -- abstração sem anotação
+    | let x = e₁ in e₂  -- definição polimórfica
 \end{lstlisting}
 
 \begin{itemize}
 
 \item
-  Abstra\c{c}\~{o}es \textbf{n\~{a}o} t\^{e}m anota\c{c}\~{o}es de tipo
+  Abstrações \textbf{não} têm anotações de tipo
 \item
   O inferidor deduz tudo automaticamente
 \end{itemize}
@@ -79,28 +79,28 @@ e ::= x              -- variável
   Esquema \(\forall \alpha_1 \ldots \alpha_n.\; T\) generaliza \(T\) nas
   variáveis \(\alpha_i\)
 \item
-  A \textbf{instancia\c{c}\~{a}o} substitui variáveis quantificadas por tipos
+  A \textbf{instanciação} substitui variáveis quantificadas por tipos
   novos
 \item
-  A \textbf{generaliza\c{c}\~{a}o} de \(T\) em \(\Gamma\):
+  A \textbf{generalização} de \(T\) em \(\Gamma\):
   \(\forall \vec{\alpha}.\; T\) onde
   \(\vec{\alpha} = \mathrm{fv}(T) \setminus \mathrm{fv}(\Gamma)\)
 \end{itemize}
 \end{frame}
 
 \hypertarget{linguagem-de-restriuxe7uxf5es}{%
-\section{Linguagem de Restri\c{c}\~{o}es}\label{linguagem-de-restriuxe7uxf5es}}
+\section{Linguagem de Restrições}\label{linguagem-de-restriuxe7uxf5es}}
 
-\begin{frame}{Gramática de Restri\c{c}\~{o}es}
+\begin{frame}{Gramática de Restrições}
 \protect\hypertarget{gramuxe1tica-de-restriuxe7uxf5es}{}
 \[\begin{array}{rcll}
 C & ::= & \top & \text{trivial} \\
-  & \mid & T_1 = T_2 & \text{equa\c{c}\~{a}o de tipos} \\
-  & \mid & C_1 \wedge C_2 & \text{conjun\c{c}\~{a}o} \\
+  & \mid & T_1 = T_2 & \text{equação de tipos} \\
+  & \mid & C_1 \wedge C_2 & \text{conjunção} \\
   & \mid & \exists \alpha.\; C & \text{variável existencial} \\
   & \mid & \mathbf{def}\; x : T\; \mathbf{in}\; C & \text{variável monomórfica} \\
-  & \mid & \mathbf{let}\; x : T\; [C_1]\; \mathbf{in}\; C_2 & \text{defini\c{c}\~{a}o polimórfica} \\
-  & \mid & \mathbf{inst}(x,\, T) & \text{instancia\c{c}\~{a}o}
+  & \mid & \mathbf{let}\; x : T\; [C_1]\; \mathbf{in}\; C_2 & \text{definição polimórfica} \\
+  & \mid & \mathbf{inst}(x,\, T) & \text{instanciação}
 \end{array}\]
 
 \begin{itemize}
@@ -109,16 +109,16 @@ C & ::= & \top & \text{trivial} \\
   \(\exists \alpha.\; C\) --- variável de tipo local, visível apenas em
   \(C\)
 \item
-  \(\mathbf{def}\) --- par\^{a}metro de lambda (n\~{a}o polimórfico)
+  \(\mathbf{def}\) --- parâmetro de lambda (não polimórfico)
 \item
   \(\mathbf{let}\) --- polimorfismo de let (generaliza após resolver
   \(C_1\))
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Gera\c{c}\~{a}o de Restri\c{c}\~{o}es \(\mathcal{G}(e, \alpha)\)}
+\begin{frame}{Geração de Restrições \(\mathcal{G}(e, \alpha)\)}
 \protect\hypertarget{gerauxe7uxe3o-de-restriuxe7uxf5es-mathcalge-alpha}{}
-\(\mathcal{G}(e, \alpha)\) produz uma restri\c{c}\~{a}o cuja solu\c{c}\~{a}o torna
+\(\mathcal{G}(e, \alpha)\) produz uma restrição cuja solução torna
 \(\alpha\) o tipo de \(e\):
 
 \[\mathcal{G}(x,\; \alpha) = \mathbf{inst}(x,\, \alpha) \quad\text{(G-Var)}\]
@@ -132,13 +132,13 @@ C & ::= & \top & \text{trivial} \\
 \[\mathcal{G}(\mathbf{let}\; x = e_1\; \mathbf{in}\; e_2,\; \alpha) = \exists \beta.\; \mathbf{let}\; x : \beta\; [\mathcal{G}(e_1,\, \beta)]\; \mathbf{in}\; \mathcal{G}(e_2,\, \alpha) \quad\text{(G-Let)}\]
 \end{frame}
 
-\begin{frame}{Exemplo de Gera\c{c}\~{a}o}
+\begin{frame}{Exemplo de Geração}
 \protect\hypertarget{exemplo-de-gerauxe7uxe3o}{}
 Para \(\lambda f.\; f\; \mathbf{true}\) com alvo \(\alpha_0\):
 
 \[\mathcal{G}(\lambda f.\; f\; \mathbf{true},\; \alpha_0) = \exists \beta_1\, \beta_2\, \beta_3.\; \bigl(\mathbf{def}\; f : \beta_1\; \mathbf{in}\; \mathbf{inst}(f,\, \beta_3 \to \beta_2) \wedge \beta_3 = \mathbf{Bool}\bigr) \wedge (\alpha_0 = \beta_1 \to \beta_2)\]
 
-A resolu\c{c}\~{a}o for\c{c}a \(\beta_1 = \mathbf{Bool} \to \beta_2\).
+A resolução força \(\beta_1 = \mathbf{Bool} \to \beta_2\).
 
 Tipo principal: \(\alpha_0 = (\mathbf{Bool} \to \beta_2) \to \beta_2\),
 generalizado em \(\beta_2\):
@@ -148,9 +148,9 @@ generalizado em \(\beta_2\):
 
 \hypertarget{o-resolvedor-de-restriuxe7uxf5es}{%
 \section{O Resolvedor de
-Restri\c{c}\~{o}es}\label{o-resolvedor-de-restriuxe7uxf5es}}
+Restrições}\label{o-resolvedor-de-restriuxe7uxf5es}}
 
-\begin{frame}{Unifica\c{c}\~{a}o de Robinson}
+\begin{frame}{Unificação de Robinson}
 \protect\hypertarget{unificauxe7uxe3o-de-robinson}{}
 \(\mathrm{mgu}(T_1, T_2)\) encontra o \textbf{unificador mais geral}:
 
@@ -166,7 +166,7 @@ Restri\c{c}\~{o}es}\label{o-resolvedor-de-restriuxe7uxf5es}}
 infinitos como \(\alpha = \alpha \to \alpha\).
 \end{frame}
 
-\begin{frame}[fragile]{O Algoritmo de Resolu\c{c}\~{a}o}
+\begin{frame}[fragile]{O Algoritmo de Resolução}
 \protect\hypertarget{o-algoritmo-de-resoluuxe7uxe3o}{}
 \begin{lstlisting}[language=Haskell]
 solve :: Constraint -> Solve ()
@@ -192,38 +192,38 @@ solve (CInst x t) = do
 \end{frame}
 
 \hypertarget{correuxe7uxe3o-e-completude}{%
-\section{Corre\c{c}\~{a}o e Completude}\label{correuxe7uxe3o-e-completude}}
+\section{Correção e Completude}\label{correuxe7uxe3o-e-completude}}
 
 \begin{frame}{Teoremas Fundamentais}
 \protect\hypertarget{teoremas-fundamentais}{}
-\textbf{Teorema (Corre\c{c}\~{a}o)}: Se o resolvedor aceita \(C_e\) com
-substitui\c{c}\~{a}o \(S\), ent\~{a}o \(\vdash e : S(\alpha_0)\).
+\textbf{Teorema (Correção)}: Se o resolvedor aceita \(C_e\) com
+substituição \(S\), então \(\vdash e : S(\alpha_0)\).
 
 \emph{O tipo produzido é válido segundo Hindley-Milner.}
 
-\textbf{Teorema (Completude)}: Se \(\Gamma \vdash e : T\), ent\~{a}o o
-resolvedor aceita \(C_e\) e produz um tipo do qual \(T\) é inst\^{a}ncia.
+\textbf{Teorema (Completude)}: Se \(\Gamma \vdash e : T\), então o
+resolvedor aceita \(C_e\) e produz um tipo do qual \(T\) é instância.
 
 \emph{Se \(e\) é tipável, o algoritmo encontra o tipo mais geral.}
 
 \textbf{Teorema (Tipo Principal)}: Existe \(\sigma\) tal que: 1.
-\(\vdash e : T\) para todo \(T\) inst\^{a}ncia de \(\sigma\) 2. Todo tipo
-válido \(T'\) é inst\^{a}ncia de \(\sigma\)
+\(\vdash e : T\) para todo \(T\) instância de \(\sigma\) 2. Todo tipo
+válido \(T'\) é instância de \(\sigma\)
 
 O algoritmo sempre encontra o \textbf{tipo principal}.
 \end{frame}
 
 \hypertarget{eliminauxe7uxe3o-de-tipos-e-pipeline}{%
-\section{Elimina\c{c}\~{a}o de Tipos e
+\section{Eliminação de Tipos e
 Pipeline}\label{eliminauxe7uxe3o-de-tipos-e-pipeline}}
 
-\begin{frame}{Elimina\c{c}\~{a}o de Tipos (Type Erasure)}
+\begin{frame}{Eliminação de Tipos (Type Erasure)}
 \protect\hypertarget{eliminauxe7uxe3o-de-tipos-type-erasure}{}
-Tipos s\~{a}o necessários para análise estática, mas \textbf{desnecessários
-em execu\c{c}\~{a}o}.
+Tipos são necessários para análise estática, mas \textbf{desnecessários
+em execução}.
 
-A fun\c{c}\~{a}o \(\lfloor \cdot \rfloor : \mathit{TyExp} \to \mathit{Term}\)
-descarta anota\c{c}\~{o}es:
+A função \(\lfloor \cdot \rfloor : \mathit{TyExp} \to \mathit{Term}\)
+descarta anotações:
 
 \[\begin{array}{rcl}
 \lfloor x : T \rfloor & = & x \\
@@ -232,7 +232,7 @@ descarta anota\c{c}\~{o}es:
 \lfloor \mathbf{let}\; x = te_1\; \mathbf{in}\; te_2 : T \rfloor & = & (\lambda x.\; \lfloor te_2 \rfloor)\; \lfloor te_1 \rfloor
 \end{array}\]
 
-\textbf{let} → beta-redex: \((\lambda x.\; t_2)\; t_1\) ---
+\textbf{let} -> beta-redex: \((\lambda x.\; t_2)\; t_1\) ---
 semanticamente equivalente.
 \end{frame}
 
@@ -254,7 +254,7 @@ processTImp input =
           ...
 \end{lstlisting}
 
-\textbf{Quatro fases}: Parser → Infer\^{e}ncia/Elabora\c{c}\~{a}o → Elimina\c{c}\~{a}o →
+\textbf{Quatro fases}: Parser -> Inferência/Elaboração -> Eliminação ->
 TImp
 \end{frame}
 
@@ -264,40 +264,40 @@ Para \texttt{let f = \\x . x in f 42}:
 
 \begin{enumerate}
 \item
-  \textbf{Infer\^{e}ncia}: tipo \texttt{Int}, árvore tipada
+  \textbf{Inferência}: tipo \texttt{Int}, árvore tipada
   \(\mathbf{let}\; f = (\lambda x{:}\alpha.\; x){:}\alpha \to \alpha\; \mathbf{in}\; (f\; 42){:}\mathbf{Int}\)
 \item
-  \textbf{Elimina\c{c}\~{a}o}: \((\lambda f.\; f\; 42)\; (\lambda x.\; x)\)
+  \textbf{Eliminação}: \((\lambda f.\; f\; 42)\; (\lambda x.\; x)\)
 \item
-  \textbf{Closure conversion}: duas fun\c{c}\~{o}es promovidas,
+  \textbf{Closure conversion}: duas funções promovidas,
   \texttt{lam\_0} (identidade) e
-  \texttt{lam\_1} (aplica\c{c}\~{a}o de
+  \texttt{lam\_1} (aplicação de
   \texttt{f})
 \item
-  \textbf{Execu\c{c}\~{a}o TImp}: imprime \texttt{42}
+  \textbf{Execução TImp}: imprime \texttt{42}
 \end{enumerate}
 \end{frame}
 
 \hypertarget{conclusuxe3o}{%
-\section{Conclus\~{a}o}\label{conclusuxe3o}}
+\section{Conclusão}\label{conclusuxe3o}}
 
 \begin{frame}{Sumário do Capítulo}
 \protect\hypertarget{sumuxe1rio-do-capuxedtulo}{}
 \begin{itemize}
 
 \item
-  \textbf{Infer\^{e}ncia de tipos} resolve um problema mais difícil que
-  verifica\c{c}\~{a}o: sem anota\c{c}\~{o}es
+  \textbf{Inferência de tipos} resolve um problema mais difícil que
+  verificação: sem anotações
 \item
-  \textbf{Gera\c{c}\~{a}o de restri\c{c}\~{o}es} \(\mathcal{G}(e, \alpha)\) transforma
-  infer\^{e}ncia em sistema de equa\c{c}\~{o}es
+  \textbf{Geração de restrições} \(\mathcal{G}(e, \alpha)\) transforma
+  inferência em sistema de equações
 \item
-  \textbf{Unifica\c{c}\~{a}o de Robinson} encontra o unificador mais geral
+  \textbf{Unificação de Robinson} encontra o unificador mais geral
 \item
-  \textbf{Polimorfismo de let}: generaliza\c{c}\~{a}o após resolver restri\c{c}\~{o}es
+  \textbf{Polimorfismo de let}: generalização após resolver restrições
   do corpo
 \item
-  \textbf{Elimina\c{c}\~{a}o de tipos}: descarta anota\c{c}\~{o}es, reutiliza pipeline
+  \textbf{Eliminação de tipos}: descarta anotações, reutiliza pipeline
   do \(\lambda\)-cálculo
 \end{itemize}
 \end{frame}

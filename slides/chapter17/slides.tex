@@ -1,4 +1,4 @@
-\subtitle{\bf Aula 17 - Introdu\c{c}\~{a}o}
+\subtitle{\bf Aula 17 - Introduçãoo}
 \begin{frame}[t,plain]
 \titlepage
 \end{frame}
@@ -8,8 +8,8 @@
 \begin{itemize}
 
 \item
-  Motivar o uso de representa\c{c}\~{o}es intermediárias no pipeline de
-  compila\~{c}\~{a}o e apresentar suas propriedades desejáveis.
+  Motivar o uso de representações intermediárias no pipeline de
+  compila\~{c}ão e apresentar suas propriedades desejáveis.
 \end{itemize}
 \end{frame}
 
@@ -18,7 +18,7 @@
 \begin{itemize}
 
 \item
-  Definir a sintaxe e a sem\^{a}ntica operacional big-step da Representa\c{c}\~{a}o
+  Definir a sintaxe e a semântica operacional big-step da Representação
   Intermediária em Árvore (IRT).
 \end{itemize}
 \end{frame}
@@ -28,15 +28,15 @@
 \begin{itemize}
 
 \item
-  Apresentar as regras de tradu\c{c}\~{a}o dirigida por sintaxe que convertem a
+  Apresentar as regras de tradução dirigida por sintaxe que convertem a
   AST de TWhile e TImp para a IRT.
 \end{itemize}
 \end{frame}
 
 \hypertarget{introduuxe7uxe3o}{%
-\section{Introdu\c{c}\~{a}o}\label{introduuxe7uxe3o}}
+\section{Introduçãoo}\label{introduuxe7uxe3o}}
 
-\begin{frame}{O Papel da Representa\c{c}\~{a}o Intermediária}
+\begin{frame}{O Papel da Representação Intermediária}
 \protect\hypertarget{o-papel-da-representauxe7uxe3o-intermediuxe1ria}{}
 \begin{itemize}
 
@@ -50,12 +50,12 @@
   \item
     Código de baixa qualidade
   \item
-    Compilador fortemente acoplado \`{a} arquitetura
+    Compilador fortemente acoplado à arquitetura
   \end{itemize}
 \end{itemize}
 \end{frame}
 
-\begin{frame}{O Papel da Representa\c{c}\~{a}o Intermediária}
+\begin{frame}{O Papel da Representação Intermediária}
 \protect\hypertarget{o-papel-da-representauxe7uxe3o-intermediuxe1ria-1}{}
 \begin{itemize}
 
@@ -78,9 +78,9 @@
 
 \item
   \textbf{Simplicidade}: \(\approx 15\) formas sintáticas (análise e
-  transforma\c{c}\~{a}o mais fáceis)
+  transformação mais fáceis)
 \item
-  \textbf{Independ\^{e}ncia de máquina}: sem detalhes de hardware
+  \textbf{Independência de máquina}: sem detalhes de hardware
 \end{itemize}
 \end{frame}
 
@@ -89,20 +89,20 @@
 \begin{itemize}
 
 \item
-  \textbf{Independ\^{e}ncia de linguagem}: múltiplos \emph{front-ends}
+  \textbf{Independência de linguagem}: múltiplos \emph{front-ends}
   compartilham o mesmo \emph{back-end}.
 \item
-  \textbf{Suporte a transforma\c{c}\~{o}es}: facilitar análise de fluxo e
-  otimiza\c{c}\~{o}es
+  \textbf{Suporte a transformações}: facilitar análise de fluxo e
+  otimizações
 \item
-  \textbf{Proximidade do código-alvo}: opera\c{c}\~{o}es de memória e controle
+  \textbf{Proximidade do código-alvo}: operações de memória e controle
   explícitos
 \end{itemize}
 \end{frame}
 
 
 
-\begin{frame}{Express\~{o}es da IRT}
+\begin{frame}{Expressões da IRT}
 \protect\hypertarget{expressuxf5es-da-irt}{}
 \[\begin{array}{lcll}
 e & ::= & \mathbf{CONST}(n)  \\
@@ -115,7 +115,7 @@ e & ::= & \mathbf{CONST}(n)  \\
 \end{array}\]
 \end{frame}
 
-\begin{frame}{Express\~{o}es da IRT}
+\begin{frame}{Expressões da IRT}
 \protect\hypertarget{expressuxf5es-da-irt-1}{}
 \begin{itemize}
 
@@ -143,7 +143,7 @@ s & ::= & \mathbf{MOVE}(\mathbf{TEMP}(t), e) \\
 \end{frame}
 
 \hypertarget{semuxe2ntica-operacional}{%
-\section{Sem\^{a}ntica Operacional}\label{semuxe2ntica-operacional}}
+\section{Semântica Operacional}\label{semuxe2ntica-operacional}}
 
 \begin{frame}{Estado e Valores}
 \protect\hypertarget{estado-e-valores}{}
@@ -165,16 +165,16 @@ O estado da IRT é um par \(\sigma = \langle \tau, \mu \rangle\):
   \begin{itemize}
 
   \item
-    Memória (endere\c{c}os → valores)
+    Memória (endereços -> valores)
   \end{itemize}
 \end{itemize}
 
-Todos os valores s\~{a}o inteiros de precis\~{a}o de máquina.
+Todos os valores são inteiros de precisão de máquina.
 \end{frame}
 
-\begin{frame}{Express\~{o}es}
+\begin{frame}{Expressões}
 \protect\hypertarget{expressuxf5es}{}
-\textbf{Regras para express\~{o}es}: \(\sigma \vdash e \Downarrow v\):
+\textbf{Regras para expressões}: \(\sigma \vdash e \Downarrow v\):
 
 \[
 \begin{array}{c}
@@ -184,7 +184,7 @@ Todos os valores s\~{a}o inteiros de precis\~{a}o de máquina.
 \]
 \end{frame}
 
-\begin{frame}{Express\~{o}es}
+\begin{frame}{Expressões}
 \protect\hypertarget{expressuxf5es-1}{}
 \[
 \begin{array}{c}
@@ -201,10 +201,10 @@ Resultado \(r\) de um comando:
 \begin{itemize}
 
 \item
-  \(\langle \sigma', \blacksquare \rangle\): termina\c{c}\~{a}o normal
+  \(\langle \sigma', \blacksquare \rangle\): terminação normal
 \item
   \(\langle \sigma', \uparrow (v_1,\ldots,v_k) \rangle\): retorno de
-  fun\c{c}\~{a}o
+  função
 \end{itemize}
 \end{frame}
 
@@ -229,16 +229,16 @@ Resultado \(r\) de um comando:
 \begin{itemize}
 
 \item
-  Se \(s_1\) retorna, \(s_2\) \textbf{n\~{a}o é executado} (retorno
+  Se \(s_1\) retorna, \(s_2\) \textbf{não é executado} (retorno
   propaga).
 \end{itemize}
 \end{frame}
 
 \hypertarget{traduuxe7uxe3o-dirigida-por-sintaxe}{%
-\section{Tradu\c{c}\~{a}o Dirigida por
+\section{Tradução Dirigida por
 Sintaxe}\label{traduuxe7uxe3o-dirigida-por-sintaxe}}
 
-\begin{frame}{Express\~{o}es}
+\begin{frame}{Expressões}
 \protect\hypertarget{expressuxf5es-2}{}
 \begin{itemize}
 
@@ -251,18 +251,18 @@ Sintaxe}\label{traduuxe7uxe3o-dirigida-por-sintaxe}}
 \[\mathcal{E}\lbrack n \rbrack = \mathbf{CONST}(n) \qquad \mathcal{E}\lbrack x \rbrack = \mathbf{TEMP}(x)\]
 \end{frame}
 
-\begin{frame}{Express\~{o}es}
+\begin{frame}{Expressões}
 \protect\hypertarget{expressuxf5es-3}{}
 \begin{itemize}
 
 \item
-  Opera\c{c}\~{o}es:
+  Operações:
 \end{itemize}
 
 \[\mathcal{E}\lbrack e_1 \oplus e_2 \rbrack = \mathbf{BINOP}(\widehat{\oplus},\; \mathcal{E}\lbrack e_1 \rbrack,\; \mathcal{E}\lbrack e_2 \rbrack)\]
 \end{frame}
 
-\begin{frame}[fragile]{Express\~{o}es}
+\begin{frame}[fragile]{Expressões}
 \protect\hypertarget{expressuxf5es-4}{}
 \begin{table}
 \begin{tabular}[]{@{}llll@{}}
@@ -284,7 +284,7 @@ AND \\
 \begin{itemize}
 
 \item
-  Declara\c{c}\~{a}o:
+  Declaração:
 \end{itemize}
 
 \[\begin{array}{c}
@@ -297,7 +297,7 @@ AND \\
 \begin{itemize}
 
 \item
-  Atribui\c{c}\~{a}o:
+  Atribuição:
 \end{itemize}
 
 \[\begin{array}{c}
@@ -340,13 +340,13 @@ LABEL(loop_exit)
 \begin{itemize}
 
 \item
-  \(\ell_h\) = cabe\c{c}a; \(\ell_b\) = corpo; \(\ell_f\) = saída
+  \(\ell_h\) = cabeça; \(\ell_b\) = corpo; \(\ell_f\) = saída
 \item
-  A condi\c{c}\~{a}o é reavaliada a cada itera\c{c}\~{a}o
+  A condição é reavaliada a cada iteração
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Implementa\c{c}\~{a}o: A M\^{o}nada CgM}
+\begin{frame}[fragile]{Implementação: A Mônada CgM}
 \protect\hypertarget{implementauxe7uxe3o-a-muxf4nada-cgm}{}
 \begin{lstlisting}[language=Haskell]
 data CgState = CgState
@@ -388,31 +388,31 @@ compileStmt (SWhile cond body) = do
 \end{frame}
 
 \hypertarget{conclusuxe3o}{%
-\section{Conclus\~{a}o}\label{conclusuxe3o}}
+\section{Conclusão}\label{conclusuxe3o}}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-1}{}
 \begin{itemize}
 
 \item
-  A \textbf{IRT} separa express\~{o}es (produzem valor) de comandos
+  A \textbf{IRT} separa expressões (produzem valor) de comandos
   (produzem efeitos)
 \item
-  \textbf{7 express\~{o}es}: CONST, TEMP, NAME, BINOP, MEM, CALL, ESEQ
+  \textbf{7 expressões}: CONST, TEMP, NAME, BINOP, MEM, CALL, ESEQ
 \item
   \textbf{7 comandos}: MOVE, EXP, SEQ, JUMP, CJUMP, LABEL, RETURN
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-2}{}
 \begin{itemize}
 
 \item
-  A sem\^{a}ntica big-step define o estado como par
+  A semântica big-step define o estado como par
   \(\langle \tau, \mu \rangle\)
 \item
-  A tradu\c{c}\~{a}o \textbf{dirigida por sintaxe} converte AST na IRT
+  A tradução \textbf{dirigida por sintaxe} converte AST na IRT
   sistematicamente
 \end{itemize}
 \end{frame}

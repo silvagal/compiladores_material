@@ -1,4 +1,4 @@
-\subtitle{\bf Aula 16 - Introdu\c{c}\~{a}o}
+\subtitle{\bf Aula 16 - Introduçãoo}
 \begin{frame}[t,plain]
 \titlepage
 \end{frame}
@@ -7,7 +7,7 @@
 \protect\hypertarget{objetivos-1}{}
 \begin{itemize}
 \item
-  Mostrar a correspond\^{e}ncia direta entre regras de infer\^{e}ncia e equa\c{c}\~{o}es
+  Mostrar a correspondência direta entre regras de inferência e equações
   de código Haskell.
 \item
   Implementar verificadores de tipos para linguagens com crescente
@@ -16,35 +16,35 @@
 \end{frame}
 
 \hypertarget{introduuxe7uxe3o}{%
-\section{Introdu\c{c}\~{a}o}\label{introduuxe7uxe3o}}
+\section{Introduçãoo}\label{introduuxe7uxe3o}}
 
-\begin{frame}{Introdu\c{c}\~{a}o}
+\begin{frame}{Introduçãoo}
 \protect\hypertarget{introduuxe7uxe3o-1}{}
 \begin{itemize}
 
 \item
   O sistema de tipos define \textbf{o que} é um programa bem tipado via
-  regras de infer\^{e}ncia
+  regras de inferência
 \item
-  O \textbf{verificador de tipos} implementa essa especifica\c{c}\~{a}o como
+  O \textbf{verificador de tipos} implementa essa especificação como
   código
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Introdu\c{c}\~{a}o}
+\begin{frame}{Introduçãoo}
 \protect\hypertarget{introduuxe7uxe3o-2}{}
 \begin{itemize}
 
 \item
-  Correspond\^{e}ncia direta: cada regra de infer\^{e}ncia vira uma equa\c{c}\~{a}o
+  Correspondência direta: cada regra de inferência vira uma equação
   Haskell
 \item
-  A estrutura da m\^{o}nada de verifica\c{c}\~{a}o espelha os ambientes sem\^{a}nticos
+  A estrutura da mônada de verificação espelha os ambientes semânticos
 \end{itemize}
 \end{frame}
 
 \hypertarget{verificauxe7uxe3o-para-texp}{%
-\section{Verifica\c{c}\~{a}o para TExp}\label{verificauxe7uxe3o-para-texp}}
+\section{Verificação para TExp}\label{verificauxe7uxe3o-para-texp}}
 
 \begin{frame}[fragile]{A Linguagem TExp}
 \protect\hypertarget{a-linguagem-texp}{}
@@ -68,22 +68,22 @@ data Term
 \item
   Dois tipos: \(\mathbf{Bool}\) e \(\mathbf{Nat}\)
 \item
-  \textbf{Sem variáveis} → sem contexto externo necessário
+  \textbf{Sem variáveis} -> sem contexto externo necessário
 \item
-  M\^{o}nada: \texttt{TcM = ExceptT String Identity}
+  Mônada: \texttt{TcM = ExceptT String Identity}
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Da Regra \`{a} Equa\c{c}\~{a}o}
+\begin{frame}{Da Regra à Equação}
 \protect\hypertarget{da-regra-uxe0-equauxe7uxe3o}{}
-Regra de infer\^{e}ncia:
+Regra de inferência:
 
 \[\frac{\vdash t_1 : \mathbf{Bool} \quad \vdash t_2 : T \quad \vdash t_3 : T}{\vdash \mathbf{if}\ t_1\ \mathbf{then}\ t_2\ \mathbf{else}\ t_3 : T} \quad\text{(T-If)}\]
 \end{frame}
 
-\begin{frame}[fragile]{Da Regra \`{a} Equa\c{c}\~{a}o}
+\begin{frame}[fragile]{Da Regra à Equação}
 \protect\hypertarget{da-regra-uxe0-equauxe7uxe3o-1}{}
-Equa\c{c}\~{a}o Haskell:
+Equação Haskell:
 
 \begin{lstlisting}[language=Haskell]
 tcTerm (TIf t1 t2 t3) = do
@@ -124,7 +124,7 @@ tcTerm (TIsZero t1) = do                    -- (T-IsZero)
 \end{frame}
 
 \hypertarget{verificauxe7uxe3o-para-tline}{%
-\section{Verifica\c{c}\~{a}o para TLine}\label{verificauxe7uxe3o-para-tline}}
+\section{Verificação para TLine}\label{verificauxe7uxe3o-para-tline}}
 
 \begin{frame}[fragile]{A Linguagem TLine}
 \protect\hypertarget{a-linguagem-tline}{}
@@ -148,7 +148,7 @@ data Stmt
 \item
   Contexto \(\Gamma : \mathit{Var} \rightharpoonup \mathit{Ty}\)
 \item
-  M\^{o}nada: \texttt{StateT Ctx (ExceptT String Identity)}
+  Mônada: \texttt{StateT Ctx (ExceptT String Identity)}
 \end{itemize}
 \end{frame}
 
@@ -170,10 +170,10 @@ data Stmt
 \begin{itemize}
 
 \item
-  Declara\c{c}\~{a}o \textbf{estende} o contexto:
+  Declaração \textbf{estende} o contexto:
   \(\Gamma' = \Gamma[x \mapsto T]\)
 \item
-  Atribui\c{c}\~{a}o \textbf{preserva} o contexto: \(\Gamma' = \Gamma\)
+  Atribuição \textbf{preserva} o contexto: \(\Gamma' = \Gamma\)
 \end{itemize}
 \end{frame}
 
@@ -211,14 +211,14 @@ tcStmt (SPrint e) = tcExp e >> pure ()
 \end{frame}
 
 \hypertarget{verificauxe7uxe3o-para-twhile}{%
-\section{Verifica\c{c}\~{a}o para TWhile}\label{verificauxe7uxe3o-para-twhile}}
+\section{Verificação para TWhile}\label{verificauxe7uxe3o-para-twhile}}
 
 \begin{frame}[fragile]{Escopo}
 \protect\hypertarget{escopo}{}
 \begin{itemize}
 
 \item
-  TWhile adiciona condicionais e repeti\c{c}\~{a}o com \textbf{escopo local}:
+  TWhile adiciona condicionais e repetição com \textbf{escopo local}:
 \end{itemize}
 
 \begin{lstlisting}[language=Haskell]
@@ -238,7 +238,7 @@ type Block = [Stmt]
 \item
   Variáveis declaradas dentro de
   \texttt{if}/\texttt{while}
-  \textbf{n\~{a}o escapam} para fora
+  \textbf{não escapam} para fora
 \item
   Regras formalizam isso: contexto de saída = contexto de entrada
 \end{itemize}
@@ -287,7 +287,7 @@ tcStmt (SIf e b1 b2) = do
 \begin{itemize}
 
 \item
-  TImp estende TWhile com fun\c{c}\~{o}es e registros
+  TImp estende TWhile com funções e registros
 
   \begin{itemize}
   \item
@@ -300,18 +300,18 @@ tcStmt (SIf e b1 b2) = do
     \begin{description}
 
     \item[\[\Phi\]]
-    ambiente de fun\c{c}\~{o}es
+    ambiente de funções
     \end{description}
   \end{itemize}
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Rela\c{c}\~{o}es}
+\begin{frame}{Relações}
 \protect\hypertarget{relauxe7uxf5es}{}
 \begin{itemize}
 
 \item
-  Express\~{o}es: \(\Gamma;\Delta;\Phi \vdash e : \tau\)
+  Expressões: \(\Gamma;\Delta;\Phi \vdash e : \tau\)
 \item
   Comandos:
   \(\Gamma;\Delta;\Phi;\rho_\mathit{ret} \vdash s \dashv \Gamma'\)
@@ -334,43 +334,43 @@ tcStmt (SIf e b1 b2) = do
 \begin{itemize}
 
 \item
-  \textbf{Constru\c{c}\~{a}o de registro (T-New):}
+  \textbf{Construção de registro (T-New):}
 \end{itemize}
 
 \[\frac{R \in \mathrm{dom}(\Delta) \quad \Delta(R) = \overline{(f_i:\tau_i)} \quad \Gamma;\Delta;\Phi \vdash e_i : \tau_i}{\Gamma;\Delta;\Phi \vdash \mathbf{new}\ R\{\overline{f_i=e_i}\} : R}\]
 \end{frame}
 
-\begin{frame}{Fun\c{c}\~{o}es}
+\begin{frame}{Funções}
 \protect\hypertarget{funuxe7uxf5es}{}
 \begin{itemize}
 
 \item
-  \textbf{Chamada como express\~{a}o (T-CallExpr):}
+  \textbf{Chamada como expressão (T-CallExpr):}
 \end{itemize}
 
 \[\frac{\Phi(f) = ([\tau_1,\ldots,\tau_n],\;\tau) \quad \Gamma;\Delta;\Phi \vdash e_i : \tau_i}{\Gamma;\Delta;\Phi \vdash f(e_1,\ldots,e_n) : \tau}\]
 \end{frame}
 
-\begin{frame}{Fun\c{c}\~{o}es}
+\begin{frame}{Funções}
 \protect\hypertarget{funuxe7uxf5es-1}{}
 \begin{itemize}
 
 \item
-  \textbf{Declara\c{c}\~{a}o de fun\c{c}\~{a}o (T-FuncDecl):}
+  \textbf{Declaração de função (T-FuncDecl):}
 \end{itemize}
 
 \[\frac{[x_1\!\mapsto\!\tau_1,\ldots,x_n\!\mapsto\!\tau_n];\Delta;\Phi;\rho \vdash B \dashv \_}{\Delta;\Phi \vdash \mathbf{fn}\ f(\overline{x_i:\tau_i}):\rho\ \{B\}\ \checkmark}\]
 \end{frame}
 
 \hypertarget{verificauxe7uxe3o-para-timp}{%
-\section{Verifica\c{c}\~{a}o para TImp}\label{verificauxe7uxe3o-para-timp}}
+\section{Verificação para TImp}\label{verificauxe7uxe3o-para-timp}}
 
-\begin{frame}[fragile]{A M\^{o}nada}
+\begin{frame}[fragile]{A Mônada}
 \protect\hypertarget{a-muxf4nada}{}
 \begin{itemize}
 
 \item
-  TImp adiciona fun\c{c}\~{o}es e registros --- Informa\c{c}\~{a}o \textbf{imutável} vai
+  TImp adiciona funções e registros --- Informação \textbf{imutável} vai
   em \texttt{ReaderT}:
 \end{itemize}
 
@@ -383,7 +383,7 @@ data TcEnv = TcEnv
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{A M\^{o}nada}
+\begin{frame}[fragile]{A Mônada}
 \protect\hypertarget{a-muxf4nada-1}{}
 \begin{lstlisting}[language=Haskell]
 type VarCtx = Map Var Ty
@@ -405,7 +405,7 @@ tcExp (EField e f) = do
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Fun\c{c}\~{o}es}
+\begin{frame}[fragile]{Funções}
 \protect\hypertarget{funuxe7uxf5es-2}{}
 \begin{lstlisting}[language=Haskell]
 tcExp (ECall fname args) = do
@@ -421,7 +421,7 @@ tcExp (ECall fname args) = do
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Fun\c{c}\~{a}o}
+\begin{frame}[fragile]{Função}
 \protect\hypertarget{funuxe7uxe3o}{}
 \begin{lstlisting}[language=Haskell]
 tcFuncDecl :: TcEnv -> FuncDecl -> Either String ()
@@ -436,32 +436,32 @@ tcFuncDecl baseEnv (FuncDecl name params retTy body) = do
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Fun\c{c}\~{a}o}
+\begin{frame}[fragile]{Função}
 \protect\hypertarget{funuxe7uxe3o-1}{}
 \begin{itemize}
 
 \item
-  Contexto inicial = par\^{a}metros formais
+  Contexto inicial = parâmetros formais
 \item
   \texttt{returnType} fixado via
   \texttt{local} para verificar
   \texttt{return}
 \item
-  Variáveis externas \`{a} fun\c{c}\~{a}o s\~{a}o \textbf{invisíveis}
+  Variáveis externas à função são \textbf{invisíveis}
 \end{itemize}
 \end{frame}
 
 \hypertarget{conclusuxe3o}{%
-\section{Conclus\~{a}o}\label{conclusuxe3o}}
+\section{Conclusão}\label{conclusuxe3o}}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-1}{}
 \begin{itemize}
 
 \item
-  O verificador de tipos é uma \textbf{transcri\c{c}\~{a}o sistemática} do
+  O verificador de tipos é uma \textbf{transcrição sistemática} do
   sistema de tipos
 \item
-  Cada regra de infer\^{e}ncia corresponde a uma equa\c{c}\~{a}o Haskell
+  Cada regra de inferência corresponde a uma equação Haskell
 \end{itemize}
 \end{frame}

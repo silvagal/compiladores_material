@@ -1,4 +1,4 @@
-\subtitle{\bf Aula 19 - Introdu\c{c}\~{a}o}
+\subtitle{\bf Aula 19 - Introduçãoo}
 \begin{frame}[t,plain]
 \titlepage
 \end{frame}
@@ -7,19 +7,19 @@
 \protect\hypertarget{objetivos-1}{}
 \begin{itemize}
 \item
-  Apresentar o formato textual WebAssembly (WAT) e o modelo de execu\c{c}\~{a}o
+  Apresentar o formato textual WebAssembly (WAT) e o modelo de execução
   baseado em máquina de pilha.
 \item
-  Definir as regras de tradu\c{c}\~{a}o de express\~{o}es e comandos da IRT para
-  instru\c{c}\~{o}es WAT.
+  Definir as regras de tradução de expressões e comandos da IRT para
+  instruções WAT.
 \item
-  Discutir a reconstru\c{c}\~{a}o do controle de fluxo estruturado de
+  Discutir a reconstrução do controle de fluxo estruturado de
   WebAssembly a partir dos saltos explícitos da IRT.
 \end{itemize}
 \end{frame}
 
 \hypertarget{introduuxe7uxe3o}{%
-\section{Introdu\c{c}\~{a}o}\label{introduuxe7uxe3o}}
+\section{Introduçãoo}\label{introduuxe7uxe3o}}
 
 \begin{frame}[fragile]{WebAssembly como Alvo}
 \protect\hypertarget{webassembly-como-alvo}{}
@@ -28,17 +28,17 @@
 \begin{itemize}
 
 \item
-  \textbf{WebAssembly} (Wasm): especifica\c{c}\~{a}o de máquina virtual com
-  sem\^{a}ntica formal (W3C)
+  \textbf{WebAssembly} (Wasm): especificação de máquina virtual com
+  semântica formal (W3C)
 \item
   Excelente para fins pedagógicos:
 
   \begin{itemize}
 
   \item
-    Sem\^{a}ntica \textbf{precisa} e publicada
+    Semântica \textbf{precisa} e publicada
   \item
-    Representa\c{c}\~{a}o textual (WAT) \textbf{legível}
+    Representação textual (WAT) \textbf{legível}
   \item
     Ferramentas: \texttt{wabt} (compilar) e
     \texttt{wasmtime} (executar)
@@ -54,12 +54,12 @@
   Executado no browser (Chrome, Firefox, Safari) e fora dele (wasmtime,
   wasmer)
 \item
-  Modelo de seguran\c{c}a: sandbox + verifica\c{c}\~{a}o de tipos estática
+  Modelo de segurança: sandbox + verificação de tipos estática
 \item
   Tipo único no nosso subconjunto: \texttt{i32}
   (inteiro de 32 bits)
 \item
-  Todos os valores da IRT --- inteiros, ponteiros, endere\c{c}os --- mapeiam
+  Todos os valores da IRT --- inteiros, ponteiros, endereços --- mapeiam
   para \texttt{i32}
 \end{itemize}
 \end{frame}
@@ -75,7 +75,7 @@
   (memory 4)
   (global $heap_ptr (mut i32) (i32.const 0))
   (func $main
-    ;; corpo da fun\c{c}\~{a}o
+    ;; corpo da função
   )
   (export "main" (func $main))
 )
@@ -87,10 +87,10 @@
   \texttt{(memory 4)} = 4 páginas de 64 KB = 256 KB de
   memória linear
 \item
-  \texttt{$heap\_ptr} = ponteiro de aloca\c{c}\~{a}o
+  \texttt{$heap\_ptr} = ponteiro de alocação
   (\emph{bump-pointer})
 \item
-  Fun\c{c}\~{o}es \texttt{print} e
+  Funções \texttt{print} e
   \texttt{read\_int} importadas do ambiente
 \end{itemize}
 \end{frame}
@@ -110,25 +110,25 @@ i & ::= & \mathtt{i32.const}\ n \mid \mathtt{local.get}\ \$x \mid \mathtt{local.
 \end{frame}
 
 \hypertarget{semuxe2ntica-operacional}{%
-\section{Sem\^{a}ntica Operacional}\label{semuxe2ntica-operacional}}
+\section{Semântica Operacional}\label{semuxe2ntica-operacional}}
 
 \begin{frame}{Máquina de Pilha}
 \protect\hypertarget{muxe1quina-de-pilha}{}
-WebAssembly é uma \textbf{máquina de pilha}: instru\c{c}\~{o}es consomem do topo
+WebAssembly é uma \textbf{máquina de pilha}: instruções consomem do topo
 e empilham resultados.
 
-Estado de uma fun\c{c}\~{a}o: \((\sigma, \mu)\)
+Estado de uma função: \((\sigma, \mu)\)
 
 \begin{itemize}
 
 \item
-  \(\sigma = [v_1, \ldots, v_n]\) --- pilha de operandos (topo \`{a}
+  \(\sigma = [v_1, \ldots, v_n]\) --- pilha de operandos (topo à
   direita)
 \item
-  \(\mu\) --- variáveis locais (incluindo par\^{a}metros)
+  \(\mu\) --- variáveis locais (incluindo parâmetros)
 \end{itemize}
 
-Regras de avalia\c{c}\~{a}o ---
+Regras de avaliação ---
 \((\sigma, \mu) \xrightarrow{i} (\sigma', \mu')\):
 
 \[\frac{}{{(\sigma, \mu) \xrightarrow{\mathtt{i32.const}\ n} (\sigma \cdot n,\ \mu)}} \qquad \frac{\mu(\$x) = v}{(\sigma, \mu) \xrightarrow{\mathtt{local.get}\ \$x} (\sigma \cdot v,\ \mu)}\]
@@ -153,29 +153,29 @@ Comportamento de \texttt{br}
 \end{minipage} \\
 \midrule
 
-\texttt{(block $l ...)} & Salta para o \textbf{fim} do
+\texttt{(block \$l ...)} & Salta para o \textbf{fim} do
 bloco (\emph{break}) \\
-\texttt{(loop $l ...)} & Salta para o \textbf{início}
-do la\c{c}o (\emph{continue}) \\
+\texttt{(loop \$l ...)} & Salta para o \textbf{início}
+do laço (\emph{continue}) \\
 \texttt{(if (then ...) (else ...))} & Consome topo;
 executa ramo verdadeiro se \(\neq 0\) \\
-\texttt{br\_if $l} & Consome topo; ramifica se
+\texttt{br\_if \$l} & Consome topo; ramifica se
 \(\neq 0\) \\
 \bottomrule
 \end{tabular}
 \end{table}
 \end{frame}
 
-\begin{frame}[fragile]{Padr\~{a}o Can\^{o}nico de While em WAT}
+\begin{frame}[fragile]{Padrão Canônico de While em WAT}
 \protect\hypertarget{padruxe3o-canuxf4nico-de-while-em-wat}{}
 \begin{lstlisting}
 (block $exit
   (loop $head
-    ;; avalia\c{c}\~{a}o da condi\c{c}\~{a}o de saída
-    <condi\c{c}\~{a}o>
-    i32.eqz          ;; nega\c{c}\~{a}o
-    br_if $exit      ;; sai se condi\c{c}\~{a}o falsa
-    ;; corpo do la\c{c}o
+    ;; avaliação da condição de saída
+    <condição>
+    i32.eqz          ;; negação
+    br_if $exit      ;; sai se condição falsa
+    ;; corpo do laço
     <corpo>
     br $head         ;; volta ao início
   )
@@ -184,7 +184,7 @@ executa ramo verdadeiro se \(\neq 0\) \\
 \end{frame}
 
 \hypertarget{traduuxe7uxe3o-da-irt-para-wat}{%
-\section{Tradu\c{c}\~{a}o da IRT para
+\section{Tradução da IRT para
 WAT}\label{traduuxe7uxe3o-da-irt-para-wat}}
 
 \begin{frame}[fragile]{Alocador de Memória (Bump-Pointer)}
@@ -204,11 +204,11 @@ WAT}\label{traduuxe7uxe3o-da-irt-para-wat}}
 )
 \end{lstlisting}
 
-\(\mathit{alloc}(n)\): aloca \(n\) palavras de 8 bytes, retorna endere\c{c}o
+\(\mathit{alloc}(n)\): aloca \(n\) palavras de 8 bytes, retorna endereço
 base.
 \end{frame}
 
-\begin{frame}{Tradu\c{c}\~{a}o de Express\~{o}es
+\begin{frame}{Tradução de Expressões
 \(\mathcal{E}\llbracket \cdot \rrbracket\)}
 \protect\hypertarget{traduuxe7uxe3o-de-expressuxf5es-mathcalellbracket-cdot-rrbracket}{}
 \[\mathcal{E}\llbracket \mathbf{CONST}(n) \rrbracket = [\mathtt{i32.const}\ n]\]
@@ -248,7 +248,7 @@ OR & \texttt{i32.or} & & \\
 \end{table}
 \end{frame}
 
-\begin{frame}{Tradu\c{c}\~{a}o de Comandos
+\begin{frame}{Tradução de Comandos
 \(\mathcal{S}\llbracket \cdot \rrbracket\)}
 \protect\hypertarget{traduuxe7uxe3o-de-comandos-mathcalsllbracket-cdot-rrbracket}{}
 \[\mathcal{S}\llbracket \mathbf{MOVE}(\mathbf{TEMP}\ t, e) \rrbracket = \mathcal{E}\llbracket e \rrbracket \cdot [\mathtt{local.set}\ \$t]\]
@@ -258,19 +258,19 @@ OR & \texttt{i32.or} & & \\
 \[\mathcal{S}\llbracket \mathbf{RETURN}([e]) \rrbracket = \mathcal{E}\llbracket e \rrbracket \cdot [\mathtt{return}]\]
 \end{frame}
 
-\begin{frame}{Reconstru\c{c}\~{a}o de Controle de Fluxo}
+\begin{frame}{Reconstrução de Controle de Fluxo}
 \protect\hypertarget{reconstruuxe7uxe3o-de-controle-de-fluxo}{}
 A IRT usa JUMP/CJUMP/LABEL; WAT usa block/loop/if.
 
-\textbf{Reconhecimento de while}: padr\~{a}o na sequ\^{e}ncia linearizada:
+\textbf{Reconhecimento de while}: padrão na sequência linearizada:
 \[\mathbf{LABEL}\ \ell_h \;\; \mathbf{CJUMP}(e, \ell_b, \ell_f) \;\; \mathbf{LABEL}\ \ell_b \;\; \text{corpo} \;\; \mathbf{JUMP}(\ell_h) \;\; \mathbf{LABEL}\ \ell_f\]
 
-\textbf{Reconhecimento de if/else}: padr\~{a}o:
+\textbf{Reconhecimento de if/else}: padrão:
 \[\mathbf{CJUMP}(e, \ell_t, \ell_f) \;\; \mathbf{LABEL}\ \ell_t \;\; \text{then} \;\; \mathbf{JUMP}(\ell_e) \;\; \mathbf{LABEL}\ \ell_f \;\; \text{else} \;\; \mathbf{LABEL}\ \ell_e\]
 \end{frame}
 
 \hypertarget{conclusuxe3o}{%
-\section{Conclus\~{a}o}\label{conclusuxe3o}}
+\section{Conclusão}\label{conclusuxe3o}}
 
 \begin{frame}[fragile]{Sumário do Capítulo}
 \protect\hypertarget{sumuxe1rio-do-capuxedtulo}{}
@@ -282,11 +282,11 @@ A IRT usa JUMP/CJUMP/LABEL; WAT usa block/loop/if.
 \item
   Controle de fluxo \textbf{estruturado}: block, loop, if (sem goto)
 \item
-  Pipeline completo: \textbf{TImp → IRT → WAT → Wasm}
+  Pipeline completo: \textbf{TImp -> IRT -> WAT -> Wasm}
 \item
-  Tradu\c{c}\~{a}o de express\~{o}es: empilhar operandos, depois opera\c{c}\~{a}o
+  Tradução de expressões: empilhar operandos, depois operação
 \item
-  Tradu\c{c}\~{a}o de la\c{c}os: \emph{linearizar} IRT, \emph{reconhecer} padr\~{a}o,
+  Tradução de laços: \emph{linearizar} IRT, \emph{reconhecer} padrão,
   \emph{reconstruir} block/loop
 \end{itemize}
 \end{frame}
@@ -300,9 +300,9 @@ A IRT usa JUMP/CJUMP/LABEL; WAT usa block/loop/if.
   \texttt{f32}, \texttt{f64},
   \texttt{v128} (SIMD)
 \item
-  \textbf{Aloca\c{c}\~{a}o de memória avan\c{c}ada}: GC, ponteiros managed
+  \textbf{Alocação de memória avançada}: GC, ponteiros managed
 \item
-  \textbf{Otimiza\c{c}\~{o}es específicas de Wasm}: tail calls, instru\c{c}\~{o}es SIMD
+  \textbf{Otimizações específicas de Wasm}: tail calls, instruções SIMD
 \item
   \textbf{Pipeline completo}: integrar todos os capítulos em um
   compilador funcional

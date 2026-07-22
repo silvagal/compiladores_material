@@ -22,9 +22,9 @@
 
 \item
   Técnica para construir analisadores sintáticos como um
-  \textbf{conjunto de fun\c{c}\~{o}es}
+  \textbf{conjunto de funções}
 \item
-  Uma fun\c{c}\~{a}o por n\~{a}o-terminal da gramática
+  Uma função por não-terminal da gramática
 \end{itemize}
 \end{frame}
 
@@ -33,7 +33,7 @@
 \begin{itemize}
 
 \item
-  A chamada de fun\c{c}\~{o}es reflete a estrutura das produ\c{c}\~{o}es
+  A chamada de funções reflete a estrutura das produções
 \item
   Em Haskell: abordagem elegante com \textbf{combinadores de parsing}
 \item
@@ -77,7 +77,7 @@ newtype Parser s a =
 \begin{itemize}
 
 \item
-  Sucesso sem n\~{a}o determinismo.
+  Sucesso sem não determinismo.
 
   \begin{itemize}
 
@@ -88,7 +88,7 @@ newtype Parser s a =
 
 \begin{lstlisting}[language=Haskell]
 runParser (symbol 'a') "abc"
--- → [('a', "bc")]    -- sucesso: consome 'a', resta "bc"
+-- -> [('a', "bc")]    -- sucesso: consome 'a', resta "bc"
 \end{lstlisting}
 \end{frame}
 
@@ -102,7 +102,7 @@ runParser (symbol 'a') "abc"
 
 \begin{lstlisting}[language=Haskell]
 runParser (symbol 'x') "abc"
--- → []               -- falha: 'a' ≠ 'x'
+-- -> []               -- falha: 'a' ≠ 'x'
 \end{lstlisting}
 \end{frame}
 
@@ -111,7 +111,7 @@ runParser (symbol 'x') "abc"
 \begin{itemize}
 
 \item
-  Mais de um resultado: n\~{a}o determinismo
+  Mais de um resultado: não determinismo
 
   \begin{itemize}
 
@@ -122,7 +122,7 @@ runParser (symbol 'x') "abc"
 
 \begin{lstlisting}[language=Haskell]
 runParser (item <|> item) "abc"
--- → [('a', "bc"), ('a', "bc")]
+-- -> [('a', "bc"), ('a', "bc")]
 \end{lstlisting}
 \end{frame}
 
@@ -133,12 +133,12 @@ runParser (item <|> item) "abc"
 \item
   Parsers determinísticos retornam no máximo um par
 \item
-  A lista permite parsers \textbf{n\~{a}o-determinísticos} de forma elegante
+  A lista permite parsers \textbf{não-determinísticos} de forma elegante
 \end{itemize}
 \end{frame}
 
 \hypertarget{instuxe2ncias-de-classes-de-tipos}{%
-\section{Inst\^{a}ncias de Classes de
+\section{Instâncias de Classes de
 Tipos}\label{instuxe2ncias-de-classes-de-tipos}}
 
 \begin{frame}[fragile]{Functor}
@@ -151,7 +151,7 @@ Tipos}\label{instuxe2ncias-de-classes-de-tipos}}
   \begin{itemize}
 
   \item
-    Responsável por executar a\c{c}\~{o}es.
+    Responsável por executar ações.
   \item
     Ex. Construir AST.
   \end{itemize}
@@ -181,7 +181,7 @@ instance Functor (Parser s) where
 \begin{itemize}
 
 \item
-  Concatena\c{c}\~{a}o (sequ\^{e}ncia) de parsers.
+  Concatenação (sequência) de parsers.
 \end{itemize}
 
 \begin{lstlisting}[language=Haskell]
@@ -233,7 +233,7 @@ instance Alternative (Parser t) where
   \texttt{p1 <|> p2}: tenta ambas as alternativas
   (concatena resultados)
 \item
-  Devido \`{a} avalia\c{c}\~{a}o lazy, \texttt{p2} só é avaliado se
+  Devido à avaliação lazy, \texttt{p2} só é avaliado se
   \texttt{p1} falhar
 \end{itemize}
 \end{frame}
@@ -243,7 +243,7 @@ instance Alternative (Parser t) where
 \begin{itemize}
 
 \item
-  Permite a defini\c{c}\~{a}o de parsers que dependem do resultado de um parser
+  Permite a definição de parsers que dependem do resultado de um parser
   anterior.
 \end{itemize}
 
@@ -263,7 +263,7 @@ instance Monad (Parser t) where
 \item
   Permite que o segundo parser \textbf{dependa do resultado} do primeiro
 \item
-  Habilita nota\c{c}\~{a}o \texttt{do} para parsers mais
+  Habilita notação \texttt{do} para parsers mais
   legíveis
 \end{itemize}
 \end{frame}
@@ -330,7 +330,7 @@ natural = foldl (\a b -> a*10 + b) 0 <$> many1 digit
 \section{Combinadores de Alto
 Nível}\label{combinadores-de-alto-nuxedvel}}
 
-\begin{frame}[fragile]{Repeti\c{c}\~{a}o}
+\begin{frame}[fragile]{Repetiçãoo}
 \protect\hypertarget{repetiuxe7uxe3o}{}
 \begin{lstlisting}[language=Haskell]
 -- Um ou mais
@@ -339,7 +339,7 @@ many p = (:) <$> p <*> many p <|> pure []
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Repeti\c{c}\~{a}o}
+\begin{frame}[fragile]{Repetiçãoo}
 \protect\hypertarget{repetiuxe7uxe3o-1}{}
 \begin{lstlisting}[language=Haskell]
 -- Um ou mais
@@ -348,7 +348,7 @@ many1 p = (:) <$> p <*> many p
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Op\c{c}\~{a}o}
+\begin{frame}[fragile]{Opção}
 \protect\hypertarget{opuxe7uxe3o}{}
 \begin{lstlisting}
 -- Zero ou um
@@ -369,7 +369,7 @@ pack p r q = pi32 <$> p <*> r <*> q
 \begin{frame}[fragile]{Delimitadores}
 \protect\hypertarget{delimitadores-1}{}
 \begin{lstlisting}[language=Haskell]
--- Express\~{a}o entre par\^{e}nteses:
+-- Expressão entre parênteses:
 parens p = pack (symbol '(') p (symbol ')')
 \end{lstlisting}
 \end{frame}
@@ -383,7 +383,7 @@ listOf p s = list <$> p <*> many (pi22 <$> s <*> p)
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Repeti\c{c}\~{a}o Gulosa}
+\begin{frame}[fragile]{Repetiçãoo Gulosa}
 \protect\hypertarget{repetiuxe7uxe3o-gulosa}{}
 \begin{lstlisting}[language=Haskell]
 determ :: Parser s b -> Parser s b
@@ -402,8 +402,8 @@ greedy  = determ . many
 \item
   Para gramáticas da forma \(E \to E \oplus T \mid T\):
 \item
-  \texttt{chainl}: associatividade \textbf{\`{a} esquerda}
-  --- \texttt{1+2+3} →
+  \texttt{chainl}: associatividade \textbf{à esquerda}
+  --- \texttt{1+2+3} ->
   \texttt{(1+2)+3}
 \end{itemize}
 
@@ -421,8 +421,8 @@ chainl pe po = h <$> pe <*> many (j <$> po <*> pe)
 \item
   Para gramáticas da forma \(E \to T \oplus E \mid T\):
 \item
-  \texttt{chainr}: associatividade \textbf{\`{a} direita}
-  --- \texttt{1+2+3} →
+  \texttt{chainr}: associatividade \textbf{à direita}
+  --- \texttt{1+2+3} ->
   \texttt{1+(2+3)}
 \end{itemize}
 
@@ -435,7 +435,7 @@ chainr pe po = h <$> many (j <$> pe <*> po) <*> pe
 \end{frame}
 
 \hypertarget{parser-de-expressuxf5es}{%
-\section{Parser de Express\~{o}es}\label{parser-de-expressuxf5es}}
+\section{Parser de Expressões}\label{parser-de-expressuxf5es}}
 
 \begin{frame}[fragile]{Gramática e Tokens}
 \protect\hypertarget{gramuxe1tica-e-tokens}{}
@@ -461,18 +461,18 @@ gen ops p = chainl p (choice (map f ops))
 \begin{itemize}
 
 \item
-  \texttt{gen ops p} reconhece express\~{o}es com
+  \texttt{gen ops p} reconhece expressões com
   operadores de \texttt{ops} e operandos de
   \texttt{p}
 \item
-  Associatividade \`{a} esquerda via \texttt{chainl}
+  Associatividade à esquerda via \texttt{chainl}
 \end{itemize}
 \end{frame}
 
 \hypertarget{parser-de-expressuxf5es-1}{%
-\section{Parser de Express\~{o}es}\label{parser-de-expressuxf5es-1}}
+\section{Parser de Expressões}\label{parser-de-expressuxf5es-1}}
 
-\begin{frame}[fragile]{Parser de Express\~{o}es}
+\begin{frame}[fragile]{Parser de Expressões}
 \protect\hypertarget{parser-de-expressuxf5es-2}{}
 \begin{itemize}
 
@@ -487,7 +487,7 @@ exprParser = addtable `gen` termParser
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Parser de Express\~{o}es}
+\begin{frame}[fragile]{Parser de Expressões}
 \protect\hypertarget{parser-de-expressuxf5es-3}{}
 \begin{itemize}
 
@@ -502,7 +502,7 @@ termParser = multable `gen` factParser
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Parser de Express\~{o}es}
+\begin{frame}[fragile]{Parser de Expressões}
 \protect\hypertarget{parser-de-expressuxf5es-4}{}
 \begin{lstlisting}[language=Haskell]
 factParser :: Parser Token Expr
@@ -522,7 +522,7 @@ factParser = numParser <|> varParser
 
 \item
   A biblioteca didática é para ensino; \textbf{Megaparsec} é para
-  produ\c{c}\~{a}o
+  produção
 \item
   Mensagens de erro detalhadas: linha, coluna, contexto, o que era
   esperado
@@ -537,7 +537,7 @@ factParser = numParser <|> varParser
   Melhor desempenho com \emph{committed choice}
 \item
   Combinador \texttt{makeExprParser} para hierarquias
-  de preced\^{e}ncia
+  de precedência
 \end{itemize}
 \end{frame}
 
@@ -552,18 +552,18 @@ type Parser a = Parsec Void String a
 
 \item
   \texttt{Void}: sem tipo de erro customizado (usa os
-  padr\~{o}es da biblioteca)
+  padrões da biblioteca)
 \item
   \texttt{String}: entrada como lista de caracteres
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Tratamento de Espa\c{c}os}
+\begin{frame}[fragile]{Tratamento de Espaços}
 \protect\hypertarget{tratamento-de-espauxe7os}{}
 \begin{itemize}
 
 \item
-  Remover espa\c{c}os e lidar com comentários
+  Remover espaços e lidar com comentários
 \end{itemize}
 
 \begin{lstlisting}[language=Haskell]
@@ -578,7 +578,7 @@ sc = L.space space1 lineCmnt blockCmnt
 \protect\hypertarget{tokens}{}
 \begin{lstlisting}
 lexeme :: Parser a -> Parser a
-lexeme = L.lexeme sc  -- consome espa\c{c}o após o token
+lexeme = L.lexeme sc  -- consome espaço após o token
 
 symbol :: String -> Parser String
 symbol = L.symbol sc
@@ -594,8 +594,8 @@ parens = between (symbol "(") (symbol ")")
 \begin{lstlisting}[language=Haskell]
 opTable :: [[Operator Parser Exp]]
 opTable
-  = [ [ infixL (:*:) "*" ]   -- maior preced\^{e}ncia
-    , [ infixL (:+:) "+" ]   -- menor preced\^{e}ncia
+  = [ [ infixL (:*:) "*" ]   -- maior precedência
+    , [ infixL (:+:) "+" ]   -- menor precedência
     ]
   where infixL op sym = InfixL $ op <$ symbol sym
 \end{lstlisting}
@@ -607,12 +607,12 @@ opTable
 
 \item
   Lista externa: do \textbf{maior} para o \textbf{menor} nível de
-  preced\^{e}ncia
+  precedência
 \item
-  Lista interna: operadores de mesma preced\^{e}ncia
+  Lista interna: operadores de mesma precedência
 \item
-  \texttt{InfixL}: associatividade \`{a} esquerda;
-  \texttt{InfixR}: \`{a} direita
+  \texttt{InfixL}: associatividade à esquerda;
+  \texttt{InfixR}: à direita
 \end{itemize}
 \end{frame}
 
@@ -635,17 +635,17 @@ expP = makeExprParser termP opTable
 
 \item
   \texttt{makeExprParser} constrói automaticamente toda
-  a hierarquia de preced\^{e}ncias
+  a hierarquia de precedências
 \item
-  Sem necessidade de codificar manualmente cada nível como fun\c{c}\~{a}o
+  Sem necessidade de codificar manualmente cada nível como função
   separada
 \end{itemize}
 \end{frame}
 
 \hypertarget{conclusuxe3o}{%
-\section{Conclus\~{a}o}\label{conclusuxe3o}}
+\section{Conclusão}\label{conclusuxe3o}}
 
-\begin{frame}[fragile]{Conclus\~{a}o}
+\begin{frame}[fragile]{Conclusão}
 \protect\hypertarget{conclusuxe3o-1}{}
 \begin{itemize}
 
@@ -656,14 +656,14 @@ expP = makeExprParser termP opTable
   O tipo \texttt{Parser s a} retorna lista de pares
   (resultado, entrada restante)
 \item
-  Inst\^{a}ncias de \texttt{Functor},
+  Instâncias de \texttt{Functor},
   \texttt{Applicative},
   \texttt{Alternative}, \texttt{Monad}
-  d\~{a}o expressividade
+  dão expressividade
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Conclus\~{a}o}
+\begin{frame}[fragile]{Conclusão}
 \protect\hypertarget{conclusuxe3o-2}{}
 \begin{itemize}
 
@@ -680,12 +680,12 @@ expP = makeExprParser termP opTable
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-3}{}
 \begin{itemize}
 
 \item
-  \textbf{Megaparsec}: mesmos princípios, porém com uma implementa\c{c}\~{a}o
+  \textbf{Megaparsec}: mesmos princípios, porém com uma implementação
   eficiente.
 \end{itemize}
 \end{frame}

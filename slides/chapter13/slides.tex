@@ -7,30 +7,30 @@
 \protect\hypertarget{objetivos-1}{}
 \begin{itemize}
 \item
-  Apresentar a sem\^{a}ntica operacional para uma linguagem imperativa
+  Apresentar a semântica operacional para uma linguagem imperativa
   simples.
 \item
-  Apresentar a implementa\c{c}\~{a}o do interpretador desta linguagem.
+  Apresentar a implementação do interpretador desta linguagem.
 \end{itemize}
 \end{frame}
 
 
 
-\begin{frame}{Motiva\c{c}\~{a}o: Express\~{o}es Puras N\~{a}o Bastam}
+\begin{frame}{Motivação: Expressões Puras Não Bastam}
 \protect\hypertarget{motivauxe7uxe3o-expressuxf5es-puras-nuxe3o-bastam}{}
 \begin{itemize}
 
 \item
-  No capítulo anterior: express\~{o}es \textbf{puras} sem variáveis
+  No capítulo anterior: expressões \textbf{puras} sem variáveis
 \item
-  O valor de uma express\~{a}o dependia apenas da sua estrutura sintática
+  O valor de uma expressão dependia apenas da sua estrutura sintática
 \end{itemize}
 \end{frame}
 
 \hypertarget{a-linguagem-line-1}{%
 \section{A Linguagem Line}\label{a-linguagem-line-1}}
 
-\begin{frame}{Motiva\c{c}\~{a}o: Express\~{o}es Puras N\~{a}o Bastam}
+\begin{frame}{Motivação: Expressões Puras Não Bastam}
 \protect\hypertarget{motivauxe7uxe3o-expressuxf5es-puras-nuxe3o-bastam-1}{}
 \begin{itemize}
 
@@ -38,7 +38,7 @@
   Programas reais manipulam \textbf{estado}: valores armazenados em
   variáveis
 \item
-  Precisamos estender a sem\^{a}ntica com um componente de estado
+  Precisamos estender a semântica com um componente de estado
 \end{itemize}
 \end{frame}
 
@@ -81,16 +81,16 @@ type Var = String
 \hypertarget{ambientes}{%
 \section{Ambientes}\label{ambientes}}
 
-\begin{frame}[fragile]{Defini\c{c}\~{a}o de Ambiente}
+\begin{frame}[fragile]{Definição de Ambiente}
 \protect\hypertarget{definiuxe7uxe3o-de-ambiente}{}
 Um \textbf{ambiente}
-\(\sigma : \mathit{Var} \rightharpoonup \mathbb{Z}\) é uma fun\c{c}\~{a}o
+\(\sigma : \mathit{Var} \rightharpoonup \mathbb{Z}\) é uma função
 parcial que mapeia nomes de variáveis para inteiros.
 
 Em Haskell: \texttt{type Env = Map String Int}
 \end{frame}
 
-\begin{frame}{Nota\c{c}\~{a}o}
+\begin{frame}{Notação}
 \protect\hypertarget{notauxe7uxe3o}{}
 \begin{itemize}
 
@@ -109,11 +109,11 @@ Em Haskell: \texttt{type Env = Map String Int}
 \begin{itemize}
 
 \item
-  Express\~{o}es agora podem conter \textbf{variáveis}:
+  Expressões agora podem conter \textbf{variáveis}:
   \texttt{x * 4}
 \item
   O valor de \texttt{x} só é conhecido durante a
-  execu\c{c}\~{a}o
+  execução
 \end{itemize}
 \end{frame}
 
@@ -124,7 +124,7 @@ Em Haskell: \texttt{type Env = Map String Int}
 \item
   O ambiente \(\sigma\) registra o estado da memória em cada instante
 \item
-  Comandos de atribui\c{c}\~{a}o \textbf{modificam} o ambiente:
+  Comandos de atribuição \textbf{modificam} o ambiente:
   \(\sigma \to \sigma[x \mapsto n]\)
 \end{itemize}
 \end{frame}
@@ -134,24 +134,24 @@ Em Haskell: \texttt{type Env = Map String Int}
 \begin{itemize}
 
 \item
-  Express\~{o}es apenas \textbf{consultam} o ambiente, sem modificá-lo
+  Expressões apenas \textbf{consultam} o ambiente, sem modificá-lo
 \end{itemize}
 \end{frame}
 
 \hypertarget{semuxe2ntica-small-step}{%
-\section{Sem\^{a}ntica Small-Step}\label{semuxe2ntica-small-step}}
+\section{Semântica Small-Step}\label{semuxe2ntica-small-step}}
 
-\begin{frame}{Express\~{o}es com Variáveis}
+\begin{frame}{Expressões com Variáveis}
 \protect\hypertarget{expressuxf5es-com-variuxe1veis}{}
 \begin{itemize}
 
 \item
-  A configura\c{c}\~{a}o de uma express\~{a}o é um par \((\sigma, e)\); a redu\c{c}\~{a}o é
+  A configuração de uma expressão é um par \((\sigma, e)\); a redução é
   \((\sigma, e) \to (\sigma, e')\).
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Express\~{o}es com Variáveis}
+\begin{frame}{Expressões com Variáveis}
 \protect\hypertarget{expressuxf5es-com-variuxe1veis-1}{}
 \begin{itemize}
 
@@ -162,51 +162,51 @@ Em Haskell: \texttt{type Env = Map String Int}
 \[\frac{x \in \mathrm{dom}(\sigma)}{(\sigma,\, x) \to (\sigma,\, \sigma(x))} \quad\text{(Var)}\]
 \end{frame}
 
-\begin{frame}{Express\~{o}es com Variáveis}
+\begin{frame}{Expressões com Variáveis}
 \protect\hypertarget{expressuxf5es-com-variuxe1veis-2}{}
 \begin{itemize}
 
 \item
   Uma variável é substituída pelo seu valor corrente.
 \item
-  Se \(x \notin \mathrm{dom}(\sigma)\): \textbf{erro} de variável n\~{a}o
+  Se \(x \notin \mathrm{dom}(\sigma)\): \textbf{erro} de variável não
   inicializada.
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Regras para Express\~{o}es}
+\begin{frame}{Regras para Expressões}
 \protect\hypertarget{regras-para-expressuxf5es}{}
 \[\frac{(\sigma, e_1) \to (\sigma, e_1')}{(\sigma,\, e_1 + e_2) \to (\sigma,\, e_1' + e_2)} \quad\text{(AddL)}
 \]
 \end{frame}
 
-\begin{frame}{Regras para Express\~{o}es}
+\begin{frame}{Regras para Expressões}
 \protect\hypertarget{regras-para-expressuxf5es-1}{}
 \[
 \frac{(\sigma, e_2) \to (\sigma, e_2')}{(\sigma,\, n_1 + e_2) \to (\sigma,\, n_1 + e_2')} \quad\text{(AddR)}\]
 \end{frame}
 
-\begin{frame}{Regras para Express\~{o}es}
+\begin{frame}{Regras para Expressões}
 \protect\hypertarget{regras-para-expressuxf5es-2}{}
 \[\frac{}{(\sigma,\, n_1 + n_2) \to (\sigma,\, n_1 \mathbin{\hat{+}} n_2)} \quad\text{(Add)}\]
 
 \begin{itemize}
 
 \item
-  Note que as express\~{o}es \textbf{n\~{a}o modificam} \(\sigma\)
+  Note que as expressões \textbf{não modificam} \(\sigma\)
 
   \begin{itemize}
 
   \item
-    S\~{a}o puras no sentido de que apenas consultam o ambiente.
+    São puras no sentido de que apenas consultam o ambiente.
   \end{itemize}
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Regras para Comandos}
 \protect\hypertarget{regras-para-comandos}{}
-A configura\c{c}\~{a}o de um comando é \((\sigma, s) \to (\sigma', s')\), onde
-\(s'\) é o resíduo após a redu\c{c}\~{a}o.
+A configuração de um comando é \((\sigma, s) \to (\sigma', s')\), onde
+\(s'\) é o resíduo após a redução.
 \end{frame}
 
 \begin{frame}{Regras para Comandos}
@@ -214,7 +214,7 @@ A configura\c{c}\~{a}o de um comando é \((\sigma, s) \to (\sigma', s')\), onde
 \begin{itemize}
 
 \item
-  \textbf{Atribui\c{c}\~{a}o (avalia primeiro):}
+  \textbf{Atribuição (avalia primeiro):}
   \[\frac{(\sigma, e) \to (\sigma, e')}{(\sigma,\; x \mathbin{:=} e) \to (\sigma,\; x \mathbin{:=} e')} \quad\text{(AssignStep)}\]
 \end{itemize}
 \end{frame}
@@ -224,43 +224,43 @@ A configura\c{c}\~{a}o de um comando é \((\sigma, s) \to (\sigma', s')\), onde
 \begin{itemize}
 
 \item
-  \textbf{Atribui\c{c}\~{a}o (valor final):}
+  \textbf{Atribuição (valor final):}
   \[\frac{}{(\sigma,\; x \mathbin{:=} n) \to (\sigma[x \mapsto n],\; \mathbf{skip})} \quad\text{(Assign)}\]
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Impress\~{a}o}
+\begin{frame}{Impressão}
 \protect\hypertarget{impressuxe3o}{}
 \begin{itemize}
 
 \item
-  \textbf{Impress\~{a}o (avalia primeiro):}
+  \textbf{Impressão (avalia primeiro):}
   \[\frac{(\sigma, e) \to (\sigma, e')}{(\sigma,\; \mathbf{print}\; e) \to (\sigma,\; \mathbf{print}\; e')} \quad\text{(PrintStep)}\]
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Impress\~{a}o}
+\begin{frame}{Impressão}
 \protect\hypertarget{impressuxe3o-1}{}
 \begin{itemize}
 
 \item
-  \textbf{Impress\~{a}o (valor final):}
+  \textbf{Impressão (valor final):}
   \[\frac{}{(\sigma,\; \mathbf{print}\; n) \to (\sigma,\; \mathbf{skip})} \quad\text{(Print) [emite } n\text{]}\]
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Sequ\^{e}ncia}
+\begin{frame}{Sequência}
 \protect\hypertarget{sequuxeancia}{}
 \begin{itemize}
 
 \item
-  Skip \`{a} esquerda
+  Skip à esquerda
 \end{itemize}
 
 \[\frac{}{(\sigma,\; \mathbf{skip};\, s^*) \to (\sigma,\; s^*)} \quad\text{(SeqSkip)}\]
 \end{frame}
 
-\begin{frame}{Sequ\^{e}ncia}
+\begin{frame}{Sequência}
 \protect\hypertarget{sequuxeancia-1}{}
 \begin{itemize}
 
@@ -346,9 +346,9 @@ A configura\c{c}\~{a}o de um comando é \((\sigma, s) \to (\sigma', s')\), onde
 \end{frame}
 
 \hypertarget{semuxe2ntica-big-step}{%
-\section{Sem\^{a}ntica Big-Step}\label{semuxe2ntica-big-step}}
+\section{Semântica Big-Step}\label{semuxe2ntica-big-step}}
 
-\begin{frame}{Express\~{o}es}
+\begin{frame}{Expressões}
 \protect\hypertarget{expressuxf5es}{}
 \begin{itemize}
 
@@ -364,7 +364,7 @@ A configura\c{c}\~{a}o de um comando é \((\sigma, s) \to (\sigma', s')\), onde
 \begin{itemize}
 
 \item
-  A rela\c{c}\~{a}o \(\sigma, s \Downarrow \sigma'\) significa ``executar \(s\)
+  A relação \(\sigma, s \Downarrow \sigma'\) significa ``executar \(s\)
   no ambiente \(\sigma\) produz \(\sigma'\)''.
 \end{itemize}
 
@@ -403,7 +403,7 @@ A configura\c{c}\~{a}o de um comando é \((\sigma, s) \to (\sigma', s')\), onde
 \quad\text{(SeqCons)}\]
 \end{frame}
 
-\begin{frame}{Deriva\c{c}\~{a}o: \texttt{x := 2 + 3}}
+\begin{frame}{Derivação: \texttt{x := 2 + 3}}
 \protect\hypertarget{derivauxe7uxe3o-x-2-3}{}
 \[\dfrac{
   \dfrac{
@@ -414,25 +414,25 @@ A configura\c{c}\~{a}o de um comando é \((\sigma, s) \to (\sigma', s')\), onde
 }{\emptyset,\; x \mathbin{:=} 2 + 3 \;\Downarrow\; [x \mapsto 5]}\]
 \end{frame}
 
-\begin{frame}{Deriva\c{c}\~{a}o: \texttt{x := 2+3; print x*4}}
+\begin{frame}{Derivação: \texttt{x := 2+3; print x*4}}
 \protect\hypertarget{derivauxe7uxe3o-x-23-print-x4}{}
 \begin{itemize}
 
 \item
-  Resolu\c{c}\~{a}o na lousa.
+  Resolução na lousa.
 \end{itemize}
 \end{frame}
 
 \hypertarget{implementauxe7uxe3o-em-haskell}{%
-\section{Implementa\c{c}\~{a}o em
+\section{Implementação em
 Haskell}\label{implementauxe7uxe3o-em-haskell}}
 
-\begin{frame}[fragile]{M\^{o}nada}
+\begin{frame}[fragile]{Mônada}
 \protect\hypertarget{muxf4nada}{}
 \begin{itemize}
 
 \item
-  A sem\^{a}ntica big-step dita que cada comando recebe e produz um
+  A semântica big-step dita que cada comando recebe e produz um
   ambiente.
 \end{itemize}
 
@@ -442,12 +442,12 @@ type Interp a = ExceptT String (StateT Env IO) a
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{M\^{o}nada}
+\begin{frame}[fragile]{Mônada}
 \protect\hypertarget{muxf4nada-1}{}
 \begin{itemize}
 
 \item
-  A pilha de m\^{o}nadas combina:
+  A pilha de mônadas combina:
 
   \begin{itemize}
 
@@ -457,7 +457,7 @@ type Interp a = ExceptT String (StateT Env IO) a
     \texttt{modify}
   \item
     \texttt{ExceptT String}: tratamento de erros
-    (variável n\~{a}o definida)
+    (variável não definida)
   \item
     \texttt{IO}: efeitos de I/O para
     \texttt{read} e \texttt{print}
@@ -465,7 +465,7 @@ type Interp a = ExceptT String (StateT Env IO) a
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Express\~{o}es}
+\begin{frame}[fragile]{Expressões}
 \protect\hypertarget{expressuxf5es-1}{}
 \begin{lstlisting}[language=Haskell]
 interpExp :: Exp -> Interp Int
@@ -520,24 +520,24 @@ interpProgram (Line ss) = mapM_ interpStmt ss
 \end{frame}
 
 \hypertarget{conclusuxe3o}{%
-\section{Conclus\~{a}o}\label{conclusuxe3o}}
+\section{Conclusão}\label{conclusuxe3o}}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-1}{}
 \begin{itemize}
 
 \item
-  Apresentamos a sem\^{a}ntica operacional de uma linguagem imperativa
+  Apresentamos a semântica operacional de uma linguagem imperativa
   simples.
 
   \begin{itemize}
 
   \item
-    Foco: representa\c{c}\~{a}o do estado.
+    Foco: representação do estado.
   \item
     Small e big step
   \end{itemize}
 \item
-  Apresentamos a implementa\c{c}\~{a}o em Haskell
+  Apresentamos a implementação em Haskell
 \end{itemize}
 \end{frame}

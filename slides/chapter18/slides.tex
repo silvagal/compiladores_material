@@ -1,4 +1,4 @@
-\subtitle{\bf Aula 18 - Introdu\c{c}\~{a}o}
+\subtitle{\bf Aula 18 - Introduçãoo}
 \begin{frame}[t,plain]
 \titlepage
 \end{frame}
@@ -7,41 +7,41 @@
 \protect\hypertarget{objetivos-1}{}
 \begin{itemize}
 \item
-  Classificar as otimiza\c{c}\~{o}es de código intermediário por escopo: local
-  (intra-bloco), global (inter-bloco) e de la\c{c}o.
+  Classificar as otimizações de código intermediário por escopo: local
+  (intra-bloco), global (inter-bloco) e de laço.
 \item
-  Definir formalmente e implementar dobramento de constantes, propaga\c{c}\~{a}o
-  de constantes, elimina\c{c}\~{a}o de subexpress\~{o}es comuns (CSE) e elimina\c{c}\~{a}o
+  Definir formalmente e implementar dobramento de constantes, propagação
+  de constantes, eliminação de subexpressões comuns (CSE) e eliminação
   de código morto (DCE).
 \item
-  Apresentar otimiza\c{c}\~{o}es estruturais de la\c{c}o: movimenta\c{c}\~{a}o de código
-  invariante (LICM), desenrolamento e fus\~{a}o.
+  Apresentar otimizações estruturais de laço: movimentação de código
+  invariante (LICM), desenrolamento e fusão.
 \item
-  Definir formalmente e implementar inlining de fun\c{c}\~{o}es e elimina\c{c}\~{a}o de
-  chamadas em cauda (TCO), com suas condi\c{c}\~{o}es de elegibilidade e
-  corre\c{c}\~{a}o.
+  Definir formalmente e implementar inlining de funções e eliminação de
+  chamadas em cauda (TCO), com suas condições de elegibilidade e
+  correção.
 \end{itemize}
 \end{frame}
 
 \hypertarget{introduuxe7uxe3o}{%
-\section{Introdu\c{c}\~{a}o}\label{introduuxe7uxe3o}}
+\section{Introduçãoo}\label{introduuxe7uxe3o}}
 
-\begin{frame}{O que s\~{a}o Otimiza\c{c}\~{o}es?}
+\begin{frame}{O que são Otimizações?}
 \protect\hypertarget{o-que-suxe3o-otimizauxe7uxf5es}{}
 \begin{itemize}
 
 \item
-  ``Otimiza\c{c}\~{a}o'' é um exagero: raramente o código é \textbf{ótimo}
+  ``Otimização'' é um exagero: raramente o código é \textbf{ótimo}
   segundo alguma métrica global
 \item
   O que se busca: código \textbf{melhor} --- mais rápido, menor, mais
-  econ\^{o}mico
+  econômico
 \item
   Aplicadas sobre a \textbf{IRT} sem alterar o significado observável do
   programa
 \end{itemize}
 
-\textbf{Classifica\c{c}\~{a}o por escopo:}
+\textbf{Classificação por escopo:}
 
 \begin{table}
 \begin{tabular}[]{@{}
@@ -52,7 +52,7 @@
 \begin{minipage}[b]{\linewidth}\raggedright
 Escopo
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Descri\c{c}\~{a}o
+Descrição
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Exemplos
 \end{minipage} \\
@@ -62,50 +62,50 @@ Exemplos
 folding, CSE \\
 \textbf{Global} (inter-bloco) & Análise de fluxo de controle & Const
 propagation global \\
-\textbf{De la\c{c}o} & Exploram estrutura iterativa & LICM, unrolling,
+\textbf{De laço} & Exploram estrutura iterativa & LICM, unrolling,
 fusion \\
 \bottomrule
 \end{tabular}
 \end{table}
 \end{frame}
 
-\begin{frame}{Dez Otimiza\c{c}\~{o}es Neste Capítulo}
+\begin{frame}{Dez Otimizações Neste Capítulo}
 \protect\hypertarget{dez-otimizauxe7uxf5es-neste-capuxedtulo}{}
 \begin{enumerate}
 
 \item
   \textbf{Dobramento de constantes} (\emph{constant folding})
 \item
-  \textbf{Propaga\c{c}\~{a}o de constantes} (\emph{constant propagation})
+  \textbf{Propagação de constantes} (\emph{constant propagation})
 \item
-  \textbf{Dobramento e propaga\c{c}\~{a}o combinados}
+  \textbf{Dobramento e propagação combinados}
 \item
-  \textbf{Elimina\c{c}\~{a}o de subexpress\~{o}es comuns} (CSE)
+  \textbf{Eliminação de subexpressões comuns} (CSE)
 \item
-  \textbf{Elimina\c{c}\~{a}o de código morto} (DCE)
+  \textbf{Eliminação de código morto} (DCE)
 \item
-  \textbf{Movimenta\c{c}\~{a}o de código invariante de la\c{c}o} (LICM)
+  \textbf{Movimentação de código invariante de laço} (LICM)
 \item
-  \textbf{Desenrolamento de la\c{c}o} (\emph{loop unrolling})
+  \textbf{Desenrolamento de laço} (\emph{loop unrolling})
 \item
-  \textbf{Fus\~{a}o de la\c{c}os} (\emph{loop fusion})
+  \textbf{Fusão de laços} (\emph{loop fusion})
 \item
-  \textbf{Inlining de fun\c{c}\~{o}es} (\emph{function inlining})
+  \textbf{Inlining de funções} (\emph{function inlining})
 \item
-  \textbf{Elimina\c{c}\~{a}o de chamadas em cauda} (\emph{tail-call
+  \textbf{Eliminação de chamadas em cauda} (\emph{tail-call
   elimination})
 \end{enumerate}
 \end{frame}
 
 \begin{frame}{Terminologia}
 \protect\hypertarget{terminologia}{}
-Uma express\~{a}o é \textbf{pura} se n\~{a}o produz efeitos colaterais:
+Uma expressão é \textbf{pura} se não produz efeitos colaterais:
 \[e \text{ pura} \iff e \in \{\mathbf{CONST}, \mathbf{TEMP}, \mathbf{NAME}\} \text{ ou } e = \mathbf{BINOP}(\mathit{op}, e_1, e_2) \text{ com } e_1, e_2 \text{ puras}\]
 
 \begin{itemize}
 
 \item
-  \(\mathbf{MEM}\), \(\mathbf{CALL}\), \(\mathbf{ESEQ}\) \textbf{n\~{a}o s\~{a}o
+  \(\mathbf{MEM}\), \(\mathbf{CALL}\), \(\mathbf{ESEQ}\) \textbf{não são
   puras}
 \item
   \(\mathit{freeTemps}(e)\) = temporários que ocorrem livres em \(e\)
@@ -118,7 +118,7 @@ Uma express\~{a}o é \textbf{pura} se n\~{a}o produz efeitos colaterais:
 
 
 
-\begin{frame}{Defini\c{c}\~{a}o Formal}
+\begin{frame}{Definição Formal}
 \protect\hypertarget{definiuxe7uxe3o-formal}{}
 \[\mathit{fold}(\mathbf{BINOP}(\mathit{op}, e_1, e_2)) = \begin{cases}
   \mathbf{CONST}(\mathit{op}(n_1, n_2)) & \text{se } e_1' = \mathbf{CONST}(n_1) \text{ e } e_2' = \mathbf{CONST}(n_2) \\
@@ -129,7 +129,7 @@ Uma express\~{a}o é \textbf{pura} se n\~{a}o produz efeitos colaterais:
 
 \[e + 0 = e \qquad e - 0 = e \qquad e \times 0 = 0 \qquad e \times 1 = e\]
 
-\textbf{Cuidado}: divis\~{a}o por zero em compile-time deve ser evitada!
+\textbf{Cuidado}: divisão por zero em compile-time deve ser evitada!
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo de Dobramento}
@@ -149,22 +149,22 @@ CONST(13)
 Também:
 
 \begin{lstlisting}
-BINOP(MUL, TEMP(x), CONST(0))  →  CONST(0)
+BINOP(MUL, TEMP(x), CONST(0))  ->  CONST(0)
 \end{lstlisting}
 
 (sem precisar saber o valor de \texttt{x})
 
-\textbf{Corre\c{c}\~{a}o}:
+\textbf{Correção}:
 \(\sigma \vdash e \Downarrow v \iff \sigma \vdash \mathit{fold}(e) \Downarrow v\)
 \end{frame}
 
 \hypertarget{propagauxe7uxe3o-de-constantes}{%
-\section{Propaga\c{c}\~{a}o de
+\section{Propagação de
 Constantes}\label{propagauxe7uxe3o-de-constantes}}
 
-\begin{frame}{Ambiente de Propaga\c{c}\~{a}o}
+\begin{frame}{Ambiente de Propagação}
 \protect\hypertarget{ambiente-de-propagauxe7uxe3o}{}
-Um \textbf{ambiente de propaga\c{c}\~{a}o}
+Um \textbf{ambiente de propagação}
 \(\rho : \mathit{Temp} \rightharpoonup \mathbb{Z}\) mapeia temporários a
 seus valores constantes conhecidos.
 
@@ -181,7 +181,7 @@ Para comandos --- ao processar \(\mathbf{MOVE}(\mathbf{TEMP}(t), e)\):
 \end{cases}\]
 \end{frame}
 
-\begin{frame}[fragile]{Exemplo de Propaga\c{c}\~{a}o Combinada}
+\begin{frame}[fragile]{Exemplo de Propagação Combinada}
 \protect\hypertarget{exemplo-de-propagauxe7uxe3o-combinada}{}
 Antes:
 
@@ -199,19 +199,19 @@ MOVE(TEMP(y), CONST(10))
 RETURN(CONST(10))
 \end{lstlisting}
 
-Combinado com DCE, as duas primeiras linhas s\~{a}o eliminadas:
+Combinado com DCE, as duas primeiras linhas são eliminadas:
 \texttt{RETURN(CONST(10))}
 \end{frame}
 
 \hypertarget{eliminauxe7uxe3o-de-subexpressuxf5es-comuns-cse}{%
-\section{Elimina\c{c}\~{a}o de Subexpress\~{o}es Comuns
+\section{Eliminação de Subexpressões Comuns
 (CSE)}\label{eliminauxe7uxe3o-de-subexpressuxf5es-comuns-cse}}
 
-\begin{frame}{Defini\c{c}\~{a}o}
+\begin{frame}{Definição}
 \protect\hypertarget{definiuxe7uxe3o}{}
 A \textbf{tabela CSE}
 \(\theta : \mathit{PureExpr} \rightharpoonup \mathit{Temp}\) mapeia
-express\~{o}es puras ao temporário que armazena seu valor mais recente.
+expressões puras ao temporário que armazena seu valor mais recente.
 
 Para \(\mathbf{MOVE}(\mathbf{TEMP}(t), e)\) onde \(e\) é pura:
 
@@ -241,32 +241,32 @@ MOVE(TEMP(a),     TEMP(_cse0))
 MOVE(TEMP(b),     TEMP(_cse0))
 \end{lstlisting}
 
-A express\~{a}o \(x + y\) é calculada \textbf{uma única vez}.
+A expressão \(x + y\) é calculada \textbf{uma única vez}.
 
-\textbf{Por que só express\~{o}es puras?} \texttt{MEM(e)}
+\textbf{Por que só expressões puras?} \texttt{MEM(e)}
 pode mudar após escrita em memória.
 \end{frame}
 
 \hypertarget{eliminauxe7uxe3o-de-cuxf3digo-morto-dce}{%
-\section{Elimina\c{c}\~{a}o de Código Morto
+\section{Eliminação de Código Morto
 (DCE)}\label{eliminauxe7uxe3o-de-cuxf3digo-morto-dce}}
 
-\begin{frame}[fragile]{Fase 1: Código Inalcan\c{c}ável}
+\begin{frame}[fragile]{Fase 1: Código Inalcançável}
 \protect\hypertarget{fase-1-cuxf3digo-inalcanuxe7uxe1vel}{}
-Uma instru\c{c}\~{a}o é \textbf{inalcan\c{c}ável} se está imediatamente após JUMP ou
+Uma instrução é \textbf{inalcançável} se está imediatamente após JUMP ou
 RETURN sem LABEL intermediário:
 
 \begin{lstlisting}
 RETURN(CONST(42))
-MOVE(TEMP(x), CONST(1))   ← inalcan\c{c}ável! (sem LABEL antes)
+MOVE(TEMP(x), CONST(1))   ← inalcançável! (sem LABEL antes)
 LABEL(continue)
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}{Fase 2: Atribui\c{c}\~{o}es Mortas}
+\begin{frame}{Fase 2: Atribuições Mortas}
 \protect\hypertarget{fase-2-atribuiuxe7uxf5es-mortas}{}
-Uma instru\c{c}\~{a}o \(\mathbf{MOVE}(\mathbf{TEMP}(t), e)\) é \textbf{morta} se
-\(t\) é redefinido antes de ser lido, ou a fun\c{c}\~{a}o termina sem usar
+Uma instrução \(\mathbf{MOVE}(\mathbf{TEMP}(t), e)\) é \textbf{morta} se
+\(t\) é redefinido antes de ser lido, ou a função termina sem usar
 \(t\).
 
 Estado de análise: \((\mathit{pend}, \mathit{dead})\)
@@ -274,9 +274,9 @@ Estado de análise: \((\mathit{pend}, \mathit{dead})\)
 \begin{itemize}
 
 \item
-  \(\mathit{pend}\) = atribui\c{c}\~{o}es pendentes (ainda n\~{a}o consumidas)
+  \(\mathit{pend}\) = atribuições pendentes (ainda não consumidas)
 \item
-  \(\mathit{dead}\) = índices das instru\c{c}\~{o}es marcadas para remo\c{c}\~{a}o
+  \(\mathit{dead}\) = índices das instruções marcadas para remoção
 \end{itemize}
 
 Em fronteiras de bloco (LABEL, JUMP, CJUMP): descarte conservador de
@@ -285,11 +285,11 @@ Em fronteiras de bloco (LABEL, JUMP, CJUMP): descarte conservador de
 
 \begin{frame}[fragile]{Exemplo de DCE}
 \protect\hypertarget{exemplo-de-dce}{}
-Após propaga\c{c}\~{a}o de constantes:
+Apos propagação de constantes:
 
 \begin{lstlisting}
-MOVE(TEMP(x), CONST(5))     ← x nunca lido → morta
-MOVE(TEMP(y), CONST(10))    ← y nunca lido → morta
+MOVE(TEMP(x), CONST(5))     ← x nunca lido -> morta
+MOVE(TEMP(y), CONST(10))    ← y nunca lido -> morta
 RETURN(CONST(10))
 \end{lstlisting}
 
@@ -301,22 +301,22 @@ RETURN(CONST(10))
 \end{frame}
 
 \hypertarget{otimizauxe7uxf5es-de-lauxe7o}{%
-\section{Otimiza\c{c}\~{o}es de La\c{c}o}\label{otimizauxe7uxf5es-de-lauxe7o}}
+\section{Otimizações de Laço}\label{otimizauxe7uxf5es-de-lauxe7o}}
 
-\begin{frame}[fragile]{Estrutura de La\c{c}o na IRT}
+\begin{frame}[fragile]{Estrutura de Laço na IRT}
 \protect\hypertarget{estrutura-de-lauxe7o-na-irt}{}
-Um la\c{c}o \texttt{while} na IRT linearizada tem o padr\~{a}o:
+Um laço \texttt{while} na IRT linearizada tem o padrão:
 
-\[\underbrace{\mathbf{LABEL}(\ell_h)}_{\text{cabe\c{c}a}} \;\; \mathbf{CJUMP}(e, \ell_b, \ell_f) \;\; \underbrace{\mathbf{LABEL}(\ell_b)}_{\text{corpo}} \;\; s_1 \cdots s_k \;\; \mathbf{JUMP}(\mathbf{NAME}(\ell_h)) \;\; \underbrace{\mathbf{LABEL}(\ell_f)}_{\text{saída}}\]
+\[\underbrace{\mathbf{LABEL}(\ell_h)}_{\text{cabeça}} \;\; \mathbf{CJUMP}(e, \ell_b, \ell_f) \;\; \underbrace{\mathbf{LABEL}(\ell_b)}_{\text{corpo}} \;\; s_1 \cdots s_k \;\; \mathbf{JUMP}(\mathbf{NAME}(\ell_h)) \;\; \underbrace{\mathbf{LABEL}(\ell_f)}_{\text{saída}}\]
 
-Um \textbf{la\c{c}o} \(L = (\ell_h, \ell_b, \ell_f, e_\mathit{cond}, B)\)
+Um \textbf{laço} \(L = (\ell_h, \ell_b, \ell_f, e_\mathit{cond}, B)\)
 onde \(B = [s_1, \ldots, s_k]\).
 \end{frame}
 
-\begin{frame}{Movimenta\c{c}\~{a}o de Invariante de La\c{c}o (LICM)}
+\begin{frame}{Movimentação de Invariante de Laço (LICM)}
 \protect\hypertarget{movimentauxe7uxe3o-de-invariante-de-lauxe7o-licm}{}
-Uma instru\c{c}\~{a}o \(\mathbf{MOVE}(\mathbf{TEMP}(t), e)\) é
-\textbf{invariante de la\c{c}o} se:
+Uma instrução \(\mathbf{MOVE}(\mathbf{TEMP}(t), e)\) é
+\textbf{invariante de laço} se:
 
 \begin{enumerate}
 
@@ -324,15 +324,15 @@ Uma instru\c{c}\~{a}o \(\mathbf{MOVE}(\mathbf{TEMP}(t), e)\) é
   \(e\) é pura
 \item
   \(\mathit{freeTemps}(e) \cap \mathit{defs}(L) = \emptyset\) ---
-  nenhuma variável de \(e\) é modificada no la\c{c}o
+  nenhuma variável de \(e\) é modificada no laço
 \item
   \(t\) é definido exatamente \textbf{uma vez} no corpo
 \item
-  Nenhuma instru\c{c}\~{a}o anterior l\^{e} \(t\) no corpo
+  Nenhuma instrução anterior lê \(t\) no corpo
 \end{enumerate}
 
-\textbf{Transforma\c{c}\~{a}o}: instru\c{c}\~{o}es invariantes s\~{a}o i\c{c}adas
-(\emph{hoisted}) para antes do cabe\c{c}alho.
+\textbf{Transformação}: instruções invariantes são içadas
+(\emph{hoisted}) para antes do cabeçalho.
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo de LICM}
@@ -352,7 +352,7 @@ JUMP(NAME(loop_head))
 Depois:
 
 \begin{lstlisting}
-MOVE(TEMP(k), BINOP(MUL, CONST(4), CONST(8)))   ← i\c{c}ado
+MOVE(TEMP(k), BINOP(MUL, CONST(4), CONST(8)))   ← içado
 LABEL(loop_head)
   ...
   MOVE(TEMP(a), BINOP(MUL, TEMP(i), TEMP(k)))
@@ -360,7 +360,7 @@ LABEL(loop_head)
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Desenrolamento de La\c{c}o}
+\begin{frame}[fragile]{Desenrolamento de Laço}
 \protect\hypertarget{desenrolamento-de-lauxe7o}{}
 Com fator \(k = 2\), replica o corpo \(k-1\) vezes extras:
 
@@ -368,21 +368,21 @@ Com fator \(k = 2\), replica o corpo \(k-1\) vezes extras:
 LABEL(head)  CJUMP(cond, body, exit)
 LABEL(body)
   <corpo original>
-  CJUMP(cond, body2, exit)   ← verifica\c{c}\~{a}o extra
+  CJUMP(cond, body2, exit)   ← verificação extra
 LABEL(body2)
   <cópia do corpo>           ← renomeando rótulos internos
 JUMP(NAME(head))
 LABEL(exit)
 \end{lstlisting}
 
-\textbf{Benefícios}: menos avalia\c{c}\~{o}es da condi\c{c}\~{a}o, mais oportunidades
-para outras otimiza\c{c}\~{o}es.
+\textbf{Benefícios}: menos avaliações da condição, mais oportunidades
+para outras otimizações.
 \end{frame}
 
-\begin{frame}[fragile]{Fus\~{a}o de La\c{c}os}
+\begin{frame}[fragile]{Fusão de Laços}
 \protect\hypertarget{fusuxe3o-de-lauxe7os}{}
-\textbf{Loop fusion} combina dois la\c{c}os adjacentes com a \textbf{mesma
-condi\c{c}\~{a}o} em um único la\c{c}o:
+\textbf{Loop fusion} combina dois laços adjacentes com a \textbf{mesma
+condição} em um único laço:
 
 Antes:
 
@@ -400,13 +400,13 @@ while (cond) { corpo1; corpo2 }
 \textbf{Benefícios}: reduz overhead de controle, melhora localidade de
 dados.
 
-\textbf{Restri\c{c}\~{a}o}: os dois la\c{c}os devem ter a mesma condi\c{c}\~{a}o e n\~{a}o haver
-depend\^{e}ncias conflitantes entre \texttt{corpo1} e
+\textbf{Restrição}: os dois laços devem ter a mesma condição e não haver
+dependências conflitantes entre \texttt{corpo1} e
 \texttt{corpo2}.
 \end{frame}
 
 \hypertarget{inlining-de-funuxe7uxf5es}{%
-\section{Inlining de Fun\c{c}\~{o}es}\label{inlining-de-funuxe7uxf5es}}
+\section{Inlining de Funções}\label{inlining-de-funuxe7uxf5es}}
 
 \begin{frame}[fragile]{O que é Inlining?}
 \protect\hypertarget{o-que-uxe9-inlining}{}
@@ -418,16 +418,16 @@ corpo de \(f\):
 \begin{itemize}
 
 \item
-  \(x_i^s\): par\^{a}metros \textbf{renomeados} com sufixo único \(s\)
+  \(x_i^s\): parâmetros \textbf{renomeados} com sufixo único \(s\)
 \item
   \(B_f^s\): corpo com temporários/rótulos locais \textbf{renomeados}
   com \(s\)
 \item
-  Cada \texttt{RETURN(e)} em \(B_f^s\) →
+  Cada \texttt{RETURN(e)} em \(B_f^s\) ->
   \texttt{MOVE(r\^s, e); JUMP(exit\^s)}
 \end{itemize}
 
-\textbf{Benefícios}: elimina overhead de chamada + exp\~{o}e código a
+\textbf{Benefícios}: elimina overhead de chamada + expõe código a
 dobramento, CSE, LICM.
 \end{frame}
 
@@ -438,23 +438,23 @@ Uma chamada é elegível se:
 \begin{enumerate}
 
 \item
-  \textbf{Alvo estático}: \texttt{NAME(f)}, n\~{a}o um
+  \textbf{Alvo estático}: \texttt{NAME(f)}, não um
   ponteiro computado
 \item
-  \textbf{N\~{a}o auto-recursiva}: \(f \notin \mathit{calls}(B_f)\) (evita
-  expans\~{a}o infinita)
+  \textbf{Não auto-recursiva}: \(f \notin \mathit{calls}(B_f)\) (evita
+  expansão infinita)
 \item
   \textbf{Tamanho controlado}: \(|\mathit{linearize}(B_f)| \leq \tau\)
   (evita \emph{code bloat})
 \end{enumerate}
 
-\textbf{Corre\c{c}\~{a}o}:
+\textbf{Correção}:
 \(\sigma \vdash \mathbf{CALL}(\mathbf{NAME}(f), \bar{a}) \Downarrow v \iff \sigma \vdash \mathit{inline}(f, \bar{a}) \Downarrow v\)
 
-Segue diretamente da regra sem\^{a}ntica de invoca\c{c}\~{a}o.
+Segue diretamente da regra semântica de invocação.
 \end{frame}
 
-\begin{frame}[fragile]{Implementa\c{c}\~{a}o em Haskell}
+\begin{frame}[fragile]{Implementação em Haskell}
 \protect\hypertarget{implementauxe7uxe3o-em-haskell}{}
 \begin{lstlisting}[language=Haskell]
 inlineProgram :: InlineConfig -> Program -> Program
@@ -473,18 +473,18 @@ inlineProgram cfg prog =
 \begin{itemize}
 
 \item
-  \texttt{inlineThreshold}: limiar \(\tau\) (padr\~{a}o: 10
-  instru\c{c}\~{o}es)
+  \texttt{inlineThreshold}: limiar \(\tau\) (padrão: 10
+  instruções)
 \item
-  \texttt{removeDeadFuncs}: elimina fun\c{c}\~{o}es sem
+  \texttt{removeDeadFuncs}: elimina funções sem
   chamadores após inlining
 \item
-  M\^{o}nada \texttt{State Int} gera sufixos únicos para
+  Mônada \texttt{State Int} gera sufixos únicos para
   cada sítio de chamada
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Renomea\c{c}\~{a}o e Transforma\c{c}\~{a}o de Retorno}
+\begin{frame}[fragile]{Renomeação e Transformação de Retorno}
 \protect\hypertarget{renomeauxe7uxe3o-e-transformauxe7uxe3o-de-retorno}{}
 \textbf{renameLocals}: adiciona sufixo \(s\) a todos os temporários e
 rótulos locais
@@ -503,23 +503,23 @@ transformReturns retTemp exitLbl = go
     go s            = s
 \end{lstlisting}
 
-Sem renomea\c{c}\~{a}o, inlinar a mesma fun\c{c}\~{a}o em dois sítios produziria
-\textbf{colis\~{o}es de temporários}.
+Sem renomeação, inlinar a mesma função em dois sítios produziria
+\textbf{colisões de temporários}.
 \end{frame}
 
 \hypertarget{eliminauxe7uxe3o-de-chamadas-em-cauda}{%
-\section{Elimina\c{c}\~{a}o de Chamadas em
+\section{Eliminação de Chamadas em
 Cauda}\label{eliminauxe7uxe3o-de-chamadas-em-cauda}}
 
-\begin{frame}[fragile]{Chamadas em Posi\c{c}\~{a}o de Cauda}
+\begin{frame}[fragile]{Chamadas em Posição de Cauda}
 \protect\hypertarget{chamadas-em-posiuxe7uxe3o-de-cauda}{}
-Uma chamada está em \textbf{posi\c{c}\~{a}o de cauda} se o único efeito
+Uma chamada está em \textbf{posição de cauda} se o único efeito
 posterior é retornar seu resultado:
 
 \begin{table}
 \begin{tabular}[]{@{}ll@{}}
 \toprule
-Padr\~{a}o & Descri\c{c}\~{a}o \\
+Padrão & Descrição \\
 \midrule
 
 \texttt{RETURN [CALL(NAME(f), args)]} & Retorno com
@@ -530,16 +530,16 @@ vazio \\
 \end{tabular}
 \end{table}
 
-\textbf{Ideia}: quando \(f = g\) (auto-recurs\~{a}o), o frame corrente pode
-ser \textbf{reutilizado} --- basta atualizar os par\^{a}metros e saltar para
+\textbf{Ideia}: quando \(f = g\) (auto-recursão), o frame corrente pode
+ser \textbf{reutilizado} --- basta atualizar os parâmetros e saltar para
 o início.
 
-Resultado: recurs\~{a}o \(O(n)\) em pilha → la\c{c}o \(O(1)\) em pilha.
+Resultado: recursão \(O(n)\) em pilha -> laço \(O(1)\) em pilha.
 \end{frame}
 
-\begin{frame}{A Transforma\c{c}\~{a}o TCO}
+\begin{frame}{A Transformação TCO}
 \protect\hypertarget{a-transformauxe7uxe3o-tco}{}
-Para fun\c{c}\~{a}o \(g\) com par\^{a}metros \(\bar{x} = (x_1,\ldots,x_n)\),
+Para função \(g\) com parâmetros \(\bar{x} = (x_1,\ldots,x_n)\),
 introduz \(\ell_h = \mathtt{L\_tco\_}g\):
 
 \begin{enumerate}
@@ -550,11 +550,11 @@ introduz \(\ell_h = \mathtt{L\_tco\_}g\):
   Substituir cada chamada em cauda por:
 \end{enumerate}
 
-\[\underbrace{\mathbf{MOVE}(t_1, a_1) \mathbin{;} \cdots \mathbin{;} \mathbf{MOVE}(t_n, a_n)}_{\text{passo 1: avaliar para auxiliares}} \mathbin{;} \underbrace{\mathbf{MOVE}(x_1, t_1) \mathbin{;} \cdots \mathbin{;} \mathbf{MOVE}(x_n, t_n)}_{\text{passo 2: atualizar par\^{a}metros}} \mathbin{;} \mathbf{JUMP}(\ell_h)\]
+\[\underbrace{\mathbf{MOVE}(t_1, a_1) \mathbin{;} \cdots \mathbin{;} \mathbf{MOVE}(t_n, a_n)}_{\text{passo 1: avaliar para auxiliares}} \mathbin{;} \underbrace{\mathbf{MOVE}(x_1, t_1) \mathbin{;} \cdots \mathbin{;} \mathbf{MOVE}(x_n, t_n)}_{\text{passo 2: atualizar parâmetros}} \mathbin{;} \mathbf{JUMP}(\ell_h)\]
 
 \textbf{Por que dois passos?} Se \(\bar{a} = (x_2, x_1)\), uma única
 passagem sobrescreveria \(x_1\) antes de ser lido para \(x_2\). Os
-temporários \(t_i\) quebram a depend\^{e}ncia cíclica.
+temporários \(t_i\) quebram a dependência cíclica.
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo: Fatorial com Acumulador}
@@ -567,7 +567,7 @@ RETURN [CALL(NAME(factAcc),
          BINOP(BMul, TEMP(acc), TEMP(n))])]
 \end{lstlisting}
 
-Após a TCO:
+Apos a TCO:
 
 \begin{lstlisting}
 LABEL(L_tco_factAcc)
@@ -579,10 +579,10 @@ LABEL(L_tco_factAcc)
   JUMP(NAME(L_tco_factAcc))
 \end{lstlisting}
 
-Recurs\~{a}o convertida em la\c{c}o --- \textbf{sem crescimento de pilha}.
+Recursão convertida em laço --- \textbf{sem crescimento de pilha}.
 \end{frame}
 
-\begin{frame}[fragile]{Implementa\c{c}\~{a}o em Haskell}
+\begin{frame}[fragile]{Implementação em Haskell}
 \protect\hypertarget{implementauxe7uxe3o-em-haskell-1}{}
 \begin{lstlisting}[language=Haskell]
 tcoFuncDef :: FuncDef -> FuncDef
@@ -608,28 +608,28 @@ inlining pode expor novas chamadas em cauda.
 \end{frame}
 
 \hypertarget{conclusuxe3o}{%
-\section{Conclus\~{a}o}\label{conclusuxe3o}}
+\section{Conclusão}\label{conclusuxe3o}}
 
 \begin{frame}{Sumário do Capítulo}
 \protect\hypertarget{sumuxe1rio-do-capuxedtulo}{}
 \begin{itemize}
 
 \item
-  \textbf{Dobramento} e \textbf{propaga\c{c}\~{a}o} de constantes: avaliar em
+  \textbf{Dobramento} e \textbf{propagação} de constantes: avaliar em
   compile-time
 \item
-  \textbf{CSE}: evitar recomputo de express\~{o}es puras já calculadas
+  \textbf{CSE}: evitar recomputo de expressões puras já calculadas
 \item
-  \textbf{DCE}: remover código inalcan\c{c}ável e atribui\c{c}\~{o}es nunca lidas
+  \textbf{DCE}: remover código inalcançável e atribuições nunca lidas
 \item
-  \textbf{LICM}: i\c{c}ar código invariante para fora do la\c{c}o
+  \textbf{LICM}: içar código invariante para fora do laço
 \item
-  \textbf{Unrolling / Fusion}: otimiza\c{c}\~{o}es estruturais de la\c{c}o
+  \textbf{Unrolling / Fusion}: otimizações estruturais de laço
 \item
   \textbf{Inlining}: substituir chamada pelo corpo --- elimina overhead,
-  exp\~{o}e otimiza\c{c}\~{o}es
+  expõe otimizações
 \item
-  \textbf{TCO}: converter auto-recurs\~{a}o em cauda em la\c{c}o --- pilha
+  \textbf{TCO}: converter auto-recursão em cauda em laço --- pilha
   \(O(1)\)
 \end{itemize}
 \end{frame}
@@ -639,12 +639,12 @@ inlining pode expor novas chamadas em cauda.
 \begin{itemize}
 
 \item
-  \textbf{Gera\c{c}\~{a}o de código WebAssembly} (próximo capítulo): IRT → WAT
+  \textbf{Geração de código WebAssembly} (próximo capítulo): IRT -> WAT
   executável
 \item
-  \textbf{Análise de fluxo de dados}: otimiza\c{c}\~{o}es globais mais precisas
+  \textbf{Análise de fluxo de dados}: otimizações globais mais precisas
 \item
-  \textbf{Otimiza\c{c}\~{o}es baseadas em SSA}: Single Static Assignment, uma
-  defini\c{c}\~{a}o por variável
+  \textbf{Otimizações baseadas em SSA}: Single Static Assignment, uma
+  definição por variável
 \end{itemize}
 \end{frame}

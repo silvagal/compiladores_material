@@ -1,4 +1,4 @@
-\subtitle{\bf Aula 9 - Motiva\c{c}
+\subtitle{\bf Aula 9 - Motivaç
 \begin{frame}[t,plain]
 \titlepage
 \end{frame}
@@ -14,33 +14,33 @@
 \end{frame}
 
 \hypertarget{motivauxe7uxe3o}{%
-\section{Motiva\c{c}\~{a}o}\label{motivauxe7uxe3o}}
+\section{Motivação}\label{motivauxe7uxe3o}}
 
-\begin{frame}{Limita\c{c}\~{o}es: Top-Down}
+\begin{frame}{Limitações: Top-Down}
 \protect\hypertarget{limitauxe7uxf5es-top-down}{}
 \begin{itemize}
 
 \item
-  Analisadores \textbf{LL} exigem transforma\c{c}\~{o}es na gramática
+  Analisadores \textbf{LL} exigem transformações na gramática
 
   \begin{itemize}
 
   \item
-    Remo\c{c}\~{a}o de recurs\~{a}o \`{a} esquerda
+    Remoção de recursão à esquerda
   \item
-    Fatora\c{c}\~{a}o \`{a} esquerda
+    Fatoração à esquerda
   \end{itemize}
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Limita\c{c}\~{o}es: Top-Down}
+\begin{frame}{Limitações: Top-Down}
 \protect\hypertarget{limitauxe7uxf5es-top-down-1}{}
 \begin{itemize}
 
 \item
-  Decis\~{a}o com apenas \textbf{1 token de lookahead}
+  Decisão com apenas \textbf{1 token de lookahead}
 \item
-  Algumas gramáticas s\~{a}o inerentemente n\~{a}o-LL(1)
+  Algumas gramáticas são inerentemente não-LL(1)
 \end{itemize}
 \end{frame}
 
@@ -49,9 +49,9 @@
 \begin{itemize}
 
 \item
-  Analisadores \textbf{bottom-up} l\^{e}em um prefixo maior antes de decidir
+  Analisadores \textbf{bottom-up} lêem um prefixo maior antes de decidir
 \item
-  Suportam \textbf{recurs\~{a}o \`{a} esquerda} naturalmente
+  Suportam \textbf{recursão à esquerda} naturalmente
 \end{itemize}
 \end{frame}
 
@@ -60,15 +60,15 @@
 \begin{itemize}
 
 \item
-  Constroem uma \textbf{deriva\c{c}\~{a}o mais \`{a} direita invertida}
+  Constroem uma \textbf{derivação mais à direita invertida}
 \item
-  Cada redu\c{c}\~{a}o constrói um peda\c{c}o da árvore sintática
+  Cada redução constrói um pedaço da árvore sintática
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Der. \`{a} Direita Invert.}
+\begin{frame}{Der. à Direita Invert.}
 \protect\hypertarget{der.-uxe0-direita-invert.}{}
-Gramática de exemplo (n\~{a}o-LL(1)):
+Gramática de exemplo (não-LL(1)):
 
 \[\begin{array}{lcl}
 S &\to& S + E \mid E \\
@@ -76,15 +76,15 @@ E &\to& (S) \mid n
 \end{array}\]
 \end{frame}
 
-\begin{frame}[fragile]{Der. \`{a} Direita Invert.}
+\begin{frame}[fragile]{Der. à Direita Invert.}
 \protect\hypertarget{der.-uxe0-direita-invert.-1}{}
 Analisando \texttt{(1) + 2}:
 
 \begin{lstlisting}
-S'  =>  S  =>  S+E  =>  S+2  =>  E+2  →  (S)+2  =>  (E)+2  =>  (1)+2
+S'  =>  S  =>  S+E  =>  S+2  =>  E+2  ->  (S)+2  =>  (E)+2  =>  (1)+2
 \end{lstlisting}
 
-O analisador constrói essa deriva\c{c}\~{a}o de baixo para cima, da direita para
+O analisador constrói essa derivação de baixo para cima, da direita para
 a esquerda.
 \end{frame}
 
@@ -97,11 +97,11 @@ a esquerda.
 \item
   Simula \textbf{todas as análises possíveis} em paralelo
 \item
-  Em vez de se comprometer com uma produ\c{c}\~{a}o, prev\^{e} todas
+  Em vez de se comprometer com uma produção, prevê todas
 \item
-  Usa \textbf{compartilhamento de trabalho} para efici\^{e}ncia polinomial
+  Usa \textbf{compartilhamento de trabalho} para eficiência polinomial
 \item
-  Processa cada posi\c{c}\~{a}o de entrada \(j\) mantendo um conjunto \(I_j\) de
+  Processa cada posição de entrada \(j\) mantendo um conjunto \(I_j\) de
   \textbf{itens}
 \end{itemize}
 \end{frame}
@@ -113,11 +113,11 @@ Um item Earley \([A \to \beta . \gamma, k]\) representa:
 \begin{itemize}
 
 \item
-  \(A \to \beta\gamma\): produ\c{c}\~{a}o sendo usada
+  \(A \to \beta\gamma\): produção sendo usada
 \item
-  \(.\) (ponto): posi\c{c}\~{a}o atual no reconhecimento
+  \(.\) (ponto): posição atual no reconhecimento
 \item
-  \(k\): posi\c{c}\~{a}o na entrada onde o reconhecimento de \(A\) come\c{c}ou
+  \(k\): posição na entrada onde o reconhecimento de \(A\) começou
 \end{itemize}
 \end{frame}
 
@@ -126,20 +126,20 @@ Um item Earley \([A \to \beta . \gamma, k]\) representa:
 \begin{itemize}
 
 \item
-  \([E \to . (S), 0]\): come\c{c}amos a reconhecer \(E \to (S)\) na posi\c{c}\~{a}o
+  \([E \to . (S), 0]\): começamos a reconhecer \(E \to (S)\) na posição
   0, nada visto ainda
 \item
   \([E \to ( S . ), 0]\): vimos \texttt{(S}, esperamos
   \texttt{)}
 \item
   \([E \to (S) ., 0]\): \(E\) completamente reconhecida a partir da
-  posi\c{c}\~{a}o 0
+  posição 0
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Algoritmo de Earley}
 \protect\hypertarget{algoritmo-de-earley-1}{}
-\textbf{Inicializa\c{c}\~{a}o:} \(I_0 = \{[S' \to . S, 0]\}\)
+\textbf{Inicialização:} \(I_0 = \{[S' \to . S, 0]\}\)
 \end{frame}
 
 \begin{frame}{Algoritmo de Earley}
@@ -147,8 +147,8 @@ Um item Earley \([A \to \beta . \gamma, k]\) representa:
 \begin{enumerate}
 
 \item
-  \textbf{Predi\c{c}\~{a}o}: se \([A \to \alpha . B \beta, k] \in I_j\) e
-  \(B \to \gamma\) é uma produ\c{c}\~{a}o, adiciona \([B \to . \gamma, j]\) a
+  \textbf{Predição}: se \([A \to \alpha . B \beta, k] \in I_j\) e
+  \(B \to \gamma\) é uma produção, adiciona \([B \to . \gamma, j]\) a
   \(I_j\)
 \end{enumerate}
 \end{frame}
@@ -225,7 +225,7 @@ Conjunto & Item & Pos & Motivo \\
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo: Análise de
-\texttt{(1) + 2} (continua\c{c}\~{a}o)}
+\texttt{(1) + 2} (continuação)}
 \protect\hypertarget{exemplo-anuxe1lise-de-1-2-continuauxe7uxe3o}{}
 \begin{table}
 \begin{tabular}[]{@{}llll@{}}
@@ -243,7 +243,7 @@ Conjunto & Item & Pos & Motivo \\
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo: Análise de
-\texttt{(1) + 2} (continua\c{c}\~{a}o)}
+\texttt{(1) + 2} (continuação)}
 \protect\hypertarget{exemplo-anuxe1lise-de-1-2-continuauxe7uxe3o-1}{}
 \begin{table}
 \begin{tabular}[]{@{}llll@{}}
@@ -261,7 +261,7 @@ Conjunto & Item & Pos & Motivo \\
 \end{frame}
 
 \begin{frame}[fragile]{Exemplo: Análise de
-\texttt{(1) + 2} (continua\c{c}\~{a}o)}
+\texttt{(1) + 2} (continuação)}
 \protect\hypertarget{exemplo-anuxe1lise-de-1-2-continuauxe7uxe3o-2}{}
 \begin{table}
 \begin{tabular}[]{@{}llll@{}}
@@ -279,7 +279,7 @@ Conjunto & Item & Pos & Motivo \\
 \end{table}
 \end{frame}
 
-\begin{frame}{Visualiza\c{c}\~{a}o do Algoritmo de Earley}
+\begin{frame}{Visualização do Algoritmo de Earley}
 \protect\hypertarget{visualizauxe7uxe3o-do-algoritmo-de-earley}{}
 \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter09/imgs/earley-threads.png}
 \end{frame}
@@ -291,7 +291,7 @@ Conjunto & Item & Pos & Motivo \\
 \item
   \textbf{Pior caso geral}: \(O(n^3)\) --- inclui gramáticas ambíguas
 \item
-  \textbf{Gramáticas n\~{a}o-ambíguas}: \(O(n^2)\) no pior caso
+  \textbf{Gramáticas não-ambíguas}: \(O(n^2)\) no pior caso
 \item
   \textbf{Gramáticas LL/LR}: \(O(n)\) quando implementado cuidadosamente
 \end{itemize}
@@ -306,7 +306,7 @@ Conjunto & Item & Pos & Motivo \\
 \item
   Sem necessidade de transformar a gramática
 \item
-  Otimiza\c{c}\~{a}o de Aycock-Horspool: apenas 50\% mais lento que LALR
+  Otimização de Aycock-Horspool: apenas 50\% mais lento que LALR
 \end{itemize}
 \end{frame}
 
@@ -316,12 +316,12 @@ Shift-Reduce}\label{analisadores-lr-shift-reduce}}
 
 \begin{frame}{A Ideia Shift-Reduce}
 \protect\hypertarget{a-ideia-shift-reduce}{}
-LR pode ser visto como uma \textbf{otimiza\c{c}\~{a}o do Earley}:
+LR pode ser visto como uma \textbf{otimização do Earley}:
 
 \begin{itemize}
 
 \item
-  As previs\~{o}es s\~{a}o \textbf{pré-computadas} como estados de um aut\^{o}mato
+  As previsões são \textbf{pré-computadas} como estados de um autômato
 \end{itemize}
 \end{frame}
 
@@ -332,8 +332,8 @@ LR pode ser visto como uma \textbf{otimiza\c{c}\~{a}o do Earley}:
 \item
   Estado do analisador: uma \textbf{pilha de estados}
 \item
-  Duas a\c{c}\~{o}es: \textbf{shift} (consumir token) e \textbf{reduce} (aplicar
-  produ\c{c}\~{a}o)
+  Duas ações: \textbf{shift} (consumir token) e \textbf{reduce} (aplicar
+  produção)
 \end{itemize}
 \end{frame}
 
@@ -350,7 +350,7 @@ Em qualquer ponto:
 \begin{table}
 \begin{tabular}[]{@{}lll@{}}
 \toprule
-Pilha & Entrada & A\c{c}\~{a}o \\
+Pilha & Entrada & Ação \\
 \midrule
 
 & \texttt{(1)+2} & shift \\
@@ -368,7 +368,7 @@ Pilha & Entrada & A\c{c}\~{a}o \\
 \begin{table}
 \begin{tabular}[]{@{}lll@{}}
 \toprule
-Pilha & Entrada & A\c{c}\~{a}o \\
+Pilha & Entrada & Ação \\
 \midrule
 
 \texttt{(1} & \texttt{)+2} & reduce
@@ -387,7 +387,7 @@ Pilha & Entrada & A\c{c}\~{a}o \\
 \begin{table}
 \begin{tabular}[]{@{}lll@{}}
 \toprule
-Pilha & Entrada & A\c{c}\~{a}o \\
+Pilha & Entrada & Ação \\
 \midrule
 
 \texttt{E} & \texttt{+2} & reduce
@@ -405,7 +405,7 @@ Pilha & Entrada & A\c{c}\~{a}o \\
 \begin{table}
 \begin{tabular}[]{@{}lll@{}}
 \toprule
-Pilha & Entrada & A\c{c}\~{a}o \\
+Pilha & Entrada & Ação \\
 \midrule
 
 \texttt{S+2} & \texttt{$} & reduce
@@ -419,7 +419,7 @@ Pilha & Entrada & A\c{c}\~{a}o \\
 \end{table}
 \end{frame}
 
-\begin{frame}{Decis\~{a}o: Quando Shift ou Reduce?}
+\begin{frame}{Decisão: Quando Shift ou Reduce?}
 \protect\hypertarget{decisuxe3o-quando-shift-ou-reduce}{}
 \begin{itemize}
 
@@ -429,12 +429,12 @@ Pilha & Entrada & A\c{c}\~{a}o \\
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Decis\~{a}o: Quando Shift ou Reduce?}
+\begin{frame}{Decisão: Quando Shift ou Reduce?}
 \protect\hypertarget{decisuxe3o-quando-shift-ou-reduce-1}{}
 \begin{itemize}
 
 \item
-  Para isso, usamos um \textbf{aut\^{o}mato LR(0)} cujos estados s\~{a}o
+  Para isso, usamos um \textbf{autômato LR(0)} cujos estados são
   conjuntos de itens
 
   \begin{itemize}
@@ -442,13 +442,13 @@ Pilha & Entrada & A\c{c}\~{a}o \\
   \item
     Os estados capturam exatamente o que já foi reconhecido
   \item
-    A tabela de a\c{c}\~{o}es mapeia (estado, token) → shift ou reduce
+    A tabela de ações mapeia (estado, token) -> shift ou reduce
   \end{itemize}
 \end{itemize}
 \end{frame}
 
 \hypertarget{lr0-itens-e-autuxf4mato}{%
-\section{LR(0): Itens e Aut\^{o}mato}\label{lr0-itens-e-autuxf4mato}}
+\section{LR(0): Itens e Autômato}\label{lr0-itens-e-autuxf4mato}}
 
 \begin{frame}{Itens LR(0)}
 \protect\hypertarget{itens-lr0}{}
@@ -469,7 +469,7 @@ Um \textbf{estado LR(0)} é um conjunto fechado de itens.
 
 \begin{lstlisting}[language=Haskell]
 data Item = Item
-  { itemLHS    :: String    -- A: n\~{a}o-terminal
+  { itemLHS    :: String    -- A: não-terminal
   , itemBefore :: [Symbol]  -- α: antes do ponto
   , itemAfter  :: [Symbol]  -- β: depois do ponto
   }
@@ -481,7 +481,7 @@ type State = Set Item
 
 \begin{frame}[fragile]{Fechamento (Closure)}
 \protect\hypertarget{fechamento-closure}{}
-Para cada item \([A \to \alpha . B \beta]\) com n\~{a}o-terminal \(B\) após
+Para cada item \([A \to \alpha . B \beta]\) com não-terminal \(B\) após
 o ponto, adicionar todos \([B \to . \gamma]\):
 
 \begin{lstlisting}[language=Haskell]
@@ -497,9 +497,9 @@ closure g = fixedPoint step
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Fun\c{c}\~{a}o Goto}
+\begin{frame}[fragile]{Função Goto}
 \protect\hypertarget{funuxe7uxe3o-goto}{}
-Avan\c{c}a o ponto ao consumir o símbolo \(X\) e fecha o resultado:
+Avança o ponto ao consumir o símbolo \(X\) e fecha o resultado:
 
 \begin{lstlisting}[language=Haskell]
 goto :: Grammar -> State -> Symbol -> State
@@ -511,12 +511,12 @@ goto g items sym = closure g $ Set.fromList
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}{O Aut\^{o}mato LR(0)}
+\begin{frame}{O Autômato LR(0)}
 \protect\hypertarget{o-autuxf4mato-lr0}{}
 \begin{itemize}
 
 \item
-  Resolu\c{c}\~{a}o na lousa.
+  Resolução na lousa.
 \end{itemize}
 
 \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter09/imgs/lr0.png}
@@ -550,10 +550,10 @@ goto g items sym = closure g $ Set.fromList
   \begin{itemize}
 
   \item
-    \texttt{action[i, t] = Reduce(A → α)} para
+    \texttt{action[i, t] = Reduce(A -> α)} para
     \textbf{todos} os terminais \(t\)
   \item
-    LR(0) ignora completamente o lookahead nas redu\c{c}\~{o}es!
+    LR(0) ignora completamente o lookahead nas reduções!
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -578,9 +578,9 @@ goto g items sym = closure g $ Set.fromList
 
 \begin{frame}{O Problema do LR(0)}
 \protect\hypertarget{o-problema-do-lr0}{}
-LR(0) ignora o lookahead → gera muitos conflitos shift-reduce
+LR(0) ignora o lookahead -> gera muitos conflitos shift-reduce
 
-\textbf{Exemplo:} gramática com recurs\~{a}o \`{a} direita
+\textbf{Exemplo:} gramática com recursão à direita
 
 \[E \to T + E \mid T \quad T \to n \mid (E)\]
 \end{frame}
@@ -591,16 +591,16 @@ LR(0) ignora o lookahead → gera muitos conflitos shift-reduce
 \item
   Estado com \(E \to T .\) e \(E \to T . + E\):
 \item
-  Item completo \(E \to T .\) → LR(0) insere reduce em \textbf{todos} os
+  Item completo \(E \to T .\) -> LR(0) insere reduce em \textbf{todos} os
   terminais, inclusive \texttt{+}
 \item
-  Item \(E \to T . + E\) → exige shift em \texttt{+}
+  Item \(E \to T . + E\) -> exige shift em \texttt{+}
 \item
   \textbf{Conflito!}
 \end{itemize}
 \end{frame}
 
-\begin{frame}{A Solu\c{c}\~{a}o SLR}
+\begin{frame}{A Solução SLR}
 \protect\hypertarget{a-soluuxe7uxe3o-slr}{}
 \textbf{Ideia}: reduzir \(A \to \alpha\) faz sentido apenas quando o
 próximo token pode seguir \(A\) na gramática
@@ -608,7 +608,7 @@ próximo token pode seguir \(A\) na gramática
 \[\text{reduce apenas em } t \in \mathrm{FOLLOW}(A)\]
 \end{frame}
 
-\begin{frame}[fragile]{A Solu\c{c}\~{a}o SLR}
+\begin{frame}[fragile]{A Solução SLR}
 \protect\hypertarget{a-soluuxe7uxe3o-slr-1}{}
 Para \(E \to T .\) com \(\mathrm{FOLLOW}(E) = \{\$, )\}\):
 
@@ -655,9 +655,9 @@ Estado com \(E \to T.\) e \(T \to T . * F\):
 \end{frame}
 
 \hypertarget{conclusuxe3o}{%
-\section{Conclus\~{a}o}\label{conclusuxe3o}}
+\section{Conclusão}\label{conclusuxe3o}}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-1}{}
 \begin{itemize}
 
@@ -667,21 +667,21 @@ Estado com \(E \to T.\) e \(T \to T . * F\):
   \begin{itemize}
 
   \item
-    Suporta recurs\~{a}o \`{a} esquerda
+    Suporta recursão à esquerda
   \item
-    Decis\~{a}o após prefixo maior
+    Decisão após prefixo maior
   \end{itemize}
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-2}{}
 \begin{itemize}
 
 \item
   \textbf{Earley}: analisa qualquer GLC, \(O(n^3)\) no pior caso
 \item
-  \textbf{LR(0)}: aut\^{o}mato de estados × itens, tabela de a\c{c}\~{o}es/goto
+  \textbf{LR(0)}: autômato de estados × itens, tabela de ações/goto
 \item
   \textbf{SLR}: melhora LR(0) restringindo reduces a
   \(\mathrm{FOLLOW}(A)\)

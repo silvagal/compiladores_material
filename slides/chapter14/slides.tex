@@ -7,10 +7,10 @@
 \protect\hypertarget{objetivos-1}{}
 \begin{itemize}
 \item
-  Estender a sem\^{a}ntica da linguagem com comandos condicionais e de
-  repeti\c{c}\~{a}o.
+  Estender a semântica da linguagem com comandos condicionais e de
+  repetição.
 \item
-  Apresentar a linguagem \emph{TImp}, com declara\c{c}\~{o}es de fun\c{c}\~{o}es e tipos
+  Apresentar a linguagem \emph{TImp}, com declarações de funções e tipos
   registro.
 \end{itemize}
 \end{frame}
@@ -19,25 +19,25 @@
 \protect\hypertarget{objetivos-2}{}
 \begin{itemize}
 \item
-  Definir a sem\^{a}ntica big-step para as novas constru\c{c}\~{o}es.
+  Definir a semântica big-step para as novas construções.
 \item
-  Mostrar como a especifica\c{c}\~{a}o formal guia a implementa\c{c}\~{a}o do
+  Mostrar como a especificação formal guia a implementação do
   interpretador.
 \end{itemize}
 \end{frame}
 
 
 
-\begin{frame}{Motiva\c{c}\~{a}o}
+\begin{frame}{Motivação}
 \protect\hypertarget{motivauxe7uxe3o}{}
 \begin{itemize}
 
 \item
-  A linguagem \emph{Line} executa apenas sequ\^{e}ncias de comandos
+  A linguagem \emph{Line} executa apenas sequências de comandos
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Motiva\c{c}\~{a}o}
+\begin{frame}{Motivação}
 \protect\hypertarget{motivauxe7uxe3o-1}{}
 \begin{itemize}
 
@@ -48,9 +48,9 @@
 
   \item
     \textbf{Condicional}: executar blocos diferentes dependendo de uma
-    condi\c{c}\~{a}o
+    condição
   \item
-    \textbf{Repeti\c{c}\~{a}o}: executar um bloco enquanto uma condi\c{c}\~{a}o for
+    \textbf{Repetiçãoo}: executar um bloco enquanto uma condição for
     verdadeira
   \end{itemize}
 \end{itemize}
@@ -90,14 +90,14 @@ type Block = [Stmt]
 \end{frame}
 
 \hypertarget{semuxe2ntica-small-step}{%
-\section{Sem\^{a}ntica Small-Step}\label{semuxe2ntica-small-step}}
+\section{Semântica Small-Step}\label{semuxe2ntica-small-step}}
 
-\begin{frame}{Express\~{o}es}
+\begin{frame}{Expressões}
 \protect\hypertarget{expressuxf5es}{}
 \begin{itemize}
 
 \item
-  Id\^{e}ntico \`{a} linguagem Line.
+  Idêntico à linguagem Line.
 
   \begin{itemize}
 
@@ -112,7 +112,7 @@ type Block = [Stmt]
 \begin{itemize}
 
 \item
-  \textbf{Avalia\c{c}\~{a}o da condi\c{c}\~{a}o:}
+  \textbf{Avaliação da condição:}
   \[\frac{(\sigma, e) \to (\sigma, e')}{\left(\begin{array}{ll}
              \sigma,&\; \mathbf{if}\; e\; \mathbf{then}\; B_1\\
                     & \mathbf{else}\; B_2\\
@@ -150,7 +150,7 @@ type Block = [Stmt]
 \begin{itemize}
 
 \item
-  Caso em que há repeti\c{c}\~{a}o.
+  Caso em que há repetição.
 \end{itemize}
 
 \[\frac{}{(\sigma,\; \mathbf{while}\; e\; \mathbf{do}\; B) \to
@@ -190,14 +190,14 @@ type Block = [Stmt]
 \end{frame}
 
 \hypertarget{semuxe2ntica-big-step}{%
-\section{Sem\^{a}ntica Big-Step}\label{semuxe2ntica-big-step}}
+\section{Semântica Big-Step}\label{semuxe2ntica-big-step}}
 
-\begin{frame}{Express\~{o}es}
+\begin{frame}{Expressões}
 \protect\hypertarget{expressuxf5es-1}{}
 \begin{itemize}
 
 \item
-  Similar \`{a} sem\^{a}ntica de Line.
+  Similar à semântica de Line.
 
   \begin{itemize}
 
@@ -226,7 +226,7 @@ type Block = [Stmt]
 \begin{itemize}
 
 \item
-  \textbf{Condi\c{c}\~{a}o falsa (termina\c{c}\~{a}o):}
+  \textbf{Condição falsa (terminação):}
 \end{itemize}
 
 \[\frac{\sigma \vdash e \Downarrow \mathbf{false}}
@@ -239,7 +239,7 @@ type Block = [Stmt]
 \begin{itemize}
 
 \item
-  \textbf{Condi\c{c}\~{a}o verdadeira (itera\c{c}\~{a}o):}
+  \textbf{Condição verdadeira (iteração):}
 \end{itemize}
 
 \[\frac{\begin{array}{c}\sigma \vdash e \Downarrow \mathbf{true}\\ \sigma,\; B
@@ -248,7 +248,7 @@ type Block = [Stmt]
 \;\Downarrow\; \sigma''}\]
 \end{frame}
 
-\begin{frame}{Deriva\c{c}\~{a}o}
+\begin{frame}{Derivação}
 \protect\hypertarget{derivauxe7uxe3o}{}
 \[\dfrac{
   \dfrac{
@@ -264,7 +264,7 @@ type Block = [Stmt]
 \end{frame}
 
 \hypertarget{implementauxe7uxe3o-em-haskell}{%
-\section{Implementa\c{c}\~{a}o em
+\section{Implementação em
 Haskell}\label{implementauxe7uxe3o-em-haskell}}
 
 \begin{frame}[fragile]{Condicional}
@@ -280,7 +280,7 @@ interpStmt (SIf e blk1 blk2) = do
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Repeti\c{c}\~{a}o}
+\begin{frame}[fragile]{Repetiçãoo}
 \protect\hypertarget{repetiuxe7uxe3o}{}
 \begin{lstlisting}[language=Haskell]
 interpStmt (SWhile e blk1) = do
@@ -298,21 +298,21 @@ interpStmt (SWhile e blk1) = do
 \hypertarget{a-linguagem-timp}{%
 \section{A Linguagem TImp}\label{a-linguagem-timp}}
 
-\begin{frame}{Motiva\c{c}\~{a}o}
+\begin{frame}{Motivação}
 \protect\hypertarget{motivauxe7uxe3o-2}{}
 \begin{itemize}
 
 \item
-  \emph{While} cobre atribui\c{c}\~{a}o, controlo de fluxo e I/O
+  \emph{While} cobre atribuição, controlo de fluxo e I/O
 \item
-  Mas n\~{a}o permite:
+  Mas não permite:
 
   \begin{itemize}
 
   \item
-    Definir \textbf{abstra\c{c}\~{o}es reutilizáveis} (fun\c{c}\~{o}es)
+    Definir \textbf{abstrações reutilizáveis} (funções)
   \item
-    Agrupar \textbf{dados heterog\^{e}neos} (registros)
+    Agrupar \textbf{dados heterogêneos} (registros)
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -328,7 +328,7 @@ interpStmt (SWhile e blk1) = do
 \end{array}\]
 \end{frame}
 
-\begin{frame}{Novos Comandos e Express\~{o}es}
+\begin{frame}{Novos Comandos e Expressões}
 \protect\hypertarget{novos-comandos-e-expressuxf5es}{}
 \[\begin{array}{lcl}
 s &::=& \cdots \mid \mathbf{var}\; x \mathbin{:} \tau \mathbin{=} e \\
@@ -340,7 +340,7 @@ e &::=& \cdots \mid e.f \mid \mathbf{new}\; R\,\{\,\overline{f_i \mathbin{=} e_i
 \end{frame}
 
 \hypertarget{domuxednios-semuxe2nticos}{%
-\section{Domínios Sem\^{a}nticos}\label{domuxednios-semuxe2nticos}}
+\section{Domínios Semânticos}\label{domuxednios-semuxe2nticos}}
 
 \begin{frame}{Valores Estendidos}
 \protect\hypertarget{valores-estendidos}{}
@@ -353,14 +353,14 @@ O domínio de valores cresce com registros e o valor unitário:
 \begin{itemize}
 
 \item
-  Registros t\^{e}m \textbf{sem\^{a}ntica de valor}: toda atribui\c{c}\~{a}o e passagem
-  de par\^{a}metro copia o registro.
+  Registros têm \textbf{semântica de valor}: toda atribuição e passagem
+  de parâmetro copia o registro.
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Ambiente de Fun\c{c}\~{o}es}
+\begin{frame}{Ambiente de Funções}
 \protect\hypertarget{ambiente-de-funuxe7uxf5es}{}
-Além de \(\sigma\), a sem\^{a}ntica usa um \textbf{ambiente de fun\c{c}\~{o}es}
+Além de \(\sigma\), a semântica usa um \textbf{ambiente de funções}
 global:
 
 \[\Phi : \mathit{Name} \rightharpoonup (\overline{x_i},\; B)\]
@@ -368,15 +368,15 @@ global:
 \begin{itemize}
 
 \item
-  Construído uma vez a partir das declara\c{c}\~{o}es
+  Construído uma vez a partir das declarações
 \item
-  Permanece \textbf{imutável} durante a execu\c{c}\~{a}o
+  Permanece \textbf{imutável} durante a execução
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Resultado de Bloco}
 \protect\hypertarget{resultado-de-bloco}{}
-O comando \texttt{return} interrompe a execu\c{c}\~{a}o normal.
+O comando \texttt{return} interrompe a execução normal.
 Modelamos isso com:
 
 \[r \;::=\; \mathbf{normal} \;\mid\; {\uparrow}\, v\]
@@ -384,21 +384,21 @@ Modelamos isso com:
 \begin{itemize}
 
 \item
-  \(\mathbf{normal}\): termina\c{c}\~{a}o sem retorno
+  \(\mathbf{normal}\): terminação sem retorno
 \item
   \({\uparrow}\, v\): \texttt{return} executado, \(v\)
   propagado ao chamador
 \end{itemize}
 
-As rela\c{c}\~{o}es de avalia\c{c}\~{a}o tornam-se:
+As relações de avaliação tornam-se:
 
 \[\sigma,\Phi \vdash s \Downarrow (\sigma', r) \qquad \sigma,\Phi \vdash B \Downarrow (\sigma', r)\]
 \end{frame}
 
 \hypertarget{semuxe2ntica-de-registros}{%
-\section{Sem\^{a}ntica de Registros}\label{semuxe2ntica-de-registros}}
+\section{Semântica de Registros}\label{semuxe2ntica-de-registros}}
 
-\begin{frame}{Constru\c{c}\~{a}o de Registro}
+\begin{frame}{Construção de Registro}
 \protect\hypertarget{construuxe7uxe3o-de-registro}{}
 \[\frac{\sigma,\Phi \vdash e_1 \Downarrow v_1 \quad \cdots}
   {\sigma,\Phi \vdash \mathbf{new}\; R\,\{f_1\!=\!e_1,\ldots\}
@@ -414,7 +414,7 @@ As rela\c{c}\~{o}es de avalia\c{c}\~{a}o tornam-se:
 \quad\text{(Field)}\]
 \end{frame}
 
-\begin{frame}{Atribui\c{c}\~{a}o de Campo}
+\begin{frame}{Atribuição de Campo}
 \protect\hypertarget{atribuiuxe7uxe3o-de-campo}{}
 \[\frac{\sigma(x) = \mathbf{rec}(R,\mathit{flds})
   \quad \sigma,\Phi \vdash e \Downarrow v}
@@ -431,9 +431,9 @@ As rela\c{c}\~{o}es de avalia\c{c}\~{a}o tornam-se:
 \end{frame}
 
 \hypertarget{semuxe2ntica-de-funuxe7uxf5es}{%
-\section{Sem\^{a}ntica de Fun\c{c}\~{o}es}\label{semuxe2ntica-de-funuxe7uxf5es}}
+\section{Semântica de Funções}\label{semuxe2ntica-de-funuxe7uxf5es}}
 
-\begin{frame}{Propaga\c{c}\~{a}o de Retorno}
+\begin{frame}{Propagação de Retorno}
 \protect\hypertarget{propagauxe7uxe3o-de-retorno}{}
 \textbf{Bloco vazio:} \[\frac{}
   {\sigma,\Phi \vdash \epsilon \Downarrow (\sigma,\; \mathbf{normal})}
@@ -445,7 +445,7 @@ As rela\c{c}\~{o}es de avalia\c{c}\~{a}o tornam-se:
 \quad\text{(BlkRet)}\]
 \end{frame}
 
-\begin{frame}{Continua\c{c}\~{a}o Normal}
+\begin{frame}{Continuação Normal}
 \protect\hypertarget{continuauxe7uxe3o-normal}{}
 \[\frac{\sigma,\Phi \vdash s \Downarrow (\sigma',\; \mathbf{normal})
   \quad \sigma',\Phi \vdash B \Downarrow r}
@@ -464,7 +464,7 @@ As rela\c{c}\~{o}es de avalia\c{c}\~{a}o tornam-se:
 \quad\text{(RetVoid)}\]
 \end{frame}
 
-\begin{frame}{Chamada como Express\~{a}o}
+\begin{frame}{Chamada como Expressão}
 \protect\hypertarget{chamada-como-expressuxe3o}{}
 \[\frac{\begin{array}{c}
   \Phi(f) = (\overline{x_i},\; B)\\
@@ -478,7 +478,7 @@ As rela\c{c}\~{o}es de avalia\c{c}\~{a}o tornam-se:
 \begin{itemize}
 
 \item
-  Corpo executado em um \textbf{novo ambiente} com apenas os par\^{a}metros.
+  Corpo executado em um \textbf{novo ambiente} com apenas os parâmetros.
 \end{itemize}
 \end{frame}
 
@@ -500,7 +500,7 @@ As rela\c{c}\~{o}es de avalia\c{c}\~{a}o tornam-se:
 \end{frame}
 
 \hypertarget{implementauxe7uxe3o-em-haskell-1}{%
-\section{Implementa\c{c}\~{a}o em
+\section{Implementação em
 Haskell}\label{implementauxe7uxe3o-em-haskell-1}}
 
 \begin{frame}[fragile]{Estado e Monada}
@@ -520,7 +520,7 @@ type InterpM a = StateT InterpState (ExceptT String IO) a
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Execu\c{c}\~{a}o de Bloco}
+\begin{frame}[fragile]{Execução de Bloco}
 \protect\hypertarget{execuuxe7uxe3o-de-bloco}{}
 \begin{lstlisting}[language=Haskell]
 execBlock :: [Stmt] -> InterpM (Maybe Value)
@@ -533,7 +533,7 @@ execBlock (s:ss) = do
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Cria\c{c}\~{a}o de Registro}
+\begin{frame}[fragile]{Criação de Registro}
 \protect\hypertarget{criauxe7uxe3o-de-registro}{}
 \begin{lstlisting}[language=Haskell]
 evalExp (ENew rname initFields) = do
@@ -542,7 +542,7 @@ evalExp (ENew rname initFields) = do
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Acesso e Atribui\c{c}\~{a}o de Campo}
+\begin{frame}[fragile]{Acesso e Atribuição de Campo}
 \protect\hypertarget{acesso-e-atribuiuxe7uxe3o-de-campo}{}
 \begin{lstlisting}[language=Haskell]
 evalExp (EField e f) = do
@@ -556,7 +556,7 @@ evalExp (EField e f) = do
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Atribui\c{c}\~{a}o de Campo}
+\begin{frame}[fragile]{Atribuição de Campo}
 \protect\hypertarget{atribuiuxe7uxe3o-de-campo-1}{}
 \begin{lstlisting}[language=Haskell]
 execStmt (SFieldAssign v f e) = do
@@ -572,7 +572,7 @@ execStmt (SFieldAssign v f e) = do
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Retorno e Chamada de Fun\c{c}\~{a}o}
+\begin{frame}[fragile]{Retorno e Chamada de Função}
 \protect\hypertarget{retorno-e-chamada-de-funuxe7uxe3o}{}
 \begin{lstlisting}[language=Haskell]
 execStmt (SReturn Nothing)  = pure (Just VUnit)   -- RetVoid
@@ -606,53 +606,53 @@ withFreshEnv bindings m = do
 \begin{itemize}
 
 \item
-  Salva o ambiente corrente, inicializa apenas com os par\^{a}metros,
+  Salva o ambiente corrente, inicializa apenas com os parâmetros,
   restaura ao terminar.
 \end{itemize}
 \end{frame}
 
 \hypertarget{conclusuxe3o}{%
-\section{Conclus\~{a}o}\label{conclusuxe3o}}
+\section{Conclusão}\label{conclusuxe3o}}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-1}{}
 \begin{itemize}
 \item
   \textbf{Condicional}: regras (IfTrue) e (IfFalse) selecionam o ramo
-  pela condi\c{c}\~{a}o.
+  pela condição.
 \item
   \textbf{While}: (WhileFalse) termina; (WhileTrue) executa o corpo e
-  recome\c{c}a.
+  recomeça.
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-2}{}
 \begin{itemize}
 
 \item
-  \textbf{Registros}: \(\mathbf{rec}(R, \mathit{flds})\) com sem\^{a}ntica
+  \textbf{Registros}: \(\mathbf{rec}(R, \mathit{flds})\) com semântica
   de valor; regras (New), (Field), (FieldAssign).
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Conclus\~{a}o}
+\begin{frame}[fragile]{Conclusão}
 \protect\hypertarget{conclusuxe3o-3}{}
 \begin{itemize}
 
 \item
-  \textbf{Fun\c{c}\~{o}es}: resultado de bloco
+  \textbf{Funções}: resultado de bloco
   \(r \in \{\mathbf{normal}, {\uparrow}\,v\}\) modela
   \texttt{return}; (CallExpr) executa em ambiente
   fresco.
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-4}{}
 \begin{itemize}
 
 \item
-  A especifica\c{c}\~{a}o formal guia diretamente a implementa\c{c}\~{a}o em Haskell.
+  A especificação formal guia diretamente a implementação em Haskell.
 \end{itemize}
 \end{frame}

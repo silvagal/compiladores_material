@@ -1,4 +1,4 @@
-\subtitle{\bf Aula 4 - Motiva\c{c}
+\subtitle{\bf Aula 4 - Motivaç
 \begin{frame}[t,plain]
 \titlepage
 \end{frame}
@@ -8,15 +8,15 @@
 \begin{itemize}
 
 \item
-  Apresenta\c{c}\~{a}o da linguagem do Alex e seu uso para especifica\c{c}\~{a}o de
+  Apresentação da linguagem do Alex e seu uso para especificação de
   analisadores léxicos em Haskell.
 \end{itemize}
 \end{frame}
 
 \hypertarget{motivauxe7uxe3o}{%
-\section{Motiva\c{c}\~{a}o}\label{motivauxe7uxe3o}}
+\section{Motivação}\label{motivauxe7uxe3o}}
 
-\begin{frame}{Motiva\c{c}\~{a}o}
+\begin{frame}{Motivação}
 \protect\hypertarget{motivauxe7uxe3o-1}{}
 \begin{itemize}
 
@@ -24,19 +24,19 @@
   Construir analisadores léxicos manualmente é trabalhoso e propenso a
   erros
 \item
-  A teoria (ER → AFN → AFD) é sólida, mas implementar o pipeline é
+  A teoria (ER -> AFN -> AFD) é sólida, mas implementar o pipeline é
   repetitivo
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Motiva\c{c}\~{a}o}
+\begin{frame}{Motivação}
 \protect\hypertarget{motivauxe7uxe3o-2}{}
 \begin{itemize}
 
 \item
   \textbf{Alex} automatiza esse processo para Haskell
 \item
-  Dado uma especifica\c{c}\~{a}o de tokens em ERs, Alex gera um analisador
+  Dado uma especificação de tokens em ERs, Alex gera um analisador
   léxico eficiente
 \item
   Usado na prática: o próprio GHC usa Alex para sua análise léxica
@@ -62,7 +62,7 @@
 \begin{itemize}
 
 \item
-  Recebe um arquivo \texttt{.x} com especifica\c{c}\~{o}es de
+  Recebe um arquivo \texttt{.x} com especificações de
   tokens
 \item
   Gera um módulo Haskell com o analisador léxico completo
@@ -72,16 +72,16 @@
 \end{frame}
 
 \hypertarget{sessuxf5es-de-um-arquivo-.x}{%
-\section{Sess\~{o}es de um Arquivo .x}\label{sessuxf5es-de-um-arquivo-.x}}
+\section{Sessões de um Arquivo .x}\label{sessuxf5es-de-um-arquivo-.x}}
 
-\begin{frame}[fragile]{Se\c{c}\~{o}es de um Arquivo
+\begin{frame}[fragile]{Seções de um Arquivo
 \texttt{.x}}
 \protect\hypertarget{seuxe7uxf5es-de-um-arquivo-.x}{}
 \begin{lstlisting}
-{ cabe\c{c}alho Haskell }
+{ cabeçalho Haskell }
 
 %wrapper "..."
-macros e configura\c{c}\~{o}es
+macros e configurações
 
 tokens :-
   regras léxicas
@@ -90,18 +90,18 @@ tokens :-
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}{Se\c{c}\~{o}es de um Arquivo \texttt{.x}}
+\begin{frame}{Seções de um Arquivo \texttt{.x}}
 \protect\hypertarget{seuxe7uxf5es-de-um-arquivo-.x-1}{}
 \begin{enumerate}
 
 \item
-  \textbf{Cabe\c{c}alho}: módulo e imports Haskell
+  \textbf{Cabeçalho}: módulo e imports Haskell
 \item
   \textbf{Diretivas}: wrapper e macros de ERs
 \item
-  \textbf{Regras}: padr\~{o}es mapeados a a\c{c}\~{o}es
+  \textbf{Regras}: padrões mapeados a ações
 \item
-  \textbf{Rodapé}: fun\c{c}\~{o}es auxiliares
+  \textbf{Rodapé}: funções auxiliares
 \end{enumerate}
 \end{frame}
 
@@ -130,7 +130,7 @@ data Lexeme
 \item
   Mesma estrutura vista no capítulo de análise ad-hoc
 \item
-  A posi\c{c}\~{a}o \texttt{(linha, coluna)} é essencial para
+  A posição \texttt{(linha, coluna)} é essencial para
   mensagens de erro
 \item
   \texttt{TEOF} marca o fim de entrada
@@ -138,7 +138,7 @@ data Lexeme
 \end{frame}
 
 \hypertarget{sintaxe-de-expressuxf5es-regulares-no-alex}{%
-\section{Sintaxe de Express\~{o}es Regulares no
+\section{Sintaxe de Expressões Regulares no
 Alex}\label{sintaxe-de-expressuxf5es-regulares-no-alex}}
 
 \begin{frame}[fragile]{Classes de Caracteres}
@@ -146,7 +146,7 @@ Alex}\label{sintaxe-de-expressuxf5es-regulares-no-alex}}
 \begin{table}
 \begin{tabular}[]{@{}ll@{}}
 \toprule
-Padr\~{a}o & Significado \\
+Padrão & Significado \\
 \midrule
 
 \texttt{[0-9]} & Qualquer dígito de 0 a 9 \\
@@ -161,7 +161,7 @@ usuário \\
 \end{table}
 \end{frame}
 
-\begin{frame}[fragile]{Operadores de Repeti\c{c}\~{a}o e Combina\c{c}\~{a}o}
+\begin{frame}[fragile]{Operadores de Repetiçãoo e Combinação}
 \protect\hypertarget{operadores-de-repetiuxe7uxe3o-e-combinauxe7uxe3o}{}
 \begin{table}
 \begin{tabular}[]{@{}ll@{}}
@@ -169,17 +169,17 @@ usuário \\
 Operador & Significado \\
 \midrule
 
-\texttt{e*} & Zero ou mais repeti\c{c}\~{o}es de
+\texttt{e*} & Zero ou mais repetições de
 \texttt{e} \\
-\texttt{e+} & Uma ou mais repeti\c{c}\~{o}es de
+\texttt{e+} & Uma ou mais repetições de
 \texttt{e} \\
-\texttt{e?} & Zero ou uma ocorr\^{e}ncia (opcional) \\
+\texttt{e?} & Zero ou uma ocorrência (opcional) \\
 \bottomrule
 \end{tabular}
 \end{table}
 \end{frame}
 
-\begin{frame}[fragile]{Operadores de Repeti\c{c}\~{a}o e Combina\c{c}\~{a}o}
+\begin{frame}[fragile]{Operadores de Repetiçãoo e Combinação}
 \protect\hypertarget{operadores-de-repetiuxe7uxe3o-e-combinauxe7uxe3o-1}{}
 \begin{table}
 \begin{tabular}[]{@{}ll@{}}
@@ -198,7 +198,7 @@ Operador & Significado \\
 \end{table}
 \end{frame}
 
-\begin{frame}[fragile]{Exemplos de Padr\~{o}es}
+\begin{frame}[fragile]{Exemplos de Padrões}
 \protect\hypertarget{exemplos-de-padruxf5es}{}
 \begin{lstlisting}
 $digit    = 0-9  -- classe: dígitos
@@ -222,7 +222,7 @@ $digit    = 0-9  -- classe: dígitos
 \hypertarget{estrutura-do-arquivo-alex}{%
 \section{Estrutura do Arquivo Alex}\label{estrutura-do-arquivo-alex}}
 
-\begin{frame}[fragile]{Cabe\c{c}alho e Macros}
+\begin{frame}[fragile]{Cabeçalho e Macros}
 \protect\hypertarget{cabeuxe7alho-e-macros}{}
 \begin{lstlisting}[language=Haskell]
 {
@@ -250,7 +250,7 @@ Wrapper & Características \\
 
 \texttt{basic} & Processa
 \texttt{String} de forma simples e pura \\
-\texttt{posn} & Adiciona informa\c{c}\~{a}o de linha e coluna
+\texttt{posn} & Adiciona informação de linha e coluna
 automaticamente \\
 \bottomrule
 \end{tabular}
@@ -265,9 +265,9 @@ automaticamente \\
 Wrapper & Características \\
 \midrule
 
-\texttt{monad} & Executa dentro de uma m\^{o}nada
+\texttt{monad} & Executa dentro de uma mônada
 \texttt{Alex} \\
-\texttt{monadUserState} & M\^{o}nada com estado customizado
+\texttt{monadUserState} & Mônada com estado customizado
 pelo usuário \\
 \bottomrule
 \end{tabular}
@@ -279,7 +279,7 @@ pelo usuário \\
 \begin{itemize}
 
 \item
-  A principal diferen\c{c}a: controle sobre o estado e os efeitos
+  A principal diferença: controle sobre o estado e os efeitos
 \item
   \texttt{monadUserState} é o mais flexível e poderoso
 \end{itemize}
@@ -289,7 +289,7 @@ pelo usuário \\
 \protect\hypertarget{regras-luxe9xicas}{}
 \begin{lstlisting}
 tokens :-
-    -- espa\c{c}os e comentários de linha
+    -- espaços e comentários de linha
     <0> $white+       ;
     <0> "//" .*       ;
     -- tokens significativos
@@ -306,7 +306,7 @@ tokens :-
 \begin{itemize}
 
 \item
-  Regras sem a\c{c}\~{a}o (\texttt{;}) descartam o match
+  Regras sem ação (\texttt{;}) descartam o match
   silenciosamente
 \item
   \texttt{mkNumber} cria um token com o valor inteiro
@@ -340,11 +340,11 @@ Bloco}\label{start-codes-e-comentuxe1rios-em-bloco}}
 \item
   O analisador precisa contar os níveis de aninhamento
 \item
-  N\~{a}o é possível expressar isso com uma simples ER
+  Não é possível expressar isso com uma simples ER
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Solu\c{c}\~{a}o: Start Codes}
+\begin{frame}[fragile]{Solução: Start Codes}
 \protect\hypertarget{soluuxe7uxe3o-start-codes}{}
 \begin{itemize}
 
@@ -386,7 +386,7 @@ Bloco}\label{start-codes-e-comentuxe1rios-em-bloco}}
   \texttt{/*} e \texttt{*/}
 \item
   \texttt{*/} sem \texttt{/*}
-  correspondente → erro imediato
+  correspondente -> erro imediato
 \end{itemize}
 \end{frame}
 
@@ -417,7 +417,7 @@ alexInitUserState = AlexUserState { nestLevel = 0 }
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Fun\c{c}\~{o}es de Aninhamento}
+\begin{frame}[fragile]{Funções de Aninhamento}
 \protect\hypertarget{funuxe7uxf5es-de-aninhamento}{}
 \begin{itemize}
 
@@ -433,7 +433,7 @@ nestComment _ _ = do
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Fun\c{c}\~{o}es de Aninhamento}
+\begin{frame}[fragile]{Funções de Aninhamento}
 \protect\hypertarget{funuxe7uxf5es-de-aninhamento-1}{}
 \begin{itemize}
 
@@ -453,7 +453,7 @@ unnestComment _ _ = do
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Manipula\c{c}\~{a}o do Estado}
+\begin{frame}[fragile]{Manipulação do Estado}
 \protect\hypertarget{manipulauxe7uxe3o-do-estado}{}
 \begin{lstlisting}[language=Haskell]
 get    :: Alex AlexUserState
@@ -462,25 +462,25 @@ modify :: (AlexUserState -> AlexUserState) -> Alex ()
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Manipula\c{c}\~{a}o do Estado}
+\begin{frame}[fragile]{Manipulação do Estado}
 \protect\hypertarget{manipulauxe7uxe3o-do-estado-1}{}
 \begin{itemize}
 
 \item
-  \texttt{get}: l\^{e} o estado customizado atual
+  \texttt{get}: lê o estado customizado atual
 \item
   \texttt{put}: substitui o estado por um novo
 \item
-  \texttt{modify}: aplica uma fun\c{c}\~{a}o de transforma\c{c}\~{a}o
+  \texttt{modify}: aplica uma função de transformação
   ao estado
 \item
-  Padr\~{a}o id\^{e}ntico \`{a} m\^{o}nada de estado de Haskell
+  Padrão idêntico à mônada de estado de Haskell
   (\texttt{State})
 \end{itemize}
 \end{frame}
 
 \hypertarget{gerauxe7uxe3o-e-uso}{%
-\section{Gera\c{c}\~{a}o e Uso}\label{gerauxe7uxe3o-e-uso}}
+\section{Geração e Uso}\label{gerauxe7uxe3o-e-uso}}
 
 \begin{frame}[fragile]{Como Gerar o Analisador}
 \protect\hypertarget{como-gerar-o-analisador}{}
@@ -516,7 +516,7 @@ alexError :: String -> Alex a
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Usando o Analisador em Produ\c{c}\~{a}o}
+\begin{frame}[fragile]{Usando o Analisador em Produção}
 \protect\hypertarget{usando-o-analisador-em-produuxe7uxe3o}{}
 \begin{lstlisting}[language=Haskell]
 -- Obtém todos os tokens de uma String
@@ -532,16 +532,16 @@ tokenize input = runAlex input loop
 \end{frame}
 
 \hypertarget{conclusuxe3o}{%
-\section{Conclus\~{a}o}\label{conclusuxe3o}}
+\section{Conclusão}\label{conclusuxe3o}}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-1}{}
 \begin{itemize}
 \item
   Nesta aula apresentamos o gerador Alex.
 \item
-  Cria\c{c}\~{a}o automática de analisadores léxicos eficientes a partir de
-  express\~{o}es regulares.
+  Criação automática de analisadores léxicos eficientes a partir de
+  expressões regulares.
 \item
   Próximas aulas: Análise sintática.
 \end{itemize}

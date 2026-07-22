@@ -1,4 +1,4 @@
-\subtitle{\bf Aula 15 - Tipos em Linguagens de Programa\c{c}\~{a}o}
+\subtitle{\bf Aula 15 - Tipos em Linguagens de Programaçãoo}
 \begin{frame}[t,plain]
 \titlepage
 \end{frame}
@@ -7,8 +7,8 @@
 \protect\hypertarget{objetivos-1}{}
 \begin{itemize}
 \item
-  Apresentar sistemas de tipos como a especifica\c{c}\~{a}o da análise
-  sem\^{a}ntica.
+  Apresentar sistemas de tipos como a especificação da análise
+  semântica.
 \item
   Discutir propriedades importantes de sistemas de tipos.
 \end{itemize}
@@ -16,7 +16,7 @@
 
 \hypertarget{tipos-em-linguagens-de-programauxe7uxe3o}{%
 \section{Tipos em Linguagens de
-Programa\c{c}\~{a}o}\label{tipos-em-linguagens-de-programauxe7uxe3o}}
+Programaçãoo}\label{tipos-em-linguagens-de-programauxe7uxe3o}}
 
 \begin{frame}{O que é um Tipo?}
 \protect\hypertarget{o-que-uxe9-um-tipo}{}
@@ -28,9 +28,9 @@ Programa\c{c}\~{a}o}\label{tipos-em-linguagens-de-programauxe7uxe3o}}
   \begin{itemize}
 
   \item
-    Quais opera\c{c}\~{o}es s\~{a}o aplicáveis
+    Quais operações são aplicáveis
   \item
-    Como os valores s\~{a}o representados na memória
+    Como os valores são representados na memória
   \item
     Que conjunto de valores o tipo compreende
   \end{itemize}
@@ -42,21 +42,21 @@ Programa\c{c}\~{a}o}\label{tipos-em-linguagens-de-programauxe7uxe3o}}
 \begin{itemize}
 
 \item
-  O \textbf{sistema de tipos} associa tipos a express\~{o}es e verifica a
-  coer\^{e}ncia dessas associa\c{c}\~{o}es
+  O \textbf{sistema de tipos} associa tipos a expressões e verifica a
+  coerência dessas associações
 \item
   Erros de tipo: somar um booleano a um inteiro, aplicar
   \texttt{pred true}
 \item
-  Express\~{o}es com erros de tipo s\~{a}o \textbf{sintaticamente válidas}, mas
+  Expressões com erros de tipo são \textbf{sintaticamente válidas}, mas
   \textbf{semanticamente sem significado}
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Tipagem Estática}
 \protect\hypertarget{tipagem-estuxe1tica}{}
-\textbf{Tipagem estática} (\emph{static typing}): verifica\c{c}\~{a}o em
-\textbf{tempo de compila\~{c}\~{a}o}
+\textbf{Tipagem estática} (\emph{static typing}): verificação em
+\textbf{tempo de compila\~{c}ão}
 
 \begin{itemize}
 
@@ -67,18 +67,18 @@ Programa\c{c}\~{a}o}\label{tipos-em-linguagens-de-programauxe7uxe3o}}
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Tipagem Din\^{a}mica}
+\begin{frame}{Tipagem Dinâmica}
 \protect\hypertarget{tipagem-dinuxe2mica}{}
 \begin{itemize}
 
 \item
-  \textbf{Tipagem din\^{a}mica} (\emph{dynamic typing}): verifica\c{c}\~{a}o em
-  \textbf{tempo de execu\c{c}\~{a}o}
+  \textbf{Tipagem dinâmica} (\emph{dynamic typing}): verificação em
+  \textbf{tempo de execução}
 
   \begin{itemize}
 
   \item
-    Erros detectados apenas quando a opera\c{c}\~{a}o inválida é executada
+    Erros detectados apenas quando a operação inválida é executada
   \item
     Exemplos: Python, JavaScript, Ruby, Lisp
   \end{itemize}
@@ -90,13 +90,13 @@ Programa\c{c}\~{a}o}\label{tipos-em-linguagens-de-programauxe7uxe3o}}
 \begin{itemize}
 
 \item
-  \textbf{Tipagem forte} (\emph{strong typing}): n\~{a}o permite convers\~{o}es
+  \textbf{Tipagem forte} (\emph{strong typing}): não permite conversões
   implícitas entre tipos incompatíveis
 
   \begin{itemize}
 
   \item
-    Opera\c{c}\~{o}es entre tipos diferentes resultam em erro
+    Operações entre tipos diferentes resultam em erro
   \item
     Exemplos: Haskell, Python
   \end{itemize}
@@ -108,7 +108,7 @@ Programa\c{c}\~{a}o}\label{tipos-em-linguagens-de-programauxe7uxe3o}}
 \begin{itemize}
 
 \item
-  \textbf{Tipagem fraca} (\emph{weak typing}): realiza convers\~{o}es
+  \textbf{Tipagem fraca} (\emph{weak typing}): realiza conversões
   implícitas entre tipos
 
   \begin{itemize}
@@ -129,7 +129,7 @@ Programa\c{c}\~{a}o}\label{tipos-em-linguagens-de-programauxe7uxe3o}}
 \begin{itemize}
 
 \item
-  Estas classifica\c{c}\~{o}es s\~{a}o \textbf{independentes}.
+  Estas classificações são \textbf{independentes}.
 
   \begin{itemize}
 
@@ -141,7 +141,7 @@ Programa\c{c}\~{a}o}\label{tipos-em-linguagens-de-programauxe7uxe3o}}
 \end{frame}
 
 \hypertarget{a-linguagem-de-expressuxf5es-tipadas}{%
-\section{A Linguagem de Express\~{o}es
+\section{A Linguagem de Expressões
 Tipadas}\label{a-linguagem-de-expressuxf5es-tipadas}}
 
 \begin{frame}{Sintaxe}
@@ -165,12 +165,12 @@ t & ::= & \mathbf{true} \mid \mathbf{false} & \text{(booleanos)} \\
 \begin{itemize}
 
 \item
-  \textbf{Valores} (termos que n\~{a}o podem ser reduzidos):
+  \textbf{Valores} (termos que não podem ser reduzidos):
 
   \begin{itemize}
 
   \item
-    \(nv\) s\~{a}o os \textbf{valores numéricos}: \(\mathbf{0}\),
+    \(nv\) são os \textbf{valores numéricos}: \(\mathbf{0}\),
     \(\mathbf{succ}\ \mathbf{0}\),
     \(\mathbf{succ}\ (\mathbf{succ}\ \mathbf{0})\), \ldots{}
   \item
@@ -186,12 +186,12 @@ nv & ::= & \mathbf{0} \mid \mathbf{succ}\ nv
 
 
 
-\begin{frame}{Rela\c{c}\~{a}o de Tipagem}
+\begin{frame}{Relação de Tipagem}
 \protect\hypertarget{relauxe7uxe3o-de-tipagem}{}
 \begin{itemize}
 
 \item
-  Nota\c{c}\~{a}o \(\vdash t : T\)
+  Notação \(\vdash t : T\)
 
   \begin{itemize}
 
@@ -199,7 +199,7 @@ nv & ::= & \mathbf{0} \mid \mathbf{succ}\ nv
     o termo \(t\) tem tipo \(T\).
   \end{itemize}
 \item
-  A rela\c{c}\~{a}o é definida por regras de infer\^{e}ncia.
+  A relação é definida por regras de inferência.
 \end{itemize}
 \end{frame}
 
@@ -262,7 +262,7 @@ A regra (T-If) exige que os dois ramos tenham o \textbf{mesmo tipo}
 \begin{itemize}
 
 \item
-  \(\mathbf{succ}\ \mathbf{true}\) \textbf{n\~{a}o é tipável}:
+  \(\mathbf{succ}\ \mathbf{true}\) \textbf{não é tipável}:
 
   \begin{itemize}
 
@@ -271,7 +271,7 @@ A regra (T-If) exige que os dois ramos tenham o \textbf{mesmo tipo}
   \item
     Mas \(\mathbf{true}\) tem tipo \(\mathbf{Bool}\)
   \item
-    N\~{a}o existe deriva\c{c}\~{a}o válida --- o tipo checker \textbf{rejeita} o
+    Não existe derivação válida --- o tipo checker \textbf{rejeita} o
     programa
   \end{itemize}
 \end{itemize}
@@ -282,7 +282,7 @@ A regra (T-If) exige que os dois ramos tenham o \textbf{mesmo tipo}
 \begin{itemize}
 
 \item
-  Outros exemplos de termos n\~{a}o tipáveis:
+  Outros exemplos de termos não tipáveis:
 
   \begin{itemize}
 
@@ -291,7 +291,7 @@ A regra (T-If) exige que os dois ramos tenham o \textbf{mesmo tipo}
     argumento é \(\mathbf{Bool}\)
   \item
     \(\mathbf{if}\ \mathbf{0}\ \mathbf{then}\ t_2\ \mathbf{else}\ t_3\):
-    (T-If) exige \(\mathbf{Bool}\) na condi\c{c}\~{a}o
+    (T-If) exige \(\mathbf{Bool}\) na condição
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -301,7 +301,7 @@ A regra (T-If) exige que os dois ramos tenham o \textbf{mesmo tipo}
 \begin{itemize}
 \item
   \textbf{Lema (Unicidade):} Se \(\vdash t : T\) e \(\vdash t : T'\),
-  ent\~{a}o \(T = T'\).
+  então \(T = T'\).
 \item
   A tipagem é \textbf{determinística}: o verificador sempre produz um
   resultado único.
@@ -309,22 +309,22 @@ A regra (T-If) exige que os dois ramos tenham o \textbf{mesmo tipo}
 \end{frame}
 
 \hypertarget{semuxe2ntica-small-step}{%
-\section{Sem\^{a}ntica Small-Step}\label{semuxe2ntica-small-step}}
+\section{Semântica Small-Step}\label{semuxe2ntica-small-step}}
 
 \begin{frame}{Formas Presas}
 \protect\hypertarget{formas-presas}{}
 \begin{itemize}
 
 \item
-  Os termos irredutíveis s\~{a}o \textbf{valores} \(v\) ou \textbf{formas
+  Os termos irredutíveis são \textbf{valores} \(v\) ou \textbf{formas
   presas} (\emph{stuck terms}):
 
   \begin{itemize}
 
   \item
-    Termos que n\~{a}o s\~{a}o valores e para os quais nenhuma regra se aplica
+    Termos que não são valores e para os quais nenhuma regra se aplica
   \item
-    Representam \textbf{erros em tempo de execu\c{c}\~{a}o}
+    Representam \textbf{erros em tempo de execução}
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -338,13 +338,13 @@ A regra (T-If) exige que os dois ramos tenham o \textbf{mesmo tipo}
   \begin{itemize}
 
   \item
-    \(\mathbf{succ}\ \mathbf{true}\): \(\mathbf{true}\) n\~{a}o é \(nv\), e
+    \(\mathbf{succ}\ \mathbf{true}\): \(\mathbf{true}\) não é \(nv\), e
     nenhuma regra reduz isso
   \item
     \(\mathbf{pred}\ \mathbf{false}\): idem
   \item
     \(\mathbf{if}\ \mathbf{0}\ \mathbf{then}\ t_2\ \mathbf{else}\ t_3\):
-    \(\mathbf{0}\) é valor numérico, n\~{a}o booleano
+    \(\mathbf{0}\) é valor numérico, não booleano
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -359,66 +359,66 @@ A regra (T-If) exige que os dois ramos tenham o \textbf{mesmo tipo}
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Regras de Redu\c{c}\~{a}o}
+\begin{frame}{Regras de Redução}
 \protect\hypertarget{regras-de-reduuxe7uxe3o}{}
 \[\frac{t_1 \to t_1'}{\mathbf{if}\ t_1\ \mathbf{then}\ t_2\ \mathbf{else}\ t_3 \to \mathbf{if}\ t_1'\ \mathbf{then}\ t_2\ \mathbf{else}\ t_3}
 \quad\text{(E-If)}\]
 \end{frame}
 
-\begin{frame}{Regras de Redu\c{c}\~{a}o}
+\begin{frame}{Regras de Redução}
 \protect\hypertarget{regras-de-reduuxe7uxe3o-1}{}
 \[\frac{}{\mathbf{if}\ \mathbf{true}\ \mathbf{then}\ t_2\ \mathbf{else}\ t_3 \to t_2}
 \quad\text{(E-IfTrue)}\]
 \end{frame}
 
-\begin{frame}{Regras de Redu\c{c}\~{a}o}
+\begin{frame}{Regras de Redução}
 \protect\hypertarget{regras-de-reduuxe7uxe3o-2}{}
 \[\frac{}{\mathbf{if}\ \mathbf{false}\ \mathbf{then}\ t_2\ \mathbf{else}\ t_3 \to t_3}
 \quad\text{(E-IfFalse)}\]
 \end{frame}
 
-\begin{frame}{Regras de Redu\c{c}\~{a}o}
+\begin{frame}{Regras de Redução}
 \protect\hypertarget{regras-de-reduuxe7uxe3o-3}{}
 \[\frac{t_1 \to t_1'}{\mathbf{succ}\ t_1 \to \mathbf{succ}\ t_1'}
 \quad\text{(E-Succ)}\]
 \end{frame}
 
-\begin{frame}{Regras de Redu\c{c}\~{a}o}
+\begin{frame}{Regras de Redução}
 \protect\hypertarget{regras-de-reduuxe7uxe3o-4}{}
 \[
 \frac{t_1 \to t_1'}{\mathbf{pred}\ t_1 \to \mathbf{pred}\ t_1'}
 \quad\text{(E-Pred)}\]
 \end{frame}
 
-\begin{frame}{Regras de Redu\c{c}\~{a}o}
+\begin{frame}{Regras de Redução}
 \protect\hypertarget{regras-de-reduuxe7uxe3o-5}{}
 \[\frac{}{\mathbf{pred}\ \mathbf{0} \to \mathbf{0}}
 \quad\text{(E-PredZero)}
 \]
 \end{frame}
 
-\begin{frame}{Regras de Redu\c{c}\~{a}o}
+\begin{frame}{Regras de Redução}
 \protect\hypertarget{regras-de-reduuxe7uxe3o-6}{}
 \[
 \frac{}{\mathbf{pred}\ (\mathbf{succ}\ nv_1) \to nv_1}
 \quad\text{(E-PredSucc)}\]
 \end{frame}
 
-\begin{frame}{Regras de Redu\c{c}\~{a}o}
+\begin{frame}{Regras de Redução}
 \protect\hypertarget{regras-de-reduuxe7uxe3o-7}{}
 \[\frac{t_1 \to t_1'}{\mathbf{iszero}\ t_1 \to \mathbf{iszero}\ t_1'}
 \quad\text{(E-IsZero)}
 \]
 \end{frame}
 
-\begin{frame}{Regras de Redu\c{c}\~{a}o}
+\begin{frame}{Regras de Redução}
 \protect\hypertarget{regras-de-reduuxe7uxe3o-8}{}
 \[
 \frac{}{\mathbf{iszero}\ \mathbf{0} \to \mathbf{true}}
 \quad\text{(E-IsZeroZero)}\]
 \end{frame}
 
-\begin{frame}{Regras de Redu\c{c}\~{a}o}
+\begin{frame}{Regras de Redução}
 \protect\hypertarget{regras-de-reduuxe7uxe3o-9}{}
 \[\frac{}{\mathbf{iszero}\ (\mathbf{succ}\ nv_1) \to \mathbf{false}}
 \quad\text{(E-IsZeroSucc)}\]
@@ -455,10 +455,10 @@ Tipos}\label{corretude-do-sistema-de-tipos}}
 \protect\hypertarget{type-soundness}{}
 \begin{quote}
 \textbf{Teorema (Type Soundness):} Se \(\vdash t : T\) e \(t \to^* t'\),
-ent\~{a}o \(t'\) é um valor ou existe \(t''\) tal que \(t' \to t''\).
+então \(t'\) é um valor ou existe \(t''\) tal que \(t' \to t''\).
 \end{quote}
 
-Em palavras: \textbf{programas bem tipados n\~{a}o ficam presos}.
+Em palavras: \textbf{programas bem tipados não ficam presos}.
 \end{frame}
 
 \begin{frame}{Type Soundness}
@@ -471,35 +471,35 @@ A prova apoia-se em dois lemas fundamentais e independentes:
 Lema & Enunciado \\
 \midrule
 
-\textbf{Preserva\c{c}\~{a}o} & O tipo se mantém após cada passo de redu\c{c}\~{a}o \\
+\textbf{Preservação} & O tipo se mantém após cada passo de redução \\
 \textbf{Progresso} & Um termo bem tipado é valor ou pode reduzir \\
 \bottomrule
 \end{tabular}
 \end{table}
 \end{frame}
 
-\begin{frame}{Lema de Preserva\c{c}\~{a}o}
+\begin{frame}{Lema de Preservação}
 \protect\hypertarget{lema-de-preservauxe7uxe3o}{}
 \begin{quote}
-\textbf{Lema (Preservation):} Se \(\vdash t : T\) e \(t \to t'\), ent\~{a}o
+\textbf{Lema (Preservation):} Se \(\vdash t : T\) e \(t \to t'\), então
 \(\vdash t' : T\).
 \end{quote}
 
-\textbf{Significado:} a tipagem é \textbf{invariante sob redu\c{c}\~{a}o} --- o
-tipo n\~{a}o se altera durante a execu\c{c}\~{a}o.
+\textbf{Significado:} a tipagem é \textbf{invariante sob redução} --- o
+tipo não se altera durante a execução.
 \end{frame}
 
-\begin{frame}{Lema de Preserva\c{c}\~{a}o}
+\begin{frame}{Lema de Preservação}
 \protect\hypertarget{lema-de-preservauxe7uxe3o-1}{}
-\textbf{Por que é importante?} Sem preserva\c{c}\~{a}o, um termo poderia come\c{c}ar
-bem tipado e, após redu\c{c}\~{o}es, tornar-se de tipo diferente --- invalidando
+\textbf{Por que é importante?} Sem preservação, um termo poderia começar
+bem tipado e, após reduções, tornar-se de tipo diferente --- invalidando
 qualquer garantia do verificador de tipos.
 \end{frame}
 
-\begin{frame}{Lema de Preserva\c{c}\~{a}o}
+\begin{frame}{Lema de Preservação}
 \protect\hypertarget{lema-de-preservauxe7uxe3o-2}{}
-\textbf{Prova:} Por indu\c{c}\~{a}o na deriva\c{c}\~{a}o de \(t \to t'\), analisando
-cada regra de redu\c{c}\~{a}o.
+\textbf{Prova:} Por indução na derivação de \(t \to t'\), analisando
+cada regra de redução.
 \end{frame}
 
 \begin{frame}{Alguns Casos}
@@ -517,7 +517,7 @@ De (T-If): \(\vdash t_2 : T\) e \(\vdash t_3 : T\). Logo
 \emph{Caso} (E-If): \(t_1 \to t_1'\),
 \(t' = \mathbf{if}\ t_1'\ \mathbf{then}\ t_2\ \mathbf{else}\ t_3\).
 
-De (T-If): \(\vdash t_1 : \mathbf{Bool}\). Por hip. de indu\c{c}\~{a}o:
+De (T-If): \(\vdash t_1 : \mathbf{Bool}\). Por hip. de indução:
 \(\vdash t_1' : \mathbf{Bool}\). Aplicando (T-If): \(\vdash t' : T\). ✓
 \end{frame}
 
@@ -540,7 +540,7 @@ De (T-Succ): \(\vdash t_1 : \mathbf{Nat}\). Por hip. de ind.:
 \begin{frame}{Lema de Progresso}
 \protect\hypertarget{lema-de-progresso}{}
 \begin{quote}
-\textbf{Lema (Progress):} Se \(\vdash t : T\), ent\~{a}o \(t\) é um valor ou
+\textbf{Lema (Progress):} Se \(\vdash t : T\), então \(t\) é um valor ou
 existe \(t'\) tal que \(t \to t'\).
 \end{quote}
 
@@ -551,10 +551,10 @@ sempre progridem.
 \begin{frame}{Lema de Progresso}
 \protect\hypertarget{lema-de-progresso-1}{}
 \textbf{Por que é importante?} Sem progresso, o tipo seria preservado
-mas a execu\c{c}\~{a}o poderia travar. O progresso garante que nunca há um
+mas a execução poderia travar. O progresso garante que nunca há um
 estado de erro irrecuperável.
 
-\textbf{Prova:} Por indu\c{c}\~{a}o estrutural na deriva\c{c}\~{a}o de \(\vdash t : T\).
+\textbf{Prova:} Por indução estrutural na derivação de \(\vdash t : T\).
 \end{frame}
 
 \begin{frame}{Alguns Casos}
@@ -573,7 +573,7 @@ sobre \(t_1\): ou \(t_1\) é valor, ou reduz.
   Se \(t_1 \to t_1'\): aplica-se (E-If). ✓
 \item
   Se \(t_1\) é valor de tipo \(\mathbf{Bool}\): pelo lema de unicidade,
-  \(t_1\) n\~{a}o pode ser \(nv\) (tipo \(\mathbf{Nat}\)). Logo
+  \(t_1\) não pode ser \(nv\) (tipo \(\mathbf{Nat}\)). Logo
   \(t_1 \in \{\mathbf{true}, \mathbf{false}\}\).
 
   \begin{itemize}
@@ -621,8 +621,8 @@ ou \(t_1\) reduz, ou é \(nv\).
 \textbf{Prova do Teorema (Type Soundness):} Seja \(\vdash t : T\) e
 \(t \to^* t'\).
 
-Por \textbf{preserva\c{c}\~{a}o} (aplicada repetidamente a cada passo da
-sequ\^{e}ncia \(t \to^* t'\)): \(\vdash t' : T\).
+Por \textbf{preservação} (aplicada repetidamente a cada passo da
+sequência \(t \to^* t'\)): \(\vdash t' : T\).
 
 Por \textbf{progresso}: \(t'\) é valor ou existe \(t''\) com
 \(t' \to t''\). ✓
@@ -633,12 +633,12 @@ Por \textbf{progresso}: \(t'\) é valor ou existe \(t''\) com
 \section{Sistema de Tipos para
 TLine}\label{sistema-de-tipos-para-tline}}
 
-\begin{frame}{TLine: Contexto e Rela\c{c}\~{a}o de Tipagem}
+\begin{frame}{TLine: Contexto e Relação de Tipagem}
 \protect\hypertarget{tline-contexto-e-relauxe7uxe3o-de-tipagem}{}
 \begin{itemize}
 
 \item
-  TLine tem tr\^{e}s tipos (\(\mathbf{Int}\), \(\mathbf{Bool}\),
+  TLine tem três tipos (\(\mathbf{Int}\), \(\mathbf{Bool}\),
   \(\mathbf{String}\)) e um \textbf{contexto de tipagem}:
 \end{itemize}
 
@@ -650,7 +650,7 @@ TLine}\label{sistema-de-tipos-para-tline}}
 \begin{itemize}
 
 \item
-  Regras para express\~{o}es: \(\Gamma \vdash e : T\)
+  Regras para expressões: \(\Gamma \vdash e : T\)
 \end{itemize}
 
 \[\frac{}{\Gamma \vdash n : \mathbf{Int}} \quad\text{(T-Int)}\]
@@ -718,13 +718,13 @@ TWhile}\label{sistema-de-tipos-para-twhile}}
 \item
   TWhile adiciona \texttt{if} e
   \texttt{while} com \textbf{escopo léxico}: variáveis
-  declaradas dentro de um bloco n\~{a}o escapam.
+  declaradas dentro de um bloco não escapam.
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Escopo}
 \protect\hypertarget{escopo-1}{}
-\textbf{Formaliza\c{c}\~{a}o}: o contexto de \textbf{saída} é sempre igual ao
+\textbf{Formalização}: o contexto de \textbf{saída} é sempre igual ao
 contexto de \textbf{entrada} \(\Gamma\):
 
 \[\frac{\Gamma \vdash e : \mathbf{Bool} \quad \Gamma \vdash B_1 \dashv \Gamma_1 \quad \Gamma \vdash B_2 \dashv \Gamma_2}{\Gamma \vdash \mathbf{if}\ e\ \mathbf{then}\ B_1\ \mathbf{else}\ B_2 \dashv \Gamma} \quad\text{(T-If)}\]
@@ -737,8 +737,8 @@ contexto de \textbf{entrada} \(\Gamma\):
 \begin{itemize}
 
 \item
-  Os contextos \(\Gamma_1\), \(\Gamma_2\) e \(\Gamma'\) s\~{a}o
-  \textbf{descartados}: variáveis locais aos blocos n\~{a}o s\~{a}o visíveis
+  Os contextos \(\Gamma_1\), \(\Gamma_2\) e \(\Gamma'\) são
+  \textbf{descartados}: variáveis locais aos blocos não são visíveis
   fora deles.
 \end{itemize}
 \end{frame}
@@ -751,7 +751,7 @@ contexto de \textbf{entrada} \(\Gamma\):
 \begin{itemize}
 
 \item
-  TImp estende TWhile com fun\c{c}\~{o}es e registros
+  TImp estende TWhile com funções e registros
 \end{itemize}
 
 \[\tau \;::=\; \mathbf{Int} \mid \mathbf{Bool} \mid \mathbf{String} \mid R \qquad \rho \;::=\; \mathbf{void} \mid \tau\]
@@ -762,7 +762,7 @@ contexto de \textbf{entrada} \(\Gamma\):
 \begin{itemize}
 
 \item
-  Rela\c{c}\~{a}o de tipagem: \(\Gamma;\Delta;\Phi \vdash e : \tau\) e
+  Relação de tipagem: \(\Gamma;\Delta;\Phi \vdash e : \tau\) e
   \(\Gamma;\Delta;\Phi;\rho_\mathit{ret} \vdash s \dashv \Gamma'\)
 \end{itemize}
 \end{frame}
@@ -775,76 +775,76 @@ contexto de \textbf{entrada} \(\Gamma\):
 
 \begin{frame}{Regras para Registros}
 \protect\hypertarget{regras-para-registros-1}{}
-\textbf{Constru\c{c}\~{a}o (T-New):}
+\textbf{Construção (T-New):}
 \[\frac{R \in \mathrm{dom}(\Delta) \quad \Delta(R) = \overline{(f_i:\tau_i)} \quad \Gamma;\Delta;\Phi \vdash e_i : \tau_i}{\Gamma;\Delta;\Phi \vdash \mathbf{new}\ R\{\overline{f_i=e_i}\} : R}\]
 \end{frame}
 
 \begin{frame}{Regras para Registros}
 \protect\hypertarget{regras-para-registros-2}{}
-\textbf{Atribui\c{c}\~{a}o de campo (T-FieldAssign):}
+\textbf{Atribuição de campo (T-FieldAssign):}
 \[\frac{\Gamma(x) = R \quad \Delta(R)(f) = \tau \quad \Gamma;\Delta;\Phi \vdash e : \tau}{\Gamma;\Delta;\Phi \vdash x.f := e \dashv \Gamma}\]
 \end{frame}
 
-\begin{frame}{Regras para Fun\c{c}\~{o}es}
+\begin{frame}{Regras para Funções}
 \protect\hypertarget{regras-para-funuxe7uxf5es}{}
-\textbf{Chamada como express\~{a}o (T-CallExpr):}
+\textbf{Chamada como expressão (T-CallExpr):}
 \[\frac{\Phi(f) = ([\tau_1,\ldots,\tau_n],\;\tau) \quad \Gamma;\Delta;\Phi \vdash e_i : \tau_i}{\Gamma;\Delta;\Phi \vdash f(e_1,\ldots,e_n) : \tau}\]
 \end{frame}
 
-\begin{frame}{Regras para Fun\c{c}\~{o}es}
+\begin{frame}{Regras para Funções}
 \protect\hypertarget{regras-para-funuxe7uxf5es-1}{}
 \textbf{Retorno com valor (T-RetVal):}
 \[\frac{\rho_\mathit{ret} = \tau \quad \Gamma;\Delta;\Phi \vdash e : \tau}{\Gamma;\ldots;\rho_\mathit{ret} \vdash \mathbf{return}\ e \dashv \Gamma}\]
 \end{frame}
 
-\begin{frame}{Regras para Fun\c{c}\~{o}es}
+\begin{frame}{Regras para Funções}
 \protect\hypertarget{regras-para-funuxe7uxf5es-2}{}
-\textbf{Declara\c{c}\~{a}o de fun\c{c}\~{a}o (T-FuncDecl):}
+\textbf{Declaração de função (T-FuncDecl):}
 \[\frac{[x_1\!\mapsto\!\tau_1,\ldots,x_n\!\mapsto\!\tau_n];\Delta;\Phi;\rho \vdash B \dashv \_}{\Delta;\Phi \vdash \mathbf{fn}\ f(\overline{x_i:\tau_i}):\rho\ \{B\}\ \checkmark}\]
 \end{frame}
 
 \hypertarget{conclusuxe3o}{%
-\section{Conclus\~{a}o}\label{conclusuxe3o}}
+\section{Conclusão}\label{conclusuxe3o}}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-1}{}
 \begin{itemize}
 
 \item
-  \textbf{Tipos} classificam valores e restringem opera\c{c}\~{o}es; tipagem
-  pode ser estática ou din\^{a}mica, forte ou fraca
+  \textbf{Tipos} classificam valores e restringem operações; tipagem
+  pode ser estática ou dinâmica, forte ou fraca
 \item
   O \textbf{sistema de tipos} \(\vdash t : T\) é definido por regras de
-  infer\^{e}ncia --- cada construtor tem exatamente uma regra (unicidade de
+  inferência --- cada construtor tem exatamente uma regra (unicidade de
   tipos)
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-2}{}
 \begin{itemize}
 
 \item
-  \textbf{Formas presas}: termos sem valor e sem redu\c{c}\~{a}o possível ---
-  representam erros em tempo de execu\c{c}\~{a}o
+  \textbf{Formas presas}: termos sem valor e sem redução possível ---
+  representam erros em tempo de execução
 \item
-  \textbf{Type Soundness} = Preserva\c{c}\~{a}o + Progresso: programas bem
+  \textbf{Type Soundness} = Preservação + Progresso: programas bem
   tipados nunca ficam presos
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-3}{}
 \begin{itemize}
 
 \item
-  \textbf{Preserva\c{c}\~{a}o}: prova que o tipo n\~{a}o muda durante a execu\c{c}\~{a}o
-  (indu\c{c}\~{a}o na redu\c{c}\~{a}o \(t \to t'\))
+  \textbf{Preservação}: prova que o tipo não muda durante a execução
+  (indução na redução \(t \to t'\))
 \item
-  \textbf{Progresso}: prova que a execu\c{c}\~{a}o nunca trava (indu\c{c}\~{a}o na
+  \textbf{Progresso}: prova que a execução nunca trava (indução na
   tipagem \(\vdash t : T\))
 \item
-  Os dois lemas s\~{a}o \textbf{independentes} e \textbf{complementares} ---
+  Os dois lemas são \textbf{independentes} e \textbf{complementares} ---
   cada um é necessário e insuficiente sozinho
 \end{itemize}
 \end{frame}

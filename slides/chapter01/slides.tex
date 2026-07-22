@@ -3,7 +3,7 @@
 \titlepage
 \end{frame}
 
-\begin{frame}{Defini\c{c}\~{a}o}
+\begin{frame}{Definição}
 \protect\hypertarget{definiuxe7uxe3o}{}
 \begin{itemize}
 
@@ -16,48 +16,48 @@
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Defini\c{c}\~{a}o}
+\begin{frame}{Definição}
 \protect\hypertarget{definiuxe7uxe3o-1}{}
 \begin{itemize}
 
 \item
-  A linguagem de destino é projetada para \textbf{execu\c{c}\~{a}o eficiente por
+  A linguagem de destino é projetada para \textbf{execução eficiente por
   hardware}
 \item
-  A tradu\c{c}\~{a}o é desafiadora quando as linguagens s\~{a}o muito diferentes
+  A tradução é desafiadora quando as linguagens são muito diferentes
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Defini\c{c}\~{a}o}
+\begin{frame}{Definição}
 \protect\hypertarget{definiuxe7uxe3o-2}{}
 \begin{itemize}
 
 \item
-  Compiladores s\~{a}o sistemas complexos que exigem técnicas sofisticadas
+  Compiladores são sistemas complexos que exigem técnicas sofisticadas
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Exemplos de Compila\~{c}\~{a}o}
+\begin{frame}{Exemplos de Compila\~{c}ão}
 \protect\hypertarget{exemplos-de-compilauxe7uxe3o}{}
 \begin{itemize}
 
 \item
-  C/C++ → código assembly x86-64
+  C/C++ -> código assembly x86-64
 \item
-  Java → bytecode JVM (\emph{just-in-time}: JVM → código nativo)
+  Java -> bytecode JVM (\emph{just-in-time}: JVM -> código nativo)
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Exemplos de Compila\~{c}\~{a}o}
+\begin{frame}{Exemplos de Compila\~{c}ão}
 \protect\hypertarget{exemplos-de-compilauxe7uxe3o-1}{}
 \begin{itemize}
 
 \item
-  Haskell → código assembly via GHC
+  Haskell -> código assembly via GHC
 \item
-  TypeScript → JavaScript
+  TypeScript -> JavaScript
 \item
-  LLVM IR → código de máquina para diversas arquiteturas
+  LLVM IR -> código de máquina para diversas arquiteturas
 \end{itemize}
 \end{frame}
 
@@ -69,7 +69,7 @@
 & Compilador & Interpretador \\
 \midrule
 
-Execu\c{c}\~{a}o & Traduz antes de executar & Executa diretamente \\
+Execução & Traduz antes de executar & Executa diretamente \\
 Desempenho & \textasciitilde10× mais rápido & Mais lento \\
 \bottomrule
 \end{tabular}
@@ -85,7 +85,7 @@ Desempenho & \textasciitilde10× mais rápido & Mais lento \\
 \midrule
 
 Energia & Menos consumo & Mais consumo \\
-Tempo de compila\~{c}\~{a}o & Pode ser alto & Nenhum \\
+Tempo de compila\~{c}ão & Pode ser alto & Nenhum \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -98,11 +98,11 @@ Tempo de compila\~{c}\~{a}o & Pode ser alto & Nenhum \\
 \item
   Compilar faz sentido para programas executados \textbf{muitas vezes}
 \item
-  Para execu\c{c}\~{a}o única, interpretar pode ser mais conveniente
+  Para execução única, interpretar pode ser mais conveniente
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Por que Compiladores S\~{a}o Difíceis?}
+\begin{frame}{Por que Compiladores São Difíceis?}
 \protect\hypertarget{por-que-compiladores-suxe3o-difuxedceis}{}
 \begin{itemize}
 
@@ -114,21 +114,21 @@ Tempo de compila\~{c}\~{a}o & Pode ser alto & Nenhum \\
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Por que Compiladores S\~{a}o Difíceis?}
+\begin{frame}{Por que Compiladores São Difíceis?}
 \protect\hypertarget{por-que-compiladores-suxe3o-difuxedceis-1}{}
 \begin{itemize}
 
 \item
-  A diferen\c{c}a entre as duas representa\c{c}\~{o}es é enorme
+  A diferença entre as duas representações é enorme
 \item
-  Mais importante que desempenho é a \textbf{corre\c{c}\~{a}o} do compilador
+  Mais importante que desempenho é a \textbf{correção} do compilador
 \item
-  Erros introduzidos pelo compilador s\~{a}o extremamente difíceis de
+  Erros introduzidos pelo compilador são extremamente difíceis de
   depurar
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Corre\c{c}\~{a}o de Compiladores}
+\begin{frame}{Correção de Compiladores}
 \protect\hypertarget{correuxe7uxe3o-de-compiladores}{}
 \begin{itemize}
 
@@ -136,52 +136,52 @@ Tempo de compila\~{c}\~{a}o & Pode ser alto & Nenhum \\
   É possível definir matematicamente o que significa um compilador estar
   correto
 \item
-  Requer sem\^{a}ntica formal para linguagem de origem \textbf{e} de destino
+  Requer semântica formal para linguagem de origem \textbf{e} de destino
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Corre\c{c}\~{a}o de Compiladores}
+\begin{frame}{Correção de Compiladores}
 \protect\hypertarget{correuxe7uxe3o-de-compiladores-1}{}
 \begin{itemize}
 
 \item
   Vários compiladores foram desenvolvidos com \textbf{provas de
-  corre\c{c}\~{a}o}
+  correção}
 \item
   Exemplo: CompCert --- compilador C com prova formal verificada por
   computador
 \item
-  Nossa abordagem: especificar cada fase com precis\~{a}o
+  Nossa abordagem: especificar cada fase com precisão
 \end{itemize}
 \end{frame}
 
 
 
-\begin{frame}{Vis\~{a}o Geral do Pipeline}
+\begin{frame}{Visão Geral do Pipeline}
 \protect\hypertarget{visuxe3o-geral-do-pipeline}{}
 \begin{enumerate}
 
 \item
-  \textbf{Análise léxica} --- caracteres → tokens
+  \textbf{Análise léxica} --- caracteres -> tokens
 \item
-  \textbf{Análise sintática} --- tokens → árvore sintática
+  \textbf{Análise sintática} --- tokens -> árvore sintática
 \item
-  \textbf{Análise sem\^{a}ntica} --- verifica\c{c}\~{a}o de tipos e de contexto
+  \textbf{Análise semântica} --- verificação de tipos e de contexto
 \end{enumerate}
 \end{frame}
 
-\begin{frame}{Vis\~{a}o Geral do Pipeline}
+\begin{frame}{Visão Geral do Pipeline}
 \protect\hypertarget{visuxe3o-geral-do-pipeline-1}{}
 \begin{enumerate}
 \setcounter{enumi}{3}
 
 \item
-  \textbf{Gera\c{c}\~{a}o de código intermediário} --- árvore → representa\c{c}\~{a}o
+  \textbf{Geração de código intermediário} --- árvore -> representação
   intermediária
 \item
-  \textbf{Otimiza\c{c}\~{a}o} --- melhora o código intermediário
+  \textbf{Otimização} --- melhora o código intermediário
 \item
-  \textbf{Gera\c{c}\~{a}o de código} --- representa\c{c}\~{a}o intermediária →
+  \textbf{Geração de código} --- representação intermediária ->
   código-alvo
 \end{enumerate}
 \end{frame}
@@ -193,7 +193,7 @@ Tempo de compila\~{c}\~{a}o & Pode ser alto & Nenhum \\
 \item
   Em vez de traduzir diretamente do código-fonte para código de máquina
 \item
-  Definimos uma sequ\^{e}ncia de \textbf{fases} e \textbf{representa\c{c}\~{o}es
+  Definimos uma sequência de \textbf{fases} e \textbf{representações
   intermediárias}
 \end{itemize}
 \end{frame}
@@ -203,10 +203,10 @@ Tempo de compila\~{c}\~{a}o & Pode ser alto & Nenhum \\
 \begin{itemize}
 
 \item
-  Cada fase transforma o programa para uma representa\c{c}\~{a}o mais próxima do
+  Cada fase transforma o programa para uma representação mais próxima do
   destino
 \item
-  Cada representa\c{c}\~{a}o intermediária é projetada para a conveni\^{e}ncia da
+  Cada representação intermediária é projetada para a conveniência da
   fase atual
 \end{itemize}
 \end{frame}
@@ -220,11 +220,11 @@ if (val >= 0) pos = val
 \begin{itemize}
 
 \item
-  Vamos acompanhar essa instru\c{c}\~{a}o pelas fases do compilador
+  Vamos acompanhar essa instrução pelas fases do compilador
 \item
-  Come\c{c}amos com uma sequ\^{e}ncia de bytes/caracteres
+  Começamos com uma sequência de bytes/caracteres
 \item
-  Terminamos com instru\c{c}\~{o}es de máquina
+  Terminamos com instruções de máquina
 \end{itemize}
 \end{frame}
 
@@ -237,7 +237,7 @@ if (val >= 0) pos = val
 \item
   Divide o texto em \textbf{tokens} (as ``palavras'' do programa)
 \item
-  Descarta espa\c{c}os em branco e comentários
+  Descarta espaços em branco e comentários
 \item
   Exemplo: \texttt{if}, \texttt{(},
   \texttt{val}, \texttt{>=},
@@ -257,7 +257,7 @@ if (val >= 0) pos = val
 \begin{itemize}
 
 \item
-  Verifica se os tokens formam uma sequ\^{e}ncia sintaticamente válida
+  Verifica se os tokens formam uma sequência sintaticamente válida
 \item
   Produz uma \textbf{Árvore Sintática Abstrata (AST)}
 \end{itemize}
@@ -272,11 +272,11 @@ if (val >= 0) pos = val
 \item
   Captura a estrutura hierárquica do programa
 \item
-  Descarta elementos puramente sintáticos (como par\^{e}nteses)
+  Descarta elementos puramente sintáticos (como parênteses)
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Análise Sem\^{a}ntica}
+\begin{frame}{Análise Semântica}
 \protect\hypertarget{anuxe1lise-semuxe2ntica}{}
 \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter01/imgs/annotated-tree.png}
 
@@ -286,38 +286,38 @@ if (val >= 0) pos = val
   Completa a tarefa de verificar se o código representa um programa
   válido
 \item
-  Realiza \textbf{verifica\c{c}\~{a}o de tipos} e verifica\c{c}\~{o}es de contexto
+  Realiza \textbf{verificação de tipos} e verificações de contexto
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Análise Sem\^{a}ntica}
+\begin{frame}{Análise Semântica}
 \protect\hypertarget{anuxe1lise-semuxe2ntica-1}{}
 \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter01/imgs/annotated-tree.png}
 
 \begin{itemize}
 
 \item
-  Coleta informa\c{c}\~{o}es adicionais sobre o programa
+  Coleta informações adicionais sobre o programa
 \item
-  Enriquece a AST com \textbf{anota\c{c}\~{o}es} (tipos, refer\^{e}ncias a
-  declara\c{c}\~{o}es)
+  Enriquece a AST com \textbf{anotações} (tipos, referências a
+  declarações)
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Gera\c{c}\~{a}o de Código Intermediário}
+\begin{frame}{Geração de Código Intermediário}
 \protect\hypertarget{gerauxe7uxe3o-de-cuxf3digo-intermediuxe1rio}{}
 \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter01/imgs/cfg.png}
 
 \begin{itemize}
 
 \item
-  Produz uma \textbf{Representa\c{c}\~{a}o Intermediária (RI)}
+  Produz uma \textbf{Representação Intermediária (RI)}
 \item
   Exemplo: grafo de fluxo de controle
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Sele\c{c}\~{a}o de Instru\c{c}\~{o}es}
+\begin{frame}[fragile]{Seleção de Instruções}
 \protect\hypertarget{seleuxe7uxe3o-de-instruuxe7uxf5es}{}
 \begin{lstlisting}
      cmp val, 0       -- compara val com 0
@@ -329,13 +329,13 @@ L1:
 \begin{itemize}
 
 \item
-  Traduz a RI para instru\c{c}\~{o}es assembly abstrato
+  Traduz a RI para instruções assembly abstrato
 \item
-  Variáveis ainda s\~{a}o tratadas como registradores virtuais
+  Variáveis ainda são tratadas como registradores virtuais
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Aloca\c{c}\~{a}o de Registradores e Otimiza\c{c}\~{a}o}
+\begin{frame}[fragile]{Alocação de Registradores e Otimização}
 \protect\hypertarget{alocauxe7uxe3o-de-registradores-e-otimizauxe7uxe3o}{}
 \begin{lstlisting}
      cmp rax, 0
@@ -349,9 +349,9 @@ L1:
 \item
   Atribui variáveis a \textbf{registradores de hardware} reais
 \item
-  A otimiza\c{c}\~{a}o mais importante em compiladores
+  A otimização mais importante em compiladores
 \item
-  Pode usar instru\c{c}\~{o}es mais eficientes:
+  Pode usar instruções mais eficientes:
 \end{itemize}
 
 \begin{lstlisting}
@@ -362,7 +362,7 @@ L1:
 
 \hypertarget{exemplo-completo-de-compilauxe7uxe3o}{%
 \section{Exemplo Completo de
-Compila\~{c}\~{a}o}\label{exemplo-completo-de-compilauxe7uxe3o}}
+Compila\~{c}ão}\label{exemplo-completo-de-compilauxe7uxe3o}}
 
 \begin{frame}[fragile]{Código-Fonte}
 \protect\hypertarget{cuxf3digo-fonte}{}
@@ -379,7 +379,7 @@ findIndex(a:int[]): int {
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Código Assembly N\~{a}o-Otimizado}
+\begin{frame}[fragile]{Código Assembly Não-Otimizado}
 \protect\hypertarget{cuxf3digo-assembly-nuxe3o-otimizado}{}
 \begin{lstlisting}
 findIndex:
@@ -397,7 +397,7 @@ L1: mov     rax, [rbp - 32]
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Código Assembly N\~{a}o-Otimizado}
+\begin{frame}[fragile]{Código Assembly Não-Otimizado}
 \protect\hypertarget{cuxf3digo-assembly-nuxe3o-otimizado-1}{}
 \begin{itemize}
 
@@ -438,7 +438,7 @@ L2: mov  rax, -1
   Variáveis em registradores (\texttt{rcx},
   \texttt{rdx}, \texttt{rax})
 \item
-  Sem instru\c{c}\~{o}es de gerenciamento de pilha
+  Sem instruções de gerenciamento de pilha
 \item
   Um compilador otimizador pode igualar ou superar código humano
 \end{itemize}
@@ -469,7 +469,7 @@ f: 48 3b 04 d7    cmp  rax, [rdi + 8*rdx]
 \item
   Rótulos substituídos por deslocamentos hexadecimais
 \item
-  Resultado pronto para execu\c{c}\~{a}o direta pelo processador
+  Resultado pronto para execução direta pelo processador
 \end{itemize}
 \end{frame}
 
@@ -496,7 +496,7 @@ Código-fonte
 \item
   Cada ferramenta tem uma responsabilidade bem definida
 \item
-  O compilador gera assembly, n\~{a}o código de máquina diretamente
+  O compilador gera assembly, não código de máquina diretamente
 \end{itemize}
 \end{frame}
 
@@ -505,11 +505,11 @@ Código-fonte
 \begin{table}
 \begin{tabular}[]{@{}llll@{}}
 \toprule
-Ferramenta & Entrada & Saída & Fun\c{c}\~{a}o \\
+Ferramenta & Entrada & Saída & Função \\
 \midrule
 
-Compilador & Código-fonte & Assembly & Tradu\c{c}\~{a}o de linguagem \\
-Assembler & Assembly & Código objeto & Tradu\c{c}\~{a}o de instru\c{c}\~{o}es \\
+Compilador & Código-fonte & Assembly & Tradução de linguagem \\
+Assembler & Assembly & Código objeto & Tradução de instruções \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -520,11 +520,11 @@ Assembler & Assembly & Código objeto & Tradu\c{c}\~{a}o de instru\c{c}\~{o}es \
 \begin{table}
 \begin{tabular}[]{@{}llll@{}}
 \toprule
-Ferramenta & Entrada & Saída & Fun\c{c}\~{a}o \\
+Ferramenta & Entrada & Saída & Função \\
 \midrule
 
 Linker & Múltiplos \texttt{.o} & Executável & Resolve
-refer\^{e}ncias \\
+referências \\
 Loader & Executável & Processo & Carrega na memória \\
 \bottomrule
 \end{tabular}
@@ -532,9 +532,9 @@ Loader & Executável & Processo & Carrega na memória \\
 \end{frame}
 
 \hypertarget{conclusuxe3o}{%
-\section{Conclus\~{a}o}\label{conclusuxe3o}}
+\section{Conclusão}\label{conclusuxe3o}}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-1}{}
 \begin{itemize}
 
@@ -542,25 +542,25 @@ Loader & Executável & Processo & Carrega na memória \\
   Compiladores traduzem programas de linguagens de alto nível para baixo
   nível
 \item
-  A diferen\c{c}a entre origem e destino é enorme --- a solu\c{c}\~{a}o é
+  A diferença entre origem e destino é enorme --- a solução é
   \textbf{dividir em fases}
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-2}{}
 \begin{itemize}
 
 \item
-  Cada fase transforma o programa incrementalmente com representa\c{c}\~{o}es
+  Cada fase transforma o programa incrementalmente com representações
   intermediárias
 \item
-  \textbf{Corre\c{c}\~{a}o} é mais importante que desempenho: um compilador com
+  \textbf{Correção} é mais importante que desempenho: um compilador com
   bugs é perigoso!
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-3}{}
 \begin{itemize}
 

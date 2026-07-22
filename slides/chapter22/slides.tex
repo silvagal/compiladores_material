@@ -1,4 +1,4 @@
-\subtitle{\bf Aula 22 - Introdu\c{c}\~{a}o}
+\subtitle{\bf Aula 22 - Introduçãoo}
 \begin{frame}[t,plain]
 \titlepage
 \end{frame}
@@ -7,27 +7,27 @@
 \protect\hypertarget{objetivos-1}{}
 \begin{itemize}
 \item
-  Apresentar a rela\c{c}\~{a}o de subtipagem e o princípio de substitui\c{c}\~{a}o de
-  Liskov, incluindo a contravari\^{a}ncia nos tipos fun\c{c}\~{a}o.
+  Apresentar a relação de subtipagem e o princípio de substituição de
+  Liskov, incluindo a contravariância nos tipos função.
 \item
   Apresentar o Featherweight Java (FJ) como núcleo formal mínimo de
-  Java, com suas regras de subtipagem, tipagem e sem\^{a}ntica operacional.
+  Java, com suas regras de subtipagem, tipagem e semântica operacional.
 \item
-  Discutir a gera\c{c}\~{a}o de código para FJ: layout de objeto em memória,
-  despacho din\^{a}mico de métodos e verifica\c{c}\~{a}o de casts.
+  Discutir a geração de código para FJ: layout de objeto em memória,
+  despacho dinâmico de métodos e verificação de casts.
 \end{itemize}
 \end{frame}
 
 \hypertarget{introduuxe7uxe3o}{%
-\section{Introdu\c{c}\~{a}o}\label{introduuxe7uxe3o}}
+\section{Introduçãoo}\label{introduuxe7uxe3o}}
 
-\begin{frame}[fragile]{Motiva\c{c}\~{a}o: O Princípio de Liskov}
+\begin{frame}[fragile]{Motivação: O Princípio de Liskov}
 \protect\hypertarget{motivauxe7uxe3o-o-princuxedpio-de-liskov}{}
 Sistemas de tipos com igualdade exata de tipos rejeitam programas
 seguros:
 
 \begin{quote}
-Se uma fun\c{c}\~{a}o espera \texttt{Number} e fornecemos um
+Se uma função espera \texttt{Number} e fornecemos um
 \texttt{Int}, por que reclamar? Todo inteiro é um
 número.
 \end{quote}
@@ -36,11 +36,11 @@ A \textbf{subtipagem} torna esse raciocínio preciso:
 
 \begin{quote}
 \(S <: T\) significa: \emph{todo valor de tipo \(S\) pode ser usado com
-seguran\c{c}a onde um valor de tipo \(T\) é esperado.}
+segurança onde um valor de tipo \(T\) é esperado.}
 \end{quote}
 
-Este é o \textbf{Princípio de Substitui\c{c}\~{a}o de Liskov} --- a base da
-orienta\c{c}\~{a}o a objetos.
+Este é o \textbf{Princípio de Substituição de Liskov} --- a base da
+orientação a objetos.
 \end{frame}
 
 \begin{frame}{Dois Sistemas Neste Capítulo}
@@ -48,7 +48,7 @@ orienta\c{c}\~{a}o a objetos.
 \begin{enumerate}
 \item
   \textbf{\(\lambda\)-cálculo com subtipagem}:
-  \(\mathsf{Bool} <: \mathsf{Int}\), progresso, preserva\c{c}\~{a}o,
+  \(\mathsf{Bool} <: \mathsf{Int}\), progresso, preservação,
   decidibilidade
 \item
   \textbf{Featherweight Java (FJ)}: núcleo formal mínimo de Java com:
@@ -56,11 +56,11 @@ orienta\c{c}\~{a}o a objetos.
   \begin{itemize}
 
   \item
-    Classes, heran\c{c}a, campos, métodos
+    Classes, herança, campos, métodos
   \item
-    Cria\c{c}\~{a}o de objetos e \emph{casts}
+    Criação de objetos e \emph{casts}
   \item
-    Subtipagem por heran\c{c}a
+    Subtipagem por herança
   \end{itemize}
 \end{enumerate}
 \end{frame}
@@ -84,9 +84,9 @@ Subtipagem}{\textbackslash lambda-cálculo com Subtipagem}}\label{lambda-cuxe1lc
 \[v ::= n \mid \mathsf{true} \mid \mathsf{false} \mid \lambda x {:} T.\, t\]
 \end{frame}
 
-\begin{frame}{A Rela\c{c}\~{a}o de Subtipagem}
+\begin{frame}{A Relação de Subtipagem}
 \protect\hypertarget{a-relauxe7uxe3o-de-subtipagem}{}
-Menor rela\c{c}\~{a}o reflexivo-transitiva que satisfaz:
+Menor relação reflexivo-transitiva que satisfaz:
 
 \[\frac{}{T <: T} \quad\text{(S-Refl)} \qquad \frac{S <: U \quad U <: T}{S <: T} \quad\text{(S-Trans)}\]
 
@@ -100,31 +100,31 @@ Menor rela\c{c}\~{a}o reflexivo-transitiva que satisfaz:
   \textbf{S-Arrow}: contravariante no domínio, covariante no
   contradomínio
 \item
-  A fun\c{c}\~{a}o que aceita mais (\(T_1 <: S_1\)) e retorna menos
+  A função que aceita mais (\(T_1 <: S_1\)) e retorna menos
   (\(S_2 <: T_2\)) é subtipo
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Sistema de Tipos: Regra de Subsun\c{c}\~{a}o}
+\begin{frame}[fragile]{Sistema de Tipos: Regra de Subsunção}
 \protect\hypertarget{sistema-de-tipos-regra-de-subsunuxe7uxe3o}{}
 A regra central que conecta subtipagem e tipagem:
 
 \[\frac{\Gamma \vdash t : S \quad S <: T}{\Gamma \vdash t : T} \quad\text{(T-Sub)}\]
 
-``Se \(t\) tem tipo \(S\) e \(S <: T\), ent\~{a}o \(t\) também tem tipo
+``Se \(t\) tem tipo \(S\) e \(S <: T\), então \(t\) também tem tipo
 \(T\).''
 
-Demais regras padr\~{a}o: T-Var, T-Int, T-True, T-False, T-Add, T-If, T-Abs,
+Demais regras padrão: T-Var, T-Int, T-True, T-False, T-Add, T-If, T-Abs,
 T-App.
 
-Gra\c{c}as \`{a} subsun\c{c}\~{a}o: se os ramos de um \texttt{if} t\^{e}m
+Graças à subsunção: se os ramos de um \texttt{if} têm
 tipos \(\mathsf{Bool}\) e \(\mathsf{Int}\), podemos elevar o primeiro
 para \(\mathsf{Int}\) e unificar.
 \end{frame}
 
-\begin{frame}{Progresso, Preserva\c{c}\~{a}o e Decidibilidade}
+\begin{frame}{Progresso, Preservação e Decidibilidade}
 \protect\hypertarget{progresso-preservauxe7uxe3o-e-decidibilidade}{}
-\textbf{Lema (Formas Can\^{o}nicas)} --- se \(\vdash v : T\): -
+\textbf{Lema (Formas Canônicas)} --- se \(\vdash v : T\): -
 \(T = \mathsf{Int} \Rightarrow v\) é inteiro ou booleano -
 \(T = T_1 \to T_2 \Rightarrow v = \lambda x {:} T.\, t\) com
 \(T <: T_1\)
@@ -132,7 +132,7 @@ para \(\mathsf{Int}\) e unificar.
 \textbf{Teorema (Progresso)}: \(\vdash t : T \Rightarrow t\) valor ou
 \(\exists t'.\; t \to t'\)
 
-\textbf{Teorema (Preserva\c{c}\~{a}o)}: \(\vdash t : T\) e
+\textbf{Teorema (Preservação)}: \(\vdash t : T\) e
 \(t \to t' \Rightarrow \vdash t' : T\)
 
 \textbf{Teorema (Decidibilidade de \(S <: T\))}:
@@ -150,7 +150,7 @@ para \(\mathsf{Int}\) e unificar.
   Caso contrário: false
 \end{enumerate}
 
-A transitividade n\~{a}o precisa de tratamento especial --- o algoritmo é
+A transitividade não precisa de tratamento especial --- o algoritmo é
 correto e termina.
 \end{frame}
 
@@ -165,30 +165,30 @@ Proposto por Igarashi, Pierce e Wadler (2001):
 \item
   Núcleo formal \textbf{mínimo} de Java
 \item
-  Captura os mecanismos essenciais de OO: classes, heran\c{c}a, campos,
+  Captura os mecanismos essenciais de OO: classes, herança, campos,
   métodos, casts
 \item
   Pequeno o suficiente para análise formal rigorosa
 \end{itemize}
 
-\textbf{FJ omite} (deliberadamente): atribui\c{c}\~{a}o, controle de fluxo,
+\textbf{FJ omite} (deliberadamente): atribuição, controle de fluxo,
 interfaces, sobrecarga, tipos primitivos.
 
 O que permanece é suficiente para demonstrar \textbf{progresso},
-\textbf{preserva\c{c}\~{a}o} e corre\c{c}\~{a}o dos \emph{casts}.
+\textbf{preservação} e correção dos \emph{casts}.
 \end{frame}
 
 \begin{frame}{Sintaxe de FJ}
 \protect\hypertarget{sintaxe-de-fj}{}
-\textbf{Declara\c{c}\~{a}o de classe:}
+\textbf{Declaração de classe:}
 \[\mathtt{class}\ C\ \mathtt{extends}\ D\ \{\ \overline{T\ f};\ K\ \overline{M}\ \}\]
 
-\textbf{Construtor can\^{o}nico:}
+\textbf{Construtor canônico:}
 \[C(\overline{D\ g},\, \overline{T\ f})\ \{\ \mathtt{super}(\bar{g});\ \overline{\mathtt{this}.f = f};\ \}\]
 
 \textbf{Método:} \[T\ m(\overline{T\ x})\ \{\ \mathtt{return}\ e;\ \}\]
 
-\textbf{Express\~{o}es:}
+\textbf{Expressões:}
 
 \[e ::= x \mid e.f \mid e.m(\bar{e}) \mid \mathtt{new}\ C(\bar{e}) \mid (C)\ e\]
 
@@ -197,12 +197,12 @@ O que permanece é suficiente para demonstrar \textbf{progresso},
 \[v ::= \mathtt{new}\ C(\bar{v})\]
 \end{frame}
 
-\begin{frame}[fragile]{Tabela de Classes e Fun\c{c}\~{o}es Auxiliares}
+\begin{frame}[fragile]{Tabela de Classes e Funções Auxiliares}
 \protect\hypertarget{tabela-de-classes-e-funuxe7uxf5es-auxiliares}{}
 A \textbf{tabela de classes} \(\mathit{CT}\) mapeia nomes de classe para
-declara\c{c}\~{o}es.
+declarações.
 
-\textbf{Fun\c{c}\~{o}es de consulta:}
+\textbf{Funções de consulta:}
 
 \begin{itemize}
 
@@ -213,23 +213,23 @@ declara\c{c}\~{o}es.
   \(\mathit{mtype}(m, C)\) --- assinatura de \(m\) em \(C\) (busca na
   hierarquia)
 \item
-  \(\mathit{mbody}(m, C)\) --- par\^{a}metros e corpo de \(m\) em \(C\)
+  \(\mathit{mbody}(m, C)\) --- parâmetros e corpo de \(m\) em \(C\)
 \end{itemize}
 
-\textbf{Subtipagem por heran\c{c}a:}
+\textbf{Subtipagem por herança:}
 
 \[\frac{}{C <: C} \quad\text{(S-Refl)} \qquad \frac{C <: D \quad D <: E}{C <: E} \quad\text{(S-Trans)} \qquad \frac{\mathit{CT}(C) = \mathtt{class}\ C\ \mathtt{extends}\ D\ \{\ldots\}}{C <: D} \quad\text{(S-Extends)}\]
 
 Todo tipo é subtipo de \texttt{Object}.
 \end{frame}
 
-\begin{frame}[fragile]{Sem\^{a}ntica Operacional de FJ}
+\begin{frame}[fragile]{Semântica Operacional de FJ}
 \protect\hypertarget{semuxe2ntica-operacional-de-fj}{}
 \textbf{Acesso a campo (B-Field):}
 
 \[\frac{\mathit{fields}(C) = \overline{C\ f}}{(\mathtt{new}\ C(\bar{v})).f_i \to v_i}\]
 
-\textbf{Invoca\c{c}\~{a}o de método (B-Invk):}
+\textbf{Invocação de método (B-Invk):}
 
 \[\frac{\mathit{mbody}(m, C) = (\bar{x}, e)}{(\mathtt{new}\ C(\bar{v})).m(\bar{u}) \to e[\bar{x} \mapsto \bar{u},\, \mathtt{this} \mapsto \mathtt{new}\ C(\bar{v})]}\]
 
@@ -237,11 +237,11 @@ Todo tipo é subtipo de \texttt{Object}.
 
 \[\frac{C <: D}{(D)\, \mathtt{new}\ C(\bar{v}) \to \mathtt{new}\ C(\bar{v})}\]
 
-Se \(C \not<: D\): lan\c{c}a \texttt{ClassCastException}
---- erro em tempo de execu\c{c}\~{a}o!
+Se \(C \not<: D\): lança \texttt{ClassCastException}
+--- erro em tempo de execução!
 \end{frame}
 
-\begin{frame}[fragile]{Gera\c{c}\~{a}o de Código para FJ}
+\begin{frame}[fragile]{Geração de Código para FJ}
 \protect\hypertarget{gerauxe7uxe3o-de-cuxf3digo-para-fj}{}
 \textbf{Layout de objeto}:
 \texttt{[class\_tag | f0 | f1 | ... | fn]} --- palavras
@@ -257,7 +257,7 @@ data CgEnv = CgEnv
 type CgM = StateT CgState (ExceptT String Identity)
 \end{lstlisting}
 
-\textbf{Despacho din\^{a}mico}: l\^{e} tag no offset 0, cadeia de CJUMPs:
+\textbf{Despacho dinâmico}: lê tag no offset 0, cadeia de CJUMPs:
 
 \begin{lstlisting}[language=Haskell]
 buildDispatchChain :: MethodName -> [(Int, ClassName)] -> Stmt
@@ -270,7 +270,7 @@ buildDispatchChain m ((tag, cls):rest) =
 \end{frame}
 
 \hypertarget{conclusuxe3o}{%
-\section{Conclus\~{a}o}\label{conclusuxe3o}}
+\section{Conclusão}\label{conclusuxe3o}}
 
 \begin{frame}{Sumário do Capítulo}
 \protect\hypertarget{sumuxe1rio-do-capuxedtulo}{}
@@ -280,19 +280,19 @@ buildDispatchChain m ((tag, cls):rest) =
   \textbf{Subtipagem} \(S <: T\): todo valor de \(S\) pode ser usado
   onde \(T\) é esperado
 \item
-  \textbf{Regra de subsun\c{c}\~{a}o} (T-Sub): permite usar subtipo onde
+  \textbf{Regra de subsunção} (T-Sub): permite usar subtipo onde
   supertipo é esperado
 \item
   \textbf{S-Arrow}: contravariante no domínio, covariante no
   contradomínio
 \item
-  \textbf{FJ}: núcleo formal mínimo de Java com classes, heran\c{c}a e casts
+  \textbf{FJ}: núcleo formal mínimo de Java com classes, herança e casts
 \item
-  \textbf{Subtipagem por heran\c{c}a}: \(C <: D\) se \(C\) estende \(D\)
+  \textbf{Subtipagem por herança}: \(C <: D\) se \(C\) estende \(D\)
   (fecho reflexivo-transitivo)
 \item
-  \textbf{Gera\c{c}\~{a}o de código}: tags de classe, layout de objeto, despacho
-  din\^{a}mico
+  \textbf{Geração de código}: tags de classe, layout de objeto, despacho
+  dinâmico
 \end{itemize}
 \end{frame}
 
@@ -301,12 +301,12 @@ buildDispatchChain m ((tag, cls):rest) =
 \begin{itemize}
 
 \item
-  \textbf{Infer\^{e}ncia de tipos com subtipagem}: algoritmos mais complexos
+  \textbf{Inferência de tipos com subtipagem}: algoritmos mais complexos
   (bivariance, polimorfismo + subtipagem)
 \item
   \textbf{Subtipagem estrutural} vs.~\textbf{nominal} (Java
   vs.~Go/TypeScript)
 \item
-  \textbf{A pesquisa em compiladores} (capítulo 23): tópicos avan\c{c}ados
+  \textbf{A pesquisa em compiladores} (capítulo 23): tópicos avançados
 \end{itemize}
 \end{frame}

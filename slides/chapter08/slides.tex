@@ -20,14 +20,14 @@
 \begin{itemize}
 
 \item
-  \textbf{L} (primeiro): l\^{e} a entrada da \textbf{esquerda para a
+  \textbf{L} (primeiro): lê a entrada da \textbf{esquerda para a
   direita} (\emph{Left-to-right})
 \item
-  \textbf{L} (segundo): produz uma \textbf{deriva\c{c}\~{a}o mais \`{a} esquerda}
+  \textbf{L} (segundo): produz uma \textbf{derivação mais à esquerda}
   (\emph{Leftmost derivation})
 \item
   \textbf{1}: usa apenas \textbf{1 símbolo de lookahead} para decidir
-  qual produ\c{c}\~{a}o aplicar
+  qual produção aplicar
 \end{itemize}
 \end{frame}
 
@@ -36,11 +36,11 @@
 \begin{itemize}
 
 \item
-  Substitui a \textbf{recurs\~{a}o} por um \textbf{algoritmo dirigido por
+  Substitui a \textbf{recursão} por um \textbf{algoritmo dirigido por
   tabela}
 \item
-  Tabela de parsing \(M[A, a]\): dado n\~{a}o-terminal \(A\) e token \(a\),
-  qual produ\c{c}\~{a}o aplicar?
+  Tabela de parsing \(M[A, a]\): dado não-terminal \(A\) e token \(a\),
+  qual produção aplicar?
 \end{itemize}
 \end{frame}
 
@@ -58,7 +58,7 @@
 
 \begin{frame}{O Algoritmo LL(1)}
 \protect\hypertarget{o-algoritmo-ll1-1}{}
-\textbf{Inicializa\c{c}\~{a}o}: pilha \(\leftarrow [S, \$]\), onde \(S\) é o
+\textbf{Inicialização}: pilha \(\leftarrow [S, \$]\), onde \(S\) é o
 símbolo inicial
 
 \textbf{Repita}:
@@ -77,10 +77,10 @@ símbolo inicial
 \begin{itemize}
 
 \item
-  Se \(X\) é terminal \(t\): se \(t = a\), desempilha e avan\c{c}a; sen\~{a}o
+  Se \(X\) é terminal \(t\): se \(t = a\), desempilha e avança; senão
   \textbf{erro}
 \item
-  Se \(X\) é n\~{a}o-terminal \(A\): consulta \(M[A, a]\)
+  Se \(X\) é não-terminal \(A\): consulta \(M[A, a]\)
 
   \begin{itemize}
 
@@ -97,7 +97,7 @@ símbolo inicial
 \section{\texorpdfstring{Exemplo: Análise de
 \texttt{n\ +\ n}}{Exemplo: Análise de n + n}}\label{exemplo-anuxe1lise-de-n-n}}
 
-\begin{frame}{Gramática de Express\~{o}es (LL(1))}
+\begin{frame}{Gramática de Expressões (LL(1))}
 \protect\hypertarget{gramuxe1tica-de-expressuxf5es-ll1}{}
 \[\begin{array}{lcl}
 E  &\to& T\; E' \\
@@ -114,7 +114,7 @@ F  &\to& (\; E\; ) \mid \mathbf{n}
 \begin{table}
 \begin{tabular}[]{@{}lll@{}}
 \toprule
-Pilha & Entrada & A\c{c}\~{a}o \\
+Pilha & Entrada & Ação \\
 \midrule
 
 \(E\;\$\) & \(n\;+\;n\;\$\) & \(M[E,n]\): aplicar \(E \to T\;E'\) \\
@@ -139,7 +139,7 @@ Pilha
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Entrada
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-A\c{c}\~{a}o
+Ação
 \end{minipage} \\
 \midrule
 
@@ -158,7 +158,7 @@ A\c{c}\~{a}o
 \begin{table}
 \begin{tabular}[]{@{}lll@{}}
 \toprule
-Pilha & Entrada & A\c{c}\~{a}o \\
+Pilha & Entrada & Ação \\
 \midrule
 
 \(+\;T\;E'\;\$\) & \(+\;n\;\$\) & Casar: consumir \(+\) \\
@@ -175,7 +175,7 @@ Pilha & Entrada & A\c{c}\~{a}o \\
 \begin{table}
 \begin{tabular}[]{@{}lll@{}}
 \toprule
-Pilha & Entrada & A\c{c}\~{a}o \\
+Pilha & Entrada & Ação \\
 \midrule
 
 \(n\;T'\;E'\;\$\) & \(n\;\$\) & Casar: consumir \(n\) \\
@@ -188,16 +188,16 @@ Pilha & Entrada & A\c{c}\~{a}o \\
 \end{frame}
 
 \hypertarget{construuxe7uxe3o-da-tabela-ll1}{%
-\section{Constru\c{c}\~{a}o da Tabela
+\section{Construção da Tabela
 LL(1)}\label{construuxe7uxe3o-da-tabela-ll1}}
 
 \begin{frame}{Conceito: Anulável}
 \protect\hypertarget{conceito-anuluxe1vel}{}
-Um n\~{a}o-terminal \(A\) é \textbf{anulável} se
+Um não-terminal \(A\) é \textbf{anulável} se
 \(A \Rightarrow^* \lambda\).
 
-Uma sequ\^{e}ncia \(X_1\, X_2\, \cdots\, X_n\) é anulável se \textbf{todos}
-os \(X_i\) s\~{a}o anuláveis.
+Uma sequência \(X_1\, X_2\, \cdots\, X_n\) é anulável se \textbf{todos}
+os \(X_i\) são anuláveis.
 \end{frame}
 
 \begin{frame}{Conceito: Anulável}
@@ -207,9 +207,9 @@ Casos base:
 \begin{itemize}
 
 \item
-  Todo terminal n\~{a}o é anulável
+  Todo terminal não é anulável
 \item
-  \(A\) anulável se tem produ\c{c}\~{a}o \(A \to \lambda\)
+  \(A\) anulável se tem produção \(A \to \lambda\)
 \item
   Calculado iterativamente até ponto fixo
 \end{itemize}
@@ -230,11 +230,11 @@ anulável.
 \begin{enumerate}
 
 \item
-  Sequ\^{e}ncia vazia: \(\mathrm{FIRST}(\lambda) = \{\lambda\}\)
+  Sequência vazia: \(\mathrm{FIRST}(\lambda) = \{\lambda\}\)
 \item
   \(X_1\) é terminal \(a\): \(\mathrm{FIRST}(X_1\cdots) = \{a\}\)
 \item
-  \(X_1\) é n\~{a}o-terminal:
+  \(X_1\) é não-terminal:
 
   \begin{itemize}
 
@@ -261,7 +261,7 @@ anulável.
 \item
   \(\$ \in \mathrm{FOLLOW}(S)\) (símbolo inicial)
 \item
-  Para cada produ\c{c}\~{a}o \(B \to \alpha\,A\,\beta\):
+  Para cada produção \(B \to \alpha\,A\,\beta\):
 
   \begin{itemize}
 
@@ -277,9 +277,9 @@ anulável.
 Calculado iterativamente até ponto fixo.
 \end{frame}
 
-\begin{frame}{Constru\c{c}\~{a}o da Tabela}
+\begin{frame}{Construção da Tabela}
 \protect\hypertarget{construuxe7uxe3o-da-tabela}{}
-Para cada produ\c{c}\~{a}o \(A \to \alpha\):
+Para cada produção \(A \to \alpha\):
 
 \begin{enumerate}
 
@@ -294,7 +294,7 @@ Para cada produ\c{c}\~{a}o \(A \to \alpha\):
 \end{enumerate}
 \end{frame}
 
-\begin{frame}{Constru\c{c}\~{a}o da Tabela}
+\begin{frame}{Construção da Tabela}
 \protect\hypertarget{construuxe7uxe3o-da-tabela-1}{}
 \begin{enumerate}
 \setcounter{enumi}{1}
@@ -315,17 +315,17 @@ Para cada produ\c{c}\~{a}o \(A \to \alpha\):
   \end{itemize}
 \end{enumerate}
 
-Entradas n\~{a}o preenchidas indicam \textbf{erro}.
+Entradas não preenchidas indicam \textbf{erro}.
 \end{frame}
 
-\begin{frame}{Constru\c{c}\~{a}o da Tabela}
+\begin{frame}{Construção da Tabela}
 \protect\hypertarget{construuxe7uxe3o-da-tabela-2}{}
-\textbf{Conflito} = uma entrada recebe mais de uma produ\c{c}\~{a}o
+\textbf{Conflito} = uma entrada recebe mais de uma produção
 
 \begin{itemize}
 
 \item
-  gramática n\~{a}o é LL(1)!
+  gramática não é LL(1)!
 \end{itemize}
 \end{frame}
 
@@ -333,7 +333,7 @@ Entradas n\~{a}o preenchidas indicam \textbf{erro}.
 \section{Exemplo Completo: Tabela
 LL(1)}\label{exemplo-completo-tabela-ll1}}
 
-\begin{frame}{Gramática de Express\~{o}es (LL(1))}
+\begin{frame}{Gramática de Expressões (LL(1))}
 \protect\hypertarget{gramuxe1tica-de-expressuxf5es-ll1-1}{}
 \[\begin{array}{lcl}
 E  &\to& T\; E' \\
@@ -349,7 +349,7 @@ F  &\to& (\; E\; ) \mid \mathbf{n}
 \begin{table}
 \begin{tabular}[]{@{}ll@{}}
 \toprule
-N\~{a}o-terminal & FIRST \\
+Não-terminal & FIRST \\
 \midrule
 
 \(E\) & \(\{(, n\}\) \\
@@ -367,7 +367,7 @@ N\~{a}o-terminal & FIRST \\
 \begin{table}
 \begin{tabular}[]{@{}ll@{}}
 \toprule
-N\~{a}o-terminal & FOLLOW \\
+Não-terminal & FOLLOW \\
 \midrule
 
 \(E\) & \(\{\$, )\}\) \\
@@ -418,7 +418,7 @@ N\~{a}o-terminal & FOLLOW \\
 \end{tabular}
 \end{table}
 
-Cada entrada tem no máximo uma produ\c{c}\~{a}o --- a gramática é LL(1).
+Cada entrada tem no máximo uma produção --- a gramática é LL(1).
 \end{frame}
 
 \hypertarget{conflitos-na-tabela-ll1}{%
@@ -426,11 +426,11 @@ Cada entrada tem no máximo uma produ\c{c}\~{a}o --- a gramática é LL(1).
 
 \begin{frame}[fragile]{Conflito FIRST/FIRST}
 \protect\hypertarget{conflito-firstfirst}{}
-Quando duas alternativas de um mesmo n\~{a}o-terminal come\c{c}am com o mesmo
+Quando duas alternativas de um mesmo não-terminal começam com o mesmo
 terminal:
 
 \begin{lstlisting}
-S → if E then S else S
+S -> if E then S else S
   | if E then S
   | other
 \end{lstlisting}
@@ -441,18 +441,18 @@ S → if E then S else S
 \(\mathrm{FIRST}(\mathbf{if}\;E\;\mathbf{then}\;S\;\mathbf{else}\;S) = \{\mathbf{if}\}\)
 \(\mathrm{FIRST}(\mathbf{if}\;E\;\mathbf{then}\;S) = \{\mathbf{if}\}\)
 
-\(M[S, \mathbf{if}]\) recebe \textbf{duas produ\c{c}\~{o}es}: \textbf{conflito
+\(M[S, \mathbf{if}]\) recebe \textbf{duas produções}: \textbf{conflito
 FIRST/FIRST}!
 \end{frame}
 
 \begin{frame}[fragile]{Conflito FIRST/FOLLOW}
 \protect\hypertarget{conflito-firstfollow}{}
-Quando uma produ\c{c}\~{a}o pode derivar \(\lambda\) e os conjuntos FIRST e
-FOLLOW n\~{a}o s\~{a}o disjuntos:
+Quando uma produção pode derivar \(\lambda\) e os conjuntos FIRST e
+FOLLOW não são disjuntos:
 
 \begin{lstlisting}
-S → A a
-A → a | λ
+S -> A a
+A -> a | λ
 \end{lstlisting}
 \end{frame}
 
@@ -472,7 +472,7 @@ quanto \(A \to \lambda\) (pois \(a \in \mathrm{FOLLOW}(A)\)):
 \end{frame}
 
 \hypertarget{implementauxe7uxe3o-em-haskell}{%
-\section{Implementa\c{c}\~{a}o em
+\section{Implementação em
 Haskell}\label{implementauxe7uxe3o-em-haskell}}
 
 \begin{frame}[fragile]{Tipos Principais}
@@ -509,14 +509,14 @@ computeFirstSets g = fixedPoint step initial
 
 \item
   \texttt{fixedPoint step initial}: aplica
-  \texttt{step} repetidamente até converg\^{e}ncia
+  \texttt{step} repetidamente até convergência
 \item
-  Cada itera\c{c}\~{a}o pode expandir os conjuntos FIRST
+  Cada iteração pode expandir os conjuntos FIRST
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{\texttt{firstForSequence}:
-Implementa\c{c}\~{a}o das Regras}
+Implementação das Regras}
 \protect\hypertarget{firstforsequence-implementauxe7uxe3o-das-regras}{}
 \begin{lstlisting}[language=Haskell]
 firstForSequence :: Grammar -> FirstSet -> [Symbol] -> [String]
@@ -565,27 +565,27 @@ go (NonTerminal nt : stack') inp@(a : _) acc =
 \end{frame}
 
 \hypertarget{conclusuxe3o}{%
-\section{Conclus\~{a}o}\label{conclusuxe3o}}
+\section{Conclusão}\label{conclusuxe3o}}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-1}{}
 \begin{itemize}
 \item
   Apresentamos os conceitos de FIRST, FOLLOW e anulável.
 \item
-  Apresentamos a constru\c{c}\~{a}o da tabela LL(1) e seu algoritmo de parsing.
+  Apresentamos a construção da tabela LL(1) e seu algoritmo de parsing.
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-2}{}
 \begin{itemize}
 
 \item
-  N\~{a}o suporta \textbf{recurs\~{a}o \`{a} esquerda} (requer transforma\c{c}\~{a}o)
+  Não suporta \textbf{recursão à esquerda} (requer transformação)
 \item
-  Exige \textbf{fatora\c{c}\~{a}o \`{a} esquerda} (prefixos comuns causam conflitos)
+  Exige \textbf{fatoração à esquerda} (prefixos comuns causam conflitos)
 \item
-  Algumas gramáticas s\~{a}o inerentemente n\~{a}o-LL(1)
+  Algumas gramáticas são inerentemente não-LL(1)
 \end{itemize}
 \end{frame}

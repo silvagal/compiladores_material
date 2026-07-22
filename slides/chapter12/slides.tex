@@ -1,4 +1,4 @@
-\subtitle{\bf Aula 12 - Introdu\c{c}\~{a}o}
+\subtitle{\bf Aula 12 - Introduçãoo}
 \begin{frame}[t,plain]
 \titlepage
 \end{frame}
@@ -7,38 +7,38 @@
 \protect\hypertarget{objetivos-1}{}
 \begin{itemize}
 \item
-  Apresentar os conceitos de sem\^{a}ntica small e big step.
+  Apresentar os conceitos de semântica small e big step.
 \item
-  Mostrar como implementar um interpretador a partir da especifica\c{c}\~{a}o da
-  sem\^{a}ntica.
+  Mostrar como implementar um interpretador a partir da especificação da
+  semântica.
 \end{itemize}
 \end{frame}
 
 \hypertarget{introduuxe7uxe3o-uxe0-semuxe2ntica-formal}{%
-\section{Introdu\c{c}\~{a}o \`{a} Sem\^{a}ntica
+\section{Introduçãoo à Semântica
 Formal}\label{introduuxe7uxe3o-uxe0-semuxe2ntica-formal}}
 
-\begin{frame}{Sem\^{a}ntica Formal}
+\begin{frame}{Semântica Formal}
 \protect\hypertarget{semuxe2ntica-formal}{}
 \begin{itemize}
 
 \item
-  Após a análise léxica e sintática, sabemos se o programa está escrito
+  Apos a análise léxica e sintática, sabemos se o programa está escrito
   corretamente.
 \item
-  A sem\^{a}ntica responde: \textbf{o que o programa faz?}
+  A semântica responde: \textbf{o que o programa faz?}
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Sem\^{a}ntica Formal}
+\begin{frame}{Semântica Formal}
 \protect\hypertarget{semuxe2ntica-formal-1}{}
 \begin{itemize}
 
 \item
-  \textbf{Sem\^{a}ntica operacional}: define o significado de um programa
+  \textbf{Semântica operacional}: define o significado de um programa
   descrevendo como ele é \emph{executado}
 \item
-  Especifica\c{c}\~{a}o se traduz diretamente em código (interpretadores e
+  Especificação se traduz diretamente em código (interpretadores e
   compiladores)
 \end{itemize}
 \end{frame}
@@ -53,12 +53,12 @@ Formal}\label{introduuxe7uxe3o-uxe0-semuxe2ntica-formal}}
   \begin{itemize}
 
   \item
-    Define cada passo elementar de redu\c{c}\~{a}o
+    Define cada passo elementar de redução
   \item
-    Rela\c{c}\~{a}o \(e \to e'\): ``a express\~{a}o \(e\) reduz em um passo para
+    Relação \(e \to e'\): ``a expressão \(e\) reduz em um passo para
     \(e'\)''
   \item
-    Útil para raciocinar sobre propriedades de execu\c{c}\~{a}o
+    Útil para raciocinar sobre propriedades de execução
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -68,14 +68,14 @@ Formal}\label{introduuxe7uxe3o-uxe0-semuxe2ntica-formal}}
 \begin{itemize}
 
 \item
-  \textbf{Big-step} (\emph{grandes passos}, ou sem\^{a}ntica natural):
+  \textbf{Big-step} (\emph{grandes passos}, ou semântica natural):
 
   \begin{itemize}
 
   \item
     Define diretamente o valor final
   \item
-    Rela\c{c}\~{a}o \(e \Downarrow v\): ``a express\~{a}o \(e\) avalia para o valor
+    Relação \(e \Downarrow v\): ``a expressão \(e\) avalia para o valor
     \(v\)''
   \item
     Mais direta para implementar interpretadores
@@ -83,7 +83,7 @@ Formal}\label{introduuxe7uxe3o-uxe0-semuxe2ntica-formal}}
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Express\~{o}es}
+\begin{frame}[fragile]{Expressões}
 \protect\hypertarget{expressuxf5es}{}
 \[\begin{array}{lcl}
 e &::=& n \mid e_1 + e_2 \mid e_1 * e_2
@@ -100,19 +100,19 @@ data Exp
 \end{frame}
 
 \hypertarget{semuxe2ntica-small-step}{%
-\section{Sem\^{a}ntica Small-Step}\label{semuxe2ntica-small-step}}
+\section{Semântica Small-Step}\label{semuxe2ntica-small-step}}
 
 \begin{frame}{Valores}
 \protect\hypertarget{valores}{}
 \begin{itemize}
 
 \item
-  Um \textbf{valor} é uma express\~{a}o na forma final
+  Um \textbf{valor} é uma expressão na forma final
 
   \begin{itemize}
 
   \item
-    Para express\~{o}es aritméticas, é um número inteiro \(v ::= n\).
+    Para expressões aritméticas, é um número inteiro \(v ::= n\).
   \end{itemize}
 \end{itemize}
 \end{frame}
@@ -122,46 +122,46 @@ data Exp
 \begin{itemize}
 
 \item
-  As regras de redu\c{c}\~{a}o s\~{a}o apresentadas como sistemas de infer\^{e}ncia:
+  As regras de redução são apresentadas como sistemas de inferência:
 \end{itemize}
 
-\[\frac{\text{premissas}}{\text{conclus\~{a}o}}\]
+\[\frac{\text{premissas}}{\text{conclusão}}\]
 \end{frame}
 
-\begin{frame}{Regras para Adi\c{c}\~{a}o}
+\begin{frame}{Regras para Adição}
 \protect\hypertarget{regras-para-adiuxe7uxe3o}{}
 \begin{itemize}
 
 \item
-  \textbf{Adi\c{c}\~{a}o de valores} (axioma):
+  \textbf{Adição de valores} (axioma):
 \end{itemize}
 
 \[\frac{}{n_1 + n_2 \to n_1 \mathbin{\hat{+}} n_2} \quad \text{(Add)}\]
 \end{frame}
 
-\begin{frame}{Regras para Adi\c{c}\~{a}o}
+\begin{frame}{Regras para Adição}
 \protect\hypertarget{regras-para-adiuxe7uxe3o-1}{}
 \begin{itemize}
 
 \item
-  \textbf{Redu\c{c}\~{a}o no lado esquerdo} (esquerda primeiro):
+  \textbf{Redução no lado esquerdo} (esquerda primeiro):
 \end{itemize}
 
 \[\frac{e_1 \to e_1'}{e_1 + e_2 \to e_1' + e_2} \quad \text{(AddL)}\]
 \end{frame}
 
-\begin{frame}{Regras para Adi\c{c}\~{a}o}
+\begin{frame}{Regras para Adição}
 \protect\hypertarget{regras-para-adiuxe7uxe3o-2}{}
 \begin{itemize}
 
 \item
-  \textbf{Redu\c{c}\~{a}o no lado direito} (quando esquerdo já é valor):
+  \textbf{Redução no lado direito} (quando esquerdo já é valor):
 \end{itemize}
 
 \[\frac{e_2 \to e_2'}{n_1 + e_2 \to n_1 + e_2'} \quad \text{(AddR)}\]
 \end{frame}
 
-\begin{frame}{Regras para Adi\c{c}\~{a}o}
+\begin{frame}{Regras para Adição}
 \protect\hypertarget{regras-para-adiuxe7uxe3o-3}{}
 \begin{itemize}
 
@@ -171,32 +171,32 @@ data Exp
   \begin{itemize}
 
   \item
-    Garante avalia\c{c}\~{a}o \textbf{da esquerda para a direita}.
+    Garante avaliação \textbf{da esquerda para a direita}.
   \end{itemize}
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Multiplica\c{c}\~{a}o}
+\begin{frame}{Multiplicação}
 \protect\hypertarget{multiplicauxe7uxe3o}{}
 \[\frac{}{n_1 * n_2 \to n_1 \mathbin{\hat{*}} n_2} \quad \text{(Mul)}\]
 \end{frame}
 
-\begin{frame}{Multiplica\c{c}\~{a}o}
+\begin{frame}{Multiplicação}
 \protect\hypertarget{multiplicauxe7uxe3o-1}{}
 \[\frac{e_1 \to e_1'}{e_1 * e_2 \to e_1' * e_2} \quad \text{(MulL)}\]
 \end{frame}
 
-\begin{frame}{Multiplica\c{c}\~{a}o}
+\begin{frame}{Multiplicação}
 \protect\hypertarget{multiplicauxe7uxe3o-2}{}
 \[\frac{e_2 \to e_2'}{n_1 * e_2 \to n_1 * e_2'} \quad \text{(MulR)}\]
 \end{frame}
 
-\begin{frame}{Sequ\^{e}ncias de Redu\c{c}\~{a}o}
+\begin{frame}{Sequências de Redução}
 \protect\hypertarget{sequuxeancias-de-reduuxe7uxe3o}{}
 \begin{itemize}
 
 \item
-  A execu\c{c}\~{a}o completa é uma sequ\^{e}ncia de passos terminando em um valor:
+  A execução completa é uma sequência de passos terminando em um valor:
 \end{itemize}
 
 \[e \to e_1 \to e_2 \to \cdots \to v\]
@@ -204,7 +204,7 @@ data Exp
 \begin{itemize}
 
 \item
-  Escrevemos \(e \to^* v\) quando existe tal sequ\^{e}ncia (zero ou mais
+  Escrevemos \(e \to^* v\) quando existe tal sequência (zero ou mais
   passos).
 \end{itemize}
 \end{frame}
@@ -228,14 +228,14 @@ data Exp
 \end{frame}
 
 \hypertarget{semuxe2ntica-big-step}{%
-\section{Sem\^{a}ntica Big-Step}\label{semuxe2ntica-big-step}}
+\section{Semântica Big-Step}\label{semuxe2ntica-big-step}}
 
 \begin{frame}{Regras Big-Step}
 \protect\hypertarget{regras-big-step}{}
 \begin{itemize}
 
 \item
-  A rela\c{c}\~{a}o \(e \Downarrow v\) define diretamente o valor final.
+  A relação \(e \Downarrow v\) define diretamente o valor final.
 \end{itemize}
 \end{frame}
 
@@ -255,7 +255,7 @@ data Exp
 \begin{itemize}
 
 \item
-  \textbf{Adi\c{c}\~{a}o:}
+  \textbf{Adição:}
 \end{itemize}
 
 \[\frac{e_1 \Downarrow n_1 \quad e_2 \Downarrow n_2}{e_1 + e_2 \Downarrow n_1 \mathbin{\hat{+}} n_2} \quad \text{(Add)}\]
@@ -266,13 +266,13 @@ data Exp
 \begin{itemize}
 
 \item
-  \textbf{Multiplica\c{c}\~{a}o:}
+  \textbf{Multiplicação:}
 \end{itemize}
 
 \[\frac{e_1 \Downarrow n_1 \quad e_2 \Downarrow n_2}{e_1 * e_2 \Downarrow n_1 \mathbin{\hat{*}} n_2} \quad \text{(Mul)}\]
 \end{frame}
 
-\begin{frame}{Exemplo: Deriva\c{c}\~{a}o Big-Step para \((2 + 3) * 4\)}
+\begin{frame}{Exemplo: Derivação Big-Step para \((2 + 3) * 4\)}
 \protect\hypertarget{exemplo-derivauxe7uxe3o-big-step-para-2-3-4}{}
 \[\dfrac{
   \dfrac{
@@ -283,7 +283,7 @@ data Exp
 }{(2 + 3) * 4 \Downarrow 20}\]
 \end{frame}
 
-\begin{frame}{Exemplo: Deriva\c{c}\~{a}o Big-Step para \(1 + 2 * 3\)}
+\begin{frame}{Exemplo: Derivação Big-Step para \(1 + 2 * 3\)}
 \protect\hypertarget{exemplo-derivauxe7uxe3o-big-step-para-1-2-3}{}
 \[\dfrac{
   \dfrac{}{1 \Downarrow 1}
@@ -295,7 +295,7 @@ data Exp
 \end{frame}
 
 \hypertarget{implementauxe7uxe3o-em-haskell}{%
-\section{Implementa\c{c}\~{a}o em
+\section{Implementação em
 Haskell}\label{implementauxe7uxe3o-em-haskell}}
 
 \begin{frame}[fragile]{Interpretador}
@@ -303,7 +303,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}}
 \begin{itemize}
 
 \item
-  A sem\^{a}ntica big-step se traduz em Haskell de forma quase literal:
+  A semântica big-step se traduz em Haskell de forma quase literal:
 \end{itemize}
 
 \begin{lstlisting}[language=Haskell]
@@ -318,7 +318,7 @@ eval (e1 :*: e2) = eval e1 * eval e2
 \protect\hypertarget{interpretador-1}{}
 \begin{itemize}
 \item
-  Correspond\^{e}ncia com as regras:
+  Correspondência com as regras:
 \item
   \texttt{eval (EInt n) = n} implementa a regra
   \textbf{(Num)}
@@ -342,21 +342,21 @@ produz \texttt{20}.
 
 \begin{lstlisting}[language=Haskell]
 -- O pipeline completo:
--- 1. Lexer: String → [Token]
--- 2. Parser: [Token] → Exp
--- 3. eval: Exp → Int
+-- 1. Lexer: String -> [Token]
+-- 2. Parser: [Token] -> Exp
+-- 3. eval: Exp -> Int
 \end{lstlisting}
 \end{frame}
 
 \hypertarget{conclusuxe3o}{%
-\section{Conclus\~{a}o}\label{conclusuxe3o}}
+\section{Conclusão}\label{conclusuxe3o}}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-1}{}
 \begin{itemize}
 
 \item
-  Apresentamos dois estilos de sem\^{a}ntica operacional
+  Apresentamos dois estilos de semântica operacional
 
   \begin{itemize}
 
@@ -364,7 +364,7 @@ produz \texttt{20}.
     Big-step e small-step
   \end{itemize}
 \item
-  Mostramos como implementar um interpretador a partir de sua sem\^{a}ntica
+  Mostramos como implementar um interpretador a partir de sua semântica
   big-step.
 \end{itemize}
 \end{frame}

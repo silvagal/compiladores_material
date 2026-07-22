@@ -1,4 +1,4 @@
-\subtitle{\bf Aula 7 - Motiva\c{c}
+\subtitle{\bf Aula 7 - Motivaç
 \begin{frame}[t,plain]
 \titlepage
 \end{frame}
@@ -7,48 +7,48 @@
 \protect\hypertarget{objetivos-1}{}
 \begin{itemize}
 \item
-  Apresentar o formalismo de PEGs para descri\c{c}\~{a}o de analisadores
+  Apresentar o formalismo de PEGs para descrição de analisadores
   sintáticos.
 \item
-  Apresentar o conceito de boa-forma\c{c}\~{a}o e sua rela\c{c}\~{a}o com a termina\c{c}\~{a}o
+  Apresentar o conceito de boa-formação e sua relação com a terminação
   em PEG.
 \end{itemize}
 \end{frame}
 
 \hypertarget{motivauxe7uxe3o}{%
-\section{Motiva\c{c}\~{a}o}\label{motivauxe7uxe3o}}
+\section{Motivação}\label{motivauxe7uxe3o}}
 
-\begin{frame}{Motiva\c{c}\~{a}o}
+\begin{frame}{Motivação}
 \protect\hypertarget{motivauxe7uxe3o-1}{}
 \begin{itemize}
 
 \item
-  Combinadores de parsing s\~{a}o poderosos, mas GLCs podem ser ambíguas.
+  Combinadores de parsing são poderosos, mas GLCs podem ser ambíguas.
 
   \begin{itemize}
 
   \item
-    Como lidar com recurs\~{a}o \`{a} esquerda?
+    Como lidar com recursão à esquerda?
   \end{itemize}
 \item
-  Algumas linguagens s\~{a}o difíceis de especificar sem ambiguidade.
+  Algumas linguagens são difíceis de especificar sem ambiguidade.
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Motiva\c{c}\~{a}o}
+\begin{frame}{Motivação}
 \protect\hypertarget{motivauxe7uxe3o-2}{}
 \begin{itemize}
 
 \item
   \textbf{PEGs}: formalismo com escolha determinística
 \item
-  Sem ambiguidade por defini\c{c}\~{a}o: único resultado para cada entrada
+  Sem ambiguidade por definição: único resultado para cada entrada
 \item
   Correspondem diretamente a parsers descendentes recursivos
 \end{itemize}
 \end{frame}
 
-\begin{frame}{GLC vs.~PEG: Diferen\c{c}a Fundamental}
+\begin{frame}{GLC vs.~PEG: Diferença Fundamental}
 \protect\hypertarget{glc-vs.-peg-diferenuxe7a-fundamental}{}
 \begin{table}
 \begin{tabular}[]{@{}lll@{}}
@@ -56,14 +56,14 @@
 Aspecto & GLC & PEG \\
 \midrule
 
-Escolha & N\~{a}o-determinística & \textbf{Ordenada} \\
+Escolha & Não-determinística & \textbf{Ordenada} \\
 Ambiguidade & Possível & Impossível \\
 \bottomrule
 \end{tabular}
 \end{table}
 \end{frame}
 
-\begin{frame}{GLC vs.~PEG: Diferen\c{c}a Fundamental}
+\begin{frame}{GLC vs.~PEG: Diferença Fundamental}
 \protect\hypertarget{glc-vs.-peg-diferenuxe7a-fundamental-1}{}
 \begin{table}
 \begin{tabular}[]{@{}lll@{}}
@@ -71,14 +71,14 @@ Ambiguidade & Possível & Impossível \\
 Aspecto & GLC & PEG \\
 \midrule
 
-Recurs\~{a}o \`{a} esquerda & Suporta naturalmente & N\~{a}o suporta (loop) \\
-Predicados lookahead & N\~{a}o tem & Sim (\(!e\), \(\&e\)) \\
+Recursão à esquerda & Suporta naturalmente & Não suporta (loop) \\
+Predicados lookahead & Não tem & Sim (\(!e\), \(\&e\)) \\
 \bottomrule
 \end{tabular}
 \end{table}
 \end{frame}
 
-\begin{frame}{GLC vs.~PEG: Diferen\c{c}a Fundamental}
+\begin{frame}{GLC vs.~PEG: Diferença Fundamental}
 \protect\hypertarget{glc-vs.-peg-diferenuxe7a-fundamental-2}{}
 \begin{table}
 \begin{tabular}[]{@{}lll@{}}
@@ -86,13 +86,13 @@ Predicados lookahead & N\~{a}o tem & Sim (\(!e\), \(\&e\)) \\
 Aspecto & GLC & PEG \\
 \midrule
 
-Poder expressivo & Linguagens livres de contexto & N\~{a}o determ. \\
+Poder expressivo & Linguagens livres de contexto & Não determ. \\
 \bottomrule
 \end{tabular}
 \end{table}
 \end{frame}
 
-\begin{frame}[fragile]{Escolha N\~{a}o-Determinística vs.~Ordenada}
+\begin{frame}[fragile]{Escolha Não-Determinística vs.~Ordenada}
 \protect\hypertarget{escolha-nuxe3o-determinuxedstica-vs.-ordenada}{}
 \begin{itemize}
 
@@ -106,7 +106,7 @@ Poder expressivo & Linguagens livres de contexto & N\~{a}o determ. \\
   A escolha ordenada \texttt{/} é determinística: no
   máximo um resultado
 \item
-  Essa sem\^{a}ntica elimina toda ambiguidade
+  Essa semântica elimina toda ambiguidade
 \end{itemize}
 \end{frame}
 
@@ -117,12 +117,12 @@ Poder expressivo & Linguagens livres de contexto & N\~{a}o determ. \\
 \begin{table}
 \begin{tabular}[]{@{}lll@{}}
 \toprule
-Express\~{a}o & Nome & Sem\^{a}ntica \\
+Expressão & Nome & Semântica \\
 \midrule
 
 \(\varepsilon\) & vazio & Sempre tem sucesso sem consumir \\
 \(a\) & terminal & Consome e casa com símbolo \(a\) \\
-\(A\) & n\~{a}o-terminal & Invoca a regra de nome \(A\) \\
+\(A\) & não-terminal & Invoca a regra de nome \(A\) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -133,13 +133,13 @@ Express\~{a}o & Nome & Sem\^{a}ntica \\
 \begin{table}
 \begin{tabular}[]{@{}lll@{}}
 \toprule
-Express\~{a}o & Nome & Sem\^{a}ntica \\
+Expressão & Nome & Semântica \\
 \midrule
 
-\(e_1\; e_2\) & sequ\^{e}ncia & \(e_1\) depois \(e_2\) sobre o restante \\
+\(e_1\; e_2\) & sequência & \(e_1\) depois \(e_2\) sobre o restante \\
 \(e_1 / e_2\) & escolha ordenada & Tenta \(e_1\); se falhar, tenta
 \(e_2\) \\
-\(e^*\) & repeti\c{c}\~{a}o gulosa & Zero ou mais ocorr\^{e}ncias de \(e\) \\
+\(e^*\) & repetição gulosa & Zero ou mais ocorrências de \(e\) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -150,11 +150,11 @@ Express\~{a}o & Nome & Sem\^{a}ntica \\
 \begin{table}
 \begin{tabular}[]{@{}lll@{}}
 \toprule
-Express\~{a}o & Nome & Sem\^{a}ntica \\
+Expressão & Nome & Semântica \\
 \midrule
 
-\(e^+\) & repeti\c{c}\~{a}o positiva & Uma ou mais ocorr\^{e}ncias de \(e\) \\
-\(e\;?\) & opcional & Zero ou uma ocorr\^{e}ncia de \(e\) \\
+\(e^+\) & repetição positiva & Uma ou mais ocorrências de \(e\) \\
+\(e\;?\) & opcional & Zero ou uma ocorrência de \(e\) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -169,16 +169,16 @@ Express\~{a}o & Nome & Sem\^{a}ntica \\
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.5909}}@{}}
 \toprule
 \begin{minipage}[b]{\linewidth}\raggedright
-Express\~{a}o
+Expressão
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Nome
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Sem\^{a}ntica
+Semântica
 \end{minipage} \\
 \midrule
 
-\(!e\) & predicado negativo & Sucesso se \(e\) falha; n\~{a}o consome \\
-\(\&e\) & predicado positivo & Sucesso se \(e\) tem sucesso; n\~{a}o
+\(!e\) & predicado negativo & Sucesso se \(e\) falha; não consome \\
+\(\&e\) & predicado positivo & Sucesso se \(e\) tem sucesso; não
 consome \\
 \bottomrule
 \end{tabular}
@@ -189,12 +189,12 @@ consome \\
 \protect\hypertarget{escolha-ordenada}{}
 \begin{lstlisting}
 Se e1 tem SUCESSO:
-  → Retorna o resultado de e1 imediatamente
-  → e2 NUNCA é tentada
+  -> Retorna o resultado de e1 imediatamente
+  -> e2 NUNCA é tentada
 
 Se e1 FALHA:
-  → e2 é tentada sobre a MESMA entrada original
-  → Retorna o resultado de e2 (sucesso ou falha)
+  -> e2 é tentada sobre a MESMA entrada original
+  -> Retorna o resultado de e2 (sucesso ou falha)
 \end{lstlisting}
 
 \begin{itemize}
@@ -202,7 +202,7 @@ Se e1 FALHA:
 \item
   Elimina ambiguidade: o primeiro match sempre vence
 \item
-  Diferen\c{c}a crucial em rela\c{c}\~{a}o \`{a} GLC
+  Diferença crucial em relação à GLC
 \end{itemize}
 \end{frame}
 
@@ -212,12 +212,12 @@ Se e1 FALHA:
 
 \item
   \(!e\) (\textbf{predicado negativo}): tem sucesso se e somente se
-  \(e\) falha; n\~{a}o consome entrada
+  \(e\) falha; não consome entrada
 \item
   \(\&e\) (\textbf{predicado positivo}): tem sucesso se e somente se
-  \(e\) tem sucesso; n\~{a}o consome entrada
+  \(e\) tem sucesso; não consome entrada
 \item
-  Equival\^{e}ncia: \(\&e \equiv !(! e)\)
+  Equivalência: \(\&e \equiv !(! e)\)
 \end{itemize}
 \end{frame}
 
@@ -231,26 +231,26 @@ Exemplo --- reconhece \texttt{if} sem aceitar
 \begin{itemize}
 
 \item
-  Casa \texttt{if} (com espa\c{c}o) mas n\~{a}o
+  Casa \texttt{if} (com espaço) mas não
   \texttt{iff}
 \item
   O predicado verifica sem consumir o caractere seguinte
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Repeti\c{c}\~{a}o Gulosa}
+\begin{frame}{Repetiçãoo Gulosa}
 \protect\hypertarget{repetiuxe7uxe3o-gulosa}{}
-A repeti\c{c}\~{a}o em PEGs é definida como:
+A repetição em PEGs é definida como:
 
 \[e^* \leftarrow e\; e^* \;/\; \varepsilon\]
 \end{frame}
 
-\begin{frame}{Repeti\c{c}\~{a}o Gulosa}
+\begin{frame}{Repetiçãoo Gulosa}
 \protect\hypertarget{repetiuxe7uxe3o-gulosa-1}{}
 \begin{itemize}
 
 \item
-  A escolha é ordenada: \textbf{sempre tenta mais uma ocorr\^{e}ncia} antes
+  A escolha é ordenada: \textbf{sempre tenta mais uma ocorrência} antes
   de aceitar vazio
 \item
   Resultado: \(e^*\) é sempre \textbf{guloso} --- consume o máximo
@@ -258,12 +258,12 @@ A repeti\c{c}\~{a}o em PEGs é definida como:
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Repeti\c{c}\~{a}o Gulosa}
+\begin{frame}{Repetiçãoo Gulosa}
 \protect\hypertarget{repetiuxe7uxe3o-gulosa-2}{}
 \begin{itemize}
 
 \item
-  Contraste com GLCs: a repeti\c{c}\~{a}o n\~{a}o é determinística
+  Contraste com GLCs: a repetição não é determinística
 \item
   Garante que \(e^*\) sempre devolve o maior prefixo possível
 \end{itemize}
@@ -277,12 +277,12 @@ A repeti\c{c}\~{a}o em PEGs é definida como:
 \begin{itemize}
 
 \item
-  A linguagem \(\{a^nb^nc^n\,|\,n\geq 0\}\) n\~{a}o é uma LLC.
+  A linguagem \(\{a^nb^nc^n\,|\,n\geq 0\}\) não é uma LLC.
 
   \begin{itemize}
 
   \item
-    Demonstra\c{c}\~{a}o usando lema do bombeamento.
+    Demonstração usando lema do bombeamento.
   \end{itemize}
 \item
   Porém, é possível construir uma PEG que a aceita.
@@ -311,7 +311,7 @@ A repeti\c{c}\~{a}o em PEGs é definida como:
 \begin{itemize}
 
 \item
-  Express\~{a}o inicial: \(\& A a^*B\,/\,!.\)
+  Expressão inicial: \(\& A a^*B\,/\,!.\)
 \end{itemize}
 \end{frame}
 
@@ -320,7 +320,7 @@ A repeti\c{c}\~{a}o em PEGs é definida como:
 \begin{itemize}
 
 \item
-  PEG para express\~{o}es
+  PEG para expressões
 \end{itemize}
 
 \[\begin{array}{lcl}
@@ -335,21 +335,21 @@ F &\leftarrow& \texttt{(}\; E\; \texttt{)} \;/\; [0\text{-}9]^+
 \begin{itemize}
 
 \item
-  Associatividade \`{a} esquerda expressa por \textbf{repeti\c{c}\~{a}o}, n\~{a}o
-  recurs\~{a}o
+  Associatividade à esquerda expressa por \textbf{repetição}, não
+  recursão
 \item
-  Sem recurs\~{a}o \`{a} esquerda (problema de parsers descendentes)
+  Sem recursão à esquerda (problema de parsers descendentes)
 \item
-  A GLC equivalente precisaria de recurs\~{a}o \`{a} esquerda ou transforma\c{c}\~{a}o
+  A GLC equivalente precisaria de recursão à esquerda ou transformação
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Compara\c{c}\~{a}o}
+\begin{frame}{Comparação}
 \protect\hypertarget{comparauxe7uxe3o}{}
-GLC com preced\^{e}ncia: \[E \to E + T \mid T \qquad T \to T * F \mid F\]
+GLC com precedência: \[E \to E + T \mid T \qquad T \to T * F \mid F\]
 \end{frame}
 
-\begin{frame}{Compara\c{c}\~{a}o}
+\begin{frame}{Comparação}
 \protect\hypertarget{comparauxe7uxe3o-1}{}
 PEG equivalente:
 \[E \leftarrow T\; (\texttt{+}\; T)^* \qquad T \leftarrow F\; (*\; F)^*\]
@@ -357,45 +357,45 @@ PEG equivalente:
 \begin{itemize}
 
 \item
-  PEG é mais direta: n\~{a}o precisa de recurs\~{a}o \`{a} esquerda
+  PEG é mais direta: não precisa de recursão à esquerda
 \item
-  O operador \((\cdot)^*\) captura a repeti\c{c}\~{a}o iterativamente
+  O operador \((\cdot)^*\) captura a repetição iterativamente
 \end{itemize}
 \end{frame}
 
 \hypertarget{terminauxe7uxe3o-e-boa-formauxe7uxe3o}{%
-\section{Termina\c{c}\~{a}o e
-Boa-Forma\c{c}\~{a}o}\label{terminauxe7uxe3o-e-boa-formauxe7uxe3o}}
+\section{Terminação e
+Boa-Formação}\label{terminauxe7uxe3o-e-boa-formauxe7uxe3o}}
 
-\begin{frame}{Termina\c{c}\~{a}o}
+\begin{frame}{Terminação}
 \protect\hypertarget{terminauxe7uxe3o}{}
 Uma PEG é \textbf{bem formada} (e portanto termina) se:
 
 \begin{enumerate}
 
 \item
-  \textbf{N\~{a}o há recurs\~{a}o \`{a} esquerda} direta ou indireta
+  \textbf{Não há recursão à esquerda} direta ou indireta
 \item
-  \textbf{Toda repeti\c{c}\~{a}o \(e^*\) é tal que \(e\) consume ao menos um
-  símbolo} (n\~{a}o pode ter sucesso sem consumir entrada)
+  \textbf{Toda repetição \(e^*\) é tal que \(e\) consume ao menos um
+  símbolo} (não pode ter sucesso sem consumir entrada)
 \end{enumerate}
 \end{frame}
 
-\begin{frame}{Termina\c{c}\~{a}o}
+\begin{frame}{Terminação}
 \protect\hypertarget{terminauxe7uxe3o-1}{}
 \begin{itemize}
 
 \item
-  Condi\c{c}\~{a}o 1: recurs\~{a}o \`{a} esquerda causaria loop infinito em parsers
+  Condição 1: recursão à esquerda causaria loop infinito em parsers
   descendentes
 \item
-  Condi\c{c}\~{a}o 2: se \(e\) pode ter sucesso sem consumir, \(e^*\) repetiria
+  Condição 2: se \(e\) pode ter sucesso sem consumir, \(e^*\) repetiria
   indefinidamente
 \end{itemize}
 \end{frame}
 
 \hypertarget{implementauxe7uxe3o-em-haskell}{%
-\section{Implementa\c{c}\~{a}o em
+\section{Implementação em
 Haskell}\label{implementauxe7uxe3o-em-haskell}}
 
 \begin{frame}[fragile]{O Tipo \texttt{Result}}
@@ -413,10 +413,10 @@ data Result d a
 \begin{itemize}
 
 \item
-  \texttt{Pure}: sucesso sem consumo → pode tentar
+  \texttt{Pure}: sucesso sem consumo -> pode tentar
   alternativa
 \item
-  \texttt{Commit}: sucesso com consumo → sem retrocesso
+  \texttt{Commit}: sucesso com consumo -> sem retrocesso
   possível
 \end{itemize}
 \end{frame}
@@ -426,10 +426,10 @@ data Result d a
 \begin{itemize}
 
 \item
-  \texttt{Fail \_ False}: falha sem consumo → pode
+  \texttt{Fail \_ False}: falha sem consumo -> pode
   tentar alternativa
 \item
-  \texttt{Fail \_ True}: falha \textbf{com consumo} →
+  \texttt{Fail \_ True}: falha \textbf{com consumo} ->
   \textbf{sem} retrocesso
 \end{itemize}
 \end{frame}
@@ -448,13 +448,13 @@ newtype PExp d a = PExp { runPExp :: d -> Result d a }
 \item
   \texttt{a}: tipo do resultado
 \item
-  Inst\^{a}ncia de \texttt{Functor},
+  Instância de \texttt{Functor},
   \texttt{Applicative},
   \texttt{Alternative}, \texttt{Monad}
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Sequ\^{e}ncia}
+\begin{frame}[fragile]{Sequência}
 \protect\hypertarget{sequuxeancia}{}
 \begin{lstlisting}[language=Haskell]
 instance Applicative (PExp d) where
@@ -526,10 +526,10 @@ p </> q = try p <|> q
   \texttt{p </> q}: tenta \texttt{p}
   com backtracking garantido
 \item
-  Se \texttt{p} falha por qualquer raz\~{a}o,
+  Se \texttt{p} falha por qualquer razão,
   \texttt{q} é tentado sobre a entrada original
 \item
-  Implementa diretamente a sem\^{a}ntica de PEGs
+  Implementa diretamente a semântica de PEGs
 \end{itemize}
 \end{frame}
 
@@ -579,7 +579,7 @@ symbol c = lexeme (char c)
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Parser de Express\~{o}es}
+\begin{frame}[fragile]{Parser de Expressões}
 \protect\hypertarget{parser-de-expressuxf5es}{}
 \begin{lstlisting}[language=Haskell]
 data Exp = Lit Int | Exp :+: Exp | Exp :*: Exp
@@ -589,7 +589,7 @@ expP = foldl (:+:) <$> termP <*> many (symbol '+' *> termP)
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Parser de Express\~{o}es}
+\begin{frame}[fragile]{Parser de Expressões}
 \protect\hypertarget{parser-de-expressuxf5es-1}{}
 \begin{lstlisting}[language=Haskell]
 termP :: Stream d => PExp d Exp
@@ -597,7 +597,7 @@ termP = foldl (:*:) <$> factP <*> many (symbol '*' *> factP)
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Parser de Express\~{o}es}
+\begin{frame}[fragile]{Parser de Expressões}
 \protect\hypertarget{parser-de-expressuxf5es-2}{}
 \begin{lstlisting}[language=Haskell]
 factP :: Stream d => PExp d Exp
@@ -607,21 +607,21 @@ factP = between (symbol '(') (symbol ')') expP
 \end{frame}
 
 \hypertarget{conclusuxe3o}{%
-\section{Conclus\~{a}o}\label{conclusuxe3o}}
+\section{Conclusão}\label{conclusuxe3o}}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-1}{}
 \begin{itemize}
 
 \item
   PEGs usam \textbf{escolha ordenada} \(e_1 / e_2\) em vez de
-  n\~{a}o-determinística
+  não-determinística
 \item
-  S\~{a}o \textbf{n\~{a}o-ambíguas por defini\c{c}\~{a}o}: o primeiro match sempre vence
+  São \textbf{não-ambíguas por definição}: o primeiro match sempre vence
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-2}{}
 \begin{itemize}
 
@@ -629,19 +629,19 @@ factP = between (symbol '(') (symbol ')') expP
   \textbf{Predicados} \(!e\) e \(\&e\) permitem lookahead de tamanho
   arbitrário
 \item
-  A \textbf{repeti\c{c}\~{a}o} \(e^*\) é gulosa por natureza da escolha ordenada
+  A \textbf{repetição} \(e^*\) é gulosa por natureza da escolha ordenada
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Conclus\~{a}o}
+\begin{frame}[fragile]{Conclusão}
 \protect\hypertarget{conclusuxe3o-3}{}
 \begin{itemize}
 
 \item
-  PEGs bem formadas terminam sempre (sem recurs\~{a}o \`{a} esquerda, sem ciclos
+  PEGs bem formadas terminam sempre (sem recursão à esquerda, sem ciclos
   vazios)
 \item
-  Implementa\c{c}\~{a}o: o tipo \texttt{Result} distingue falha
+  Implementação: o tipo \texttt{Result} distingue falha
   com e sem consumo
 \item
   \texttt{try} e \texttt{</>}

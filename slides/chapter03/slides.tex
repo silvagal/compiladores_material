@@ -1,12 +1,12 @@
-\subtitle{\bf Aula 3 - Motiva\c{c}
+\subtitle{\bf Aula 3 - Motivaç
 \begin{frame}[t,plain]
 \titlepage
 \end{frame}
 
 \hypertarget{motivauxe7uxe3o}{%
-\section{Motiva\c{c}\~{a}o}\label{motivauxe7uxe3o}}
+\section{Motivação}\label{motivauxe7uxe3o}}
 
-\begin{frame}{Limita\c{c}\~{o}es do Analisador Ad-Hoc}
+\begin{frame}{Limitações do Analisador Ad-Hoc}
 \protect\hypertarget{limitauxe7uxf5es-do-analisador-ad-hoc}{}
 \begin{itemize}
 
@@ -17,7 +17,7 @@
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Limita\c{c}\~{o}es do Analisador Ad-Hoc}
+\begin{frame}[fragile]{Limitações do Analisador Ad-Hoc}
 \protect\hypertarget{limitauxe7uxf5es-do-analisador-ad-hoc-1}{}
 \begin{itemize}
 
@@ -25,11 +25,11 @@
   Como suportar \textbf{comentários em bloco}
   (\texttt{/* */})?
 \item
-  Como garantir que a implementa\c{c}\~{a}o está correta?
+  Como garantir que a implementação está correta?
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Limita\c{c}\~{o}es do Analisador Ad-Hoc}
+\begin{frame}{Limitações do Analisador Ad-Hoc}
 \protect\hypertarget{limitauxe7uxf5es-do-analisador-ad-hoc-2}{}
 \begin{itemize}
 
@@ -39,36 +39,36 @@
 \end{itemize}
 \end{frame}
 
-\begin{frame}{A Solu\c{c}\~{a}o: Express\~{o}es Regulares + Aut\^{o}matos}
+\begin{frame}{A Solução: Expressões Regulares + Autômatos}
 \protect\hypertarget{a-soluuxe7uxe3o-expressuxf5es-regulares-autuxf4matos}{}
 \begin{itemize}
 
 \item
-  Especificamos tokens como \textbf{express\~{o}es regulares} (declarativo)
+  Especificamos tokens como \textbf{expressões regulares} (declarativo)
 \item
   Geramos o analisador léxico \textbf{automaticamente} a partir dessa
-  especifica\c{c}\~{a}o
+  especificação
 \end{itemize}
 \end{frame}
 
-\begin{frame}{A Solu\c{c}\~{a}o: Express\~{o}es Regulares + Aut\^{o}matos}
+\begin{frame}{A Solução: Expressões Regulares + Autômatos}
 \protect\hypertarget{a-soluuxe7uxe3o-expressuxf5es-regulares-autuxf4matos-1}{}
 \begin{itemize}
 
 \item
-  O analisador gerado é um \textbf{Aut\^{o}mato Finito Determinístico (AFD)}
+  O analisador gerado é um \textbf{Autômato Finito Determinístico (AFD)}
 \item
-  Garantias formais de corre\c{c}\~{a}o e efici\^{e}ncia
+  Garantias formais de correção e eficiência
 \item
   Teoria bem estabelecida: linguagens regulares
 \end{itemize}
 \end{frame}
 
 \hypertarget{autuxf4matos-finitos-determinuxedsticos}{%
-\section{Aut\^{o}matos Finitos
+\section{Autômatos Finitos
 Determinísticos}\label{autuxf4matos-finitos-determinuxedsticos}}
 
-\begin{frame}{Defini\c{c}\~{a}o Formal}
+\begin{frame}{Definição Formal}
 \protect\hypertarget{definiuxe7uxe3o-formal}{}
 Um AFD \(M = (E, \Sigma, \delta, i, F)\):
 
@@ -79,21 +79,21 @@ Um AFD \(M = (E, \Sigma, \delta, i, F)\):
 \item
   \(\Sigma\): \textbf{alfabeto} de entrada
 \item
-  \(\delta : E \times \Sigma \to E\): \textbf{fun\c{c}\~{a}o de transi\c{c}\~{a}o}
+  \(\delta : E \times \Sigma \to E\): \textbf{função de transição}
   (determinística)
 \item
   \(i \in E\): \textbf{estado inicial} único
 \item
-  \(F \subseteq E\): conjunto de \textbf{estados finais} (aceita\c{c}\~{a}o)
+  \(F \subseteq E\): conjunto de \textbf{estados finais} (aceitação)
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Representa\c{c}\~{a}o em Haskell}
+\begin{frame}[fragile]{Representação em Haskell}
 \protect\hypertarget{representauxe7uxe3o-em-haskell}{}
 \begin{lstlisting}[language=Haskell]
 data DFA a = DFA
   { start  :: a           -- estado inicial
-  , delta  :: a -> Char -> a  -- fun\c{c}\~{a}o de transi\c{c}\~{a}o
+  , delta  :: a -> Char -> a  -- função de transição
   , finals :: a -> Bool   -- predicado de estado final
   }
 \end{lstlisting}
@@ -103,7 +103,7 @@ data DFA a = DFA
 \item
   Parametrizado pelo tipo \texttt{a} dos estados
 \item
-  A fun\c{c}\~{a}o \texttt{finals} retorna
+  A função \texttt{finals} retorna
   \texttt{True} para estados finais
 \item
   Flexível: estados podem ser \texttt{Bool},
@@ -119,7 +119,7 @@ data DFA a = DFA
 \begin{itemize}
 
 \item
-  Estado \texttt{False}: último caractere n\~{a}o foi
+  Estado \texttt{False}: último caractere não foi
   \texttt{1} (ou início)
 \item
   Estado \texttt{True}: último caractere foi
@@ -127,7 +127,7 @@ data DFA a = DFA
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Implementa\c{c}\~{a}o do AFD}
+\begin{frame}[fragile]{Implementação do AFD}
 \protect\hypertarget{implementauxe7uxe3o-do-afd}{}
 \begin{lstlisting}[language=Haskell]
 endsWithOne :: DFA Bool
@@ -145,14 +145,14 @@ endsWithOne = DFA False transition id
 \item
   Estado inicial: \texttt{False}
 \item
-  Fun\c{c}\~{a}o final: \texttt{id} (só
+  Função final: \texttt{id} (só
   \texttt{True} é estado final)
 \item
-  Transi\c{c}\~{o}es por casamento de padr\~{o}es
+  Transições por casamento de padrões
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Execu\c{c}\~{a}o e Aceita\c{c}\~{a}o}
+\begin{frame}[fragile]{Execução e Aceitação}
 \protect\hypertarget{execuuxe7uxe3o-e-aceitauxe7uxe3o}{}
 \begin{lstlisting}[language=Haskell]
 -- Computa o estado final após processar toda a string
@@ -169,29 +169,29 @@ Exemplos:
 \begin{itemize}
 
 \item
-  \texttt{accept endsWithOne "01"} →
+  \texttt{accept endsWithOne "01"} ->
   \texttt{True}
 \item
-  \texttt{accept endsWithOne "10"} →
+  \texttt{accept endsWithOne "10"} ->
   \texttt{False}
 \item
-  \texttt{accept endsWithOne "001"} →
+  \texttt{accept endsWithOne "001"} ->
   \texttt{True}
 \end{itemize}
 \end{frame}
 
 \hypertarget{autuxf4matos-finitos-nuxe3o-determinuxedsticos}{%
-\section{Aut\^{o}matos Finitos
-N\~{a}o-Determinísticos}\label{autuxf4matos-finitos-nuxe3o-determinuxedsticos}}
+\section{Autômatos Finitos
+Não-Determinísticos}\label{autuxf4matos-finitos-nuxe3o-determinuxedsticos}}
 
-\begin{frame}{Defini\c{c}\~{a}o Formal}
+\begin{frame}{Definição Formal}
 \protect\hypertarget{definiuxe7uxe3o-formal-1}{}
 Um AFN \(M = (E, \Sigma, \delta, I, F)\):
 
 \begin{itemize}
 
 \item
-  \(\delta : E \times \Sigma \to \mathcal{P}(E)\): transi\c{c}\~{a}o para
+  \(\delta : E \times \Sigma \to \mathcal{P}(E)\): transição para
   \textbf{conjunto} de estados
 \item
   \(I \subseteq E\): \textbf{conjunto} de estados iniciais (pode haver
@@ -202,13 +202,13 @@ Um AFN \(M = (E, \Sigma, \delta, I, F)\):
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Representa\c{c}\~{a}o em Haskell}
+\begin{frame}[fragile]{Representação em Haskell}
 \protect\hypertarget{representauxe7uxe3o-em-haskell-1}{}
 \begin{lstlisting}[language=Haskell]
 data NFA a = NFA
   { numberOfStates :: Int
   , nfaStart       :: Set a       -- estados iniciais
-  , nfaDelta       :: a -> Char -> Set a  -- transi\c{c}\~{a}o
+  , nfaDelta       :: a -> Char -> Set a  -- transição
   , nfaFinals      :: Set a       -- estados finais
   }
 \end{lstlisting}
@@ -234,7 +234,7 @@ endsWith00 = NFA 3 (Set.singleton 0)
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}{Convers\~{a}o AFN -\textgreater{} AFD}
+\begin{frame}{Conversão AFN -\textgreater{} AFD}
 \protect\hypertarget{conversuxe3o-afn---afd}{}
 \begin{itemize}
 
@@ -247,7 +247,7 @@ endsWith00 = NFA 3 (Set.singleton 0)
 \[M' = (\mathcal{P}(E),\, \Sigma,\, \delta',\, I,\, F')\]
 \end{frame}
 
-\begin{frame}{Convers\~{a}o AFN -\textgreater{} AFD}
+\begin{frame}{Conversão AFN -\textgreater{} AFD}
 \protect\hypertarget{conversuxe3o-afn---afd-1}{}
 \begin{itemize}
 
@@ -258,11 +258,11 @@ endsWith00 = NFA 3 (Set.singleton 0)
 \item
   \textbf{Estados finais}: \(F' = \{X \mid X \cap F \neq \emptyset\}\)
 \item
-  \textbf{Transi\c{c}\~{a}o}: \(\delta'(X, a) = \bigcup_{q \in X} \delta(q, a)\)
+  \textbf{Transição}: \(\delta'(X, a) = \bigcup_{q \in X} \delta(q, a)\)
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Implementa\c{c}\~{a}o}
+\begin{frame}[fragile]{Implementação}
 \protect\hypertarget{implementauxe7uxe3o}{}
 \begin{itemize}
 
@@ -270,13 +270,13 @@ endsWith00 = NFA 3 (Set.singleton 0)
   O AFD resultante tem \textbf{estados do tipo
   \texttt{Set a}}
 \item
-  A transi\c{c}\~{a}o une os destinos de todos os estados do conjunto atual
+  A transição une os destinos de todos os estados do conjunto atual
 \item
   Um conjunto é final se contém algum estado final do AFN
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Implementa\c{c}\~{a}o}
+\begin{frame}[fragile]{Implementação}
 \protect\hypertarget{implementauxe7uxe3o-1}{}
 \begin{lstlisting}[language=Haskell]
 subset :: Ord a => NFA a -> DFA (Set a)
@@ -291,9 +291,9 @@ subset m = DFA
 \end{frame}
 
 \hypertarget{expressuxf5es-regulares}{%
-\section{Express\~{o}es Regulares}\label{expressuxf5es-regulares}}
+\section{Expressões Regulares}\label{expressuxf5es-regulares}}
 
-\begin{frame}{Express\~{o}es Regulares}
+\begin{frame}{Expressões Regulares}
 \protect\hypertarget{expressuxf5es-regulares-1}{}
 \[e \to \emptyset \mid \lambda \mid a \mid ee \mid e+e \mid e^*\]
 
@@ -306,15 +306,15 @@ subset m = DFA
 \item
   \(a\): símbolo do alfabeto
 \item
-  \(ee\): concatena\c{c}\~{a}o
+  \(ee\): concatenação
 \item
-  \(e+e\): uni\~{a}o (alternativa)
+  \(e+e\): união (alternativa)
 \item
-  \(e^*\): fecho de Kleene (zero ou mais repeti\c{c}\~{o}es)
+  \(e^*\): fecho de Kleene (zero ou mais repetições)
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Sem\^{a}ntica}
+\begin{frame}{Semântica}
 \protect\hypertarget{semuxe2ntica}{}
 \[\begin{array}{lcl}
 L(\emptyset) &=& \emptyset \\
@@ -326,15 +326,15 @@ L(e^*) &=& L(e)^*
 \end{array}\]
 \end{frame}
 
-\begin{frame}[fragile]{Tipo Haskell para Express\~{o}es Regulares}
+\begin{frame}[fragile]{Tipo Haskell para Expressões Regulares}
 \protect\hypertarget{tipo-haskell-para-expressuxf5es-regulares}{}
 \begin{lstlisting}[language=Haskell]
 data Regex
   = Empty           -- ∅: conjunto vazio
   | Lambda          -- λ: palavra vazia
   | Chr Char        -- a: caractere específico
-  | Regex :+: Regex -- e1 + e2: uni\~{a}o
-  | Regex :@: Regex -- e1 e2: concatena\c{c}\~{a}o
+  | Regex :+: Regex -- e1 + e2: união
+  | Regex :@: Regex -- e1 e2: concatenação
   | Star Regex      -- e*: fecho de Kleene
 \end{lstlisting}
 
@@ -342,21 +342,21 @@ data Regex
 
 \item
   Operadores infixos (\texttt{:+:},
-  \texttt{:@:}) refletem a nota\c{c}\~{a}o matemática
+  \texttt{:@:}) refletem a notação matemática
 \item
   Construtores de dados representam diretamente a gramática
 \end{itemize}
 \end{frame}
 
 \hypertarget{construuxe7uxe3o-de-thompson}{%
-\section{Constru\c{c}\~{a}o de Thompson}\label{construuxe7uxe3o-de-thompson}}
+\section{Construção de Thompson}\label{construuxe7uxe3o-de-thompson}}
 
 \begin{frame}{A Ideia Central}
 \protect\hypertarget{a-ideia-central}{}
 \begin{itemize}
 
 \item
-  Converte ER em AFN por \textbf{recurs\~{a}o estrutural}
+  Converte ER em AFN por \textbf{recursão estrutural}
 \item
   Para cada construtor da ER, há um AFN correspondente
 \end{itemize}
@@ -367,7 +367,7 @@ data Regex
 \begin{itemize}
 
 \item
-  AFNs parciais s\~{a}o \textbf{compostos} para formar o AFN final
+  AFNs parciais são \textbf{compostos} para formar o AFN final
 \item
   Teorema: toda ER tem um AFN equivalente e vice-versa
 \end{itemize}
@@ -391,23 +391,23 @@ data Regex
 \protect\hypertarget{caso-base-suxedmbolo}{}
 \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter03/imgs/image3.png}
 
-\(e = a\): dois estados, transi\c{c}\~{a}o sobre o símbolo \(a\)
+\(e = a\): dois estados, transição sobre o símbolo \(a\)
 \end{frame}
 
-\begin{frame}{Caso Indutivo: Uni\~{a}o}
+\begin{frame}{Caso Indutivo: União}
 \protect\hypertarget{caso-indutivo-uniuxe3o}{}
 \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter03/imgs/image4.png}
 
-\(e = s + t\): os AFNs \(N(s)\) e \(N(t)\) s\~{a}o colocados em
+\(e = s + t\): os AFNs \(N(s)\) e \(N(t)\) são colocados em
 \textbf{paralelo}
 \end{frame}
 
-\begin{frame}{Caso Indutivo: Concatena\c{c}\~{a}o}
+\begin{frame}{Caso Indutivo: Concatenação}
 \protect\hypertarget{caso-indutivo-concatenauxe7uxe3o}{}
 \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter03/imgs/image5.png}
 
-\(e = s\,t\): os AFNs \(N(s)\) e \(N(t)\) s\~{a}o colocados em
-\textbf{sequ\^{e}ncia}
+\(e = s\,t\): os AFNs \(N(s)\) e \(N(t)\) são colocados em
+\textbf{sequência}
 \end{frame}
 
 \begin{frame}{Caso Indutivo: Fecho de Kleene}
@@ -417,7 +417,7 @@ data Regex
 \(e = s^*\): os estados finais de \(N(s)\) retornam aos estados iniciais
 \end{frame}
 
-\begin{frame}[fragile]{A Fun\c{c}\~{a}o \texttt{thompson} em
+\begin{frame}[fragile]{A Função \texttt{thompson} em
 Haskell}
 \protect\hypertarget{a-funuxe7uxe3o-thompson-em-haskell}{}
 \begin{lstlisting}[language=Haskell]
@@ -431,7 +431,7 @@ thompson (Star e1) = starNFA (thompson e1)
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{Pipeline Completo: ER → AFD}
+\begin{frame}[fragile]{Pipeline Completo: ER -> AFD}
 \protect\hypertarget{pipeline-completo-er-afd}{}
 \begin{lstlisting}[language=Haskell]
 lexer :: [Regex] -> DFA (Set Int)
@@ -441,7 +441,7 @@ lexer = subset . foldr unionNFA emptyNFA . map thompson
 \begin{enumerate}
 
 \item
-  \texttt{map thompson}: cada ER → AFN (via Thompson)
+  \texttt{map thompson}: cada ER -> AFN (via Thompson)
 \item
   \texttt{foldr unionNFA emptyNFA}: combina todos os
   AFNs em um só
@@ -480,7 +480,7 @@ if (x > 0) ift = x + 1;
 \item
   Garante que tokens compostos sejam reconhecidos \textbf{atomicamente}
 \item
-  Evita ambiguidades sem\^{a}nticas: \texttt{>=} n\~{a}o deve
+  Evita ambiguidades semânticas: \texttt{>=} não deve
   ser lido como \texttt{>} seguido de
   \texttt{=}
 \end{itemize}
@@ -491,14 +491,14 @@ if (x > 0) ift = x + 1;
 \begin{itemize}
 
 \item
-  Padr\~{a}o universal em compiladores: \textbf{maximal munch}
+  Padrão universal em compiladores: \textbf{maximal munch}
 \item
   Sem isso: \texttt{integer} poderia ser lido como
   \texttt{int} + \texttt{eger}
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Implementa\c{c}\~{a}o}
+\begin{frame}[fragile]{Implementação}
 \protect\hypertarget{implementauxe7uxe3o-2}{}
 \begin{lstlisting}[language=Haskell]
 longest :: DFA a -> String -> Maybe String
@@ -514,7 +514,7 @@ longest :: DFA a -> String -> Maybe String
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Implementa\c{c}\~{a}o}
+\begin{frame}[fragile]{Implementação}
 \protect\hypertarget{implementauxe7uxe3o-3}{}
 \begin{itemize}
 
@@ -525,7 +525,7 @@ longest :: DFA a -> String -> Maybe String
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Lógica da Fun\c{c}\~{a}o
+\begin{frame}[fragile]{Lógica da Função
 \texttt{longest}}
 \protect\hypertarget{luxf3gica-da-funuxe7uxe3o-longest}{}
 \begin{lstlisting}[language=Haskell]
@@ -543,10 +543,10 @@ longest m = combine . foldl step (Just "", Nothing, start m)
 \end{frame}
 
 \hypertarget{derivadas-de-expressuxf5es-regulares}{%
-\section{Derivadas de Express\~{o}es
+\section{Derivadas de Expressões
 Regulares}\label{derivadas-de-expressuxf5es-regulares}}
 
-\begin{frame}{Motiva\c{c}\~{a}o}
+\begin{frame}{Motivação}
 \protect\hypertarget{motivauxe7uxe3o-1}{}
 \begin{itemize}
 
@@ -558,7 +558,7 @@ Regulares}\label{derivadas-de-expressuxf5es-regulares}}
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Motiva\c{c}\~{a}o}
+\begin{frame}{Motivação}
 \protect\hypertarget{motivauxe7uxe3o-2}{}
 \begin{itemize}
 
@@ -571,7 +571,7 @@ Regulares}\label{derivadas-de-expressuxf5es-regulares}}
 
 \begin{frame}{A Ideia de Brzozowski}
 \protect\hypertarget{a-ideia-de-brzozowski}{}
-A \textbf{derivada} \(\partial(e, a)\) de uma ER \(e\) em rela\c{c}\~{a}o a um
+A \textbf{derivada} \(\partial(e, a)\) de uma ER \(e\) em relação a um
 símbolo \(a\) é a ER que aceita o \textbf{restante} da entrada após
 consumir \(a\):
 
@@ -583,7 +583,7 @@ consumir \(a\):
 \begin{itemize}
 
 \item
-  Se \(e\) aceita \texttt{"abc"}, ent\~{a}o
+  Se \(e\) aceita \texttt{"abc"}, então
   \(\partial(e, \text{'a'})\) aceita \texttt{"bc"}
 \item
   Podemos construir o AFD computando derivadas sucessivas
@@ -604,7 +604,7 @@ Uma ER é \textbf{anulável} se \(\lambda \in L(e)\):
 \end{array}\]
 \end{frame}
 
-\begin{frame}[fragile]{Implementa\c{c}\~{a}o}
+\begin{frame}[fragile]{Implementação}
 \protect\hypertarget{implementauxe7uxe3o-4}{}
 \begin{lstlisting}[language=Haskell]
 nullable :: Regex -> Bool
@@ -629,7 +629,7 @@ nullable (Star _)    = True
 \end{array}\]
 \end{frame}
 
-\begin{frame}[fragile]{Implementa\c{c}\~{a}o}
+\begin{frame}[fragile]{Implementação}
 \protect\hypertarget{implementauxe7uxe3o-5}{}
 \begin{lstlisting}[language=Haskell]
 deriv :: Char -> Regex -> Regex
@@ -646,10 +646,10 @@ deriv a (Star e1) = deriv a e1 .@. star e1
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}{Simplifica\c{c}\~{o}es Necessárias}
+\begin{frame}{Simplificações Necessárias}
 \protect\hypertarget{simplificauxe7uxf5es-necessuxe1rias}{}
 Para que o conjunto de derivadas seja \textbf{finito}, aplicamos
-simplifica\c{c}\~{o}es:
+simplificações:
 
 \[\begin{array}{ccc}
 e_1 + \emptyset \equiv e_1 &
@@ -664,7 +664,7 @@ e_1 \lambda \equiv e_1 &
 \end{array}\]
 \end{frame}
 
-\begin{frame}[fragile]{Simplifica\c{c}\~{o}es}
+\begin{frame}[fragile]{Simplificações}
 \protect\hypertarget{simplificauxe7uxf5es}{}
 \begin{lstlisting}[language=Haskell]
 (.+.) :: Regex -> Regex -> Regex
@@ -679,13 +679,13 @@ e .+. e'     = e :+: e'
 \begin{itemize}
 
 \item
-  \textbf{Estados}: express\~{o}es regulares alcan\c{c}áveis por deriva\c{c}\~{a}o
+  \textbf{Estados}: expressões regulares alcançáveis por derivação
 \item
-  \textbf{Transi\c{c}\~{a}o}: \(\delta(e, a) = \partial(e, a)\)
+  \textbf{Transição}: \(\delta(e, a) = \partial(e, a)\)
 \item
-  \textbf{Estados finais}: express\~{o}es anuláveis (aceitam \(\lambda\))
+  \textbf{Estados finais}: expressões anuláveis (aceitam \(\lambda\))
 \item
-  O conjunto de estados é sempre \textbf{finito} (com simplifica\c{c}\~{o}es)
+  O conjunto de estados é sempre \textbf{finito} (com simplificações)
 \end{itemize}
 \end{frame}
 
@@ -702,31 +702,31 @@ derivDFA e = DFA
 \end{frame}
 
 \hypertarget{conclusuxe3o}{%
-\section{Conclus\~{a}o}\label{conclusuxe3o}}
+\section{Conclusão}\label{conclusuxe3o}}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-1}{}
 \begin{itemize}
 
 \item
   \textbf{AFDs}: reconhecem linguagens regulares eficientemente
 \item
-  \textbf{AFNs}: facilitam a constru\c{c}\~{a}o por composi\c{c}\~{a}o (Thompson)
+  \textbf{AFNs}: facilitam a construção por composição (Thompson)
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-2}{}
 \begin{itemize}
 
 \item
-  \textbf{Thompson}: converte ER em AFN por recurs\~{a}o estrutural
+  \textbf{Thompson}: converte ER em AFN por recursão estrutural
 \item
   \textbf{Subset}: converte AFN em AFD equivalente
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Conclus\~{a}o}
+\begin{frame}{Conclusão}
 \protect\hypertarget{conclusuxe3o-3}{}
 \begin{itemize}
 
