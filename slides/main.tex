@@ -11,7 +11,7 @@
 %------------------------------------------------------------------%
 \usetheme[pageofpages=of,alternativetitlepage=true, titlepagelogo=]{Decom}
 \usecolortheme{decom}
-\usepackage[utf8x]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 
 
@@ -60,6 +60,10 @@
 }
 
 \lstset{style=mystyle}
+n\lstset{
+  literate={á}{{\'a}}1 {ã}{{\~a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ç}{{\c c}}1 {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1 {Ç}{{\c C}}1 {~}{{\textasciitilde}}1 {-}{{-}}1 {↓}{{$\downarrow$}}1
+}
+
 
 \pgfplotsset{compat=1.7}
 
