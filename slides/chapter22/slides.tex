@@ -67,7 +67,7 @@
 
 
 \section{\texorpdfstring{\(\lambda\)-cálculo com
-Subtipagem}{\textbackslash lambda-cálculo com Subtipagem}}\label{lambda-cuxe1lculo-com-subtipagem}}
+Subtipagem}{\textbackslash lambda-cálculo com Subtipagem}}\label{lambda-cuxe1lculo-com-subtipagem}
 
 \begin{frame}{Sintaxe e Tipos}
 
@@ -247,7 +247,7 @@ Subtipagem}{\textbackslash lambda-cálculo com Subtipagem}}\label{lambda-cuxe1lc
     \texttt{[class\_tag | f0 | f1 | ... | fn]} --- palavras
     de 8 bytes
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         data CgEnv = CgEnv
         { classTable :: Map ClassName ClassDecl
         , fieldLayout :: Map ClassName [FieldName]
@@ -259,7 +259,7 @@ Subtipagem}{\textbackslash lambda-cálculo com Subtipagem}}\label{lambda-cuxe1lc
 
     \textbf{Despacho dinâmico}: lê tag no offset 0, cadeia de CJUMPs:
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         buildDispatchChain :: MethodName -> [(Int, ClassName)] -> Stmt
         buildDispatchChain m [] = JUMP(NAME("method_not_found"))
         buildDispatchChain m ((tag, cls):rest) =

@@ -91,7 +91,7 @@ Formal}\label{introduuxe7uxe3o-uxe0-semuxe2ntica-formal}
 
 Em Haskell:
 
-\begin{lstlisting}[language=Haskell]
+\begin{lstlisting}
     data Exp
     = EInt Int
     | Exp :+: Exp
@@ -306,7 +306,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
         A semântica big-step se traduz em Haskell de forma quase literal:
     \end{itemize}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         eval :: Exp -> Int
         eval (EInt n)    = n
         eval (e1 :+: e2) = eval e1 + eval e2
@@ -333,14 +333,14 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 
 \begin{frame}[fragile]{Executando o Interpretador}
 
-    \begin{lstlisting}[language=bash]
+    \begin{lstlisting}
         cabal run exp -- --interp --file input.exp
     \end{lstlisting}
 
     Para a entrada \texttt{(2 + 3) * 4}, o interpretador
     produz \texttt{20}.
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         -- O pipeline completo:
         -- 1. Lexer: String -> [Token]
         -- 2. Parser: [Token] -> Exp

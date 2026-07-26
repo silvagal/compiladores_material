@@ -95,7 +95,7 @@
 
 
 \section{\texorpdfstring{Exemplo: Análise de
-\texttt{n\ +\ n}}{Exemplo: Análise de n + n}}\label{exemplo-anuxe1lise-de-n-n}}
+\texttt{n\ +\ n}}{Exemplo: Análise de n + n}}\label{exemplo-anuxe1lise-de-n-n}
 
 \begin{frame}{Gramática de Expressões (LL(1))}
 
@@ -112,15 +112,14 @@
     \texttt{n + n}}
 
     \begin{table}
-        \begin{tabular}[]{@{}lll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Pilha & Entrada & Ação \\
-            \midrule
-
+            \hline
             \(E\;\$\) & \(n\;+\;n\;\$\) & \(M[E,n]\): aplicar \(E \to T\;E'\) \\
             \(T\;E'\;\$\) & \(n\;+\;n\;\$\) & \(M[T,n]\): aplicar \(T \to F\;T'\) \\
             \(F\;T'\;E'\;\$\) & \(n\;+\;n\;\$\) & \(M[F,n]\): aplicar \(F \to n\) \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -129,25 +128,15 @@
     \texttt{n + n}}
 
     \begin{table}
-        \begin{tabular}[]{@{}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2344}}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2031}}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.5625}}@{}}
-            \toprule
-            \begin{minipage}[b]{\linewidth}\raggedright
-                Pilha
-            \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-            Entrada
-        \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-        Ação
-    \end{minipage} \\
-    \midrule
-
+        \begin{tabular}{l l l}
+            \hline
+            Pilha & Entrada & Ação \\
+    \hline
     \(n\;T'\;E'\;\$\) & \(n\;+\;n\;\$\) & Casar: consumir \(n\) \\
     \(T'\;E'\;\$\) & \(+\;n\;\$\) & \(M[T',+]\): aplicar
     \(T' \to \lambda\) \\
     \(E'\;\$\) & \(+\;n\;\$\) & \(M[E',+]\): aplicar \(E' \to +\;T\;E'\) \\
-    \bottomrule
+    \hline
 \end{tabular}
 \end{table}
 \end{frame}
@@ -156,15 +145,14 @@
     \texttt{n + n}}
 
     \begin{table}
-        \begin{tabular}[]{@{}lll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Pilha & Entrada & Ação \\
-            \midrule
-
+            \hline
             \(+\;T\;E'\;\$\) & \(+\;n\;\$\) & Casar: consumir \(+\) \\
             \(T\;E'\;\$\) & \(n\;\$\) & \(M[T,n]\): aplicar \(T \to F\;T'\) \\
             \(F\;T'\;E'\;\$\) & \(n\;\$\) & \(M[F,n]\): aplicar \(F \to n\) \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -173,16 +161,15 @@
     \texttt{n + n}}
 
     \begin{table}
-        \begin{tabular}[]{@{}lll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Pilha & Entrada & Ação \\
-            \midrule
-
+            \hline
             \(n\;T'\;E'\;\$\) & \(n\;\$\) & Casar: consumir \(n\) \\
             \(T'\;E'\;\$\) & \(\$\) & \(M[T',\$]\): aplicar \(T' \to \lambda\) \\
             \(E'\;\$\) & \(\$\) & \(M[E',\$]\): aplicar \(E' \to \lambda\) \\
             \(\$\) & \(\$\) & \textbf{Aceitar} \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -347,17 +334,16 @@ LL(1)}\label{exemplo-completo-tabela-ll1}
 \begin{frame}{Conjuntos FIRST}
 
     \begin{table}
-        \begin{tabular}[]{@{}ll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Não-terminal & FIRST \\
-            \midrule
-
+            \hline
             \(E\) & \(\{(, n\}\) \\
             \(E'\) & \(\{+, \lambda\}\) \\
             \(T\) & \(\{(, n\}\) \\
             \(T'\) & \(\{*, \lambda\}\) \\
             \(F\) & \(\{(, n\}\) \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -365,17 +351,16 @@ LL(1)}\label{exemplo-completo-tabela-ll1}
 \begin{frame}{Conjuntos FOLLOW}
 
     \begin{table}
-        \begin{tabular}[]{@{}ll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Não-terminal & FOLLOW \\
-            \midrule
-
+            \hline
             \(E\) & \(\{\$, )\}\) \\
             \(E'\) & \(\{\$, )\}\) \\
             \(T\) & \(\{+, \$, )\}\) \\
             \(T'\) & \(\{+, \$, )\}\) \\
             \(F\) & \(\{*, +, \$, )\}\) \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -383,38 +368,17 @@ LL(1)}\label{exemplo-completo-tabela-ll1}
 \begin{frame}{Tabela de Parsing LL(1)}
 
     \begin{table}
-        \begin{tabular}[]{@{}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.0690}}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1207}}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1724}}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1724}}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1552}}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1552}}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1552}}@{}}
-            \toprule
-            \begin{minipage}[b]{\linewidth}\raggedright
-            \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-            \(n\)
-        \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-        \(+\)
-    \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-    \(*\)
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\((\)
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\()\)
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\(\$\)
-\end{minipage} \\
-\midrule
-
+        \begin{tabular}{l l l l l l l l}
+            \hline
+ & \(n\) & \(+\) & \(*\) & \((\) & \()\) & \(\$\) \\
+\hline
 \(E\) & \(T\;E'\) & --- & --- & \(T\;E'\) & --- & --- \\
 \(E'\) & --- & \(+\;T\;E'\) & --- & --- & \(\lambda\) & \(\lambda\) \\
 \(T\) & \(F\;T'\) & --- & --- & \(F\;T'\) & --- & --- \\
 \(T'\) & --- & \(\lambda\) & \(*\;F\;T'\) & --- & \(\lambda\) &
 \(\lambda\) \\
 \(F\) & \(n\) & --- & --- & \((\;E\;)\) & --- & --- \\
-\bottomrule
+\hline
 \end{tabular}
 \end{table}
 
@@ -452,7 +416,7 @@ Cada entrada tem no máximo uma produção --- a gramática é LL(1).
 
     \begin{lstlisting}
         S -> A a
-        A -> a | λ
+        A -> a | \lambda{}
     \end{lstlisting}
 \end{frame}
 
@@ -477,7 +441,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 
 \begin{frame}[fragile]{Tipos Principais}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         data Symbol = Terminal String | NonTerminal String
 
         type Production = [Symbol]
@@ -494,7 +458,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 
 \begin{frame}[fragile]{Cálculo de FIRST por Ponto Fixo}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         computeFirstSets :: Grammar -> FirstSet
         computeFirstSets g = fixedPoint step initial
         where
@@ -518,9 +482,9 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 \begin{frame}[fragile]{\texttt{firstForSequence}:
     Implementação das Regras}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         firstForSequence :: Grammar -> FirstSet -> [Symbol] -> [String]
-        firstForSequence _ _ [] = ["λ"]
+        firstForSequence _ _ [] = ["\lambda{}"]
         firstForSequence g fs (sym:syms)
         | isTerminal sym =
         if isLambda sym
@@ -529,8 +493,8 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
         | otherwise =
         let nt         = symbolString sym
         firstOfSym = fromMaybe [] (Map.lookup nt fs)
-        withoutLam = firstOfSym \\ ["λ"]
-        in if "λ" `elem` firstOfSym
+        withoutLam = firstOfSym \\ ["\lambda{}"]
+        in if "\lambda{}" `elem` firstOfSym
         then withoutLam `union` firstForSequence g fs syms
         else withoutLam
     \end{lstlisting}
@@ -538,7 +502,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 
 \begin{frame}[fragile]{O Parser LL(1)}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         parse :: Grammar -> ParseTable -> [String] -> ParseResult
         parse grammar table tokens = go initialStack (tokens ++ ["$"]) []
         where
@@ -549,7 +513,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 
 \begin{frame}[fragile]{Parser LL(1)}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         go (Terminal "$" : _) ("$" : _) acc = ParseOk (reverse acc)
 
         go (Terminal t : stack') (a : inp') acc

@@ -101,7 +101,7 @@
             \item
             \textbf{Não} devemos reduzir.
             \item
-            Quando é \texttt{$} ou \texttt{)},
+            Quando é \verb|$| ou \texttt{)},
             devemos reduzir.
         \end{itemize}
     \end{itemize}
@@ -224,7 +224,7 @@
 
         \item
         \textbf{Reduce}: \([A \to \alpha ., a]\) completo ->
-        \texttt{action[I, a] = Reduce(A -> α)} \textbf{apenas
+        \texttt{action[I, a] = Reduce(A -> \alpha{})} \textbf{apenas
         na coluna \(a\)}
     \end{itemize}
 \end{frame}
@@ -312,19 +312,18 @@
 \begin{frame}{Tabela LR(1)}
 
     \begin{table}
-        \begin{tabular}[]{@{}llllllllll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Estado & \(n\) & \(+\) & \(*\) & \((\) & \()\) & \(\$\) & \(E\) & \(T\)
             & \(F\) \\
-            \midrule
-
+            \hline
             0 & s5 & & & s4 & & & 1 & 2 & 3 \\
             1 & & s6 & & & & acc & & & \\
             2 & & r E->T & s7 & & & r E->T & & & \\
             3 & & r T->F & r T->F & & & r T->F & & & \\
             4 & s5 & & & s4 & & & 8 & 9 & 3 \\
             5 & & r F->n & r F->n & & r F->n & r F->n & & & \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -455,17 +454,16 @@
 \begin{frame}{Identificação dos Pares com o Mesmo Núcleo}
 
     \begin{table}
-        \begin{tabular}[]{@{}lll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Núcleo & Estados LR(1) & Lookaheads unidos \\
-            \midrule
-
+            \hline
             \(T \to F .\) & 3 e 10 & \(\{\$, +, *, )\}\) \\
             \(E \to E + . T\), \ldots{} & 6 e 14 & \(\{\$, +, )\}\) \\
             \(T \to T * . F\), \ldots{} & 7 e 15 & \(\{\$, +, *, )\}\) \\
             \(E \to E + T .\), \(T \to T . * F\) & 11 e 16 & \(\{\$, +, )\}\) \\
             \(T \to T * F .\) & 12 e 17 & \(\{\$, +, *, )\}\) \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 
@@ -476,41 +474,20 @@
 \begin{frame}{Tabela LALR(1) para Expressões}
 
     \begin{table}
-        \begin{tabular}[]{@{}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1224}}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0612}}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1429}}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1429}}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0612}}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1429}}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1429}}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0612}}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0612}}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0612}}@{}}
-            \toprule
-            \begin{minipage}[b]{\linewidth}\raggedright
-                Estado
-            \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-            \(n\)
-        \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-        \(+\)
-    \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-    \(*\)
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\((\)
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\()\)
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\(\$\)
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\(E\)
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\(T\)
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\(F\)
-\end{minipage} \\
-\midrule
-
+        \begin{tabular}{l l l l}
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }@{}}
+            \hline
+            Estado & \(n\) & \(+\) & \(*\) & \((\) & \()\) & \(\$\) & \(E\) & \(T\) & \(F\) \\
+\hline
 0 & s5 & & & s4 & & & 1 & 2 & A \\
 1 & & sB & & & & acc & & & \\
 2 & & r E->T & sC & & & r E->T & & & \\
@@ -522,7 +499,7 @@ C & s5 & & & s4 & & & & & E \\
 8 & & sB & & & s13 & & & & \\
 D & & r E->E+T & sC & & r E->E+T & r E->E+T & & & \\
 E & & r T->T*F & r T->T*F & & r T->T*F & r T->T*F & & & \\
-\bottomrule
+\hline
 \end{tabular}
 \end{table}
 \end{frame}

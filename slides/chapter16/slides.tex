@@ -50,7 +50,7 @@
 
     Tipos e termos:
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         data Ty   = TBool | TNat
 
         data Term
@@ -85,7 +85,7 @@
 
     Equação Haskell:
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         tcTerm (TIf t1 t2 t3) = do
         ty1 <- tcTerm t1
         unless (ty1 == TBool) $
@@ -100,7 +100,7 @@
 
 \begin{frame}[fragile]{Typechecking}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         tcTerm :: Term -> TcM Ty
         tcTerm TTrue  = pure TBool                  -- (T-True)
         tcTerm TFalse = pure TBool                  -- (T-False)
@@ -110,7 +110,7 @@
 
 \begin{frame}[fragile]{Typechecking}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         tcTerm (TSucc t1) = do                      -- (T-Succ)
         ty <- tcTerm t1
         unless (ty == TNat) $ throwError "..."
@@ -119,7 +119,7 @@
         ty <- tcTerm t1
         unless (ty == TNat) $ throwError "..."
         pure TBool
-        -- ... TIf, TPred análogos
+        -- ... TIf, TPred an\'alogos
     \end{lstlisting}
 \end{frame}
 
@@ -128,7 +128,7 @@
 
 \begin{frame}[fragile]{A Linguagem TLine}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         data Ty = TInt | TBool | TString
 
         data Stmt
@@ -179,7 +179,7 @@
 
 \begin{frame}[fragile]{Typechecking}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         tcStmt :: Stmt -> TcM ()
         tcStmt (SDecl v t e) = do          -- (T-Decl)
         t' <- tcExp e
@@ -190,7 +190,7 @@
 
 \begin{frame}[fragile]{Typechecking}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         tcStmt (SAssign v e) = do
         t  <- lookupVar v
         t' <- tcExp e
@@ -200,7 +200,7 @@
 
 \begin{frame}[fragile]{Typechecking}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         tcStmt (SRead e v) = do
         t <- tcExp e
         unless (t == TString) $ throwError "Type error"
@@ -221,7 +221,7 @@
         TWhile adiciona condicionais e repetição com \textbf{escopo local}:
     \end{itemize}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         data Stmt
         = -- ... tudo de TLine ...
         | SIf    Exp Block Block
@@ -256,7 +256,7 @@
 
 \begin{frame}[fragile]{Implementando Escopo}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         withLocalCtx :: TcM a -> TcM a
         withLocalCtx m = do
         ctx <- get
@@ -268,7 +268,7 @@
 
 \begin{frame}[fragile]{Implementando Escopo}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         tcBlock :: [Stmt] -> TcM ()
         tcBlock ss = withLocalCtx (mapM_ tcStmt ss)
 
@@ -374,7 +374,7 @@
         em \texttt{ReaderT}:
     \end{itemize}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         data TcEnv = TcEnv
         { recordEnv  :: Map Name [(Field, Ty)]  -- Delta
         , funcEnv    :: Map Name ([Ty], RetTy)  -- Phi
@@ -385,7 +385,7 @@
 
 \begin{frame}[fragile]{A Mônada}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         type VarCtx = Map Var Ty
 
         type TcM a = ReaderT TcEnv
@@ -396,7 +396,7 @@
 
 \begin{frame}[fragile]{Registros}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         tcExp (EField e f) = do
         t <- tcExp e
         case t of
@@ -407,7 +407,7 @@
 
 \begin{frame}[fragile]{Funções}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         tcExp (ECall fname args) = do
         fenv <- asks funcEnv
         case Map.lookup fname fenv of
@@ -423,7 +423,7 @@
 
 \begin{frame}[fragile]{Função}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         tcFuncDecl :: TcEnv -> FuncDecl -> Either String ()
         tcFuncDecl baseEnv (FuncDecl name params retTy body) = do
         let paramPairs = [(v, t) | Param v t <- params]

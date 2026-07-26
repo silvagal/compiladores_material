@@ -75,7 +75,7 @@
         (memory 4)
         (global $heap_ptr (mut i32) (i32.const 0))
         (func $main
-        ;; corpo da função
+        ;; corpo da func\~ao
         )
         (export "main" (func $main))
         )
@@ -142,17 +142,12 @@
     \texttt{goto}):
 
     \begin{table}
-        \begin{tabular}[]{@{}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
-            \toprule
-            \begin{minipage}[b]{\linewidth}\raggedright
-                Construtor
-            \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-            Comportamento de \texttt{br}
-        \end{minipage} \\
-        \midrule
-
+        \begin{tabular}{l l l l}
+            }
+            }@{}}
+            \hline
+            Construtor & Comportamento de \texttt{br} \\
+        \hline
         \texttt{(block \$l ...)} & Salta para o \textbf{fim} do
         bloco (\emph{break}) \\
         \texttt{(loop \$l ...)} & Salta para o \textbf{início}
@@ -161,7 +156,7 @@
         executa ramo verdadeiro se \(\neq 0\) \\
         \texttt{br\_if \$l} & Consome topo; ramifica se
         \(\neq 0\) \\
-        \bottomrule
+        \hline
     \end{tabular}
 \end{table}
 \end{frame}
@@ -171,13 +166,13 @@
     \begin{lstlisting}
         (block $exit
         (loop $head
-        ;; avaliação da condição de saída
-        <condição>
-        i32.eqz          ;; negação
-        br_if $exit      ;; sai se condição falsa
-        ;; corpo do laço
+        ;; avaliac\~ao da condic\~ao de sa\'ida
+        <condic\~ao>
+        i32.eqz          ;; negac\~ao
+        br_if $exit      ;; sai se condic\~ao falsa
+        ;; corpo do laco
         <corpo>
-        br $head         ;; volta ao início
+        br $head         ;; volta ao in\'icio
         )
         )
     \end{lstlisting}
@@ -225,11 +220,10 @@ WAT}\label{traduuxe7uxe3o-da-irt-para-wat}
 \begin{frame}[fragile]{Tabela de Operadores}
 
     \begin{table}
-        \begin{tabular}[]{@{}llll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             IRT & WAT & IRT & WAT \\
-            \midrule
-
+            \hline
             ADD & \texttt{i32.add} & EQ &
             \texttt{i32.eq} \\
             SUB & \texttt{i32.sub} & NEQ &
@@ -243,7 +237,7 @@ WAT}\label{traduuxe7uxe3o-da-irt-para-wat}
             AND & \texttt{i32.and} & GE &
             \texttt{i32.ge\_s} \\
             OR & \texttt{i32.or} & & \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}

@@ -55,7 +55,7 @@
 
 \begin{frame}[fragile]{Tipos em Haskell}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         data Line = Line [Stmt]
 
         data Stmt
@@ -67,7 +67,7 @@
 
 \begin{frame}[fragile]{Tipos em Haskell}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         data Exp
         = EInt Int
         | EVar Var
@@ -436,7 +436,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
         ambiente.
     \end{itemize}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         type Env    = Map String Int
         type Interp a = ExceptT String (StateT Env IO) a
     \end{lstlisting}
@@ -467,7 +467,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 
 \begin{frame}[fragile]{Expressões}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         interpExp :: Exp -> Interp Int
         interpExp (EInt n)    = pure n
         interpExp (EVar v)    = askVar v
@@ -478,7 +478,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 
 \begin{frame}[fragile]{Variáveis}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         askVar :: String -> Interp Int
         askVar s = do
         env <- get
@@ -490,7 +490,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 
 \begin{frame}[fragile]{Comandos}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         interpStmt :: Stmt -> Interp ()
         interpStmt (SAssign v e) = do
         val <- interpExp e
@@ -500,7 +500,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 
 \begin{frame}[fragile]{Comandos}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         interpStmt (SPrint e) = do
         val <- interpExp e
         liftIO $ print val
@@ -509,7 +509,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 
 \begin{frame}[fragile]{Comandos}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         interpStmt (SRead v) = do
         str <- liftIO getLine
         modify (Map.insert v (read str))

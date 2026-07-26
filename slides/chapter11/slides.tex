@@ -48,15 +48,15 @@
     \texttt{.y}}
 
     \begin{lstlisting}
-        { cabeçalho Haskell }
+        { cabecalho Haskell }
 
-        diretivas e declaração de tokens
+        diretivas e declarac\~ao de tokens
 
         %%
 
         regras gramaticais
 
-        { rodapé Haskell }
+        { rodap\'e Haskell }
     \end{lstlisting}
 \end{frame}
 
@@ -84,9 +84,9 @@
 
 \begin{frame}[fragile]{Gerando o Parser}
 
-    \begin{lstlisting}[language=bash]
+    \begin{lstlisting}
         happy ExpParser.y            # gera ExpParser.hs
-        happy -i ExpParser.y         # também gera ExpParser.info (tabela)
+        happy -i ExpParser.y         # tamb\'em gera ExpParser.info (tabela)
         happy -o ExpParser.hs ExpParser.y
     \end{lstlisting}
 \end{frame}
@@ -106,15 +106,14 @@
 \begin{frame}[fragile]{Principais Diretivas}
 
     \begin{table}
-        \begin{tabular}[]{@{}ll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Diretiva & Significado \\
-            \midrule
-
+            \hline
             \texttt{\%name p N} & Gera função
             \texttt{p} iniciando pelo não-terminal
             \texttt{N} \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -122,14 +121,13 @@
 \begin{frame}[fragile]{Principais Diretivas}
 
     \begin{table}
-        \begin{tabular}[]{@{}ll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Diretiva & Significado \\
-            \midrule
-
+            \hline
             \texttt{\%tokentype \{ T \}} & Define o tipo Haskell
             dos tokens consumidos \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -137,20 +135,15 @@
 \begin{frame}[fragile]{Principais Diretivas}
 
     \begin{table}
-        \begin{tabular}[]{@{}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.4714}}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5286}}@{}}
-            \toprule
-            \begin{minipage}[b]{\linewidth}\raggedright
-                Diretiva
-            \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-            Significado
-        \end{minipage} \\
-        \midrule
-
+        \begin{tabular}{l l l l}
+            }
+            }@{}}
+            \hline
+            Diretiva & Significado \\
+        \hline
         \texttt{\%monad \{ M \}\{ (>>=) \}\{ return \}} &
         Executa o parser dentro da mônada \texttt{M} \\
-        \bottomrule
+        \hline
     \end{tabular}
 \end{table}
 \end{frame}
@@ -158,14 +151,13 @@
 \begin{frame}[fragile]{Principais Diretivas}
 
     \begin{table}
-        \begin{tabular}[]{@{}ll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Diretiva & Significado \\
-            \midrule
-
+            \hline
             \texttt{\%lexer \{ f \}\{ eof \}} & Lexer incremental:
             \texttt{f} obtém o próximo token \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -173,14 +165,13 @@
 \begin{frame}[fragile]{Principais Diretivas}
 
     \begin{table}
-        \begin{tabular}[]{@{}ll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Diretiva & Significado \\
-            \midrule
-
+            \hline
             \texttt{\%error \{ h \}} & Chama
             \texttt{h} ao encontrar erro de sintaxe \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -188,20 +179,15 @@
 \begin{frame}[fragile]{Principais Diretivas}
 
     \begin{table}
-        \begin{tabular}[]{@{}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.1667}}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.8333}}@{}}
-            \toprule
-            \begin{minipage}[b]{\linewidth}\raggedright
-                Diretiva
-            \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-            Significado
-        \end{minipage} \\
-        \midrule
-
+        \begin{tabular}{l l l l}
+            }
+            }@{}}
+            \hline
+            Diretiva & Significado \\
+        \hline
         \texttt{\%expect n} & Declara exatamente
         \texttt{n} conflitos shift-reduce esperados \\
-        \bottomrule
+        \hline
     \end{tabular}
 \end{table}
 \end{frame}
@@ -209,14 +195,13 @@
 \begin{frame}[fragile]{Principais Diretivas}
 
     \begin{table}
-        \begin{tabular}[]{@{}ll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Diretiva & Significado \\
-            \midrule
-
+            \hline
             \texttt{\%left}, \texttt{\%right},
             \texttt{\%nonassoc} & Precedência e associatividade \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -362,7 +347,7 @@ Ações}\label{regras-gramaticais-e-auxe7uxf5es}
 
 \begin{frame}[fragile]{Rodapé: Funções Auxiliares}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         {
         lexer :: (Token -> Alex a) -> Alex a
         lexer = (=<< alexMonadScan)
@@ -378,7 +363,7 @@ Ações}\label{regras-gramaticais-e-auxe7uxf5es}
 
 \begin{frame}[fragile]{A Opção \texttt{-i}}
 
-    \begin{lstlisting}[language=bash]
+    \begin{lstlisting}
         happy -i ExpParser.y
         # gera ExpParser.info
     \end{lstlisting}
@@ -599,12 +584,12 @@ Ações}\label{regras-gramaticais-e-auxe7uxf5es}
     \end{itemize}
 
     \begin{lstlisting}
-        -- Antes: ambíguo
+        -- Antes: amb\'iguo
         Prog : 'id'   -- pode ser Decl ou Expr?
 
         -- Depois: discriminar por palavra-chave
-        Prog : 'let' 'id'    -- declaração
-        | 'id'          -- expressão
+        Prog : 'let' 'id'    -- declarac\~ao
+        | 'id'          -- express\~ao
     \end{lstlisting}
 \end{frame}
 

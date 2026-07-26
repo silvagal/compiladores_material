@@ -265,16 +265,15 @@ Sintaxe}\label{traduuxe7uxe3o-dirigida-por-sintaxe}
 \begin{frame}[fragile]{Expressões}
 
     \begin{table}
-        \begin{tabular}[]{@{}llll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             TWhile & IRT & TWhile & IRT \\
-            \midrule
-
+            \hline
             \texttt{+} & ADD & \texttt{==} & EQ \\
             \texttt{-} & SUB & \texttt{<} & LT \\
             \texttt{*} & MUL & \texttt{\&\&} &
             AND \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -348,7 +347,7 @@ Sintaxe}\label{traduuxe7uxe3o-dirigida-por-sintaxe}
 
 \begin{frame}[fragile]{Implementação: A Mônada CgM}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         data CgState = CgState
         { freshCounter :: Int
         , emitted      :: [Stmt]
@@ -369,7 +368,7 @@ Sintaxe}\label{traduuxe7uxe3o-dirigida-por-sintaxe}
 
 \begin{frame}[fragile]{Compilando While}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         compileTWhile :: [Stmt] -> CgM ()
         compileTWhile stmts = mapM_ compileStmt stmts
 

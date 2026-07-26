@@ -187,17 +187,16 @@
     Gramática: \(S \to S+E \mid E\) e \(E \to (S) \mid n\)
 
     \begin{table}
-        \begin{tabular}[]{@{}llll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Conjunto & Item & Pos & Motivo \\
-            \midrule
-
+            \hline
             \(I_0\) & \(S' \to . S\) & 0 & inicial \\
             & \(S \to . S+E\) & 0 & prever \(S\) \\
             & \(S \to . E\) & 0 & prever \(S\) \\
             & \(E \to . n\) & 0 & prever \(E\) \\
             & \(E \to . (S)\) & 0 & prever \(E\) \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -208,18 +207,17 @@
     Gramática: \(S \to S+E \mid E\) e \(E \to (S) \mid n\)
 
     \begin{table}
-        \begin{tabular}[]{@{}llll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Conjunto & Item & Pos & Motivo \\
-            \midrule
-
+            \hline
             \(I_1\) & \(E \to ( . S )\) & 0 & consumir
             \texttt{(} \\
             & \(S \to . S+E\) & 1 & prever \(S\) \\
             & \(S \to . E\) & 1 & prever \(S\) \\
             & \(E \to . n\) & 1 & prever \(E\) \\
             & \(E \to . (S)\) & 1 & prever \(E\) \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -228,16 +226,15 @@
     \texttt{(1) + 2} (continuação)}
 
     \begin{table}
-        \begin{tabular}[]{@{}llll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Conjunto & Item & Pos & Motivo \\
-            \midrule
-
+            \hline
             \(I_2\) & \(E \to n .\) & 1 & consumir \texttt{1} \\
             & \(S \to E .\) & 1 & completar \(E\) \\
             & \(E \to (S . )\) & 0 & completar \(S\) \\
             & \(S \to S . +E\) & 1 & completar \(S\) \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -246,16 +243,15 @@
     \texttt{(1) + 2} (continuação)}
 
     \begin{table}
-        \begin{tabular}[]{@{}llll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Conjunto & Item & Pos & Motivo \\
-            \midrule
-
+            \hline
             \(I_3\) & \(E \to (S) .\) & 0 & consumir \texttt{)} \\
             & \(S \to E .\) & 0 & completar \(E\) \\
             & \(S' \to S .\) & 0 & completar \(S\) \\
             & \(S \to S . +E\) & 0 & completar \(S\) \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -264,17 +260,16 @@
     \texttt{(1) + 2} (continuação)}
 
     \begin{table}
-        \begin{tabular}[]{@{}llll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Conjunto & Item & Pos & Motivo \\
-            \midrule
-
+            \hline
             \(I_4\) & \(S \to S+ . E\) & 0 & consumir \texttt{+} \\
             & \(E \to . n\) & 4 & prever \(E\) \\
             \(I_5\) & \(E \to n .\) & 4 & consumir \texttt{2} \\
             & \(S \to S+E .\) & 0 & completar \(E\) \\
             & \(S' \to S .\) & 0 & completar \(S\): \textbf{sucesso!} \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -348,16 +343,15 @@ Shift-Reduce}\label{analisadores-lr-shift-reduce}
     \texttt{(1)+2}}
 
     \begin{table}
-        \begin{tabular}[]{@{}lll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Pilha & Entrada & Ação \\
-            \midrule
-
+            \hline
             & \texttt{(1)+2} & shift \\
             \texttt{(} & \texttt{1)+2} & shift \\
             \texttt{(1} & \texttt{)+2} & reduce
             \(E \to n\) \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -366,17 +360,16 @@ Shift-Reduce}\label{analisadores-lr-shift-reduce}
     \texttt{(1)+2}}
 
     \begin{table}
-        \begin{tabular}[]{@{}lll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Pilha & Entrada & Ação \\
-            \midrule
-
+            \hline
             \texttt{(1} & \texttt{)+2} & reduce
             \(E \to n\) \\
             \texttt{(E} & \texttt{)+2} & reduce
             \(S \to E\) \\
             \texttt{(S} & \texttt{)+2} & shift \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -385,16 +378,15 @@ Shift-Reduce}\label{analisadores-lr-shift-reduce}
     \texttt{(1)+2}}
 
     \begin{table}
-        \begin{tabular}[]{@{}lll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Pilha & Entrada & Ação \\
-            \midrule
-
+            \hline
             \texttt{E} & \texttt{+2} & reduce
             \(S \to E\) \\
             \texttt{S} & \texttt{+2} & shift \\
             \texttt{S+} & \texttt{2} & shift \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -403,18 +395,17 @@ Shift-Reduce}\label{analisadores-lr-shift-reduce}
     \texttt{(1)+2}}
 
     \begin{table}
-        \begin{tabular}[]{@{}lll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Pilha & Entrada & Ação \\
-            \midrule
-
-            \texttt{S+2} & \texttt{$} & reduce
+            \hline
+            \texttt{S+2} & \verb|$| & reduce
             \(E \to n\) \\
-            \texttt{S+E} & \texttt{$} & reduce
+            \texttt{S+E} & \verb|$| & reduce
             \(S \to S+E\) \\
-            \texttt{S} & \texttt{$} &
+            \texttt{S} & \verb|$| &
             \textbf{aceitar} \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -467,11 +458,11 @@ Shift-Reduce}\label{analisadores-lr-shift-reduce}
 
     Um \textbf{estado LR(0)} é um conjunto fechado de itens.
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         data Item = Item
-        { itemLHS    :: String    -- A: não-terminal
-        , itemBefore :: [Symbol]  -- α: antes do ponto
-        , itemAfter  :: [Symbol]  -- β: depois do ponto
+        { itemLHS    :: String    -- A: n\~ao-terminal
+        , itemBefore :: [Symbol]  -- \alpha{}: antes do ponto
+        , itemAfter  :: [Symbol]  -- \beta{}: depois do ponto
         }
 
 
@@ -484,7 +475,7 @@ Shift-Reduce}\label{analisadores-lr-shift-reduce}
     Para cada item \([A \to \alpha . B \beta]\) com não-terminal \(B\) após
     o ponto, adicionar todos \([B \to . \gamma]\):
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         closure :: Grammar -> State -> State
         closure g = fixedPoint step
         where
@@ -501,7 +492,7 @@ Shift-Reduce}\label{analisadores-lr-shift-reduce}
 
     Avança o ponto ao consumir o símbolo \(X\) e fecha o resultado:
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         goto :: Grammar -> State -> Symbol -> State
         goto g items sym = closure g $ Set.fromList
         [ Item lhs (before ++ [sym]) rest
@@ -550,7 +541,7 @@ Shift-Reduce}\label{analisadores-lr-shift-reduce}
         \begin{itemize}
 
             \item
-            \texttt{action[i, t] = Reduce(A -> α)} para
+            \texttt{action[i, t] = Reduce(A -> \alpha{})} para
             \textbf{todos} os terminais \(t\)
             \item
             LR(0) ignora completamente o lookahead nas reduções!
@@ -618,7 +609,7 @@ Shift-Reduce}\label{analisadores-lr-shift-reduce}
         LR(0): insere reduce em todos os terminais (inclusive
         \texttt{+})
         \item
-        SLR: insere reduce apenas em \texttt{$} e
+        SLR: insere reduce apenas em \verb|$| e
         \texttt{)} --- sem conflito com shift em
         \texttt{+}!
     \end{itemize}

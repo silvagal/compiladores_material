@@ -64,14 +64,13 @@
 \begin{frame}{Compiladores vs.~Interpretadores}
 
     \begin{table}
-        \begin{tabular}[]{@{}lll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             & Compilador & Interpretador \\
-            \midrule
-
+            \hline
             Execução & Traduz antes de executar & Executa diretamente \\
             Desempenho & \textasciitilde10× mais rápido & Mais lento \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -79,14 +78,13 @@
 \begin{frame}{Compiladores vs.~Interpretadores}
 
     \begin{table}
-        \begin{tabular}[]{@{}lll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             & Compilador & Interpretador \\
-            \midrule
-
+            \hline
             Energia & Menos consumo & Mais consumo \\
             Tempo de compilação & Pode ser alto & Nenhum \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -480,15 +478,15 @@ Processo}\label{estrutura-completa-do-processo}
 \begin{frame}[fragile]{Pipeline Completo}
 
     \begin{lstlisting}
-        Código-fonte
+        C\'odigo-fonte
         ↓ compilador
-        Código assembly
+        C\'odigo assembly
         ↓ assembler
-        Código objeto (.o)
+        C\'odigo objeto (.o)
         ↓ linker
-        Executável
+        Execut\'avel
         ↓ loader
-        Processo em memória
+        Processo em mem\'oria
     \end{lstlisting}
 
     \begin{itemize}
@@ -503,14 +501,13 @@ Processo}\label{estrutura-completa-do-processo}
 \begin{frame}{Responsabilidades de Cada Ferramenta}
 
     \begin{table}
-        \begin{tabular}[]{@{}llll@{}}
-            \toprule
-            Ferramenta & Entrada & Saída & Função \\
-            \midrule
-
+        \begin{tabular}{l l l l}
+            \hline
+Ferramenta & Entrada & Saída & Função \\
+            \hline
             Compilador & Código-fonte & Assembly & Tradução de linguagem \\
             Assembler & Assembly & Código objeto & Tradução de instruções \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -518,15 +515,14 @@ Processo}\label{estrutura-completa-do-processo}
 \begin{frame}[fragile]{Responsabilidades de Cada Ferramenta}
 
     \begin{table}
-        \begin{tabular}[]{@{}llll@{}}
-            \toprule
-            Ferramenta & Entrada & Saída & Função \\
-            \midrule
-
+        \begin{tabular}{l l l l}
+            \hline
+Ferramenta & Entrada & Saída & Função \\
+            \hline
             Linker & Múltiplos \texttt{.o} & Executável & Resolve
             referências \\
             Loader & Executável & Processo & Carrega na memória \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}

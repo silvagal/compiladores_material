@@ -90,10 +90,10 @@ Determinísticos}\label{autuxf4matos-finitos-determinuxedsticos}
 
 \begin{frame}[fragile]{Representação em Haskell}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         data DFA a = DFA
         { start  :: a           -- estado inicial
-        , delta  :: a -> Char -> a  -- função de transição
+        , delta  :: a -> Char -> a  -- func\~ao de transic\~ao
         , finals :: a -> Bool   -- predicado de estado final
         }
     \end{lstlisting}
@@ -129,7 +129,7 @@ Determinísticos}\label{autuxf4matos-finitos-determinuxedsticos}
 
 \begin{frame}[fragile]{Implementação do AFD}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         endsWithOne :: DFA Bool
         endsWithOne = DFA False transition id
         where
@@ -154,12 +154,12 @@ Determinísticos}\label{autuxf4matos-finitos-determinuxedsticos}
 
 \begin{frame}[fragile]{Execução e Aceitação}
 
-    \begin{lstlisting}[language=Haskell]
-        -- Computa o estado final após processar toda a string
+    \begin{lstlisting}
+        -- Computa o estado final ap\'os processar toda a string
         deltaStar :: DFA a -> String -> a
         deltaStar m = foldl (delta m) (start m)
 
-        -- Verifica se uma string é aceita
+        -- Verifica se uma string \'e aceita
         accept :: DFA a -> String -> Bool
         accept m s = finals m (deltaStar m s)
     \end{lstlisting}
@@ -204,11 +204,11 @@ Não-Determinísticos}\label{autuxf4matos-finitos-nuxe3o-determinuxedsticos}
 
 \begin{frame}[fragile]{Representação em Haskell}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         data NFA a = NFA
         { numberOfStates :: Int
         , nfaStart       :: Set a       -- estados iniciais
-        , nfaDelta       :: a -> Char -> Set a  -- transição
+        , nfaDelta       :: a -> Char -> Set a  -- transic\~ao
         , nfaFinals      :: Set a       -- estados finais
         }
     \end{lstlisting}
@@ -222,7 +222,7 @@ Não-Determinísticos}\label{autuxf4matos-finitos-nuxe3o-determinuxedsticos}
 
 \begin{frame}[fragile]{Exemplo}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         endsWith00 :: NFA Int
         endsWith00 = NFA 3 (Set.singleton 0)
         (\ s c -> case (s,c) of
@@ -278,7 +278,7 @@ Não-Determinísticos}\label{autuxf4matos-finitos-nuxe3o-determinuxedsticos}
 
 \begin{frame}[fragile]{Implementação}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         subset :: Ord a => NFA a -> DFA (Set a)
         subset m = DFA
         { start  = nfaStart m
@@ -328,13 +328,13 @@ Não-Determinísticos}\label{autuxf4matos-finitos-nuxe3o-determinuxedsticos}
 
 \begin{frame}[fragile]{Tipo Haskell para Expressões Regulares}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         data Regex
-        = Empty           -- ∅: conjunto vazio
-        | Lambda          -- λ: palavra vazia
-        | Chr Char        -- a: caractere específico
-        | Regex :+: Regex -- e1 + e2: união
-        | Regex :@: Regex -- e1 e2: concatenação
+        = Empty           -- \emptyset{}: conjunto vazio
+        | Lambda          -- \lambda{}: palavra vazia
+        | Chr Char        -- a: caractere espec\'ifico
+        | Regex :+: Regex -- e1 + e2: uni\~ao
+        | Regex :@: Regex -- e1 e2: concatenac\~ao
         | Star Regex      -- e*: fecho de Kleene
     \end{lstlisting}
 
@@ -420,7 +420,7 @@ Não-Determinísticos}\label{autuxf4matos-finitos-nuxe3o-determinuxedsticos}
 \begin{frame}[fragile]{A Função \texttt{thompson} em
     Haskell}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         thompson :: Regex -> NFA Int
         thompson Empty = emptyNFA
         thompson Lambda = lambdaNFA
@@ -433,7 +433,7 @@ Não-Determinísticos}\label{autuxf4matos-finitos-nuxe3o-determinuxedsticos}
 
 \begin{frame}[fragile]{Pipeline Completo: ER -> AFD}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         lexer :: [Regex] -> DFA (Set Int)
         lexer = subset . foldr unionNFA emptyNFA . map thompson
     \end{lstlisting}
@@ -500,7 +500,7 @@ Não-Determinísticos}\label{autuxf4matos-finitos-nuxe3o-determinuxedsticos}
 
 \begin{frame}[fragile]{Implementação}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         longest :: DFA a -> String -> Maybe String
     \end{lstlisting}
 
@@ -528,7 +528,7 @@ Não-Determinísticos}\label{autuxf4matos-finitos-nuxe3o-determinuxedsticos}
 \begin{frame}[fragile]{Lógica da Função
     \texttt{longest}}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         longest m = combine . foldl step (Just "", Nothing, start m)
         where
         step (Just pre, last, e) c
@@ -606,7 +606,7 @@ Regulares}\label{derivadas-de-expressuxf5es-regulares}
 
 \begin{frame}[fragile]{Implementação}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         nullable :: Regex -> Bool
         nullable Empty       = False
         nullable Lambda      = True
@@ -631,7 +631,7 @@ Regulares}\label{derivadas-de-expressuxf5es-regulares}
 
 \begin{frame}[fragile]{Implementação}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         deriv :: Char -> Regex -> Regex
         deriv _ Empty  = Empty
         deriv _ Lambda = Empty
@@ -666,7 +666,7 @@ Regulares}\label{derivadas-de-expressuxf5es-regulares}
 
 \begin{frame}[fragile]{Simplificações}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         (.+.) :: Regex -> Regex -> Regex
         Empty .+. e' = e'
         e .+. Empty  = e
@@ -691,7 +691,7 @@ Regulares}\label{derivadas-de-expressuxf5es-regulares}
 
 \begin{frame}[fragile]{AFD via Derivadas}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         derivDFA :: Regex -> DFA Regex
         derivDFA e = DFA
         { start  = simp e

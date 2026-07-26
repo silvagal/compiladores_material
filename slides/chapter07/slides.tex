@@ -51,14 +51,13 @@
 \begin{frame}{GLC vs.~PEG: Diferença Fundamental}
 
     \begin{table}
-        \begin{tabular}[]{@{}lll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Aspecto & GLC & PEG \\
-            \midrule
-
+            \hline
             Escolha & Não-determinística & \textbf{Ordenada} \\
             Ambiguidade & Possível & Impossível \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -66,14 +65,13 @@
 \begin{frame}{GLC vs.~PEG: Diferença Fundamental}
 
     \begin{table}
-        \begin{tabular}[]{@{}lll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Aspecto & GLC & PEG \\
-            \midrule
-
+            \hline
             Recursão à esquerda & Suporta naturalmente & Não suporta (loop) \\
             Predicados lookahead & Não tem & Sim (\(!e\), \(\&e\)) \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -81,13 +79,12 @@
 \begin{frame}{GLC vs.~PEG: Diferença Fundamental}
 
     \begin{table}
-        \begin{tabular}[]{@{}lll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Aspecto & GLC & PEG \\
-            \midrule
-
+            \hline
             Poder expressivo & Linguagens livres de contexto & Não determ. \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -115,15 +112,14 @@
 \begin{frame}{Operadores de PEG}
 
     \begin{table}
-        \begin{tabular}[]{@{}lll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Expressão & Nome & Semântica \\
-            \midrule
-
+            \hline
             \(\varepsilon\) & vazio & Sempre tem sucesso sem consumir \\
             \(a\) & terminal & Consome e casa com símbolo \(a\) \\
             \(A\) & não-terminal & Invoca a regra de nome \(A\) \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -131,16 +127,15 @@
 \begin{frame}{Operadores de PEG}
 
     \begin{table}
-        \begin{tabular}[]{@{}lll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Expressão & Nome & Semântica \\
-            \midrule
-
+            \hline
             \(e_1\; e_2\) & sequência & \(e_1\) depois \(e_2\) sobre o restante \\
             \(e_1 / e_2\) & escolha ordenada & Tenta \(e_1\); se falhar, tenta
             \(e_2\) \\
             \(e^*\) & repetição gulosa & Zero ou mais ocorrências de \(e\) \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -148,14 +143,13 @@
 \begin{frame}{Operadores de PEG}
 
     \begin{table}
-        \begin{tabular}[]{@{}lll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Expressão & Nome & Semântica \\
-            \midrule
-
+            \hline
             \(e^+\) & repetição positiva & Uma ou mais ocorrências de \(e\) \\
             \(e\;?\) & opcional & Zero ou uma ocorrência de \(e\) \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -163,24 +157,14 @@
 \begin{frame}{Operadores de PEG}
 
     \begin{table}
-        \begin{tabular}[]{@{}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.1364}}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2727}}
-            >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.5909}}@{}}
-            \toprule
-            \begin{minipage}[b]{\linewidth}\raggedright
-                Expressão
-            \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-            Nome
-        \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-        Semântica
-    \end{minipage} \\
-    \midrule
-
+        \begin{tabular}{l l l}
+            \hline
+            Expressão & Nome & Semântica \\
+    \hline
     \(!e\) & predicado negativo & Sucesso se \(e\) falha; não consome \\
     \(\&e\) & predicado positivo & Sucesso se \(e\) tem sucesso; não
     consome \\
-    \bottomrule
+    \hline
 \end{tabular}
 \end{table}
 \end{frame}
@@ -190,10 +174,10 @@
     \begin{lstlisting}
         Se e1 tem SUCESSO:
         -> Retorna o resultado de e1 imediatamente
-        -> e2 NUNCA é tentada
+        -> e2 NUNCA \'e tentada
 
         Se e1 FALHA:
-        -> e2 é tentada sobre a MESMA entrada original
+        -> e2 \'e tentada sobre a MESMA entrada original
         -> Retorna o resultado de e2 (sucesso ou falha)
     \end{lstlisting}
 
@@ -400,7 +384,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 
 \begin{frame}[fragile]{O Tipo \texttt{Result}}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         data Result d a
         = Pure a           -- sucesso sem consumir entrada
         | Commit d a       -- sucesso consumindo entrada (d = resto)
@@ -436,7 +420,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 
 \begin{frame}[fragile]{O Tipo \texttt{PExp}}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         newtype PExp d a = PExp { runPExp :: d -> Result d a }
     \end{lstlisting}
 
@@ -456,7 +440,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 
 \begin{frame}[fragile]{Sequência}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         instance Applicative (PExp d) where
         pure a = PExp $ \_ -> Pure a
         PExp mf <*> PExp ma = PExp $ \d ->
@@ -466,14 +450,14 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
         Commit d' f ->
         case ma d' of
         Pure a       -> Commit d' (f a)
-        Fail s _     -> Fail s True  -- já consumiu!
+        Fail s _     -> Fail s True  -- j\'a consumiu!
         Commit d'' a -> Commit d'' (f a)
     \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Escolha}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         instance Alternative (PExp d) where
         PExp ma <|> PExp mb = PExp $ \d ->
         case ma d of
@@ -485,7 +469,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 
 \begin{frame}[fragile]{O Combinador \texttt{try}}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         try :: PExp d a -> PExp d a
         try (PExp m) = PExp $ \d ->
         case m d of
@@ -511,7 +495,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 
 \begin{frame}[fragile]{Escolha Ordenada}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         infixl 3 </>
         (</>) :: PExp d a -> PExp d a -> PExp d a
         p </> q = try p <|> q
@@ -536,7 +520,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 \begin{frame}[fragile]{O Predicado Negativo
     \texttt{not}}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         not :: PExp d a -> PExp d ()
         not (PExp m) = PExp $ \d ->
         case m d of
@@ -547,7 +531,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 
 \begin{frame}[fragile]{Exemplo}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         eof :: Stream d => PExp d ()
         eof = not anyChar  -- sucesso apenas no fim da entrada
     \end{lstlisting}
@@ -555,7 +539,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 
 \begin{frame}[fragile]{Combinadores Léxicos}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         satisfy :: Stream d => (Char -> Bool) -> PExp d Char
         satisfy p = try $ do
         x <- anyChar
@@ -565,7 +549,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 
 \begin{frame}[fragile]{Combinadores Léxicos}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         lexeme :: Stream d => PExp d a -> PExp d a
         lexeme m = m <* whiteSpace
     \end{lstlisting}
@@ -573,7 +557,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 
 \begin{frame}[fragile]{Combinadores léxicos}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         symbol :: Stream d => Char -> PExp d Char
         symbol c = lexeme (char c)
     \end{lstlisting}
@@ -581,7 +565,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 
 \begin{frame}[fragile]{Parser de Expressões}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         data Exp = Lit Int | Exp :+: Exp | Exp :*: Exp
 
         expP :: Stream d => PExp d Exp
@@ -591,7 +575,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 
 \begin{frame}[fragile]{Parser de Expressões}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         termP :: Stream d => PExp d Exp
         termP = foldl (:*:) <$> factP <*> many (symbol '*' *> factP)
     \end{lstlisting}
@@ -599,7 +583,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 
 \begin{frame}[fragile]{Parser de Expressões}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         factP :: Stream d => PExp d Exp
         factP = between (symbol '(') (symbol ')') expP
         </> Lit . foldl (\a b -> a*10+b) 0 <$> many1 digit

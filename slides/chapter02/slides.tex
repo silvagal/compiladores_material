@@ -72,12 +72,12 @@
 
 \begin{frame}[fragile]{Estrutura de um Token}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         type Line   = Int
         type Column = Int
 
         data Token = Token
-        { pos    :: (Line, Column)  -- posição no código-fonte
+        { pos    :: (Line, Column)  -- posic\~ao no c\'odigo-fonte
         , lexeme :: Lexeme          -- categoria do token
         }
     \end{lstlisting}
@@ -116,18 +116,17 @@
 \begin{frame}[fragile]{Tokens da Linguagem Exp}
 
     \begin{table}
-        \begin{tabular}[]{@{}lll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Token & Construtor & Descrição \\
-            \midrule
-
+            \hline
             \texttt{n} & \texttt{TNumber Int} &
             número inteiro (carrega o valor) \\
             \texttt{+} & \texttt{TPlus} & operador
             de adição \\
             \texttt{*} & \texttt{TTimes} &
             operador de multiplicação \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -135,26 +134,25 @@
 \begin{frame}[fragile]{Tokens da Linguagem Exp}
 
     \begin{table}
-        \begin{tabular}[]{@{}lll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Token & Construtor & Descrição \\
-            \midrule
-
+            \hline
             \texttt{(} & \texttt{TLParen} & abre
             parênteses \\
             \texttt{)} & \texttt{TRParen} & fecha
             parênteses \\
             EOF & \texttt{TEOF} & marcador de fim de entrada \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
 
 \begin{frame}[fragile]{Definição do Tipo Lexeme}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         data Lexeme
-        = TNumber Int   -- número com seu valor inteiro
+        = TNumber Int   -- n\'umero com seu valor inteiro
         | TLParen       -- (
         | TRParen       -- )
         | TPlus         -- +
@@ -206,11 +204,11 @@ Ad-Hoc}\label{analisadores-luxe9xicos-ad-hoc}
 
 \begin{frame}[fragile]{Tipo do Analisador}
 
-    \begin{lstlisting}[language=Haskell]
-        -- Versão simples (sem tratamento de erros):
+    \begin{lstlisting}
+        -- Vers\~ao simples (sem tratamento de erros):
         lexer :: String -> [Token]
 
-        -- Versão com tratamento de erros:
+        -- Vers\~ao com tratamento de erros:
         lexer :: String -> Either String [Token]
     \end{lstlisting}
 
@@ -227,7 +225,7 @@ Ad-Hoc}\label{analisadores-luxe9xicos-ad-hoc}
 
 \begin{frame}[fragile]{O Tipo Either}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         data Either a b = Left a | Right b
     \end{lstlisting}
 
@@ -244,10 +242,10 @@ Ad-Hoc}\label{analisadores-luxe9xicos-ad-hoc}
 
 \begin{frame}[fragile]{Estado do Analisador}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         type State = (Line, Column, String, [Token])
         --            ^      ^       ^        ^
-        --           linha  coluna  dígitos  tokens
+        --           linha  coluna  d\'igitos  tokens
         --                          acum.    produzidos
     \end{lstlisting}
 
@@ -266,30 +264,30 @@ Ad-Hoc}\label{analisadores-luxe9xicos-ad-hoc}
 
 \begin{frame}[fragile]{Função de Transição}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         transition :: State -> Char -> Either String State
         transition state@(l, col, t, ts) c
         | c == '\n'  = mkDigits state c   -- nova linha
-        | isSpace c  = mkDigits state c   -- espaço
+        | isSpace c  = mkDigits state c   -- espaco
         | c == '+'   = Right (l, col+1, "", mkToken state TPlus    : ts)
         | c == '*'   = Right (l, col+1, "", mkToken state TTimes   : ts)
         | c == '('   = Right (l, col+1, "", mkToken state TLParen  : ts)
         | c == ')'   = Right (l, col+1, "", mkToken state TRParen  : ts)
-        | isDigit c  = Right (l, col+1, c:t, ts)  -- acumula dígito
+        | isDigit c  = Right (l, col+1, c:t, ts)  -- acumula d\'igito
         | otherwise  = unexpectedCharError l col c
     \end{lstlisting}
 \end{frame}
 
 \begin{frame}[fragile]{Tratamento de Dígitos}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         mkDigits :: State -> Char -> Either String State
         mkDigits state@(l, col, s, ts) c
-        | null s      = -- nenhum dígito acumulado: só atualiza posição
+        | null s      = -- nenhum d\'igito acumulado: s\'o atualiza posic\~ao
         let l'   = if c == '\n' then l + 1 else l
         col' = if isSpace c then col + 1 else col
         in Right (l', col', s, ts)
-        | all isDigit s = -- dígitos válidos: cria token TNumber
+        | all isDigit s = -- d\'igitos v\'alidos: cria token TNumber
         let t    = Token (l,col) (TNumber (read $ reverse s))
         l'   = if c == '\n' then l + 1 else l
         col' = if c /= '\n' && isSpace c then col + 1 else col
@@ -301,7 +299,7 @@ Ad-Hoc}\label{analisadores-luxe9xicos-ad-hoc}
 \begin{frame}[fragile]{A Função \texttt{lexer}
     Completa}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         lexer :: String -> Either String [Token]
         lexer = finish . foldl step base
         where
@@ -320,7 +318,7 @@ Ad-Hoc}\label{analisadores-luxe9xicos-ad-hoc}
 
 \begin{frame}[fragile]{Como \texttt{foldl} Funciona}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         foldl :: (b -> a -> b) -> b -> [a] -> b
         foldl _ v []     = v
         foldl f v (x:xs) = foldl f (f v x) xs
@@ -352,18 +350,17 @@ Ad-Hoc}\label{analisadores-luxe9xicos-ad-hoc}
     Entrada: \texttt{"2 + 3"}
 
     \begin{table}
-        \begin{tabular}[]{@{}ll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Char & Estado (linha, col, dígitos, tokens) \\
-            \midrule
-
+            \hline
             \texttt{2} &
             \texttt{(1, 2, "2", [])} \\
             \texttt{\_} &
             \texttt{(1, 3, "", [TNumber 2])} \\
             \texttt{+} &
             \texttt{(1, 4, "", [TPlus, TNumber 2])} \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -373,18 +370,17 @@ Ad-Hoc}\label{analisadores-luxe9xicos-ad-hoc}
     Entrada: \texttt{"2 + 3"}
 
     \begin{table}
-        \begin{tabular}[]{@{}ll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Char & Estado (linha, col, dígitos, tokens) \\
-            \midrule
-
+            \hline
             \texttt{\_} &
             \texttt{(1, 5, "", [TPlus, TNumber 2])} \\
             \texttt{3} &
             \texttt{(1, 6, "3", [TPlus, TNumber 2])} \\
             EOF & extrai ->
             \texttt{[TNumber 2, TPlus, TNumber 3]} \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}

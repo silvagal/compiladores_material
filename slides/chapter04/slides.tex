@@ -78,15 +78,15 @@
     \texttt{.x}}
 
     \begin{lstlisting}
-        { cabeçalho Haskell }
+        { cabecalho Haskell }
 
         %wrapper "..."
-        macros e configurações
+        macros e configurac\~oes
 
         tokens :-
-        regras léxicas
+        regras l\'exicas
 
-        { rodapé Haskell }
+        { rodap\'e Haskell }
     \end{lstlisting}
 \end{frame}
 
@@ -110,7 +110,7 @@
 
 \begin{frame}[fragile]{Tipos de Tokens para Exp}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         data Token = Token {
         pos    :: (Int, Int)   -- (Linha, Coluna)
         , lexeme :: Lexeme
@@ -144,19 +144,18 @@ Alex}\label{sintaxe-de-expressuxf5es-regulares-no-alex}
 \begin{frame}[fragile]{Classes de Caracteres}
 
     \begin{table}
-        \begin{tabular}[]{@{}ll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Padrão & Significado \\
-            \midrule
-
+            \hline
             \texttt{[0-9]} & Qualquer dígito de 0 a 9 \\
             \texttt{[a-zA-Z]} & Qualquer letra minúscula ou
             maiúscula \\
-            \texttt{[\^\\"]} & Qualquer coisa \textbf{exceto} aspas
+            \verb|[^"]| & Qualquer coisa \textbf{exceto} aspas
             duplas \\
-            \texttt{$digit} & Conjunto de caracteres definido pelo
+            \verb|$digit| & Conjunto de caracteres definido pelo
             usuário \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -164,17 +163,16 @@ Alex}\label{sintaxe-de-expressuxf5es-regulares-no-alex}
 \begin{frame}[fragile]{Operadores de Repetição e Combinação}
 
     \begin{table}
-        \begin{tabular}[]{@{}ll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Operador & Significado \\
-            \midrule
-
+            \hline
             \texttt{e*} & Zero ou mais repetições de
             \texttt{e} \\
             \texttt{e+} & Uma ou mais repetições de
             \texttt{e} \\
             \texttt{e?} & Zero ou uma ocorrência (opcional) \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -182,18 +180,16 @@ Alex}\label{sintaxe-de-expressuxf5es-regulares-no-alex}
 \begin{frame}[fragile]{Operadores de Repetição e Combinação}
 
     \begin{table}
-        \begin{tabular}[]{@{}ll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Operador & Significado \\
-            \midrule
-
-            \texttt{.} & Qualquer caractere exceto
-            \texttt{\\n} \\
-            \texttt{"str"} & A string literal
+            \hline
+            \verb|.| & Qualquer caractere exceto
+            \verb|\n| \\
             \texttt{str} exatamente \\
-            \texttt{e1 \\| e2} & Alternativa:
+            \verb|e1 \| e2||\verb|e1 \| e2| & Alternativa:
             \texttt{e1} ou \texttt{e2} \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -201,8 +197,8 @@ Alex}\label{sintaxe-de-expressuxf5es-regulares-no-alex}
 \begin{frame}[fragile]{Exemplos de Padrões}
 
     \begin{lstlisting}
-        $digit    = 0-9  -- classe: dígitos
-        @number   = $digit+ -- macro: um ou mais dígitos
+        $digit    = 0-9  -- classe: d\'igitos
+        @number   = $digit+ -- macro: um ou mais d\'igitos
         @ident    = [a-zA-Z][a-zA-Z0-9_]*  -- identificador
 
         -- Hexadecimal ou octal:
@@ -214,7 +210,7 @@ Alex}\label{sintaxe-de-expressuxf5es-regulares-no-alex}
         \item
         Macros com \texttt{@} tornam as regras mais legíveis
         \item
-        Conjuntos com \texttt{$} definem classes de
+        Conjuntos com \verb|$| definem classes de
         caracteres reutilizáveis
     \end{itemize}
 \end{frame}
@@ -224,7 +220,7 @@ Alex}\label{sintaxe-de-expressuxf5es-regulares-no-alex}
 
 \begin{frame}[fragile]{Cabeçalho e Macros}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         {
         {-# OPTIONS_GHC -Wno-name-shadowing #-}
         module Exp.Frontend.Lexer.Alex.ExpLexer where
@@ -243,16 +239,15 @@ Alex}\label{sintaxe-de-expressuxf5es-regulares-no-alex}
 \begin{frame}[fragile]{Wrappers Disponíveis}
 
     \begin{table}
-        \begin{tabular}[]{@{}ll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Wrapper & Características \\
-            \midrule
-
+            \hline
             \texttt{basic} & Processa
             \texttt{String} de forma simples e pura \\
             \texttt{posn} & Adiciona informação de linha e coluna
             automaticamente \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -260,16 +255,15 @@ Alex}\label{sintaxe-de-expressuxf5es-regulares-no-alex}
 \begin{frame}[fragile]{Wrappers Disponíveis}
 
     \begin{table}
-        \begin{tabular}[]{@{}ll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Wrapper & Características \\
-            \midrule
-
+            \hline
             \texttt{monad} & Executa dentro de uma mônada
             \texttt{Alex} \\
             \texttt{monadUserState} & Mônada com estado customizado
             pelo usuário \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -289,7 +283,7 @@ Alex}\label{sintaxe-de-expressuxf5es-regulares-no-alex}
 
     \begin{lstlisting}
         tokens :-
-        -- espaços e comentários de linha
+        -- espacos e coment\'arios de linha
         <0> $white+       ;
         <0> "//" .*       ;
         -- tokens significativos
@@ -323,9 +317,9 @@ Bloco}\label{start-codes-e-comentuxe1rios-em-bloco}
 
 \begin{frame}[fragile]{Comentários Aninhados}
 
-    \begin{lstlisting}[language=C]
-        /* comentário externo
-        /* comentário interno */
+    \begin{lstlisting}
+        /* coment\'ario externo
+        /* coment\'ario interno */
         ainda no externo
         */
     \end{lstlisting}
@@ -364,7 +358,7 @@ Bloco}\label{start-codes-e-comentuxe1rios-em-bloco}
 \begin{frame}[fragile]{Regras com Start Codes}
 
     \begin{lstlisting}
-        -- comentário em bloco:
+        -- coment\'ario em bloco:
         <0>             "/*"  { nestComment `andBegin` state_comment }
         <0>             "*/"  { \_ _ -> alexError "Unexpected close comment!" }
         <state_comment> "/*"  { nestComment }
@@ -392,9 +386,9 @@ Bloco}\label{start-codes-e-comentuxe1rios-em-bloco}
 
 \begin{frame}[fragile]{Def. do Estado}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         data AlexUserState = AlexUserState
-        { nestLevel :: Int   -- nível de aninhamento de comentários
+        { nestLevel :: Int   -- n\'ivel de aninhamento de coment\'arios
         }
 
         alexInitUserState :: AlexUserState
@@ -425,7 +419,7 @@ Bloco}\label{start-codes-e-comentuxe1rios-em-bloco}
         Aumentando o aninhamento
     \end{itemize}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         nestComment :: AlexInput -> Int -> Alex Token
         nestComment _ _ = do
         modify (\s -> s { nestLevel = nestLevel s + 1 })
@@ -441,7 +435,7 @@ Bloco}\label{start-codes-e-comentuxe1rios-em-bloco}
         Diminuindo o aninhamento
     \end{itemize}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         unnestComment :: AlexInput -> Int -> Alex Token
         unnestComment _ _ = do
         st <- get
@@ -455,7 +449,7 @@ Bloco}\label{start-codes-e-comentuxe1rios-em-bloco}
 
 \begin{frame}[fragile]{Manipulação do Estado}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         get    :: Alex AlexUserState
         put    :: AlexUserState -> Alex ()
         modify :: (AlexUserState -> AlexUserState) -> Alex ()
@@ -484,9 +478,9 @@ Bloco}\label{start-codes-e-comentuxe1rios-em-bloco}
 
 \begin{frame}[fragile]{Como Gerar o Analisador}
 
-    \begin{lstlisting}[language=bash]
+    \begin{lstlisting}
         alex ExpLexer.x           # gera ExpLexer.hs
-        alex -o ExpLexer.hs ExpLexer.x  # especifica o arquivo de saída
+        alex -o ExpLexer.hs ExpLexer.x  # especifica o arquivo de sa\'ida
     \end{lstlisting}
 \end{frame}
 
@@ -504,11 +498,11 @@ Bloco}\label{start-codes-e-comentuxe1rios-em-bloco}
 
 \begin{frame}[fragile]{Interface do Analisador Gerado}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         -- Executa o analisador sobre uma String
         runAlex :: String -> Alex a -> Either String a
 
-        -- Obtém o próximo token
+        -- Obt\'em o pr\'oximo token
         alexMonadScan :: Alex Token
 
         -- Sinaliza um erro
@@ -518,8 +512,8 @@ Bloco}\label{start-codes-e-comentuxe1rios-em-bloco}
 
 \begin{frame}[fragile]{Usando o Analisador em Produção}
 
-    \begin{lstlisting}[language=Haskell]
-        -- Obtém todos os tokens de uma String
+    \begin{lstlisting}
+        -- Obt\'em todos os tokens de uma String
         tokenize :: String -> Either String [Token]
         tokenize input = runAlex input loop
         where

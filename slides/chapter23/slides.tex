@@ -250,7 +250,7 @@ Intermediárias}\label{representauxe7uxf5es-intermediuxe1rias}
 
     Em SSA, \textbf{cada variável é atribuída exatamente uma vez}:
 
-    \begin{lstlisting}[language=Python]
+    \begin{lstlisting}
         # Antes da SSA:          # Apos SSA:
         x = 0                    x0 = 0
         x = x + 1                x1 = x0 + 1
@@ -286,16 +286,15 @@ Intermediárias}\label{representauxe7uxf5es-intermediuxe1rias}
     grafo de dependências:
 
     \begin{table}
-        \begin{tabular}[]{@{}ll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Tipo de aresta & Significado \\
-            \midrule
-
+            \hline
             \textbf{Valor} & Resultado de uma operação é entrada de outra \\
             \textbf{Estado} & Uma operação com efeito deve preceder outra \\
             \textbf{Controle} & Uma operação só executa se condição for
             satisfeita \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 

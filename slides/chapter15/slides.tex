@@ -466,14 +466,13 @@ Tipos}\label{corretude-do-sistema-de-tipos}
     A prova apoia-se em dois lemas fundamentais e independentes:
 
     \begin{table}
-        \begin{tabular}[]{@{}ll@{}}
-            \toprule
+        \begin{tabular}{l l l l}
+            \hline
             Lema & Enunciado \\
-            \midrule
-
+            \hline
             \textbf{Preservação} & O tipo se mantém após cada passo de redução \\
             \textbf{Progresso} & Um termo bem tipado é valor ou pode reduzir \\
-            \bottomrule
+            \hline
         \end{tabular}
     \end{table}
 \end{frame}
@@ -509,7 +508,7 @@ Tipos}\label{corretude-do-sistema-de-tipos}
     \(t' = t_2\).
 
     De (T-If): \(\vdash t_2 : T\) e \(\vdash t_3 : T\). Logo
-    \(\vdash t_2 : T\). ✓
+    \(\vdash t_2 : T\). \checkmark{}
 \end{frame}
 
 \begin{frame}{Alguns Casos}
@@ -518,7 +517,7 @@ Tipos}\label{corretude-do-sistema-de-tipos}
     \(t' = \mathbf{if}\ t_1'\ \mathbf{then}\ t_2\ \mathbf{else}\ t_3\).
 
     De (T-If): \(\vdash t_1 : \mathbf{Bool}\). Por hip. de indução:
-    \(\vdash t_1' : \mathbf{Bool}\). Aplicando (T-If): \(\vdash t' : T\). ✓
+    \(\vdash t_1' : \mathbf{Bool}\). Aplicando (T-If): \(\vdash t' : T\). \checkmark{}
 \end{frame}
 
 \begin{frame}{Alguns Casos}
@@ -527,14 +526,14 @@ Tipos}\label{corretude-do-sistema-de-tipos}
 
     De (T-Succ): \(\vdash t_1 : \mathbf{Nat}\). Por hip. de ind.:
     \(\vdash t_1' : \mathbf{Nat}\). Logo
-    \(\vdash \mathbf{succ}\ t_1' : \mathbf{Nat}\). ✓
+    \(\vdash \mathbf{succ}\ t_1' : \mathbf{Nat}\). \checkmark{}
 \end{frame}
 
 \begin{frame}{Alguns Casos}
 
     \emph{Caso} (E-IsZeroZero): \(t' = \mathbf{true}\). Por (T-True):
     \(\vdash \mathbf{true} : \mathbf{Bool}\); tipo de \(t\) via (T-IsZero) é
-    \(\mathbf{Bool}\). ✓
+    \(\mathbf{Bool}\). \checkmark{}
 \end{frame}
 
 \begin{frame}{Lema de Progresso}
@@ -559,7 +558,7 @@ Tipos}\label{corretude-do-sistema-de-tipos}
 
 \begin{frame}{Alguns Casos}
 
-    \emph{Casos} (T-True), (T-False), (T-Zero): \(t\) já é valor. ✓
+    \emph{Casos} (T-True), (T-False), (T-Zero): \(t\) já é valor. \checkmark{}
 \end{frame}
 
 \begin{frame}{Alguns Casos}
@@ -570,7 +569,7 @@ Tipos}\label{corretude-do-sistema-de-tipos}
     \begin{itemize}
 
         \item
-        Se \(t_1 \to t_1'\): aplica-se (E-If). ✓
+        Se \(t_1 \to t_1'\): aplica-se (E-If). \checkmark{}
         \item
         Se \(t_1\) é valor de tipo \(\mathbf{Bool}\): pelo lema de unicidade,
         \(t_1\) não pode ser \(nv\) (tipo \(\mathbf{Nat}\)). Logo
@@ -579,9 +578,9 @@ Tipos}\label{corretude-do-sistema-de-tipos}
         \begin{itemize}
 
             \item
-            \(t_1 = \mathbf{true}\): aplica-se (E-IfTrue). ✓
+            \(t_1 = \mathbf{true}\): aplica-se (E-IfTrue). \checkmark{}
             \item
-            \(t_1 = \mathbf{false}\): aplica-se (E-IfFalse). ✓
+            \(t_1 = \mathbf{false}\): aplica-se (E-IfFalse). \checkmark{}
         \end{itemize}
     \end{itemize}
 \end{frame}
@@ -594,10 +593,10 @@ Tipos}\label{corretude-do-sistema-de-tipos}
     \begin{itemize}
 
         \item
-        \(t_1 \to t_1'\): aplica-se (E-Succ). ✓
+        \(t_1 \to t_1'\): aplica-se (E-Succ). \checkmark{}
         \item
         \(t_1\) é valor de tipo \(\mathbf{Nat}\): pela unicidade, \(t_1\) é
-        \(nv\). Logo \(\mathbf{succ}\ nv\) é valor numérico. ✓
+        \(nv\). Logo \(\mathbf{succ}\ nv\) é valor numérico. \checkmark{}
     \end{itemize}
 \end{frame}
 
@@ -609,9 +608,9 @@ Tipos}\label{corretude-do-sistema-de-tipos}
     \begin{itemize}
 
         \item
-        \(t_1 \to t_1'\): aplica-se (E-Pred). ✓ \textbar{}
-        \(nv = \mathbf{0}\): (E-PredZero). ✓ \textbar{}
-        \(nv = \mathbf{succ}\ nv_1\): (E-PredSucc). ✓
+        \(t_1 \to t_1'\): aplica-se (E-Pred). \checkmark{} \textbar{}
+        \(nv = \mathbf{0}\): (E-PredZero). \checkmark{} \textbar{}
+        \(nv = \mathbf{succ}\ nv_1\): (E-PredSucc). \checkmark{}
     \end{itemize}
 \end{frame}
 
@@ -625,7 +624,7 @@ Tipos}\label{corretude-do-sistema-de-tipos}
         sequência \(t \to^* t'\)): \(\vdash t' : T\).
 
         Por \textbf{progresso}: \(t'\) é valor ou existe \(t''\) com
-        \(t' \to t''\). ✓
+        \(t' \to t''\). \checkmark{}
     \end{quote}
 \end{frame}
 

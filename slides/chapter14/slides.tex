@@ -71,7 +71,7 @@
 
 \begin{frame}[fragile]{Tipos em Haskell}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         data Value = VInt Int | VBool Bool
 
         data Exp
@@ -269,7 +269,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 
 \begin{frame}[fragile]{Condicional}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         interpStmt (SIf e blk1 blk2) = do
         v <- interpExp e
         case v of
@@ -282,7 +282,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell}
 
 \begin{frame}[fragile]{Repetição}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         interpStmt (SWhile e blk1) = do
         v <- interpExp e
         case v of
@@ -505,7 +505,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell-1}
 
 \begin{frame}[fragile]{Estado e Monada}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         data Value
         = VInt Int | VBool Bool | VString String
         | VRecord Name (Map Field Value)
@@ -522,7 +522,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell-1}
 
 \begin{frame}[fragile]{Execução de Bloco}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         execBlock :: [Stmt] -> InterpM (Maybe Value)
         execBlock []     = pure Nothing           -- BlkNil
         execBlock (s:ss) = do
@@ -535,7 +535,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell-1}
 
 \begin{frame}[fragile]{Criação de Registro}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         evalExp (ENew rname initFields) = do
         vals <- mapM (\(f, e) -> (f,) <$> evalExp e) initFields
         pure (VRecord rname (Map.fromList vals))
@@ -544,7 +544,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell-1}
 
 \begin{frame}[fragile]{Acesso e Atribuição de Campo}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         evalExp (EField e f) = do
         v <- evalExp e
         case v of
@@ -558,7 +558,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell-1}
 
 \begin{frame}[fragile]{Atribuição de Campo}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         execStmt (SFieldAssign v f e) = do
         rval <- lookupVar v
         newVal <- evalExp e
@@ -574,7 +574,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell-1}
 
 \begin{frame}[fragile]{Retorno e Chamada de Função}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         execStmt (SReturn Nothing)  = pure (Just VUnit)   -- RetVoid
         execStmt (SReturn (Just e)) = Just <$> evalExp e  -- RetVal
 
@@ -593,7 +593,7 @@ Haskell}\label{implementauxe7uxe3o-em-haskell-1}
 
 \begin{frame}[fragile]{Ambiente Fresco}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         withFreshEnv :: [(Var, Value)] -> InterpM a -> InterpM a
         withFreshEnv bindings m = do
         saved <- gets varEnv

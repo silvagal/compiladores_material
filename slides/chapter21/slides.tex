@@ -47,11 +47,11 @@
 \begin{frame}[fragile]{A Linguagem MiniML}
 
     \begin{lstlisting}
-        e ::= x              -- variável
-        | ℓ              -- literal (int ou bool)
-        | e₁ e₂          -- aplicação
-        | λx. e          -- abstração sem anotação
-        | let x = e₁ in e₂  -- definição polimórfica
+        e ::= x              -- vari\'avel
+        | \ell{}              -- literal (int ou bool)
+        | e_1 e_2          -- aplicac\~ao
+        | \lambda{}x. e          -- abstrac\~ao sem anotac\~ao
+        | let x = e_1 in e_2  -- definic\~ao polim\'orfica
     \end{lstlisting}
 
     \begin{itemize}
@@ -168,7 +168,7 @@ infinitos como \(\alpha = \alpha \to \alpha\).
 
 \begin{frame}[fragile]{O Algoritmo de Resolução}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         solve :: Constraint -> Solve ()
         solve CTrue = pure ()
         solve (t1 :=: t2) = do
@@ -238,7 +238,7 @@ semanticamente equivalente.
 
 \begin{frame}[fragile]{O Pipeline Completo de MiniML}
 
-    \begin{lstlisting}[language=Haskell]
+    \begin{lstlisting}
         processTImp :: String -> IO ()
         processTImp input =
         case parser input of
