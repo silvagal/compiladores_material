@@ -1,0 +1,542 @@
+\subtitle{\bf Aula 4 - Motivação}
+\begin{frame}[t,plain]
+    \titlepage
+\end{frame}
+
+\begin{frame}{Objetivos}
+
+    \begin{itemize}
+
+        \item
+        Apresentação da linguagem do Alex e seu uso para especificação de
+        analisadores léxicos em Haskell.
+    \end{itemize}
+\end{frame}
+
+
+\section{Motivação}\label{motivauxe7uxe3o}
+
+\begin{frame}{Motivação}
+
+    \begin{itemize}
+
+        \item
+        Construir analisadores léxicos manualmente é trabalhoso e propenso a
+        erros
+        \item
+        A teoria (ER -> AFN -> AFD) é sólida, mas implementar o pipeline é
+        repetitivo
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Motivação}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Alex} automatiza esse processo para Haskell
+        \item
+        Dado uma especificação de tokens em ERs, Alex gera um analisador
+        léxico eficiente
+        \item
+        Usado na prática: o próprio GHC usa Alex para sua análise léxica
+    \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{O que é o Alex?}
+
+    \begin{itemize}
+
+        \item
+        Gerador de analisadores léxicos para \textbf{Haskell}
+        \item
+        Análogo ao \texttt{flex} (C) e ao
+        \texttt{JFlex} (Java)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{O que é o Alex?}
+
+    \begin{itemize}
+
+        \item
+        Recebe um arquivo \texttt{.x} com especificações de
+        tokens
+        \item
+        Gera um módulo Haskell com o analisador léxico completo
+        \item
+        Usa o algoritmo AFD para reconhecimento eficiente
+    \end{itemize}
+\end{frame}
+
+
+\section{Sessões de um Arquivo .x}\label{sessuxf5es-de-um-arquivo-.x}
+
+\begin{frame}[fragile]{Seções de um Arquivo
+    \texttt{.x}}
+
+    \begin{lstlisting}
+        { cabecalho Haskell }
+
+        %wrapper "..."
+        macros e configurac\~oes
+
+        tokens :-
+        regras l\'exicas
+
+        { rodap\'e Haskell }
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}{Seções de um Arquivo \texttt{.x}}
+
+    \begin{enumerate}
+
+        \item
+        \textbf{Cabeçalho}: módulo e imports Haskell
+        \item
+        \textbf{Diretivas}: wrapper e macros de ERs
+        \item
+        \textbf{Regras}: padrões mapeados a ações
+        \item
+        \textbf{Rodapé}: funções auxiliares
+    \end{enumerate}
+\end{frame}
+
+
+\section{Definindo Tokens}\label{definindo-tokens}
+
+\begin{frame}[fragile]{Tipos de Tokens para Exp}
+
+    \begin{lstlisting}
+        data Token = Token {
+        pos    :: (Int, Int)   -- (Linha, Coluna)
+        , lexeme :: Lexeme
+        } deriving (Eq, Show)
+
+        data Lexeme
+        = TNumber Int | TLParen | TRParen
+        | TPlus | TTimes | TEOF
+        deriving (Eq, Show)
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Tipos de Tokens para Exp}
+
+    \begin{itemize}
+
+        \item
+        Mesma estrutura vista no capítulo de análise ad-hoc
+        \item
+        A posição \texttt{(linha, coluna)} é essencial para
+        mensagens de erro
+        \item
+        \texttt{TEOF} marca o fim de entrada
+    \end{itemize}
+\end{frame}
+
+
+\section{Sintaxe de Expressões Regulares no
+Alex}\label{sintaxe-de-expressuxf5es-regulares-no-alex}
+
+\begin{frame}[fragile]{Classes de Caracteres}
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            \hline
+            Padrão & Significado \\
+            \hline
+            \texttt{[0-9]} & Qualquer dígito de 0 a 9 \\
+            \texttt{[a-zA-Z]} & Qualquer letra minúscula ou
+            maiúscula \\
+            \verb|[^"]| & Qualquer coisa \textbf{exceto} aspas
+            duplas \\
+            \verb|$digit| & Conjunto de caracteres definido pelo
+            usuário \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}[fragile]{Operadores de Repetição e Combinação}
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            \hline
+            Operador & Significado \\
+            \hline
+            \texttt{e*} & Zero ou mais repetições de
+            \texttt{e} \\
+            \texttt{e+} & Uma ou mais repetições de
+            \texttt{e} \\
+            \texttt{e?} & Zero ou uma ocorrência (opcional) \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}[fragile]{Operadores de Repetição e Combinação}
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            \hline
+            Operador & Significado \\
+            \hline
+            \verb|.| & Qualquer caractere exceto
+            \verb|\n| \\
+            \texttt{str} exatamente \\
+            \verb|e1 \| e2||\verb|e1 \| e2| & Alternativa:
+            \texttt{e1} ou \texttt{e2} \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplos de Padrões}
+
+    \begin{lstlisting}
+        $digit    = 0-9  -- classe: d\'igitos
+        @number   = $digit+ -- macro: um ou mais d\'igitos
+        @ident    = [a-zA-Z][a-zA-Z0-9_]*  -- identificador
+
+        -- Hexadecimal ou octal:
+        0(x[0-9a-fA-F]+ | o[0-7]+)
+    \end{lstlisting}
+
+    \begin{itemize}
+
+        \item
+        Macros com \texttt{@} tornam as regras mais legíveis
+        \item
+        Conjuntos com \verb|$| definem classes de
+        caracteres reutilizáveis
+    \end{itemize}
+\end{frame}
+
+
+\section{Estrutura do Arquivo Alex}\label{estrutura-do-arquivo-alex}
+
+\begin{frame}[fragile]{Cabeçalho e Macros}
+
+    \begin{lstlisting}
+        {
+        {-# OPTIONS_GHC -Wno-name-shadowing #-}
+        module Exp.Frontend.Lexer.Alex.ExpLexer where
+
+        import Control.Monad
+        import Exp.Frontend.Lexer.Token
+        }
+
+        %wrapper "monadUserState"
+
+        $digit = 0-9
+        @number = $digit+
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Wrappers Disponíveis}
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            \hline
+            Wrapper & Características \\
+            \hline
+            \texttt{basic} & Processa
+            \texttt{String} de forma simples e pura \\
+            \texttt{posn} & Adiciona informação de linha e coluna
+            automaticamente \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}[fragile]{Wrappers Disponíveis}
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            \hline
+            Wrapper & Características \\
+            \hline
+            \texttt{monad} & Executa dentro de uma mônada
+            \texttt{Alex} \\
+            \texttt{monadUserState} & Mônada com estado customizado
+            pelo usuário \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}[fragile]{Wrappers Disponíveis}
+
+    \begin{itemize}
+
+        \item
+        A principal diferença: controle sobre o estado e os efeitos
+        \item
+        \texttt{monadUserState} é o mais flexível e poderoso
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Regras Léxicas}
+
+    \begin{lstlisting}
+        tokens :-
+        -- espacos e coment\'arios de linha
+        <0> $white+       ;
+        <0> "//" .*       ;
+        -- tokens significativos
+        <0> @number       { mkNumber }
+        <0> "("           { simpleToken TLParen }
+        <0> ")"           { simpleToken TRParen }
+        <0> "+"           { simpleToken TPlus }
+        <0> "*"           { simpleToken TTimes }
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Regras Léxicas}
+
+    \begin{itemize}
+
+        \item
+        Regras sem ação (\texttt{;}) descartam o match
+        silenciosamente
+        \item
+        \texttt{mkNumber} cria um token com o valor inteiro
+        do número
+        \item
+        \texttt{simpleToken} cria um token sem valor
+        associado
+    \end{itemize}
+\end{frame}
+
+
+\section{Start Codes e Comentários em
+Bloco}\label{start-codes-e-comentuxe1rios-em-bloco}
+
+\begin{frame}[fragile]{Comentários Aninhados}
+
+    \begin{lstlisting}
+        /* coment\'ario externo
+        /* coment\'ario interno */
+        ainda no externo
+        */
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}{Comentários Aninhados}
+
+    \begin{itemize}
+
+        \item
+        Comentários em bloco podem ser \textbf{aninhados}
+        \item
+        O analisador precisa contar os níveis de aninhamento
+        \item
+        Não é possível expressar isso com uma simples ER
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Solução: Start Codes}
+
+    \begin{itemize}
+
+        \item
+        Start codes permitem ao analisador ter \textbf{múltiplos modos}
+        \item
+        \texttt{<0>}: modo normal de análise
+        \item
+        \texttt{<state\_comment>}: modo ``dentro de
+        comentário em bloco''
+        \item
+        O analisador muda de modo conforme encontra
+        \texttt{/*} e \texttt{*/}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Regras com Start Codes}
+
+    \begin{lstlisting}
+        -- coment\'ario em bloco:
+        <0>             "/*"  { nestComment `andBegin` state_comment }
+        <0>             "*/"  { \_ _ -> alexError "Unexpected close comment!" }
+        <state_comment> "/*"  { nestComment }
+        <state_comment> "*/"  { unnestComment }
+        <state_comment> .     ;
+        <state_comment> \n    ;
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Regras com Start Codes}
+
+    \begin{itemize}
+
+        \item
+        \texttt{andBegin state\_comment}: muda para o modo de
+        comentário
+        \item
+        Em \texttt{state\_comment}: ignora tudo exceto
+        \texttt{/*} e \texttt{*/}
+        \item
+        \texttt{*/} sem \texttt{/*}
+        correspondente -> erro imediato
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Def. do Estado}
+
+    \begin{lstlisting}
+        data AlexUserState = AlexUserState
+        { nestLevel :: Int   -- n\'ivel de aninhamento de coment\'arios
+        }
+
+        alexInitUserState :: AlexUserState
+        alexInitUserState = AlexUserState { nestLevel = 0 }
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Def. do Estado}
+
+    \begin{itemize}
+
+        \item
+        \texttt{nestLevel = 0}: fora de qualquer comentário
+        \item
+        \texttt{nestLevel = 1}: dentro de
+        \texttt{/* ... */}
+        \item
+        \texttt{nestLevel = 2}: dentro de
+        \texttt{/* /* ... */ */}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Funções de Aninhamento}
+
+    \begin{itemize}
+
+        \item
+        Aumentando o aninhamento
+    \end{itemize}
+
+    \begin{lstlisting}
+        nestComment :: AlexInput -> Int -> Alex Token
+        nestComment _ _ = do
+        modify (\s -> s { nestLevel = nestLevel s + 1 })
+        alexMonadScan
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Funções de Aninhamento}
+
+    \begin{itemize}
+
+        \item
+        Diminuindo o aninhamento
+    \end{itemize}
+
+    \begin{lstlisting}
+        unnestComment :: AlexInput -> Int -> Alex Token
+        unnestComment _ _ = do
+        st <- get
+        let level = nestLevel st - 1
+        put st { nestLevel = level }
+        if level == 0
+        then alexSetStartCode 0 >> alexMonadScan
+        else alexMonadScan
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Manipulação do Estado}
+
+    \begin{lstlisting}
+        get    :: Alex AlexUserState
+        put    :: AlexUserState -> Alex ()
+        modify :: (AlexUserState -> AlexUserState) -> Alex ()
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Manipulação do Estado}
+
+    \begin{itemize}
+
+        \item
+        \texttt{get}: lê o estado customizado atual
+        \item
+        \texttt{put}: substitui o estado por um novo
+        \item
+        \texttt{modify}: aplica uma função de transformação
+        ao estado
+        \item
+        Padrão idêntico à mônada de estado de Haskell
+        (\texttt{State})
+    \end{itemize}
+\end{frame}
+
+
+\section{Geração e Uso}\label{gerauxe7uxe3o-e-uso}
+
+\begin{frame}[fragile]{Como Gerar o Analisador}
+
+    \begin{lstlisting}
+        alex ExpLexer.x           # gera ExpLexer.hs
+        alex -o ExpLexer.hs ExpLexer.x  # especifica o arquivo de sa\'ida
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Como Gerar o Analisador}
+
+    \begin{itemize}
+
+        \item
+        Com Cabal: automático se \texttt{alex} está em
+        \texttt{build-tool-depends}
+        \item
+        O arquivo gerado é um módulo Haskell normal
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Interface do Analisador Gerado}
+
+    \begin{lstlisting}
+        -- Executa o analisador sobre uma String
+        runAlex :: String -> Alex a -> Either String a
+
+        -- Obt\'em o pr\'oximo token
+        alexMonadScan :: Alex Token
+
+        -- Sinaliza um erro
+        alexError :: String -> Alex a
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Usando o Analisador em Produção}
+
+    \begin{lstlisting}
+        -- Obt\'em todos os tokens de uma String
+        tokenize :: String -> Either String [Token]
+        tokenize input = runAlex input loop
+        where
+        loop = do
+        tok <- alexMonadScan
+        case lexeme tok of
+        TEOF -> return []
+        _    -> (tok :) <$> loop
+    \end{lstlisting}
+\end{frame}
+
+
+\section{Conclusão}\label{conclusuxe3o}
+
+\begin{frame}{Conclusão}
+
+    \begin{itemize}
+        \item
+        Nesta aula apresentamos o gerador Alex.
+        \item
+        Criação automática de analisadores léxicos eficientes a partir de
+        expressões regulares.
+        \item
+        Próximas aulas: Análise sintática.
+    \end{itemize}
+\end{frame}

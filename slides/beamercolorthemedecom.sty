@@ -1,0 +1,38 @@
+%Definição das Cores
+\mode<presentation>
+
+% UFSJ Colors (Vinho, Branco, Cinza Claro)
+\definecolor{ufsjvinho}{RGB}{194, 57, 62}
+\definecolor{ufsjwhite}{RGB}{255, 255, 255}
+\definecolor{ufsjlightgrey}{RGB}{245, 245, 245}
+\definecolor{ufsjlightvinho}{RGB}{215, 110, 115}
+
+\setbeamercolor*{structure}{fg=ufsjvinho, bg=ufsjwhite}
+
+\setbeamercolor*{palette primary}{use=structure,fg=ufsjwhite,bg=ufsjvinho}
+\setbeamercolor*{palette secondary}{use=structure,fg=ufsjvinho,bg=ufsjwhite}
+\setbeamercolor*{palette tertiary}{use=structure,fg=ufsjvinho,bg=ufsjlightgrey}
+\setbeamercolor*{palette quaternary}{use=structure,fg=ufsjwhite,bg=ufsjvinho}
+
+\setbeamercolor*{sidebar}{use=structure,bg=ufsjvinho}
+
+\setbeamercolor*{palette sidebar primary}{use=structure,fg=ufsjvinho!10}
+\setbeamercolor*{palette sidebar secondary}{fg=ufsjwhite}
+\setbeamercolor*{palette sidebar tertiary}{use=structure,fg=ufsjvinho!50}
+\setbeamercolor*{palette sidebar quaternary}{fg=ufsjwhite}
+
+\setbeamercolor*{titlelike}{parent=palette primary}
+\setbeamercolor*{item}{use=structure,fg=ufsjvinho}
+
+\setbeamercolor*{separation line}{}
+\setbeamercolor*{fine separation line}{}
+
+\newcommand{\tred}[1]{\textbf{{\color{ufsjvinho}{#1}}}}
+\newcommand{\tblue}[1]{\textbf{{\color{ufsjlightgrey}{#1}}}}
+\newcommand{\tgreen}[1]{\textbf{{\color{green}{#1}}}}
+\newcommand{\tmagenta}[1]{\textbf{{\color{magenta}{#1}}}}
+\newcommand{\tviolet}[1]{\textbf{{\color{violet}{#1}}}}
+\newcommand{\tyellow}[1]{\textbf{{\color{yellow}{#1}}}}
+
+\mode
+<all>

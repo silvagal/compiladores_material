@@ -1,0 +1,417 @@
+\subtitle{\bf Aula 17 - Introdução}
+\begin{frame}[t,plain]
+    \titlepage
+\end{frame}
+
+\begin{frame}{Objetivos}
+
+    \begin{itemize}
+
+        \item
+        Motivar o uso de representações intermediárias no pipeline de
+        compilação e apresentar suas propriedades desejáveis.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Objetivos}
+
+    \begin{itemize}
+
+        \item
+        Definir a sintaxe e a semântica operacional big-step da Representação
+        Intermediária em Árvore (IRT).
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Objetivos}
+
+    \begin{itemize}
+
+        \item
+        Apresentar as regras de tradução dirigida por sintaxe que convertem a
+        AST de TWhile e TImp para a IRT.
+    \end{itemize}
+\end{frame}
+
+
+\section{Introdução}\label{introduuxe7uxe3o}
+
+\begin{frame}{O Papel da Representação Intermediária}
+
+    \begin{itemize}
+
+        \item
+        Converter a AST diretamente em código de máquina
+        \item
+        Problemas:
+
+        \begin{itemize}
+
+            \item
+            Código de baixa qualidade
+            \item
+            Compilador fortemente acoplado à arquitetura
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{O Papel da Representação Intermediária}
+
+    \begin{itemize}
+
+        \item
+        A \textbf{RI} desacopla \emph{front-end} de \emph{back-end}
+        \item
+        Um \emph{front-end} pode gerar RI
+
+        \begin{itemize}
+
+            \item
+            A partir da RI pode-se suportar múltiplas arquiteturas
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Propriedades Desejáveis de uma RI}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Simplicidade}: \(\approx 15\) formas sintáticas (análise e
+        transformação mais fáceis)
+        \item
+        \textbf{Independência de máquina}: sem detalhes de hardware
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Propriedades Desejáveis de uma RI}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Independência de linguagem}: múltiplos \emph{front-ends}
+        compartilham o mesmo \emph{back-end}.
+        \item
+        \textbf{Suporte a transformações}: facilitar análise de fluxo e
+        otimizações
+        \item
+        \textbf{Proximidade do código-alvo}: operações de memória e controle
+        explícitos
+    \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Expressões da IRT}
+
+    \[\begin{array}{lcll}
+    e & ::= & \mathbf{CONST}(n)  \\
+    & \mid & \mathbf{TEMP}(t)  \\
+    & \mid & \mathbf{NAME}(\ell) \\
+    & \mid & \mathbf{BINOP}(\mathit{op}, e_1, e_2) \\
+    & \mid & \mathbf{MEM}(e) \\
+    & \mid & \mathbf{CALL}(e_f, e_1, \ldots, e_n) \\
+    & \mid & \mathbf{ESEQ}(s, e)
+\end{array}\]
+\end{frame}
+
+\begin{frame}{Expressões da IRT}
+
+    \begin{itemize}
+
+        \item
+        Booleanos: \(\mathbf{CONST}(0)\) = falso, \(\mathbf{CONST}(1)\) =
+        verdadeiro
+        \item
+        \textbf{TEMP}: o alocador de registradores decide se vai para
+        registrador ou pilha
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Comandos da IRT}
+
+    \[\begin{array}{lcll}
+    s & ::= & \mathbf{MOVE}(\mathbf{TEMP}(t), e) \\
+    & \mid & \mathbf{MOVE}(\mathbf{MEM}(e_a), e) \\
+    & \mid & \mathbf{EXP}(e) \\
+    & \mid & \mathbf{SEQ}(s_1, s_2) \\
+    & \mid & \mathbf{JUMP}(e) \\
+    & \mid & \mathbf{CJUMP}(e, \ell_t, \ell_f) \\
+    & \mid & \mathbf{LABEL}(\ell) \\
+    & \mid & \mathbf{RETURN}(e_1, \ldots, e_n)
+\end{array}\]
+\end{frame}
+
+
+\section{Semântica Operacional}\label{semuxe2ntica-operacional}
+
+\begin{frame}{Estado e Valores}
+
+    O estado da IRT é um par \(\sigma = \langle \tau, \mu \rangle\):
+
+    \begin{itemize}
+
+        \item
+        \(\tau : \mathit{Temp} \rightharpoonup \mathbb{Z}\)
+
+        \begin{itemize}
+
+            \item
+            Armazenamento de temporários
+        \end{itemize}
+        \item
+        \(\mu : \mathbb{Z} \rightharpoonup \mathbb{Z}\)
+
+        \begin{itemize}
+
+            \item
+            Memória (endereços -> valores)
+        \end{itemize}
+    \end{itemize}
+
+    Todos os valores são inteiros de precisão de máquina.
+\end{frame}
+
+\begin{frame}{Expressões}
+
+    \textbf{Regras para expressões}: \(\sigma \vdash e \Downarrow v\):
+
+    \[
+    \begin{array}{c}
+        \frac{}{\sigma \vdash \mathbf{CONST}(n) \Downarrow n} \\
+        \frac{\sigma.\tau(t) = v}{\sigma \vdash \mathbf{TEMP}(t) \Downarrow v}\\
+    \end{array}
+    \]
+\end{frame}
+
+\begin{frame}{Expressões}
+
+    \[
+    \begin{array}{c}
+        \frac{\sigma \vdash e_1 \Downarrow v_1 \quad \sigma \vdash e_2 \Downarrow v_2}
+        {\sigma \vdash \mathbf{BINOP}(\mathit{op}, e_1, e_2) \Downarrow \mathit{op}(v_1, v_2)}
+    \end{array}
+    \]
+\end{frame}
+
+\begin{frame}{Comandos}
+
+    Resultado \(r\) de um comando:
+
+    \begin{itemize}
+
+        \item
+        \(\langle \sigma', \blacksquare \rangle\): terminação normal
+        \item
+        \(\langle \sigma', \uparrow (v_1,\ldots,v_k) \rangle\): retorno de
+        função
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Comandos}
+
+    \[
+    \begin{array}{c}
+        \frac{\sigma \vdash e \Downarrow v \quad \sigma' = \langle \tau[t \mapsto v], \mu \rangle}
+        {P, \sigma \vdash \mathbf{MOVE}(\mathbf{TEMP}(t), e) \Downarrow \langle \sigma', \blacksquare \rangle}
+    \end{array}
+    \]
+\end{frame}
+
+\begin{frame}{Comandos}
+
+    \[
+    \begin{array}{c}
+        \frac{P, \sigma \vdash s_1 \Downarrow \langle \sigma', \blacksquare \rangle \quad P, \sigma' \vdash s_2 \Downarrow \langle \sigma'', r \rangle}{P, \sigma \vdash \mathbf{SEQ}(s_1, s_2) \Downarrow \langle \sigma'', r \rangle}
+    \end{array}
+    \]
+
+    \begin{itemize}
+
+        \item
+        Se \(s_1\) retorna, \(s_2\) \textbf{não é executado} (retorno
+        propaga).
+    \end{itemize}
+\end{frame}
+
+
+\section{Tradução Dirigida por
+Sintaxe}\label{traduuxe7uxe3o-dirigida-por-sintaxe}
+
+\begin{frame}{Expressões}
+
+    \begin{itemize}
+
+        \item
+        Literais e variáveis
+    \end{itemize}
+
+    \[\mathcal{E}\lbrack \mathtt{false} \rbrack = \mathbf{CONST}(0) \qquad \mathcal{E}\lbrack \mathtt{true} \rbrack = \mathbf{CONST}(1)\]
+
+    \[\mathcal{E}\lbrack n \rbrack = \mathbf{CONST}(n) \qquad \mathcal{E}\lbrack x \rbrack = \mathbf{TEMP}(x)\]
+\end{frame}
+
+\begin{frame}{Expressões}
+
+    \begin{itemize}
+
+        \item
+        Operações:
+    \end{itemize}
+
+    \[\mathcal{E}\lbrack e_1 \oplus e_2 \rbrack = \mathbf{BINOP}(\widehat{\oplus},\; \mathcal{E}\lbrack e_1 \rbrack,\; \mathcal{E}\lbrack e_2 \rbrack)\]
+\end{frame}
+
+\begin{frame}[fragile]{Expressões}
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            \hline
+            TWhile & IRT & TWhile & IRT \\
+            \hline
+            \texttt{+} & ADD & \texttt{==} & EQ \\
+            \texttt{-} & SUB & \texttt{<} & LT \\
+            \texttt{*} & MUL & \texttt{\&\&} &
+            AND \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Comandos}
+
+    \begin{itemize}
+
+        \item
+        Declaração:
+    \end{itemize}
+
+    \[\begin{array}{c}
+    \mathcal{S}\lbrack \mathbf{var}\ x : T = e \rbrack = \mathbf{MOVE}(\mathbf{TEMP}(x),\; \mathcal{E}\lbrack e \rbrack)
+\end{array}\]
+\end{frame}
+
+\begin{frame}{Comandos}
+
+    \begin{itemize}
+
+        \item
+        Atribuição:
+    \end{itemize}
+
+    \[\begin{array}{c}
+    \mathcal{S}\lbrack x := e \rbrack = \mathbf{MOVE}(\mathbf{TEMP}(x),\; \mathcal{E}\lbrack e \rbrack)
+\end{array}\]
+\end{frame}
+
+\begin{frame}{Comandos}
+
+    \begin{itemize}
+
+        \item
+        Condicional:
+    \end{itemize}
+
+    \[\mathcal{S}\lbrack \mathbf{if}\ e\ \mathbf{then}\ b_1\ \mathbf{else}\ b_2 \rbrack =\]
+
+    \[\mathbf{SEQ}(\mathbf{CJUMP}(\mathcal{E}\lbrack e \rbrack, \ell_t, \ell_f),\; \mathbf{SEQ}(\mathbf{LABEL}(\ell_t),\; \ldots))\]
+\end{frame}
+
+\begin{frame}[fragile]{Comandos}
+
+    \begin{itemize}
+
+        \item
+        While:
+    \end{itemize}
+
+    \[\mathcal{S}\lbrack \mathbf{while}\ e\ \mathbf{do}\ B \rbrack =\]
+
+    \begin{lstlisting}
+        LABEL(loop_head)
+        CJUMP(E[[e]], loop_body, loop_exit)
+        LABEL(loop_body)
+        S[[B]]
+        JUMP(NAME(loop_head))
+        LABEL(loop_exit)
+    \end{lstlisting}
+
+    \begin{itemize}
+
+        \item
+        \(\ell_h\) = cabeça; \(\ell_b\) = corpo; \(\ell_f\) = saída
+        \item
+        A condição é reavaliada a cada iteração
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Implementação: A Mônada CgM}
+
+    \begin{lstlisting}
+        data CgState = CgState
+        { freshCounter :: Int
+        , emitted      :: [Stmt]
+        }
+
+        type CgM = StateT CgState (ExceptT String Identity)
+
+        freshLabel :: String -> CgM Label
+        freshLabel prefix = do
+        n <- gets freshCounter
+        modify (\s -> s { freshCounter = n + 1 })
+        return (prefix ++ "_" ++ show n)
+
+        emit :: Stmt -> CgM ()
+        emit s = modify (\st -> st { emitted = emitted st ++ [s] })
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Compilando While}
+
+    \begin{lstlisting}
+        compileTWhile :: [Stmt] -> CgM ()
+        compileTWhile stmts = mapM_ compileStmt stmts
+
+        compileStmt (SWhile cond body) = do
+        lHead <- freshLabel "loop_head"
+        lBody <- freshLabel "loop_body"
+        lExit <- freshLabel "loop_exit"
+        emit (LABEL lHead)
+        cExpr <- compileExp cond
+        emit (CJUMP cExpr lBody lExit)
+        emit (LABEL lBody)
+        mapM_ compileStmt body
+        emit (JUMP (NAME lHead))
+        emit (LABEL lExit)
+    \end{lstlisting}
+\end{frame}
+
+
+\section{Conclusão}\label{conclusuxe3o}
+
+\begin{frame}{Conclusão}
+
+    \begin{itemize}
+
+        \item
+        A \textbf{IRT} separa expressões (produzem valor) de comandos
+        (produzem efeitos)
+        \item
+        \textbf{7 expressões}: CONST, TEMP, NAME, BINOP, MEM, CALL, ESEQ
+        \item
+        \textbf{7 comandos}: MOVE, EXP, SEQ, JUMP, CJUMP, LABEL, RETURN
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Conclusão}
+
+    \begin{itemize}
+
+        \item
+        A semântica big-step define o estado como par
+        \(\langle \tau, \mu \rangle\)
+        \item
+        A tradução \textbf{dirigida por sintaxe} converte AST na IRT
+        sistematicamente
+    \end{itemize}
+\end{frame}

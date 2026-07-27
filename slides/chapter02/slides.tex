@@ -1,0 +1,505 @@
+\subtitle{\bf Aula 2 - Análise Léxica}
+\begin{frame}[t,plain]
+    \titlepage
+\end{frame}
+
+\begin{frame}{Objetivos}
+
+    \begin{itemize}
+        \item
+        Apresentar a importância da análise léxica.
+        \item
+        Apresentar a implementação de um analisador léxico ad-hoc.
+    \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{O Papel da Análise Léxica}
+
+    \begin{itemize}
+
+        \item
+        Primeira fase do compilador
+        \item
+        Recebe o código-fonte como \textbf{sequência de caracteres}
+        \item
+        Agrupa os caracteres em \textbf{tokens} significativos
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{O Papel da Análise Léxica}
+
+    \begin{itemize}
+
+        \item
+        Remove espaços em branco e comentários
+        \item
+        Detecta erros léxicos precocemente (caracteres inválidos, etc.)
+        \item
+        Funciona como a ``porta de entrada'' que organiza o texto bruto
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{O que é um Token?}
+
+    \begin{itemize}
+
+        \item
+        Um \textbf{token} é um componente indivisível da sintaxe de uma
+        linguagem
+        \item
+        O conjunto de tokens pode ser entendido como o \textbf{alfabeto} da
+        linguagem
+        \item
+        Exemplos de tokens: palavras reservadas, identificadores, números,
+        operadores
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{O que é um Token?}
+
+    \begin{itemize}
+
+        \item
+        O analisador léxico produz uma \textbf{lista de tokens} para o
+        analisador sintático
+        \item
+        Cada token carrega sua \textbf{categoria} (lexema) e posição no
+        código-fonte
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Estrutura de um Token}
+
+    \begin{lstlisting}
+        type Line   = Int
+        type Column = Int
+
+        data Token = Token
+        { pos    :: (Line, Column)  -- posic\~ao no c\'odigo-fonte
+        , lexeme :: Lexeme          -- categoria do token
+        }
+    \end{lstlisting}
+
+    \begin{itemize}
+
+        \item
+        A posição é essencial para \textbf{mensagens de erro} precisas
+        \item
+        O lexema identifica a categoria do token
+    \end{itemize}
+\end{frame}
+
+
+\section{A Linguagem Exp}\label{a-linguagem-exp}
+
+\begin{frame}{Gramática da Linguagem Exp}
+
+    \[E \to n \mid E + E \mid E * E \mid (E)\]
+
+    \begin{itemize}
+
+        \item
+        \(n\): constante numérica inteira
+        \item
+        \(+\): operador de adição
+        \item
+        \(*\): operador de multiplicação
+        \item
+        \((\) e \()\): parênteses para agrupamento
+        \item
+        Linguagem simples: expressões aritméticas básicas
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Tokens da Linguagem Exp}
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            \hline
+            Token & Construtor & Descrição \\
+            \hline
+            \texttt{n} & \texttt{TNumber Int} &
+            número inteiro (carrega o valor) \\
+            \texttt{+} & \texttt{TPlus} & operador
+            de adição \\
+            \texttt{*} & \texttt{TTimes} &
+            operador de multiplicação \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}[fragile]{Tokens da Linguagem Exp}
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            \hline
+            Token & Construtor & Descrição \\
+            \hline
+            \texttt{(} & \texttt{TLParen} & abre
+            parênteses \\
+            \texttt{)} & \texttt{TRParen} & fecha
+            parênteses \\
+            EOF & \texttt{TEOF} & marcador de fim de entrada \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}[fragile]{Definição do Tipo Lexeme}
+
+    \begin{lstlisting}
+        data Lexeme
+        = TNumber Int   -- n\'umero com seu valor inteiro
+        | TLParen       -- (
+        | TRParen       -- )
+        | TPlus         -- +
+        | TTimes        -- *
+        | TEOF          -- fim de entrada
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Definição do Tipo Lexeme}
+
+    \begin{itemize}
+
+        \item
+        Cada construtor corresponde a uma categoria de token
+        \item
+        \texttt{TNumber} carrega o valor inteiro do número
+        \item
+        Os demais construtores apenas identificam o símbolo
+    \end{itemize}
+\end{frame}
+
+
+\section{Analisadores Léxicos
+Ad-Hoc}\label{analisadores-luxe9xicos-ad-hoc}
+
+\begin{frame}{Analisadores Ad-Hoc}
+
+    \begin{itemize}
+
+        \item
+        Implementação \textbf{manual} e específica para uma linguagem
+        \item
+        Processa caracteres sequencialmente com casamento de padrões
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Analisadores Ad-Hoc}
+
+    \begin{itemize}
+
+        \item
+        Não usa geradores automáticos como o Alex
+        \item
+        Adequado para linguagens \textbf{pequenas e simples}
+        \item
+        Oferece controle total sobre as mensagens de erro
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Tipo do Analisador}
+
+    \begin{lstlisting}
+        -- Vers\~ao simples (sem tratamento de erros):
+        lexer :: String -> [Token]
+
+        -- Vers\~ao com tratamento de erros:
+        lexer :: String -> Either String [Token]
+    \end{lstlisting}
+
+    \begin{itemize}
+
+        \item
+        \texttt{Left msg} indica um \textbf{erro léxico} com
+        mensagem \texttt{msg}
+        \item
+        \texttt{Right tokens} indica \textbf{sucesso} com a
+        lista de tokens produzida
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{O Tipo Either}
+
+    \begin{lstlisting}
+        data Either a b = Left a | Right b
+    \end{lstlisting}
+
+    \begin{itemize}
+
+        \item
+        \texttt{Left a} representa falha/erro com valor do
+        tipo \texttt{a}
+        \item
+        \texttt{Right b} representa sucesso com valor do tipo
+        \texttt{b}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Estado do Analisador}
+
+    \begin{lstlisting}
+        type State = (Line, Column, String, [Token])
+        --            ^      ^       ^        ^
+        --           linha  coluna  d\'igitos  tokens
+        --                          acum.    produzidos
+    \end{lstlisting}
+
+    \begin{itemize}
+
+        \item
+        \texttt{Line}, \texttt{Column}:
+        posição atual no arquivo de entrada
+        \item
+        \texttt{String}: dígitos consecutivos acumulados
+        (para montar números)
+        \item
+        \texttt{[Token]}: tokens reconhecidos até o momento
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Função de Transição}
+
+    \begin{lstlisting}
+        transition :: State -> Char -> Either String State
+        transition state@(l, col, t, ts) c
+        | c == '\n'  = mkDigits state c   -- nova linha
+        | isSpace c  = mkDigits state c   -- espaco
+        | c == '+'   = Right (l, col+1, "", mkToken state TPlus    : ts)
+        | c == '*'   = Right (l, col+1, "", mkToken state TTimes   : ts)
+        | c == '('   = Right (l, col+1, "", mkToken state TLParen  : ts)
+        | c == ')'   = Right (l, col+1, "", mkToken state TRParen  : ts)
+        | isDigit c  = Right (l, col+1, c:t, ts)  -- acumula d\'igito
+        | otherwise  = unexpectedCharError l col c
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Tratamento de Dígitos}
+
+    \begin{lstlisting}
+        mkDigits :: State -> Char -> Either String State
+        mkDigits state@(l, col, s, ts) c
+        | null s      = -- nenhum d\'igito acumulado: s\'o atualiza posic\~ao
+        let l'   = if c == '\n' then l + 1 else l
+        col' = if isSpace c then col + 1 else col
+        in Right (l', col', s, ts)
+        | all isDigit s = -- d\'igitos v\'alidos: cria token TNumber
+        let t    = Token (l,col) (TNumber (read $ reverse s))
+        l'   = if c == '\n' then l + 1 else l
+        col' = if c /= '\n' && isSpace c then col + 1 else col
+        in Right (l', col', "", t : ts)
+        | otherwise   = unexpectedCharError l col c
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{A Função \texttt{lexer}
+    Completa}
+
+    \begin{lstlisting}
+        lexer :: String -> Either String [Token]
+        lexer = finish . foldl step base
+        where
+        base          = Right (1, 1, "", [])
+        finish        = either Left (Right . extract)
+        step (Left e) _ = Left e
+        step (Right s) c = transition s c
+
+        extract (l, col, s, ts)
+        | null s    = reverse ts
+        | otherwise = let n = read (reverse s)
+        t = Token (l, col - length s) (TNumber n)
+        in reverse (t : ts)
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Como \texttt{foldl} Funciona}
+
+    \begin{lstlisting}
+        foldl :: (b -> a -> b) -> b -> [a] -> b
+        foldl _ v []     = v
+        foldl f v (x:xs) = foldl f (f v x) xs
+    \end{lstlisting}
+
+    Exemplo: \texttt{sum [1,2,3]} com
+    \texttt{foldl (+) 0}:
+
+    \begin{lstlisting}
+        foldl (+) 0 [1,2,3]
+        = foldl (+) (0+1) [2,3]
+        = foldl (+) (0+1+2) [3]
+        = foldl (+) (0+1+2+3) []
+        = 6
+    \end{lstlisting}
+
+    \begin{itemize}
+
+        \item
+        \texttt{foldl} percorre a lista \textbf{da esquerda
+        para a direita}
+        \item
+        Acumula um resultado a cada passo
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo de Execução}
+
+    Entrada: \texttt{"2 + 3"}
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            \hline
+            Char & Estado (linha, col, dígitos, tokens) \\
+            \hline
+            \texttt{2} &
+            \texttt{(1, 2, "2", [])} \\
+            \texttt{\_} &
+            \texttt{(1, 3, "", [TNumber 2])} \\
+            \texttt{+} &
+            \texttt{(1, 4, "", [TPlus, TNumber 2])} \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo de Execução}
+
+    Entrada: \texttt{"2 + 3"}
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            \hline
+            Char & Estado (linha, col, dígitos, tokens) \\
+            \hline
+            \texttt{\_} &
+            \texttt{(1, 5, "", [TPlus, TNumber 2])} \\
+            \texttt{3} &
+            \texttt{(1, 6, "3", [TPlus, TNumber 2])} \\
+            EOF & extrai ->
+            \texttt{[TNumber 2, TPlus, TNumber 3]} \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+
+\section{Vantagens e Desvantagens}\label{vantagens-e-desvantagens}
+
+\begin{frame}{Vantagens dos Analisadores Ad-Hoc}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Simples de implementar} para linguagens pequenas
+        \item
+        \textbf{Controle total} sobre mensagens de erro
+        \item
+        Sem dependências externas (geradores de código)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Vantagens dos Analisadores Ad-Hoc}
+
+    \begin{itemize}
+
+        \item
+        Fácil de entender e depurar para casos simples
+        \item
+        Pode ser altamente otimizado para o caso específico
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Desvantagens dos Analisadores Ad-Hoc}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Difíceis de manter e extender}:
+
+        \begin{itemize}
+
+            \item
+            Como adicionar identificadores?
+            \item
+            Como suportar comentários de linha (\texttt{//})? E
+            comentários em bloco (\texttt{/* */})?
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Desvantagens dos Analisadores Ad-Hoc}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Ineficientes para estruturas léxicas complexas}
+
+        \begin{itemize}
+
+            \item
+            Cada nova funcionalidade exige modificar toda a estrutura do estado
+            \item
+            Não há garantia de correção: é fácil esquecer um caso
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Dificuldades}
+
+    \begin{lstlisting}
+        if (x > 0) ift = x + 1;
+    \end{lstlisting}
+
+    \begin{itemize}
+
+        \item
+        Como distinguir \texttt{if} (palavra reservada) de
+        \texttt{ift} (identificador)?
+        \item
+        Como tratar palavras reservadas de forma eficiente?
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Dificuldades}
+
+    \begin{itemize}
+
+        \item
+        Para linguagens reais: dezenas de tokens, comentários aninhados, etc.
+        \item
+        Solução: \textbf{expressões regulares} + \textbf{autômatos finitos}
+    \end{itemize}
+\end{frame}
+
+
+\section{Conclusão}\label{conclusuxe3o}
+
+\begin{frame}[fragile]{Conclusão}
+
+    \begin{itemize}
+
+        \item
+        Análise léxica transforma \textbf{texto bruto} em uma \textbf{lista de
+        tokens}
+        \item
+        Cada token carrega categoria (lexema) e posição no fonte
+        \item
+        O tipo \texttt{Either} de Haskell permite tratamento
+        elegante de erros
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Conclusão}
+
+    \begin{itemize}
+
+        \item
+        Analisadores ad-hoc funcionam para linguagens simples
+        \item
+        As limitações motivam o uso de \textbf{expressões regulares e
+        autômatos}
+    \end{itemize}
+\end{frame}

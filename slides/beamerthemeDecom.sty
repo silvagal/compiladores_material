@@ -1,0 +1,20 @@
+\mode<presentation>
+
+\DeclareOptionBeamer{alternativetitlepage}[true]{\PassOptionsToPackage{alternativetitlepage=#1}{beamerinnerthemedecom}}
+\DeclareOptionBeamer{titlepagelogo}{\PassOptionsToPackage{titlepagelogo=#1}{beamerinnerthemedecom}}
+\DeclareOptionBeamer{bullet}{\PassOptionsToPackage{bullet=#1}{beamerinnerthemedecom}}
+\DeclareOptionBeamer{pageofpages}{\PassOptionsToPackage{pageofpages=#1}{beamerouterthemedecom}}
+\DeclareOptionBeamer{titleline}[true]{\PassOptionsToPackage{titleline=#1}{beamerouterthemedecom}}
+\DeclareOptionBeamer{watermark}{\PassOptionsToPackage{watermark=#1}{beamerouterthemedecom}}
+\DeclareOptionBeamer{watermarkheight}{\PassOptionsToPackage{watermarkheight=#1}{beamerouterthemedecom}}
+\DeclareOptionBeamer{watermarkheightmult}{\PassOptionsToPackage{watermarkheightmult=#1}{beamerouterthemedecom}}
+
+\ProcessOptionsBeamer
+
+\useinnertheme{decom}
+\useoutertheme{decom}
+
+\setbeamertemplate{navigation symbols}{}
+
+\mode
+<all>

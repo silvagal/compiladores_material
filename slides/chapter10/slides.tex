@@ -1,0 +1,518 @@
+\subtitle{\bf Aula 10 - Motivação}
+\begin{frame}[t,plain]
+    \titlepage
+\end{frame}
+
+\begin{frame}{Objetivos}
+
+    \begin{itemize}
+        \item
+        Apresentar a motivação para os algoritmos LR(1) e LALR.
+        \item
+        Apresentar o algoritmo LR(1).
+        \item
+        Apresentar o algoritmo LALR como uma otimização de LR(1).
+    \end{itemize}
+\end{frame}
+
+
+\section{Motivação: Além do SLR}\label{motivauxe7uxe3o-aluxe9m-do-slr}
+
+\begin{frame}{Limitações}
+
+    \begin{itemize}
+
+        \item
+        \textbf{LR(0)}: insere reduce em todos os terminais
+
+        \begin{itemize}
+
+            \item
+            Muitos conflitos
+        \end{itemize}
+        \item
+        \textbf{SLR}: usa o follow(A)
+
+        \begin{itemize}
+
+            \item
+            Ainda impreciso
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Limitações}
+
+    \textbf{Exemplo problemático} com recursão à direita:
+
+    \[\begin{array}{lcl}
+    E &\to& T + E \mid T \\
+    T &\to& n \mid (E)
+\end{array}\]
+\end{frame}
+
+\begin{frame}{Limitações}
+
+    Estado após reconhecer \(T\) no estado inicial:
+
+    \[\begin{array}{l}
+    E \to T . + E \\
+    E \to T .
+\end{array}\]
+\end{frame}
+
+\begin{frame}[fragile]{O Conflito Shift-Reduce}
+
+    \begin{itemize}
+
+        \item
+        Item \(E \to T .\) está completo
+
+        \begin{itemize}
+
+            \item
+            LR(0) insere reduce \(E \to T\) em \textbf{todos} os terminais.
+        \end{itemize}
+        \item
+        Item \(E \to T . + E\) exige \textbf{shift} em
+        \texttt{+}
+
+        \begin{itemize}
+
+            \item
+            Resultado: \textbf{conflito shift-reduce} em
+            \texttt{+}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{O Conflito Shift-Reduce}
+
+    \begin{itemize}
+
+        \item
+        A raiz do problema
+
+        \begin{itemize}
+
+            \item
+            Quando o próximo token é \texttt{+}, ainda pode vir
+            \(+E\), então \ldots{}
+            \item
+            \textbf{Não} devemos reduzir.
+            \item
+            Quando é \verb|$| ou \texttt{)},
+            devemos reduzir.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{O Conflito de Shift-Reduce}
+
+    \begin{itemize}
+
+        \item
+        Para tomar essa decisão, precisamos analisar o próximo token de
+        entrada.
+
+        \begin{itemize}
+
+            \item
+            Lookahead.
+        \end{itemize}
+        \item
+        Um único token de lookahead local resolve o conflito
+
+        \begin{itemize}
+
+            \item
+            Essa é a ideia do \textbf{LR(1)}.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Itens LR(1)}
+
+    Um item LR(1) \([A \to \beta . \gamma, a]\) carrega:
+
+    \begin{itemize}
+
+        \item
+        \(A \to \beta\gamma\): produção sendo reconhecida
+        \item
+        \(.\) (ponto): o que já foi analisado
+        \item
+        \(a\): \textbf{lookahead} --- terminal que pode aparecer
+        \textbf{imediatamente após} \(A\) neste contexto específico
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Redução}
+
+    \begin{itemize}
+
+        \item
+        Quando o item está completo (\(\gamma = \lambda\)):
+
+        \begin{itemize}
+
+            \item
+            reduzir \(A \to \beta\) \textbf{somente} na coluna \(a\).
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Redução}
+
+    \begin{itemize}
+
+        \item
+        Lookahead é \textbf{calculado localmente} para cada item, não
+        globalmente como no SLR.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Fechamento LR(1)}
+
+    \begin{itemize}
+
+        \item
+        Para item \([A \to \alpha . B \beta, a]\), adicionar
+        \([B \to . \gamma, b]\) para toda produção \(B \to \gamma\) e todo
+        \(b \in \mathrm{FIRST}(\beta\, a)\).
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Fechamento LR(1)}
+
+    \begin{itemize}
+
+        \item
+        Se \(\beta\) não é anulável: \(b \in \mathrm{FIRST}(\beta)\)
+        \item
+        Se \(\beta\) é anulável ou vazio: \(b\) inclui também o lookahead
+        \(a\)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Construção dos Estados LR(1)}
+
+    \begin{itemize}
+        \item
+        Estado inicial: fechamento de \(\{[S' \to . S, \$]\}\)
+        \item
+        O lookahead é transferido \textbf{sem alteração} --- Ele depende do
+        contexto em que o item foi criado.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Tabela LR(1)}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Shift}: \([A \to \alpha . a \beta, b]\) com \(a\) terminal ->
+        \texttt{action[I, a] = Shift j}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Tabela LR(1)}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Reduce}: \([A \to \alpha ., a]\) completo ->
+        \texttt{action[I, a] = Reduce(A -> \alpha{})} \textbf{apenas
+        na coluna \(a\)}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Tabela LR(1)}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Accept}: \([S' \to S ., \$]\) ->
+        \texttt{action[I, $] = Accept}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Tabela LR(1)}
+
+    \begin{itemize}
+
+        \item
+        Cada reduce aparece \textbf{apenas na coluna do lookahead do item} ---
+        não em todas.
+    \end{itemize}
+\end{frame}
+
+
+\section{Exemplo}\label{exemplo}
+
+\begin{frame}{Gramática}
+
+    \[\begin{array}{lcl}
+    E &\to& E + T \mid T \\
+    T &\to& T * F \mid F \\
+    F &\to& (E) \mid n
+\end{array}\]
+\end{frame}
+
+\begin{frame}{Estado 0}
+
+    \begin{itemize}
+
+        \item
+        Fechamento de \(\{[S' \to . E, \$]\}\):
+    \end{itemize}
+
+    \[\begin{array}{ll}
+    S' \to . E & \$ \\
+    E \to . E + T & \$, + \\
+    E \to . T & \$, + \\
+    T \to . T * F & \$, +, * \\
+    T \to . F & \$, +, * \\
+    F \to . (E) & \$, +, *, ) \\
+    F \to . n & \$, +, *, )
+\end{array}\]
+\end{frame}
+
+\begin{frame}{Estado 1}
+
+    --- \(\text{goto}(I_0, E)\):
+
+    \[\begin{array}{ll}
+    S' \to E . & \$ \\
+    E \to E . + T & \$, +
+\end{array}\]
+\end{frame}
+
+\begin{frame}{Estado 2}
+
+    --- \(\text{goto}(I_0, T)\):
+
+    \[\begin{array}{ll}
+    E \to T . & \$, + \\
+    T \to T . * F & \$, +, *
+\end{array}\]
+\end{frame}
+
+\begin{frame}{Estado 3}
+
+    --- \(\text{goto}(I_0, F)\):
+
+    \[\begin{array}{ll}
+    T \to F . & \$, +, *
+\end{array}\]
+\end{frame}
+
+\begin{frame}{Tabela LR(1)}
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            \hline
+            Estado & \(n\) & \(+\) & \(*\) & \((\) & \()\) & \(\$\) & \(E\) & \(T\)
+            & \(F\) \\
+            \hline
+            0 & s5 & & & s4 & & & 1 & 2 & 3 \\
+            1 & & s6 & & & & acc & & & \\
+            2 & & r E->T & s7 & & & r E->T & & & \\
+            3 & & r T->F & r T->F & & & r T->F & & & \\
+            4 & s5 & & & s4 & & & 8 & 9 & 3 \\
+            5 & & r F->n & r F->n & & r F->n & r F->n & & & \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Tabela LR(1)}
+
+    Cada ação de reduce aparece \textbf{apenas nas colunas do lookahead do
+    item} --- não em todas.
+\end{frame}
+
+
+\section{O Algoritmo LALR(1)}\label{o-algoritmo-lalr1}
+
+\begin{frame}{Motivação}
+
+    \begin{itemize}
+
+        \item
+        LR(1) gera estados distintos para o mesmo conjunto de itens LR(0)
+        quando os lookaheads diferem.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Motivação}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Exemplo:} os estados 3 e 10 da gramática de expressões têm o
+        mesmo núcleo \(T \to F .\):
+
+        \begin{itemize}
+
+            \item
+            Estado 3 (fora de parênteses): lookaheads \(\{\$, +, *\}\)
+            \item
+            Estado 10 (dentro de parênteses): lookaheads \(\{\$, +, *, )\}\)
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Motivação}
+
+    \begin{itemize}
+
+        \item
+        Para gramáticas reais, o número de estados LR(1) pode ser uma
+        \textbf{ordem de grandeza maior} que LR(0).
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{A Ideia LALR}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Observação}: dois estados com o mesmo \textbf{núcleo} têm a
+        mesma estrutura de shifts e gotos.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{A Ideia LALR}
+
+    \begin{itemize}
+        \item
+        \textbf{Solução}: fundir todos os estados LR(1) com o mesmo núcleo,
+        \textbf{unindo} seus lookaheads.
+        \item
+        \textbf{Resultado}: \(|\text{estados LALR}| = |\text{estados LR(0)}|\)
+        mas lookaheads mais precisos que SLR.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Algoritmo LALR}
+
+    \begin{itemize}
+
+        \item
+        Dois passos:
+    \end{itemize}
+
+    \begin{enumerate}
+
+        \item
+        Construir todos os estados LR(1)
+        \item
+        Fundir estados com o mesmo núcleo, realizando a união de seus
+        lookaheads.
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Problemas}
+
+    \begin{itemize}
+        \item
+        A fusão pode introduzir conflitos \textbf{reduce-reduce}:
+        \item
+        Se dois estados tinham lookaheads disjuntos, a união pode fazer dois
+        itens completos reivindicar a mesma coluna.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Problemas}
+
+    \begin{itemize}
+
+        \item
+        Quando isso ocorre: gramática é LR(1) mas \textbf{não LALR(1)}
+        \item
+        Conflitos \textbf{shift-reduce} nunca são introduzidos pela fusão
+        (shifts dependem do núcleo, não do lookahead)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Problemas}
+
+    \begin{itemize}
+
+        \item
+        Na prática: a imensa maioria das gramáticas de linguagens de
+        programação é LALR(1).
+    \end{itemize}
+\end{frame}
+
+
+\section{Exemplo: Tabela LALR(1)}\label{exemplo-tabela-lalr1}
+
+\begin{frame}{Identificação dos Pares com o Mesmo Núcleo}
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            \hline
+            Núcleo & Estados LR(1) & Lookaheads unidos \\
+            \hline
+            \(T \to F .\) & 3 e 10 & \(\{\$, +, *, )\}\) \\
+            \(E \to E + . T\), \ldots{} & 6 e 14 & \(\{\$, +, )\}\) \\
+            \(T \to T * . F\), \ldots{} & 7 e 15 & \(\{\$, +, *, )\}\) \\
+            \(E \to E + T .\), \(T \to T . * F\) & 11 e 16 & \(\{\$, +, )\}\) \\
+            \(T \to T * F .\) & 12 e 17 & \(\{\$, +, *, )\}\) \\
+            \hline
+        \end{tabular}
+    \end{table}
+
+    Denominamos: \textbf{A} = 3+10, \textbf{B} = 6+14, \textbf{C} = 7+15,
+    \textbf{D} = 11+16, \textbf{E} = 12+17.
+\end{frame}
+
+\begin{frame}{Tabela LALR(1) para Expressões}
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }
+            }@{}}
+            \hline
+            Estado & \(n\) & \(+\) & \(*\) & \((\) & \()\) & \(\$\) & \(E\) & \(T\) & \(F\) \\
+\hline
+0 & s5 & & & s4 & & & 1 & 2 & A \\
+1 & & sB & & & & acc & & & \\
+2 & & r E->T & sC & & & r E->T & & & \\
+A & & r T->F & r T->F & & r T->F & r T->F & & & \\
+4 & s5 & & & s4 & & & 8 & 9 & A \\
+5 & & r F->n & r F->n & & r F->n & r F->n & & & \\
+B & s5 & & & s4 & & & & D & A \\
+C & s5 & & & s4 & & & & & E \\
+8 & & sB & & & s13 & & & & \\
+D & & r E->E+T & sC & & r E->E+T & r E->E+T & & & \\
+E & & r T->T*F & r T->T*F & & r T->T*F & r T->T*F & & & \\
+\hline
+\end{tabular}
+\end{table}
+\end{frame}
+
+
+\section{Conclusão}\label{conclusuxe3o}
+
+\begin{frame}{Conclusão}
+
+    \begin{itemize}
+        \item
+        Neste capítulo apresentamos os algoritmos LR(1) e LALR.
+        \item
+        O gerador de analisadores sintáticos Happy utiliza o algoritmo LALR.
+    \end{itemize}
+\end{frame}

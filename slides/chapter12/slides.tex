@@ -1,0 +1,370 @@
+\subtitle{\bf Aula 12 - Introdução}
+\begin{frame}[t,plain]
+    \titlepage
+\end{frame}
+
+\begin{frame}{Objetivos}
+
+    \begin{itemize}
+        \item
+        Apresentar os conceitos de semântica small e big step.
+        \item
+        Mostrar como implementar um interpretador a partir da especificação da
+        semântica.
+    \end{itemize}
+\end{frame}
+
+
+\section{Introdução à Semântica
+Formal}\label{introduuxe7uxe3o-uxe0-semuxe2ntica-formal}
+
+\begin{frame}{Semântica Formal}
+
+    \begin{itemize}
+
+        \item
+        Apos a análise léxica e sintática, sabemos se o programa está escrito
+        corretamente.
+        \item
+        A semântica responde: \textbf{o que o programa faz?}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Semântica Formal}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Semântica operacional}: define o significado de um programa
+        descrevendo como ele é \emph{executado}
+        \item
+        Especificação se traduz diretamente em código (interpretadores e
+        compiladores)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Dois Estilos}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Small-step} (\emph{pequenos passos}):
+
+        \begin{itemize}
+
+            \item
+            Define cada passo elementar de redução
+            \item
+            Relação \(e \to e'\): ``a expressão \(e\) reduz em um passo para
+            \(e'\)''
+            \item
+            Útil para raciocinar sobre propriedades de execução
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Dois Estilos}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Big-step} (\emph{grandes passos}, ou semântica natural):
+
+        \begin{itemize}
+
+            \item
+            Define diretamente o valor final
+            \item
+            Relação \(e \Downarrow v\): ``a expressão \(e\) avalia para o valor
+            \(v\)''
+            \item
+            Mais direta para implementar interpretadores
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Expressões}
+
+    \[\begin{array}{lcl}
+    e &::=& n \mid e_1 + e_2 \mid e_1 * e_2
+\end{array}\]
+
+Em Haskell:
+
+\begin{lstlisting}
+    data Exp
+    = EInt Int
+    | Exp :+: Exp
+    | Exp :*: Exp
+\end{lstlisting}
+\end{frame}
+
+
+\section{Semântica Small-Step}\label{semuxe2ntica-small-step}
+
+\begin{frame}{Valores}
+
+    \begin{itemize}
+
+        \item
+        Um \textbf{valor} é uma expressão na forma final
+
+        \begin{itemize}
+
+            \item
+            Para expressões aritméticas, é um número inteiro \(v ::= n\).
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Regras}
+
+    \begin{itemize}
+
+        \item
+        As regras de redução são apresentadas como sistemas de inferência:
+    \end{itemize}
+
+    \[\frac{\text{premissas}}{\text{conclusão}}\]
+\end{frame}
+
+\begin{frame}{Regras para Adição}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Adição de valores} (axioma):
+    \end{itemize}
+
+    \[\frac{}{n_1 + n_2 \to n_1 \mathbin{\hat{+}} n_2} \quad \text{(Add)}\]
+\end{frame}
+
+\begin{frame}{Regras para Adição}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Redução no lado esquerdo} (esquerda primeiro):
+    \end{itemize}
+
+    \[\frac{e_1 \to e_1'}{e_1 + e_2 \to e_1' + e_2} \quad \text{(AddL)}\]
+\end{frame}
+
+\begin{frame}{Regras para Adição}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Redução no lado direito} (quando esquerdo já é valor):
+    \end{itemize}
+
+    \[\frac{e_2 \to e_2'}{n_1 + e_2 \to n_1 + e_2'} \quad \text{(AddR)}\]
+\end{frame}
+
+\begin{frame}{Regras para Adição}
+
+    \begin{itemize}
+
+        \item
+        A regra (AddR) só se aplica quando \(n_1\) é um valor
+
+        \begin{itemize}
+
+            \item
+            Garante avaliação \textbf{da esquerda para a direita}.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Multiplicação}
+
+    \[\frac{}{n_1 * n_2 \to n_1 \mathbin{\hat{*}} n_2} \quad \text{(Mul)}\]
+\end{frame}
+
+\begin{frame}{Multiplicação}
+
+    \[\frac{e_1 \to e_1'}{e_1 * e_2 \to e_1' * e_2} \quad \text{(MulL)}\]
+\end{frame}
+
+\begin{frame}{Multiplicação}
+
+    \[\frac{e_2 \to e_2'}{n_1 * e_2 \to n_1 * e_2'} \quad \text{(MulR)}\]
+\end{frame}
+
+\begin{frame}{Sequências de Redução}
+
+    \begin{itemize}
+
+        \item
+        A execução completa é uma sequência de passos terminando em um valor:
+    \end{itemize}
+
+    \[e \to e_1 \to e_2 \to \cdots \to v\]
+
+    \begin{itemize}
+
+        \item
+        Escrevemos \(e \to^* v\) quando existe tal sequência (zero ou mais
+        passos).
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Exemplo: Small-Step para \((2 + 3) * 4\)}
+
+    \[\begin{array}{ll}
+    (2 + 3) * 4 & \xrightarrow{\text{MulL (com Add)}} \\
+    5 * 4       & \xrightarrow{\text{Mul}} \\
+    20          &
+\end{array}\]
+\end{frame}
+
+\begin{frame}{Exemplo: Small-Step para \(1 + 2 * 3\)}
+
+    \[\begin{array}{ll}
+    1 + 2 * 3 & \xrightarrow{\text{AddR (com Mul)}} \\
+    1 + 6     & \xrightarrow{\text{Add}} \\
+    7         &
+\end{array}\]
+\end{frame}
+
+
+\section{Semântica Big-Step}\label{semuxe2ntica-big-step}
+
+\begin{frame}{Regras Big-Step}
+
+    \begin{itemize}
+
+        \item
+        A relação \(e \Downarrow v\) define diretamente o valor final.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Regras Big-Step}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Um número avalia para si mesmo:}
+    \end{itemize}
+
+    \[\frac{}{n \Downarrow n} \quad \text{(Num)}\]
+\end{frame}
+
+\begin{frame}{Regras Big-Step}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Adição:}
+    \end{itemize}
+
+    \[\frac{e_1 \Downarrow n_1 \quad e_2 \Downarrow n_2}{e_1 + e_2 \Downarrow n_1 \mathbin{\hat{+}} n_2} \quad \text{(Add)}\]
+\end{frame}
+
+\begin{frame}{Regras Big-Step}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Multiplicação:}
+    \end{itemize}
+
+    \[\frac{e_1 \Downarrow n_1 \quad e_2 \Downarrow n_2}{e_1 * e_2 \Downarrow n_1 \mathbin{\hat{*}} n_2} \quad \text{(Mul)}\]
+\end{frame}
+
+\begin{frame}{Exemplo: Derivação Big-Step para \((2 + 3) * 4\)}
+
+    \[\dfrac{
+    \dfrac{
+    \dfrac{}{2 \Downarrow 2} \quad \dfrac{}{3 \Downarrow 3}
+    }{2 + 3 \Downarrow 5}
+    \quad
+    \dfrac{}{4 \Downarrow 4}
+    }{(2 + 3) * 4 \Downarrow 20}\]
+\end{frame}
+
+\begin{frame}{Exemplo: Derivação Big-Step para \(1 + 2 * 3\)}
+
+    \[\dfrac{
+    \dfrac{}{1 \Downarrow 1}
+    \quad
+    \dfrac{
+    \dfrac{}{2 \Downarrow 2} \quad \dfrac{}{3 \Downarrow 3}
+    }{2 * 3 \Downarrow 6}
+    }{1 + 2 * 3 \Downarrow 7}\]
+\end{frame}
+
+
+\section{Implementação em
+Haskell}\label{implementauxe7uxe3o-em-haskell}
+
+\begin{frame}[fragile]{Interpretador}
+
+    \begin{itemize}
+
+        \item
+        A semântica big-step se traduz em Haskell de forma quase literal:
+    \end{itemize}
+
+    \begin{lstlisting}
+        eval :: Exp -> Int
+        eval (EInt n)    = n
+        eval (e1 :+: e2) = eval e1 + eval e2
+        eval (e1 :*: e2) = eval e1 * eval e2
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Interpretador}
+
+    \begin{itemize}
+        \item
+        Correspondência com as regras:
+        \item
+        \texttt{eval (EInt n) = n} implementa a regra
+        \textbf{(Num)}
+        \item
+        \texttt{eval (e1 :+: e2) = eval e1 + eval e2}
+        implementa \textbf{(Add)}
+        \item
+        \texttt{eval (e1 :*: e2) = eval e1 * eval e2}
+        implementa \textbf{(Mul)}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Executando o Interpretador}
+
+    \begin{lstlisting}
+        cabal run exp -- --interp --file input.exp
+    \end{lstlisting}
+
+    Para a entrada \texttt{(2 + 3) * 4}, o interpretador
+    produz \texttt{20}.
+
+    \begin{lstlisting}
+        -- O pipeline completo:
+        -- 1. Lexer: String -> [Token]
+        -- 2. Parser: [Token] -> Exp
+        -- 3. eval: Exp -> Int
+    \end{lstlisting}
+\end{frame}
+
+
+\section{Conclusão}\label{conclusuxe3o}
+
+\begin{frame}{Conclusão}
+
+    \begin{itemize}
+
+        \item
+        Apresentamos dois estilos de semântica operacional
+
+        \begin{itemize}
+
+            \item
+            Big-step e small-step
+        \end{itemize}
+        \item
+        Mostramos como implementar um interpretador a partir de sua semântica
+        big-step.
+    \end{itemize}
+\end{frame}

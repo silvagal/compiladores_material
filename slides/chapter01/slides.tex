@@ -1,0 +1,566 @@
+\subtitle{\bf Aula 1 - Fases de um Compilador}
+\begin{frame}[t,plain]
+    \titlepage
+\end{frame}
+
+\begin{frame}{Definição}
+
+    \begin{itemize}
+
+        \item
+        Um compilador \textbf{traduz} um programa de uma linguagem de origem
+        para uma de destino
+        \item
+        A linguagem de origem é projetada para ser \textbf{compreensível por
+        humanos}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Definição}
+
+    \begin{itemize}
+
+        \item
+        A linguagem de destino é projetada para \textbf{execução eficiente por
+        hardware}
+        \item
+        A tradução é desafiadora quando as linguagens são muito diferentes
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Definição}
+
+    \begin{itemize}
+
+        \item
+        Compiladores são sistemas complexos que exigem técnicas sofisticadas
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Exemplos de Compilação}
+
+    \begin{itemize}
+
+        \item
+        C/C++ -> código assembly x86-64
+        \item
+        Java -> bytecode JVM (\emph{just-in-time}: JVM -> código nativo)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Exemplos de Compilação}
+
+    \begin{itemize}
+
+        \item
+        Haskell -> código assembly via GHC
+        \item
+        TypeScript -> JavaScript
+        \item
+        LLVM IR -> código de máquina para diversas arquiteturas
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Compiladores vs.~Interpretadores}
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            \hline
+            & Compilador & Interpretador \\
+            \hline
+            Execução & Traduz antes de executar & Executa diretamente \\
+            Desempenho & \textasciitilde10× mais rápido & Mais lento \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Compiladores vs.~Interpretadores}
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            \hline
+            & Compilador & Interpretador \\
+            \hline
+            Energia & Menos consumo & Mais consumo \\
+            Tempo de compilação & Pode ser alto & Nenhum \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Compiladores vs.~Interpretadores}
+
+    \begin{itemize}
+
+        \item
+        Compilar faz sentido para programas executados \textbf{muitas vezes}
+        \item
+        Para execução única, interpretar pode ser mais conveniente
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Por que Compiladores São Difíceis?}
+
+    \begin{itemize}
+
+        \item
+        Código-fonte: legível, estruturado, redundante, favorece análise
+        \item
+        Código-alvo: compacto, eficiente, pouco legível, descarta estrutura de
+        alto nível
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Por que Compiladores São Difíceis?}
+
+    \begin{itemize}
+
+        \item
+        A diferença entre as duas representações é enorme
+        \item
+        Mais importante que desempenho é a \textbf{correção} do compilador
+        \item
+        Erros introduzidos pelo compilador são extremamente difíceis de
+        depurar
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Correção de Compiladores}
+
+    \begin{itemize}
+
+        \item
+        É possível definir matematicamente o que significa um compilador estar
+        correto
+        \item
+        Requer semântica formal para linguagem de origem \textbf{e} de destino
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Correção de Compiladores}
+
+    \begin{itemize}
+
+        \item
+        Vários compiladores foram desenvolvidos com \textbf{provas de
+        correção}
+        \item
+        Exemplo: CompCert --- compilador C com prova formal verificada por
+        computador
+        \item
+        Nossa abordagem: especificar cada fase com precisão
+    \end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Visão Geral do Pipeline}
+
+    \begin{enumerate}
+
+        \item
+        \textbf{Análise léxica} --- caracteres -> tokens
+        \item
+        \textbf{Análise sintática} --- tokens -> árvore sintática
+        \item
+        \textbf{Análise semântica} --- verificação de tipos e de contexto
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Visão Geral do Pipeline}
+
+    \begin{enumerate}
+        \setcounter{enumi}{3}
+
+        \item
+        \textbf{Geração de código intermediário} --- árvore -> representação
+        intermediária
+        \item
+        \textbf{Otimização} --- melhora o código intermediário
+        \item
+        \textbf{Geração de código} --- representação intermediária ->
+        código-alvo
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{A Ideia Central: Dividir para Conquistar}
+
+    \begin{itemize}
+
+        \item
+        Em vez de traduzir diretamente do código-fonte para código de máquina
+        \item
+        Definimos uma sequência de \textbf{fases} e \textbf{representações
+        intermediárias}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{A Ideia Central: Dividir para Conquistar}
+
+    \begin{itemize}
+
+        \item
+        Cada fase transforma o programa para uma representação mais próxima do
+        destino
+        \item
+        Cada representação intermediária é projetada para a conveniência da
+        fase atual
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Programa de Exemplo}
+
+    \begin{lstlisting}
+        if (val >= 0) pos = val
+    \end{lstlisting}
+
+    \begin{itemize}
+
+        \item
+        Vamos acompanhar essa instrução pelas fases do compilador
+        \item
+        Começamos com uma sequência de bytes/caracteres
+        \item
+        Terminamos com instruções de máquina
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Análise Léxica}
+
+    \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter01/imgs/lexical.png}
+
+    \begin{itemize}
+
+        \item
+        Divide o texto em \textbf{tokens} (as ``palavras'' do programa)
+        \item
+        Descarta espaços em branco e comentários
+        \item
+        Exemplo: \texttt{if}, \texttt{(},
+        \texttt{val}, \texttt{>=},
+        \texttt{0}, \texttt{)},
+        \texttt{pos}, \texttt{=},
+        \texttt{val}
+        \item
+        Detecta erros léxicos: caracteres inválidos, identificadores
+        malformados
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Análise Sintática}
+
+    \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter01/imgs/syntax-tree.png}
+
+    \begin{itemize}
+
+        \item
+        Verifica se os tokens formam uma sequência sintaticamente válida
+        \item
+        Produz uma \textbf{Árvore Sintática Abstrata (AST)}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Análise Sintática}
+
+    \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter01/imgs/syntax-tree.png}
+
+    \begin{itemize}
+
+        \item
+        Captura a estrutura hierárquica do programa
+        \item
+        Descarta elementos puramente sintáticos (como parênteses)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Análise Semântica}
+
+    \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter01/imgs/annotated-tree.png}
+
+    \begin{itemize}
+
+        \item
+        Completa a tarefa de verificar se o código representa um programa
+        válido
+        \item
+        Realiza \textbf{verificação de tipos} e verificações de contexto
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Análise Semântica}
+
+    \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter01/imgs/annotated-tree.png}
+
+    \begin{itemize}
+
+        \item
+        Coleta informações adicionais sobre o programa
+        \item
+        Enriquece a AST com \textbf{anotações} (tipos, referências a
+        declarações)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Geração de Código Intermediário}
+
+    \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter01/imgs/cfg.png}
+
+    \begin{itemize}
+
+        \item
+        Produz uma \textbf{Representação Intermediária (RI)}
+        \item
+        Exemplo: grafo de fluxo de controle
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Seleção de Instruções}
+
+    \begin{lstlisting}
+        cmp val, 0       -- compara val com 0
+        jl L1            -- salta se menor
+        mov pos, val     -- pos = val
+        L1:
+    \end{lstlisting}
+
+    \begin{itemize}
+
+        \item
+        Traduz a RI para instruções assembly abstrato
+        \item
+        Variáveis ainda são tratadas como registradores virtuais
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Alocação de Registradores e Otimização}
+
+    \begin{lstlisting}
+        cmp rax, 0
+        jl L1
+        mov rcx, rax
+        L1:
+    \end{lstlisting}
+
+    \begin{itemize}
+
+        \item
+        Atribui variáveis a \textbf{registradores de hardware} reais
+        \item
+        A otimização mais importante em compiladores
+        \item
+        Pode usar instruções mais eficientes:
+    \end{itemize}
+
+    \begin{lstlisting}
+        cmp rax, 0
+        cmovge rcx, rax  -- move condicional, sem salto
+    \end{lstlisting}
+\end{frame}
+
+
+\section{Exemplo Completo de
+Compilação}\label{exemplo-completo-de-compilauxe7uxe3o}
+
+\begin{frame}[fragile]{Código-Fonte}
+
+    \begin{lstlisting}
+        findIndex(a:int[]): int {
+        n:int = length a
+        i:int = 0
+        while i < n {
+        if a[i] == i+1 { return i }
+        i = i + 1
+        }
+        return -1
+        }
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Código Assembly Não-Otimizado}
+
+    \begin{lstlisting}
+        findIndex:
+        push    rbp
+        mov     rbp, rsp
+        mov     [rbp - 16], rdi
+        mov     rax, [rbp - 16]
+        mov     rax, [rax - 8]
+        mov     [rbp - 24], rax
+        mov     qword ptr [rbp - 32], 0
+        L1: mov     rax, [rbp - 32]
+        cmp     rax, [rbp - 24]
+        jge     L6
+        ...
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Código Assembly Não-Otimizado}
+
+    \begin{itemize}
+
+        \item
+        Variáveis armazenadas na pilha, acessadas por
+        \texttt{[rbp - offset]}
+        \item
+        Estruturas de controle substituídas por desvios
+        (\texttt{jge}, \texttt{jne},
+        \texttt{jmp})
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Código Assembly Otimizado}
+
+    \begin{lstlisting}
+        findIndex:
+        mov  rcx, [rdi - 8]
+        xor  edx, edx
+        L1: cmp  rcx, rdx
+        je   L2
+        lea  rax, [rdx + 1]
+        cmp  rax, [rdi + 8*rdx]
+        mov  rdx, rax
+        jne  L1
+        dec  rax
+        ret
+        L2: mov  rax, -1
+        ret
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Código Assembly Otimizado}
+
+    \begin{itemize}
+
+        \item
+        Variáveis em registradores (\texttt{rcx},
+        \texttt{rdx}, \texttt{rax})
+        \item
+        Sem instruções de gerenciamento de pilha
+        \item
+        Um compilador otimizador pode igualar ou superar código humano
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Código de Máquina (hex)}
+
+    \begin{lstlisting}
+        0: 48 8b 4f f8    mov  rcx, [rdi - 8]
+        4: 31 d2          xor  edx, edx
+        6: 48 39 d1       cmp  rcx, rdx
+        9: 74 11          je   0x1c
+        b: 48 8d 42 01    lea  rax, [rdx + 1]
+        f: 48 3b 04 d7    cmp  rax, [rdi + 8*rdx]
+        13: 48 89 c2      mov  rdx, rax
+        16: 75 ee         jne  0x6
+        18: 48 ff c8      dec  rax
+        1b: c3            ret
+        1c: 48 c7 c0 ...  mov  rax, -1
+        23: c3            ret
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}{Código de Máquina (hex)}
+
+    \begin{itemize}
+
+        \item
+        Rótulos substituídos por deslocamentos hexadecimais
+        \item
+        Resultado pronto para execução direta pelo processador
+    \end{itemize}
+\end{frame}
+
+
+\section{Estrutura Completa do
+Processo}\label{estrutura-completa-do-processo}
+
+\begin{frame}[fragile]{Pipeline Completo}
+
+    \begin{lstlisting}
+        C\'odigo-fonte
+        ↓ compilador
+        C\'odigo assembly
+        ↓ assembler
+        C\'odigo objeto (.o)
+        ↓ linker
+        Execut\'avel
+        ↓ loader
+        Processo em mem\'oria
+    \end{lstlisting}
+
+    \begin{itemize}
+
+        \item
+        Cada ferramenta tem uma responsabilidade bem definida
+        \item
+        O compilador gera assembly, não código de máquina diretamente
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Responsabilidades de Cada Ferramenta}
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            \hline
+Ferramenta & Entrada & Saída & Função \\
+            \hline
+            Compilador & Código-fonte & Assembly & Tradução de linguagem \\
+            Assembler & Assembly & Código objeto & Tradução de instruções \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}[fragile]{Responsabilidades de Cada Ferramenta}
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            \hline
+Ferramenta & Entrada & Saída & Função \\
+            \hline
+            Linker & Múltiplos \texttt{.o} & Executável & Resolve
+            referências \\
+            Loader & Executável & Processo & Carrega na memória \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+
+\section{Conclusão}\label{conclusuxe3o}
+
+\begin{frame}{Conclusão}
+
+    \begin{itemize}
+
+        \item
+        Compiladores traduzem programas de linguagens de alto nível para baixo
+        nível
+        \item
+        A diferença entre origem e destino é enorme --- a solução é
+        \textbf{dividir em fases}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Conclusão}
+
+    \begin{itemize}
+
+        \item
+        Cada fase transforma o programa incrementalmente com representações
+        intermediárias
+        \item
+        \textbf{Correção} é mais importante que desempenho: um compilador com
+        bugs é perigoso!
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Conclusão}
+
+    \begin{itemize}
+
+        \item
+        O pipeline completo envolve compilador, assembler, linker e loader
+    \end{itemize}
+\end{frame}

@@ -1,0 +1,1046 @@
+\subtitle{\bf Apresentação}
+\begin{frame}[t,plain]
+    \titlepage
+\end{frame}
+
+\begin{frame}{Objetivos}
+
+    \begin{itemize}
+
+        \item
+        Apresentar a importância da construção de compiladores na formação de
+        um cientista da computação.
+        \item
+        Apresentar a ementa, critérios de avaliação e bibliografia da
+        disciplina.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Objetivos}
+
+    \begin{itemize}
+
+        \item
+        Apresentar a visão geral de um compilador.
+    \end{itemize}
+\end{frame}
+
+
+\section{Compiladores}\label{compiladores}
+
+\begin{frame}{Como executamos programas?}
+
+    \begin{itemize}
+
+        \item
+        Três técnicas principais
+
+        \begin{itemize}
+
+            \item
+            Interpretação
+            \item
+            Compilação
+            \item
+            Virtualização.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Interpretação}
+
+    \begin{itemize}
+
+        \item
+        Código fonte é representado como uma estrutura de dados e o
+        intepretador executa o programa diretamente.
+        \item
+        Interpretador é responsável pela execução do programa e de sua
+        interação com o S.O.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Compilação}
+
+    \begin{itemize}
+
+        \item
+        Código fonte é traduzido para uma nova linguagem.
+        \item
+        Código alvo pode ser uma linguagem de alto nível (transpilação).
+        \item
+        Código alvo pode ser uma linguagem de baixo nível (compilação).
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Virtualização}
+
+    \begin{itemize}
+
+        \item
+        Código fonte é traduzido para uma linguagem de baixo nível, não
+        diretamente entendida pelo hardware.
+        \item
+        Normalmente, chamado de bytecode.
+        \item
+        Intepretadores mais eficientes.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Visão geral (montanha)}
+
+    \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{apresentacao/montain.png}
+\end{frame}
+
+\begin{frame}{Escalando a montanha}
+
+    \begin{itemize}
+
+        \item
+        Análise Léxica: Dividir o código em \textbf{tokens}.
+
+        \begin{itemize}
+
+            \item
+            Eliminar comentários e espaços em branco.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Escalando a montanha}
+
+    \begin{itemize}
+
+        \item
+        Análise sintática: Organiza a sequência de tokens em sua estrutura
+        gramatical.
+
+        \begin{itemize}
+
+            \item
+            Produz uma árvore de sintaxe abstrata.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Escalando a montanha}
+
+    \begin{itemize}
+
+        \item
+        Análise semântica: Verifica se a árvore produzida pelo analisador
+        sintático atende restrições semânticas.
+
+        \begin{itemize}
+
+            \item
+            Todos os símbolos foram declarados?
+            \item
+            Argumentos de funções possuem a aridade e tipo corretos?
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Escalando a montanha}
+
+    \begin{itemize}
+
+        \item
+        Intepretador: executa o código diretamente a partir da árvore de
+        sintaxe.
+
+        \begin{itemize}
+
+            \item
+            Não há geração de código
+            \item
+            Comum em linguagens dinamicamente tipadas, como Python.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Escalando a montanha}
+
+    \begin{itemize}
+
+        \item
+        ``Transpilador'': converte a árvore de sintaxe para outra linguagem de
+        alto nível.
+
+        \begin{itemize}
+
+            \item
+            Ideal para permitir independência de plataformas.
+            \item
+            Exemplo: Typescript.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Escalando a montanha}
+
+    \begin{itemize}
+
+        \item
+        Geração de código intermediário: código de baixo nível independente de
+        plataforma.
+
+        \begin{itemize}
+
+            \item
+            Utilizado para otimizações independentes de hardware.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Escalando a montanha}
+
+    \begin{itemize}
+
+        \item
+        Otimização de código.
+
+        \begin{itemize}
+
+            \item
+            Otimização de consumo de memória, tempo de execução, tamanho de
+            código, etc\ldots{}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Escalando a montanha}
+
+    \begin{itemize}
+
+        \item
+        Geração de código: tradução da representação intermediária para o
+        código de máquina, diretamente executável pelo hardware.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Escalando a montanha}
+
+    \begin{itemize}
+
+        \item
+        Virtualização: geração de código para máquinas virtuais como a JVM /
+        EVM.
+
+        \begin{itemize}
+
+            \item
+            Diferentes plataformas podem executar o mesmo programa utilizando
+            VMs para a plataforma.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+
+\section{Motivação}\label{motivauxe7uxe3o}
+
+\begin{frame}{Porque estudar compiladores?}
+
+    \begin{itemize}
+
+        \item
+        Desenvolver um compilador permite consolidar conhecimentos de:
+
+        \begin{itemize}
+
+            \item
+            Teoria da computação (autômatos e gramáticas)
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Porque estudar compiladores?}
+
+    \begin{itemize}
+
+        \item
+        Desenvolver um compilador permite consolidar conhecimentos de:
+
+        \begin{itemize}
+
+            \item
+            Engenharia de software (testes e arquitetura de software)
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Porque estudar compiladores?}
+
+    \begin{itemize}
+
+        \item
+        Desenvolver um compilador permite consolidar conhecimentos de:
+
+        \begin{itemize}
+
+            \item
+            Arquitetura de computadores (conhecer detalhes do alvo de
+            compilação)
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Porque estudar compiladores?}
+
+    \begin{itemize}
+
+        \item
+        Possivelmente, o primeiro artefato de software complexo produzido por
+        estudantes de graduação.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Porque estudar compiladores?}
+
+    \begin{itemize}
+
+        \item
+        Compiladores aparecem em toda parte!
+
+        \begin{itemize}
+
+            \item
+            Navegadores web (JavaScript e WebASM)
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Porque estudar compiladores?}
+
+    \begin{itemize}
+
+        \item
+        Compiladores aparecem em toda parte!
+
+        \begin{itemize}
+
+            \item
+            Monitoramento do Kernel Linux (eBPF)
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Porque estudar compiladores?}
+
+    \begin{itemize}
+
+        \item
+        Compiladores aparecem em toda parte!
+
+        \begin{itemize}
+
+            \item
+            Várias aplicações possuem linguagens para customização.
+        \end{itemize}
+        \item
+        Exemplos:
+
+        \begin{itemize}
+
+            \item
+            VBA, elisp, Lua
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Porque estudar compiladores?}
+
+    \begin{itemize}
+
+        \item
+        Projeto de compiladores envolve problemas difíceis:
+
+        \begin{itemize}
+
+            \item
+            Executam várias tarefas e devem ser eficientes.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Porque estudar compiladores?}
+
+    \begin{itemize}
+
+        \item
+        Projeto de compiladores envolve problemas difíceis:
+
+        \begin{itemize}
+
+            \item
+            Responsáveis por bom uso de uma linguagem.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Porque estudar compiladores?}
+
+    \begin{itemize}
+
+        \item
+        Projeto de compiladores envolve problemas difíceis:
+
+        \begin{itemize}
+
+            \item
+            Devem ocultar detalhes de arquitetura e SO de desenvolvedores.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Porque estudar compiladores?}
+
+    \begin{itemize}
+
+        \item
+        Provavelmente, uma das áreas mais consolidadas da ciência da
+        computação!
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Porque estudar compiladores?}
+
+    \begin{itemize}
+
+        \item
+        Vários pesquisadores da área foram agraciados com o Turing Award!
+
+        \begin{itemize}
+
+            \item
+            John Backus, Barbara Liskov, Niklaus Wirth, Edsger Djikstra, Robin
+            Milner e C.A. Hoare.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Porque estudar compiladores?}
+
+    \begin{itemize}
+
+        \item
+        A área de linguagens de programação, apesar de teórica, possui demanda
+        de vagas!
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Porque estudar Compiladores?}
+
+    \begin{itemize}
+
+        \item
+        Áreas de atuação: Compiladores.
+
+        \begin{itemize}
+
+            \item
+            Cadence contrata Engenheiros de compiladores para desenvolvimento de
+            compiladores de modelos de IA.
+            \item
+            Time de compiladores atua no escritório de BH.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Porque estudar Compiladores?}
+
+    \begin{itemize}
+
+        \item
+        Ferramentas de análise estática de código e teste automatizado.
+        \item
+        Verificação formal de aplicações WEB3 (contratos inteligentes).
+        \item
+        Segurança de software.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Porque estudar compiladores?}
+
+    \begin{itemize}
+
+        \item
+        Como determinar se o bug em seu código está presente em seu programa
+        fonte ou foi inserido durante o processo de compilador?
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Porque estudar compiladores?}
+
+    \begin{itemize}
+        \item
+        Correção de um compilador é um problema sério!
+        \item
+        Como determinar se um compilador é ou não correto?
+
+        \begin{itemize}
+
+            \item
+            Código produzido pelo compilador deve ter o mesmo significado que o
+            código fonte original.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Porque estudar compiladores?}
+
+    \begin{itemize}
+        \item
+        Qual o problema da compilação?
+        \item
+        Imagine a situação:
+
+        \begin{itemize}
+
+            \item
+            Dado um programa fonte P, o compilador produz o código alvo E, que é
+            equivalente a P, exceto que E imprime um ``Hello world'' adicional.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Porque estudar compiladores?}
+
+    \begin{itemize}
+
+        \item
+        Pode-se pensar, um print adicional é inócuo\ldots{}
+
+        \begin{itemize}
+
+            \item
+            Depende da informação impressa!
+            \item
+            Informações: endereços de memória restritos, versões de software
+            instalado\ldots{}
+            \item
+            Executar programas na máquina host durante a execução
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Porque estudar compiladores?}
+
+    \begin{itemize}
+
+        \item
+        Pesquisa em compiladores:
+
+        \begin{itemize}
+
+            \item
+            Como produzir código mais eficiente? Otimização de código.
+            \item
+            Como garantir que um compilador é correto? Verificação e teste.
+            \item
+            Criar novas linguagens e seus compiladores.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Porque estudar compiladores?}
+
+    \begin{itemize}
+
+        \item
+        Pesquisa realizada no DECOM / UFOP
+
+        \begin{itemize}
+
+            \item
+            Novos algoritmos para análise sintática / léxica.
+            \item
+            Verificação e teste de programas.
+            \item
+            Análise de código fonte.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Porque estudar compiladores?}
+
+    \begin{itemize}
+
+        \item
+        Novos algoritmos para análise sintática / léxica
+
+        \begin{itemize}
+
+            \item
+            Terminação de análise sintática usando PEGs.
+            \item
+            Análise léxica utilizando derivadas.
+            \item
+            Análise sintática de formatos binários usando PEGs.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Porque estudar compiladores?}
+
+    \begin{itemize}
+
+        \item
+        Verificação e teste de programas.
+
+        \begin{itemize}
+
+            \item
+            Filtros de pacotes e extensões de Kernel (eBPF).
+
+            \begin{itemize}
+
+                \item
+                Teste automatizado de programas.
+                \item
+                Verificação formal baseada em assistente de provas.
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Porque estudar compiladores?}
+
+    \begin{itemize}
+
+        \item
+        Verificação e teste programas.
+
+        \begin{itemize}
+
+            \item
+            Análise de complexidade assintótica de tempo.
+        \end{itemize}
+        \item
+        Análise de código fonte
+
+        \begin{itemize}
+
+            \item
+            Desenvolvimento de bibliotecas para manipulação de código.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Porque estudar compiladores?}
+
+    \begin{itemize}
+
+        \item
+        Desenvolvimento de contratos inteligentes
+
+        \begin{itemize}
+
+            \item
+            Software responsável por transações em blockchain.
+            \item
+            Projeto Core Solidity: Nova linguagem para Ethereum.
+        \end{itemize}
+        \item
+        Problemas em aberto:
+
+        \begin{itemize}
+
+            \item
+            Ferramentas para teste e verificação formal.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+
+\section{Estrutura de um compilador}\label{estrutura-de-um-compilador}
+
+\begin{frame}{Estrutura geral}
+
+    \begin{itemize}
+
+        \item
+        Estrutura geral de um compilador
+    \end{itemize}
+
+    \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{apresentacao/compiler_structure.png}
+\end{frame}
+
+\begin{frame}{Front-end de um compilador}
+
+    \begin{itemize}
+
+        \item
+        Responsável pela análise do código.
+        \item
+        Produz uma representação intermediária para geração de código.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Middle-end de um compilador}
+
+    \begin{itemize}
+
+        \item
+        Responsável por otimizações independentes de arquitetura.
+
+        \begin{itemize}
+
+            \item
+            Constant folding: substituir 3 + 4 por 7 no código.
+            \item
+            Dead code elimination: eliminar código que nunca é executado.
+            \item
+            Loop unrolling: eliminar laços para reduzir custo de desvios.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Back-end de um compilador}
+
+    \begin{itemize}
+
+        \item
+        Responsável por otimizações dependentes do hardware.
+
+        \begin{itemize}
+
+            \item
+            Alocação de registradores: como usar registradores da melhor
+            maneira?
+            \item
+            Escalonamento de instruções: qual a ordem de instruções para melhor
+            eficiência?
+            \item
+            Otimizações específicas de arquitetura: usar vectorização, múltiplos
+            núcleos.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Porque essa arquitetura?}
+
+    \begin{itemize}
+
+        \item
+        Um mesmo front-end pode suportar diferentes middle-ends, sem
+        modificações na linguagem fonte.
+        \item
+        Um mesmo middle-end pode suportar diferentes arquiteturas.
+        \item
+        Separação permite que desenvolvimento seja focado em problemas de cada
+        componente.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Exemplos}
+
+    \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{apresentacao/llvm1.png}
+\end{frame}
+
+\begin{frame}{Exemplos}
+
+    \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{apresentacao/javascript.png}
+\end{frame}
+
+\begin{frame}{Exemplos}
+
+    \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{apresentacao/net.png}
+\end{frame}
+
+\begin{frame}{Exemplos}
+
+    \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{apresentacao/java.png}
+\end{frame}
+
+
+\section{Ementa}\label{ementa}
+
+\begin{frame}{Ementa}
+
+    \begin{itemize}
+        \item
+        Introdução ao processo de compilação e interpretação
+        \item
+        Análise léxica
+        \item
+        Análise sintática
+        \item
+        Análise semântica e geração de código intermediário.
+    \end{itemize}
+\end{frame}
+
+
+\section{Pré-requisitos}\label{pruxe9-requisitos}
+
+\begin{frame}{Pré-requisitos}
+
+    \begin{itemize}
+
+        \item
+        Essa disciplina faz uso \textbf{INTENSO} de conceitos:
+
+        \begin{itemize}
+
+            \item
+            BCC222 Programação Funcional
+            \item
+            BCC244 Teoria da Computação
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Pré-requisitos}
+
+    \begin{itemize}
+
+        \item
+        BCC222 Programação funcional
+
+        \begin{itemize}
+
+            \item
+            Tipos de dados algébricos e casamento de padrão.
+            \item
+            Polimorfismo paramétrico e sobrecarga.
+            \item
+            Mônadas, functores e functores aplicativos.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Pré-requisitos}
+
+    \begin{itemize}
+        \item
+        No curso utilizamos diversas bibliotecas Haskell.
+        \item
+        Utilize o Hoogle, para pesquisar sobre funções.
+
+        \begin{itemize}
+
+            \item
+            \url{https://hoogle.haskell.org/}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Pré-requisitos}
+
+    \begin{itemize}
+
+        \item
+        BCC244 Teoria da computação
+
+        \begin{itemize}
+
+            \item
+            Autômatos finitos determinísticos, não determinísticos e expressões
+            regulares.
+            \item
+            Gramáticas livres de contexto, ambiguidade e manipulação de
+            gramáticas.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+
+\section{Bibliografia}\label{bibliografia}
+
+\begin{frame}{Bibliografia}
+
+    \begin{itemize}
+        \item
+        Construindo Compiladores. Cooper, Keith D. ; Torcson, Linda
+        \item
+        Compiladores: Princípios, técnicas e ferramentas. Aho, Alfred; Lam,
+        Monica; Sethi, Ravi; Ullman, Jeffrey.
+        \item
+        Modern compiler implementation in ML. Appel, Andrew.
+    \end{itemize}
+\end{frame}
+
+
+\section{Materiais de apoio}\label{materiais-de-apoio}
+
+\begin{frame}{Materiais de apoio}
+
+    \begin{itemize}
+
+        \item
+        Slides e código de exemplo serão disponibilizados no seguinte
+        repositório online.
+        \item
+        Notas de aula em elaboração.
+    \end{itemize}
+\end{frame}
+
+
+\section{Critérios de Avaliação}\label{crituxe9rios-de-avaliauxe7uxe3o}
+
+\begin{frame}{Critérios de Avaliação}
+
+    \begin{itemize}
+        \item
+        Duas avaliações no valor de 7,0 pontos.
+        \item
+        Exercícios de programação no valor 3,0 pontos.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Critérios de Avaliação}
+
+    \begin{itemize}
+
+        \item
+        Exercícios de programação
+
+        \begin{itemize}
+
+            \item
+            Desenvolvimento incremental de uma linguagem de programação simples
+        \end{itemize}
+        \item
+        Implementação
+
+        \begin{itemize}
+
+            \item
+            Compilação para WASM e C.
+            \item
+            Interpretador.
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Critérios de Avaliação}
+
+    \begin{itemize}
+
+        \item
+        Datas de entregas de exercícios serão postadas na plataforma Moodle.
+
+        \begin{itemize}
+
+            \item
+            Entrega via Github classroom.
+        \end{itemize}
+        \item
+        Trabalhos pode ser feito individualmente ou em dupla.
+
+        \begin{itemize}
+
+            \item
+            Uso de IA generativa: Resolução CONPEP 144.
+        \end{itemize}
+        \item
+        Nota ponderada por percentual obtido em questões de programação em
+        avaliações teóricas.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Critérios de Avaliação}
+
+    \begin{itemize}
+
+        \item
+        Data avaliação 1: 11/05/2026
+        \item
+        Data avaliação 2: 20/07/2026
+    \end{itemize}
+\end{frame}
+
+
+\section{Exame especial}\label{exame-especial}
+
+\begin{frame}{Exame especial}
+
+    \begin{itemize}
+        \item
+        Mínimo de 75\% de frequência e nota inferior a 6,0.
+        \item
+        Exame especial parcial para alunos que perderam uma avaliação.
+
+        \begin{itemize}
+
+            \item
+            Envolverá tarefas de codificação e atividades teóricas (em papel).
+        \end{itemize}
+        \item
+        Detalhes: Resolução CEPE 2880 de 05/2006
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Exame especial}
+
+    \begin{itemize}
+
+        \item
+        Data do exame especial: 27/07/2026
+    \end{itemize}
+\end{frame}
+
+
+\section{Software}\label{software}
+
+\begin{frame}{Software}
+
+    \begin{itemize}
+        \item
+        Trabalhos e códigos de exemplo serão desenvolvidos utilizando Haskell.
+        \item
+        Utilizaremos diversas bibliotecas da linguagem Haskell.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Software}
+
+    \begin{itemize}
+        \item
+        Para evitar problemas de compatibilidade, será fornecido um ambiente
+        de desenvolvimento baseado em Docker.
+        \item
+        Trabalhos que apresentarem qualquer erro de compilação neste ambiente,
+        não serão considerados para correção.
+    \end{itemize}
+\end{frame}
+
+
+\section{Outras Informações}\label{outras-informauxe7uxf5es}
+
+\begin{frame}{Informações}
+
+    \begin{itemize}
+        \item
+        Toda informação da disciplina será disponibilizada na plataforma
+        Moodle.
+        \item
+        Email: rodrigo.ribeiro@ufop.edu.br
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Atendimento}
+
+    \begin{itemize}
+
+        \item
+        Horários de atendimento
+
+        \begin{itemize}
+
+            \item
+            Segunda-feira: 16:00 - 17:00h
+        \end{itemize}
+        \item
+        Gentileza, agendar por e-mail atendimentos.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Finalizando}
+
+    \begin{itemize}
+
+        \item
+        Tenhamos todos um excelente semestre de trabalho!
+    \end{itemize}
+\end{frame}

@@ -1,0 +1,680 @@
+\subtitle{\bf Aula 9 - Motivação}
+\begin{frame}[t,plain]
+    \titlepage
+\end{frame}
+
+\begin{frame}{Objetivos}
+
+    \begin{itemize}
+        \item
+        Apresentar a estratégia de análise bottom-up
+        \item
+        Apresentar 3 algoritmos: Earley, LR(0) e SLR.
+    \end{itemize}
+\end{frame}
+
+
+\section{Motivação}\label{motivauxe7uxe3o}
+
+\begin{frame}{Limitações: Top-Down}
+
+    \begin{itemize}
+
+        \item
+        Analisadores \textbf{LL} exigem transformações na gramática
+
+        \begin{itemize}
+
+            \item
+            Remoção de recursão à esquerda
+            \item
+            Fatoração à esquerda
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Limitações: Top-Down}
+
+    \begin{itemize}
+
+        \item
+        Decisão com apenas \textbf{1 token de lookahead}
+        \item
+        Algumas gramáticas são inerentemente não-LL(1)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{A Ideia Bottom-Up}
+
+    \begin{itemize}
+
+        \item
+        Analisadores \textbf{bottom-up} lêem um prefixo maior antes de decidir
+        \item
+        Suportam \textbf{recursão à esquerda} naturalmente
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{A Ideia Bottom-Up}
+
+    \begin{itemize}
+
+        \item
+        Constroem uma \textbf{derivação mais à direita invertida}
+        \item
+        Cada redução constrói um pedaço da árvore sintática
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Der. à Direita Invert.}
+
+    Gramática de exemplo (não-LL(1)):
+
+    \[\begin{array}{lcl}
+    S &\to& S + E \mid E \\
+    E &\to& (S) \mid n
+\end{array}\]
+\end{frame}
+
+\begin{frame}[fragile]{Der. à Direita Invert.}
+
+    Analisando \texttt{(1) + 2}:
+
+    \begin{lstlisting}
+        S'  =>  S  =>  S+E  =>  S+2  =>  E+2  ->  (S)+2  =>  (E)+2  =>  (1)+2
+    \end{lstlisting}
+
+    O analisador constrói essa derivação de baixo para cima, da direita para
+    a esquerda.
+\end{frame}
+
+
+
+\begin{frame}{A Ideia Central}
+
+    \begin{itemize}
+
+        \item
+        Simula \textbf{todas as análises possíveis} em paralelo
+        \item
+        Em vez de se comprometer com uma produção, prevê todas
+        \item
+        Usa \textbf{compartilhamento de trabalho} para eficiência polinomial
+        \item
+        Processa cada posição de entrada \(j\) mantendo um conjunto \(I_j\) de
+        \textbf{itens}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Itens Earley}
+
+    Um item Earley \([A \to \beta . \gamma, k]\) representa:
+
+    \begin{itemize}
+
+        \item
+        \(A \to \beta\gamma\): produção sendo usada
+        \item
+        \(.\) (ponto): posição atual no reconhecimento
+        \item
+        \(k\): posição na entrada onde o reconhecimento de \(A\) começou
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplos}
+
+    \begin{itemize}
+
+        \item
+        \([E \to . (S), 0]\): começamos a reconhecer \(E \to (S)\) na posição
+        0, nada visto ainda
+        \item
+        \([E \to ( S . ), 0]\): vimos \texttt{(S}, esperamos
+        \texttt{)}
+        \item
+        \([E \to (S) ., 0]\): \(E\) completamente reconhecida a partir da
+        posição 0
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Algoritmo de Earley}
+
+    \textbf{Inicialização:} \(I_0 = \{[S' \to . S, 0]\}\)
+\end{frame}
+
+\begin{frame}{Algoritmo de Earley}
+
+    \begin{enumerate}
+
+        \item
+        \textbf{Predição}: se \([A \to \alpha . B \beta, k] \in I_j\) e
+        \(B \to \gamma\) é uma produção, adiciona \([B \to . \gamma, j]\) a
+        \(I_j\)
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Algoritmo de Earley}
+
+    \begin{enumerate}
+        \setcounter{enumi}{1}
+
+        \item
+        \textbf{Verificar (scan)}: se \([A \to \alpha . a \beta, k] \in I_j\)
+        e o token atual é \(a\), adiciona \([A \to \alpha\, a . \beta, k]\) a
+        \(I_{j+1}\)
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Algoritmo de Earley}
+
+    \begin{enumerate}
+        \setcounter{enumi}{2}
+
+        \item
+        \textbf{Completar}: se \([B \to \gamma ., k] \in I_j\), para cada
+        \([A \to \alpha . B \beta, l] \in I_k\), adiciona
+        \([A \to \alpha\, B . \beta, l]\) a \(I_j\)
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Algoritmo de Earley}
+
+    \textbf{Aceita:} se \([S' \to S ., 0] \in I_n\)
+\end{frame}
+
+\begin{frame}{Exemplo: Análise de \texttt{(1) + 2}}
+
+    Gramática: \(S \to S+E \mid E\) e \(E \to (S) \mid n\)
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            \hline
+            Conjunto & Item & Pos & Motivo \\
+            \hline
+            \(I_0\) & \(S' \to . S\) & 0 & inicial \\
+            & \(S \to . S+E\) & 0 & prever \(S\) \\
+            & \(S \to . E\) & 0 & prever \(S\) \\
+            & \(E \to . n\) & 0 & prever \(E\) \\
+            & \(E \to . (S)\) & 0 & prever \(E\) \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo: Análise de
+    \texttt{(1) + 2}}
+
+    Gramática: \(S \to S+E \mid E\) e \(E \to (S) \mid n\)
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            \hline
+            Conjunto & Item & Pos & Motivo \\
+            \hline
+            \(I_1\) & \(E \to ( . S )\) & 0 & consumir
+            \texttt{(} \\
+            & \(S \to . S+E\) & 1 & prever \(S\) \\
+            & \(S \to . E\) & 1 & prever \(S\) \\
+            & \(E \to . n\) & 1 & prever \(E\) \\
+            & \(E \to . (S)\) & 1 & prever \(E\) \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo: Análise de
+    \texttt{(1) + 2} (continuação)}
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            \hline
+            Conjunto & Item & Pos & Motivo \\
+            \hline
+            \(I_2\) & \(E \to n .\) & 1 & consumir \texttt{1} \\
+            & \(S \to E .\) & 1 & completar \(E\) \\
+            & \(E \to (S . )\) & 0 & completar \(S\) \\
+            & \(S \to S . +E\) & 1 & completar \(S\) \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo: Análise de
+    \texttt{(1) + 2} (continuação)}
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            \hline
+            Conjunto & Item & Pos & Motivo \\
+            \hline
+            \(I_3\) & \(E \to (S) .\) & 0 & consumir \texttt{)} \\
+            & \(S \to E .\) & 0 & completar \(E\) \\
+            & \(S' \to S .\) & 0 & completar \(S\) \\
+            & \(S \to S . +E\) & 0 & completar \(S\) \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo: Análise de
+    \texttt{(1) + 2} (continuação)}
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            \hline
+            Conjunto & Item & Pos & Motivo \\
+            \hline
+            \(I_4\) & \(S \to S+ . E\) & 0 & consumir \texttt{+} \\
+            & \(E \to . n\) & 4 & prever \(E\) \\
+            \(I_5\) & \(E \to n .\) & 4 & consumir \texttt{2} \\
+            & \(S \to S+E .\) & 0 & completar \(E\) \\
+            & \(S' \to S .\) & 0 & completar \(S\): \textbf{sucesso!} \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Visualização do Algoritmo de Earley}
+
+    \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter09/imgs/earley-threads.png}
+\end{frame}
+
+\begin{frame}{Complexidade}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Pior caso geral}: \(O(n^3)\) --- inclui gramáticas ambíguas
+        \item
+        \textbf{Gramáticas não-ambíguas}: \(O(n^2)\) no pior caso
+        \item
+        \textbf{Gramáticas LL/LR}: \(O(n)\) quando implementado cuidadosamente
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Vantagens}
+
+    \begin{itemize}
+
+        \item
+        Analisa \textbf{qualquer GLC}, incluindo ambíguas
+        \item
+        Sem necessidade de transformar a gramática
+        \item
+        Otimização de Aycock-Horspool: apenas 50\% mais lento que LALR
+    \end{itemize}
+\end{frame}
+
+
+\section{Analisadores LR:
+Shift-Reduce}\label{analisadores-lr-shift-reduce}
+
+\begin{frame}{A Ideia Shift-Reduce}
+
+    LR pode ser visto como uma \textbf{otimização do Earley}:
+
+    \begin{itemize}
+
+        \item
+        As previsões são \textbf{pré-computadas} como estados de um autômato
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{A Ideia Shift-Reduce}
+
+    \begin{itemize}
+
+        \item
+        Estado do analisador: uma \textbf{pilha de estados}
+        \item
+        Duas ações: \textbf{shift} (consumir token) e \textbf{reduce} (aplicar
+        produção)
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{A Ideia Shift-Reduce}
+
+    Em qualquer ponto:
+    \(\underbrace{\alpha}_{\text{pilha}} \cdot \underbrace{\beta}_{\text{entrada}}\)
+    é uma forma sentencial direita
+\end{frame}
+
+\begin{frame}[fragile]{Trace Shift-Reduce para
+    \texttt{(1)+2}}
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            \hline
+            Pilha & Entrada & Ação \\
+            \hline
+            & \texttt{(1)+2} & shift \\
+            \texttt{(} & \texttt{1)+2} & shift \\
+            \texttt{(1} & \texttt{)+2} & reduce
+            \(E \to n\) \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}[fragile]{Trace Shift-Reduce para
+    \texttt{(1)+2}}
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            \hline
+            Pilha & Entrada & Ação \\
+            \hline
+            \texttt{(1} & \texttt{)+2} & reduce
+            \(E \to n\) \\
+            \texttt{(E} & \texttt{)+2} & reduce
+            \(S \to E\) \\
+            \texttt{(S} & \texttt{)+2} & shift \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}[fragile]{Trace Shift-Reduce para
+    \texttt{(1)+2}}
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            \hline
+            Pilha & Entrada & Ação \\
+            \hline
+            \texttt{E} & \texttt{+2} & reduce
+            \(S \to E\) \\
+            \texttt{S} & \texttt{+2} & shift \\
+            \texttt{S+} & \texttt{2} & shift \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}[fragile]{Trace Shift-Reduce para
+    \texttt{(1)+2}}
+
+    \begin{table}
+        \begin{tabular}{l l l l}
+            \hline
+            Pilha & Entrada & Ação \\
+            \hline
+            \texttt{S+2} & \verb|$| & reduce
+            \(E \to n\) \\
+            \texttt{S+E} & \verb|$| & reduce
+            \(S \to S+E\) \\
+            \texttt{S} & \verb|$| &
+            \textbf{aceitar} \\
+            \hline
+        \end{tabular}
+    \end{table}
+\end{frame}
+
+\begin{frame}{Decisão: Quando Shift ou Reduce?}
+
+    \begin{itemize}
+
+        \item
+        O analisador precisa decidir quando olha o topo da pilha e o próximo
+        token.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Decisão: Quando Shift ou Reduce?}
+
+    \begin{itemize}
+
+        \item
+        Para isso, usamos um \textbf{autômato LR(0)} cujos estados são
+        conjuntos de itens
+
+        \begin{itemize}
+
+            \item
+            Os estados capturam exatamente o que já foi reconhecido
+            \item
+            A tabela de ações mapeia (estado, token) -> shift ou reduce
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+
+\section{LR(0): Itens e Autômato}\label{lr0-itens-e-autuxf4mato}
+
+\begin{frame}{Itens LR(0)}
+
+    Um item LR(0) \(A \to \alpha . \beta\) (sem lookahead):
+
+    \begin{itemize}
+
+        \item
+        \(\alpha\): já reconhecido (no topo da pilha)
+        \item
+        \(\beta\): o que ainda é esperado
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Estados LR(0)}
+
+    Um \textbf{estado LR(0)} é um conjunto fechado de itens.
+
+    \begin{lstlisting}
+        data Item = Item
+        { itemLHS    :: String    -- A: n\~ao-terminal
+        , itemBefore :: [Symbol]  -- \alpha{}: antes do ponto
+        , itemAfter  :: [Symbol]  -- \beta{}: depois do ponto
+        }
+
+
+        type State = Set Item
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Fechamento (Closure)}
+
+    Para cada item \([A \to \alpha . B \beta]\) com não-terminal \(B\) após
+    o ponto, adicionar todos \([B \to . \gamma]\):
+
+    \begin{lstlisting}
+        closure :: Grammar -> State -> State
+        closure g = fixedPoint step
+        where
+        step current = Set.union current $ Set.fromList
+        [ Item b [] prod
+        | item <- Set.toList current
+        , NonTerminal b <- take 1 (itemAfter item)
+        , prod <- fromMaybe [] (Map.lookup b g)
+        ]
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Função Goto}
+
+    Avança o ponto ao consumir o símbolo \(X\) e fecha o resultado:
+
+    \begin{lstlisting}
+        goto :: Grammar -> State -> Symbol -> State
+        goto g items sym = closure g $ Set.fromList
+        [ Item lhs (before ++ [sym]) rest
+        | Item lhs before (s:rest) <- Set.toList items
+        , s == sym
+        ]
+    \end{lstlisting}
+\end{frame}
+
+\begin{frame}{O Autômato LR(0)}
+
+    \begin{itemize}
+
+        \item
+        Resolução na lousa.
+    \end{itemize}
+
+    \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{chapter09/imgs/lr0.png}
+\end{frame}
+
+\begin{frame}[fragile]{Regras de Preenchimento LR(0)}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Shift}: para terminal \(t\) após o ponto em item do estado
+        \(i\):
+
+        \begin{itemize}
+
+            \item
+            \texttt{action[i, t] = Shift j} onde \(j\) = índice
+            de \texttt{goto(i, t)}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Regras de Preenchimento LR(0)}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Reduce (LR0)}: para item completo \(A \to \alpha .\) no estado
+        \(i\):
+
+        \begin{itemize}
+
+            \item
+            \texttt{action[i, t] = Reduce(A -> \alpha{})} para
+            \textbf{todos} os terminais \(t\)
+            \item
+            LR(0) ignora completamente o lookahead nas reduções!
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Regras de Preenchimento LR(0)}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Accept}: quando o item completo é \(S' \to S .\):
+
+        \begin{itemize}
+
+            \item
+            \texttt{action[i, $] = Accept}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+
+\section{SLR: Simple LR}\label{slr-simple-lr}
+
+\begin{frame}{O Problema do LR(0)}
+
+    LR(0) ignora o lookahead -> gera muitos conflitos shift-reduce
+
+    \textbf{Exemplo:} gramática com recursão à direita
+
+    \[E \to T + E \mid T \quad T \to n \mid (E)\]
+\end{frame}
+
+\begin{frame}[fragile]{O Problema do LR(0)}
+
+    \begin{itemize}
+        \item
+        Estado com \(E \to T .\) e \(E \to T . + E\):
+        \item
+        Item completo \(E \to T .\) -> LR(0) insere reduce em \textbf{todos} os
+        terminais, inclusive \texttt{+}
+        \item
+        Item \(E \to T . + E\) -> exige shift em \texttt{+}
+        \item
+        \textbf{Conflito!}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{A Solução SLR}
+
+    \textbf{Ideia}: reduzir \(A \to \alpha\) faz sentido apenas quando o
+    próximo token pode seguir \(A\) na gramática
+
+    \[\text{reduce apenas em } t \in \mathrm{FOLLOW}(A)\]
+\end{frame}
+
+\begin{frame}[fragile]{A Solução SLR}
+
+    Para \(E \to T .\) com \(\mathrm{FOLLOW}(E) = \{\$, )\}\):
+
+    \begin{itemize}
+
+        \item
+        LR(0): insere reduce em todos os terminais (inclusive
+        \texttt{+})
+        \item
+        SLR: insere reduce apenas em \verb|$| e
+        \texttt{)} --- sem conflito com shift em
+        \texttt{+}!
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Exemplo SLR}
+
+    \[\begin{array}{lcl}
+    E &\to& E + T \mid T \\
+    T &\to& T * F \mid F \\
+    F &\to& (E) \mid n
+\end{array}\]
+\end{frame}
+
+\begin{frame}[fragile]{Exemplo SLR}
+
+    Estado com \(E \to T.\) e \(T \to T . * F\):
+
+    \begin{itemize}
+
+        \item
+        LR(0): conflito shift-reduce em \texttt{*} (reduce
+        \(E \to T\) e shift de \texttt{*})
+        \item
+        SLR: \(* \notin \mathrm{FOLLOW}(E) = \{+, ), \$\}\)
+
+        \begin{itemize}
+
+            \item
+            \texttt{action[estado, *]} recebe apenas Shift ---
+            \textbf{sem conflito!}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+
+\section{Conclusão}\label{conclusuxe3o}
+
+\begin{frame}{Conclusão}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Análise bottom-up} é mais expressiva que top-down
+
+        \begin{itemize}
+
+            \item
+            Suporta recursão à esquerda
+            \item
+            Decisão após prefixo maior
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Conclusão}
+
+    \begin{itemize}
+
+        \item
+        \textbf{Earley}: analisa qualquer GLC, \(O(n^3)\) no pior caso
+        \item
+        \textbf{LR(0)}: autômato de estados × itens, tabela de ações/goto
+        \item
+        \textbf{SLR}: melhora LR(0) restringindo reduces a
+        \(\mathrm{FOLLOW}(A)\)
+    \end{itemize}
+\end{frame}

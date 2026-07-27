@@ -1,0 +1,196 @@
+% Comente para usar formato 16:9 (para filmagens)
+\documentclass[aspectratio=169]{beamer}
+
+% Comente para usar formato 4:3 (quadrado, para aulas presenciais)
+%\documentclass[aspectratio=169,smaller]{beamer}
+
+%------------------------------------------------------------------%
+%beamerinnerthemedecom.sty: definne página de título, listas, margens,etc.
+%beamerouterthemedecom.sty: define cabeçalhos e rodapés.
+%beamerthemeDecom.sty: define a cor do tema global
+%------------------------------------------------------------------%
+\usetheme[pageofpages=of,alternativetitlepage=true, titlepagelogo=]{Decom}
+\usecolortheme{decom}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+
+\usepackage[brazilian]{babel}
+\usepackage{pgfplots}   % pacote para uso do pgfplots
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\usepackage{xcolor}
+\usepackage{booktabs} % To thicken table lines
+\usepackage{subfig}
+\usepackage{xfrac}
+\usepackage{xifthen}
+% \usepackage{enumitem}
+
+\usepackage{tikz}
+
+\usepackage{listings}
+\usepackage{pgfplots}
+\usepackage{longtable}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{mygreen}{RGB}{0, 100, 0}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstset{style=mystyle}
+\lstset{
+  literate={á}{{\'a}}1 {ã}{{\~a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {ç}{{\c c}}1 {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1 {Ç}{{\c C}}1 {~}{{\textasciitilde}}1 {-}{{-}}1 {↓}{{$\downarrow$}}1
+}
+
+
+\pgfplotsset{compat=1.7}
+
+\newcommand{\subtitlepage}[2]{
+    \begin{frame}
+        \begin{center}
+            \huge{\textsc{#1}}
+        \end{center}
+
+        \ifthenelse{\equal{#2}{}}
+        {}
+        {\vspace{0.3cm}
+            \begin{center}
+                \Large{\textsc{#2}}
+            \end{center}
+        }
+    \end{frame}
+}
+
+\newcommand{\duvidas}{
+    \begin{frame}
+        \begin{center}
+            \LARGE{\tblue{Dúvidas?}}
+        \end{center}
+    \end{frame}
+}
+
+\newcommand{\exemplo}[1]{
+    \begin{frame}
+        \centering
+        \ifnum#1>1
+            \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{figures/exemplos.pdf}
+        \else
+            \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{figures/exemplo.pdf}
+        \fi
+    \end{frame}
+
+}
+
+% Comente para usar formato 4:3 (quadrado, para aulas presenciais)
+%\setbeamersize{text margin left=7mm, text margin right=50mm}
+
+\usepackage[skins,theorems]{tcolorbox}
+
+\makeatletter
+\newenvironment{mcases}[1][l]
+ {\\let\@ifnextchar\new@ifnextchar
+  \left\lbrace
+  \def\arraystretch{1.2}%
+  \array{@{}l@{\quad}#1@{}}}
+ {\endarray\right.}
+\makeatother
+
+\tcbset{highlight math style={enhanced,
+  colframe=red,colback=white,arc=0pt,boxrule=1pt}}
+
+\usetikzlibrary{shapes, automata, positioning}
+\tikzstyle{mybox} = [draw=red, fill=blue!20, very thick, rectangle, rounded corners, inner sep=40pt, inner ysep=10pt]
+\tikzstyle{fancytitle} =[fill=red, text=white]
+
+
+\usepackage[edges]{forest}
+\usepackage{stmaryrd}
+\usepackage{float}
+\usepackage{proof}
+\usepackage[linesnumbered,ruled]{algorithm2e}
+
+\let\Lemma\relax\newtheorem{Lemma}{Lema}
+\let\Theorem\relax\newtheorem{Theorem}{Teorema}
+\theoremstyle{definition}
+\let\Example\relax\newtheorem{Example}{Exemplo}
+\let\Definition\relax\newtheorem{Definition}{Definição}
+
+
+\let\Fact\relax\newtheorem{Fact}{Fato}
+
+
+%----- Informações Título:
+\institute{Universidade Federal de São João del-Rei - UFSJ\\ Departamento de Computação (Dcomp)}
+
+    \title{{\bf Construção de Compiladores I}}
+    \author{Prof. Rodrigo Ribeiro\\rodrigo.ribeiro@ufop.edu.br}
+     \date{}%\today}
+
+%---Logo no canto direito de todas as páginas:
+\logo{\includegraphics[height=0.10\paperheight]{figures/LogoDecom.png}}
+
+\setbeamertemplate{footline}{
+  \usebeamercolor[fg]{page number in head}%
+  \usebeamerfont{page number in head}%
+  \hspace{2pt}
+%   \insertframenumber~/~\inserttotalframenumber
+  \insertpagenumber~/~\insertpresentationendpage
+  \vspace{2pt}
+}
+
+% Fix tightlist issue from pandoc
+
+
+%----- Conteúdo da Aula:
+
+\begin{document}
+
+
+
+    \include{apresentacao/apresentacao}
+    \include{chapter01/slides}
+    \include{chapter02/slides}
+    \include{chapter03/slides}
+    \include{chapter04/slides}
+    \include{chapter05/slides}
+    \include{chapter06/slides}
+    \include{chapter07/slides}
+    \include{chapter08/slides}
+    \include{chapter09/slides}
+    \include{chapter10/slides}
+    \include{chapter11/slides}
+    \include{chapter12/slides}
+    \include{chapter13/slides}
+    \include{chapter14/slides}
+    \include{chapter15/slides}
+    \include{chapter16/slides}
+    \include{chapter17/slides}
+    \include{chapter18/slides}
+    \include{chapter19/slides}
+    \include{chapter20/slides}
+    \include{chapter21/slides}
+    \include{chapter22/slides}
+    \include{chapter23/slides}
+\end{document}
